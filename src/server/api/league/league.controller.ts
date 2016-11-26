@@ -5,7 +5,7 @@ import {League} from './league.model';
 export class LeagueController {
 
   list (req: Request, res: Response) {
-    League.find((err, leagues) => {
+    League.find({}, (err, leagues) => {
       if (err) {
         return res.status(500).json(err);
       };
