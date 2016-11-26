@@ -8,7 +8,10 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "lib":[
+      "es5", "dom", "es2015.promise"
+    ]
   },
   "include": [
     "src/**/*"
