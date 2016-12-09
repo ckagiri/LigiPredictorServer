@@ -2,13 +2,13 @@
   "name": "LigiPredictorServer",
   "version": "1.0.0",
   "description": "Ligi Predictor Server",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "server": "node index.js",
-    "start": "concurrently \"npm run tsc:w\" \"nodemon index.js\"",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register **/*.spec.ts"
+    "server": "node src/server.js",
+    "start": "concurrently \"npm run tsc:w\" \"nodemon src/server.js\"",
+    "test": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts"
   },
   "repository": {
     "type": "git",

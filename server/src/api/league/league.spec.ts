@@ -2,7 +2,7 @@ import * as mocha from 'mocha';
 import * as chai from 'chai';
 import * as _ from 'lodash';
 import * as request from 'supertest';
-import {server as app} from '../../../server';
+import {server as app} from '../../server';
 import {League} from './league.model';
 import * as mongoose from 'mongoose';
 const Promise = require('bluebird');
