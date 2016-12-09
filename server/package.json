@@ -6,9 +6,9 @@
   "scripts": {
     "tsc": "tsc",
     "tsc:w": "tsc -w",
-    "server": "node src/server/index.js",
-    "start": "concurrently \"npm run tsc:w\" \"nodemon src/server/index.js\"",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register src/server/**/*.spec.ts"
+    "server": "node index.js",
+    "start": "concurrently \"npm run tsc:w\" \"nodemon index.js\"",
+    "test": "mocha --reporter spec --compilers ts:ts-node/register **/*.spec.ts"
   },
   "repository": {
     "type": "git",
