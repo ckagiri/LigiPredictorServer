@@ -14,8 +14,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', routes);
 
-app.use(favicon(path.join(__dirname, '../../client') + '/favicon.ico'));
-app.use(express.static(path.join(__dirname, '../../client')));
+let clientPath = path.join(__dirname, '../../client');
+app.use(favicon(clientPath + '/favicon.ico'));
+app.use(express.static(clientPath));
+
+let renderIndex = (req: express.Request, res: express.Response) => {
+  res.sendFile(clientPath + '/index.html');
+}
+app.get('/*', renderIndex);
 
 const port = 8007;
 const server: http.Server = app.listen(port, function() {
