@@ -1,12 +1,14 @@
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as mongoose from 'mongoose';
 import * as http from 'http';
 import * as path from 'path';
 import {routes} from './routes';
+import {config} from './config/environment';
 let favicon = require('serve-favicon');
 
-mongoose.connect("mongodb://localhost/ligi");
 const app = express();
 
 app.use(bodyParser.json());
@@ -14,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api', routes);
 
-let clientPath = path.join(__dirname, '../../client');
+let clientPath = path.join(config.root, '../../client');
 app.use(favicon(clientPath + '/favicon.ico'));
 app.use(express.static(clientPath));
 
@@ -23,9 +25,22 @@ let renderIndex = (req: express.Request, res: express.Response) => {
 }
 app.get('/*', renderIndex);
 
-const port = 8007;
-const server: http.Server = app.listen(port, function() {
-  console.log(`Server running at http://127.0.0.1:${port}/`);
+mongoose.connect(config.mongo.uri, config.mongo.options);
+const db = mongoose.connection;
+
+const server: http.Server = app.listen(config.port, config.ip, () => {
+  const host = server.address().address;
+  const port = server.address().port;
+  console.log(`Server listening at http://${host}:${port}`);
+
+  db.on('error', (err: any) => {
+    console.error(`ERROR CONNECTING TO MONGO: ${err}`);
+    console.error(`Please make sure that ${config.mongo.uri} is running.`);
+  });
+
+  db.once('open', () => {
+    console.info(`Connected to MongoDB: ${config.mongo.uri}`);
+  });
 });
 
 export {server};
