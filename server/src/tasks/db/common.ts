@@ -2,8 +2,8 @@ import * as async from 'async';
 import * as mongoose from 'mongoose';
 import dataModels from '../../api/models';
 import {config} from '../../config/environment';
-import {seedData} from '../../config/seed-data';
 
+const seedData = require('../../config/seed-data');
 const seeder = require('mongoose-seeder');
 
 export const connect = (callback: any) => {
@@ -20,7 +20,6 @@ export const drop = (models: any[], callback: any) => {
 };
 
 export const seed = (models: any[], callback: any) => {
-  console.log(callback)
   seeder.seed(seedData, { dropCollections: false })
     .then(function(dbData: any){
       callback();      
