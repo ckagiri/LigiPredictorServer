@@ -14,7 +14,11 @@
       "league": "->leagues.epl",
       "name": "2016-2017",
       "slug": "16-17",
-      "aliases": ["2016"]
+      "aliases": ["2016"],
+      "rounds": [{
+        "name": "Round 1",
+        "slug": "round-1"
+      }]
     }
   },
   "teams": {
@@ -158,6 +162,29 @@
       "code": "WHU",
       "slug": "west_ham",
       "aliases": []
+    }
+  },
+  "fixtures": {
+    "_model": "Fixture",
+    "ars_liv": {
+      "season":"->seasons.epl_16",
+      "round": "round-1",
+      "slug": "arsenal-liverpool",    
+      "status": "PLAYED",
+      "homeTeam": {
+        "name": "->teams.arsenal.shortName",
+        "slug": "->teams.arsenal.slug",
+        "code": "->teams.arsenal.code"
+      },
+      "awayTeam": {
+        "name": "->teams.liverpool.shortName",
+        "slug": "->teams.liverpool.slug",
+        "code": "->teams.liverpool.code"
+      },
+      "result":{
+        "goalsHomeTeam": 3,
+        "goalsAwayTeam": 4
+      }
     }
   }
 }

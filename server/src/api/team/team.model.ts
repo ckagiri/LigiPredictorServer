@@ -2,12 +2,18 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export interface ITeam {
-    name: string;
-    code: string;
-    slug: string;
-    shortName: string;
-    aliases: [string]
+  name: string;
+  code: string;
+  slug: string;
+  shortName: string;
+  aliases: [string]
 };
+
+export interface ITeamDetail {
+  name: string;
+  slug: string;
+  code?: string;
+}
 
 interface ITeamModel extends ITeam, mongoose.Document { }
 

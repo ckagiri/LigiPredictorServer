@@ -2,10 +2,10 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 export interface ILeague {
-    name: string;
-    code?: string;
-    slug: string;
-    aliases: [string]
+  name: string;
+  code?: string;
+  slug: string;
+  aliases: [string]
 };
 
 interface ILeagueModel extends ILeague, mongoose.Document { }

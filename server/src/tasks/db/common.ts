@@ -3,6 +3,9 @@ import * as mongoose from 'mongoose';
 import dataModels from '../../api/models';
 import {config} from '../../config/environment';
 
+const Promise = require('bluebird'); 
+(<any>mongoose).Promise = Promise;
+
 const seedData = require('../../config/seed-data');
 const seeder = require('mongoose-seeder');
 
