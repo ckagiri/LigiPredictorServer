@@ -6,7 +6,9 @@ export interface ITeam {
   code: string;
   slug: string;
   shortName: string;
-  aliases: [string]
+  crestUrl?: string;
+  aliases?: [string];
+  provider?: any
 };
 
 export interface ITeamDetail {
@@ -15,7 +17,7 @@ export interface ITeamDetail {
   code?: string;
 }
 
-interface ITeamModel extends ITeam, mongoose.Document { }
+export interface ITeamModel extends ITeam, mongoose.Document { }
 
 const teamSchema = new Schema({
   name: {
@@ -36,6 +38,12 @@ const teamSchema = new Schema({
   },
   aliases: {
     type: [String]
+  },
+  provider: {
+    type: Schema.Types.Mixed
+  },
+  crestUrl: {
+    type: String
   }
 });
 

@@ -6,7 +6,7 @@ import * as mongoose from 'mongoose';
 import * as http from 'http';
 import * as path from 'path';
 import {routes} from './routes';
-import {config} from './config/environment';
+import {config} from '../config/environment';
 let favicon = require('serve-favicon');
 
 const app = express();

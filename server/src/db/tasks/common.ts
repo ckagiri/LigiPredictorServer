@@ -1,6 +1,6 @@
 import * as async from 'async';
 import * as mongoose from 'mongoose';
-import dataModels from '../../api/models';
+import dataModels from '../../backend/api/models';
 import {config} from '../../config/environment';
 
 const Promise = require('bluebird'); 
