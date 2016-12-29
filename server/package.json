@@ -12,7 +12,8 @@
     "db:drop": "SET NODE_ENV=development&&node src/db/tasks/drop.js",
     "db:seed": "SET NODE_ENV=development&&node src/db/tasks/seed.js",
     "db:reset": "SET NODE_ENV=development&&node src/db/tasks/reset.js",
-    "test": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts"
+    "test": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
+    "mocha": "node node_modules/mocha/bin/mocha  --reporter spec src/db/**/*.test.js"
   },
   "repository": {
     "type": "git",

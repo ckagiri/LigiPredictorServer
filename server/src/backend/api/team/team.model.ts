@@ -3,17 +3,17 @@ const Schema = mongoose.Schema;
 
 export interface ITeam {
   name: string;
-  code: string;
-  slug: string;
+  code?: string;
+  slug?: string;
   shortName: string;
   crestUrl?: string;
   aliases?: [string];
-  provider?: any
+  api_detail?: any
 };
 
 export interface ITeamDetail {
   name: string;
-  slug: string;
+  slug?: string;
   code?: string;
 }
 
@@ -27,7 +27,6 @@ const teamSchema = new Schema({
   },
   slug: {
     type: String, 
-    required: true, 
     trim: true
   },
   code: {
@@ -39,7 +38,7 @@ const teamSchema = new Schema({
   aliases: {
     type: [String]
   },
-  provider: {
+  api_detail: {
     type: Schema.Types.Mixed
   },
   crestUrl: {

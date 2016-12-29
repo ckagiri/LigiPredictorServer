@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs';
 
 abstract class AbstractRepo {
-  constructor(public provider: string = "LIGI", public model: any, public converter: any){
+  constructor(public model: any, public converter: any, public provider: string = "LIGI", ){
   }
 
   insert(obj: any){

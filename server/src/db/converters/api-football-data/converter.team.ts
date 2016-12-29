@@ -4,8 +4,8 @@ import {api_data} from '../../providers';
 class TeamConverter {
   from(obj: any) {
     return Observable.of({
-      provider: {
-        api_data: {
+      api_detail: {
+        [api_data]: {
           id: obj.id
         }
       },
@@ -15,3 +15,5 @@ class TeamConverter {
     });
   }
 }
+
+export default new TeamConverter();
