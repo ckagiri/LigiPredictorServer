@@ -15996,6 +15996,12 @@ module.exports.championshipTeam =  [
 ];
 
 module.exports.pmTeams = [{
+        "id": 66,
+        "name": "Manchester United FC",
+        "shortName": "ManU",
+        "squadMarketValue": "534,250,000 €",
+        "crestUrl": "http://upload.wikimedia.org/wikipedia/de/d/da/Manchester_United_FC.svg"
+    }, {
         "id": 322,
         "name": "Hull City FC",
         "shortName": "Hull",
@@ -16085,12 +16091,6 @@ module.exports.pmTeams = [{
         "shortName": "Bournemouth",
         "squadMarketValue": "121,750,000 €",
         "crestUrl": "https://upload.wikimedia.org/wikipedia/de/4/41/Afc_bournemouth.svg"
-    }, {
-        "id": 66,
-        "name": "Manchester United FC",
-        "shortName": "ManU",
-        "squadMarketValue": "534,250,000 €",
-        "crestUrl": "http://upload.wikimedia.org/wikipedia/de/d/da/Manchester_United_FC.svg"
     }, {
         "id": 57,
         "name": "Arsenal FC",

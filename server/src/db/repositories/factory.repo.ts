@@ -1,12 +1,12 @@
 import * as providers from '../providers';
-import teamConverter from '../converters/api-football-data/converter.team';
 import TeamRepo from './repo.team';
+import SeasonRepo from './repo.season';
 
 class RepoFactory {
-  constructor(){
-    this.teamRepo = new TeamRepo(teamConverter, providers.api_data)
-  }
-  teamRepo: any
+  constructor(
+    public teamRepo: any, 
+    public seasonRepo: any
+    ) { }
 }
 
-export default new RepoFactory();
+export default RepoFactory;

@@ -1,20 +1,20 @@
 import {config} from '../../../config/environment';
-import {api_data} from '../../providers';
+import DefaultSeasonConverter from '../default-converter.season';
 
 let provider = config.api_providers.api_football_data.name;
-class TeamConverter {
+
+class SeasonConverter {
   provider = provider;
 
-  from(obj: any) {
+  from(obj: any): any {
     return {
       api_detail: {
         [this.provider]: {
           id: obj.id
         }
-      },
-      crestUrl: obj.crestUrl
+      }
     };
   }
 }
 
-export default new TeamConverter();
+export default new SeasonConverter();

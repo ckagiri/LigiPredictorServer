@@ -42,6 +42,16 @@ interface Configurations {
     uri: string;
   };
   ip:string;
+  api_providers: {
+    api_football_data: {
+      name: string,
+      apiKey: string
+    },
+    sports_open_data: {
+      name: string,
+      apiKey: string
+    }
+  }
 }
 
 // Export the config object based on the NODE_ENV

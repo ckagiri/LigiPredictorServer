@@ -11,7 +11,7 @@ export interface ISeason {
   currentRound: string
 };
 
-interface ISeasonModel extends ISeason, mongoose.Document { }
+export interface ISeasonModel extends ISeason, mongoose.Document { }
 
 const seasonSchema = new Schema({
   league: {

@@ -37,6 +37,7 @@
     "lodash": "4.16.6 ",
     "mongoose": "4.6.7",
     "path": "0.12.7",
+    "request-promise": "^4.1.1",
     "rxjs": "^5.0.2",
     "serve-favicon": "2.3.2"
   },
@@ -48,6 +49,7 @@
     "@types/lodash": "4.14.39",
     "@types/mocha": "2.2.33",
     "@types/mongoose": "4.5.42",
+    "@types/request-promise": "^4.1.33",
     "@types/supertest": "1.1.32",
     "async": "2.1.4",
     "chai": "3.5.0",

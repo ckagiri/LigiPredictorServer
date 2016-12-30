@@ -1,22 +1,24 @@
-import * as Rx from 'rxjs';
-
 abstract class AbstractRepo {
-  constructor(public model: any, public converter: any, public provider: string = "LIGI", ){
+  provider = "LIGI";
+  constructor(public model: any, public converter: any){
+    if(converter && converter.provider){
+      this.provider = converter.provider;
+    }
   }
 
   insert(obj: any){
-    let source = Rx.Observable.of(this.converter.from(obj));
+    let convertedObj = this.converter.from(obj);
 
-    return source.flatMap((obj: any) => Rx.Observable.fromPromise(this.model.create(obj)))
+    return this.model.create(convertedObj);
   }
 
-  insertMany(docs: any[]) {
-    let convertedDocsObs: any[] = [];
-    for (let doc of docs) {
-      convertedDocsObs.push(this.converter.from(doc));
+  insertMany(objs: any[]) {
+    let convertedObjs: any[] = [];
+    for (let obj of objs) {
+      convertedObjs.push(this.converter.from(obj));
     }
-
-    return Rx.Observable.zip(convertedDocsObs).flatMap;
+    
+    return this.model.insertMany(convertedObjs);
   }
 
   update(conditions: any, doc: any, options: any = {overwrite: false}){
@@ -35,12 +37,12 @@ abstract class AbstractRepo {
     return this.model.remove({_id : id});
   }
 
-  findOne(query: any, projection: any){
+  findOne(query: any, projection?: any){
     return this.model.findOne(query, projection);
   }
 
-  findAll(query: any, projection: any, options: any){
-    return Rx.Observable.fromPromise(this.model.find(query, projection, options));
+  findAll(query: any, projection?: any, options?: any){
+    return this.model.find(query, projection, options);
   }
 
   aggregate(query: any, group: any, sort: any){
