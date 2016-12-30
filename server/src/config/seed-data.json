@@ -14,7 +14,7 @@
       "league": "->leagues.epl",
       "name": "2016-2017",
       "slug": "16-17",
-      "aliases": ["2016"],
+      "year": "2016",
       "rounds": [{
         "name": "Round 1",
         "slug": "round-1"

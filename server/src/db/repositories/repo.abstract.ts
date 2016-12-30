@@ -5,7 +5,7 @@ abstract class AbstractRepo {
   }
 
   insert(obj: any){
-    let source = this.converter.from(obj);
+    let source = Rx.Observable.of(this.converter.from(obj));
 
     return source.flatMap((obj: any) => Rx.Observable.fromPromise(this.model.create(obj)))
   }
@@ -19,15 +19,8 @@ abstract class AbstractRepo {
     return Rx.Observable.zip(convertedDocsObs).flatMap;
   }
 
-  updateDocs(conditions: any, doc: any, options: any){
+  update(conditions: any, doc: any, options: any = {overwrite: false}){
     return this.model.update(conditions, doc, options);
-  }
-
-  update(conditions: any, doc: any){
-    let options = {
-      overwrite : false
-    };
-    return this.updateDocs(conditions, doc, options);
   }
 
   updateMany(conditions: any, doc: any){
@@ -35,7 +28,7 @@ abstract class AbstractRepo {
       overwrite : true,
       multi: true
     };
-    return this.updateDocs(conditions, doc, options);
+    return this.update(conditions, doc, options);
   }
 
   delete(id: string){
@@ -56,7 +49,7 @@ abstract class AbstractRepo {
 
   idMapping(id: string) {
     return this.model.findOne()
-      .where("api_detail.id").equals(id)
+      .where(`api_detail.${this.provider}.id`).equals(id)
       .lean()
       .then(function (obj: any) {
           return Promise.resolve(obj ._id);

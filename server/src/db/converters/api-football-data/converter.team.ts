@@ -3,7 +3,7 @@ import {api_data} from '../../providers';
 
 class TeamConverter {
   from(obj: any) {
-    return Observable.of({
+    return {
       api_detail: {
         [api_data]: {
           id: obj.id
@@ -11,8 +11,9 @@ class TeamConverter {
       },
       name: obj.name,
       shortName: obj.shortName,
+      aliases: obj.aliases,
       crestUrl: obj.crestUrl
-    });
+    };
   }
 }
 
