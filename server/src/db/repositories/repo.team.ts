@@ -8,7 +8,7 @@ export default class TeamRepo extends AbstractRepo {
     super(modelFactory.teamModel, converter);
   }  
 
-  findOneByNameAndUpdate(obj: any, cb?: any){
+  findOneByNameAndUpdate(obj: any){
     const {name} = obj;   
     let convertedObj = this.converter.from(obj);
     let {api_detail} = convertedObj;
@@ -40,8 +40,8 @@ export default class TeamRepo extends AbstractRepo {
   }
 
   findByNameAndUpdate(objs: any[]){
-    return Promise.all(objs.map(function (obj) {
-      return this.findByNameAndUpdate(obj);
+    return Promise.all(objs.map((obj: any) => {
+      return this.findOneByNameAndUpdate(obj);
     }));
   }
 }

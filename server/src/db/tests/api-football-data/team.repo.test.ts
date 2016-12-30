@@ -9,7 +9,7 @@ import * as db from '../../index';
 import RepoFactory from '../../repositories/factory.repo';
 import modelFactory from '../../repositories/factory.model';
 import {api_data} from '../../providers';
-import {seasonRepo, teamRepo, defaultTeamRepo} from '../../index';
+import {seasonRepo, teamRepo, ligiTeamRepo} from '../../index';
 let expect = chai.expect;
 let utils = require('./test_utils');
 const Promise = require('bluebird'); 
@@ -38,13 +38,11 @@ describe('team repo', () => {
       slug: "man_united",
       aliases: ["Manchester United FC", "ManU", "ManUtd"]
     };
-    Rx.Observable.fromPromise(defaultTeamRepo.insert(manu))
+    Rx.Observable.fromPromise(ligiTeamRepo.insert(manu))
       .flatMap(function (team: any) {
-        console.log(team);
-        return Rx.Observable.fromPromise(defaultTeamRepo.findOne({_id: team._id}));
+        return Rx.Observable.fromPromise(ligiTeamRepo.findOne({_id: team._id}));
       })
       .subscribe(function (res: any) {
-        console.log(res);
           expect(res.name).to.be.equal(manu.name);
           done();
       }, utils.errorHandler);
@@ -52,6 +50,6 @@ describe('team repo', () => {
   
   it('id mapping', function (done) {
     teamRepo.findOneByNameAndUpdate(utils.pmTeams[0])
-      .then((res: any) => { console.log(res); done()});
+      .then((res: any) => done());
   });
 });
