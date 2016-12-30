@@ -1,11 +1,11 @@
 class DefaultSeasonConverter {
-  constructor(public provider = "LIGI"){
-  }
+  constructor(public provider = 'LIGI'){ }
+
   from(obj: any) {
     return {
       api_detail: {
         [this.provider]: {
-          id: obj.id
+          id: obj.slug
         }
       },
       name: obj.name,
@@ -17,4 +17,4 @@ class DefaultSeasonConverter {
   }
 }
 
-export default DefaultSeasonConverter;
+export default new DefaultSeasonConverter();

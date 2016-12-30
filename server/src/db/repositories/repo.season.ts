@@ -10,7 +10,7 @@ export default class SeasonRepo extends AbstractRepo {
     return this.findAll({year});
   }
 
-  findByYearAndUpdate(obj: any){
+  findOneByYearAndUpdate(obj: any){
     let newObj = this.converter.partial(obj)
     const {year} = obj;       
     let q = {year};

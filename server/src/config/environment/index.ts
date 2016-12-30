@@ -58,5 +58,6 @@ interface Configurations {
 // ==============================================
 export const config: Configurations = _.merge(
   all,
+  require('./shared'),
   require('./' + process.env.NODE_ENV) || {}
 );

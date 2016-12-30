@@ -38,7 +38,7 @@ describe('team repo', () => {
       slug: "man_united",
       aliases: ["Manchester United FC", "ManU", "ManUtd"]
     };
-    defaultTeamRepo.insert(manu)
+    Rx.Observable.fromPromise(defaultTeamRepo.insert(manu))
       .flatMap(function (team: any) {
         console.log(team);
         return Rx.Observable.fromPromise(defaultTeamRepo.findOne({_id: team._id}));
@@ -51,7 +51,7 @@ describe('team repo', () => {
   });
   
   it('id mapping', function (done) {
-    let expected: any;
-    teamRepo.findByNameAndUpdate(utils.pmTeams[0].name).then((res: any) => done());
+    teamRepo.findOneByNameAndUpdate(utils.pmTeams[0])
+      .then((res: any) => { console.log(res); done()});
   });
 });

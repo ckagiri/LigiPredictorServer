@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import AbstractRepo from './repo.abstract';
 import modelFactory from './factory.model';
 const Promise = require('bluebird'); 
@@ -7,12 +8,11 @@ export default class TeamRepo extends AbstractRepo {
     super(modelFactory.teamModel, converter);
   }  
 
-  findByNameAndUpdate(obj: any){
-    const {id, name} = obj;   
-    let newObj: {api_detail: any};
-    if(id){
-      newObj.api_detail = {[this.provider]: {id}};
-    }
+  findOneByNameAndUpdate(obj: any, cb?: any){
+    const {name} = obj;   
+    let convertedObj = this.converter.from(obj);
+    let {api_detail} = convertedObj;
+    delete convertedObj.api_detail;
     let q = {
       $or: [ 
         {'name': name},
@@ -20,10 +20,26 @@ export default class TeamRepo extends AbstractRepo {
         {'aliases': name}
       ]
     };
-    return this.model.update(q, newObj);
+    return new Promise((resolve: any, reject: any) => {      
+      this.model.findOneAndUpdate(q, convertedObj, {new: true}, 
+        function(err:any, updatedObj:any){
+          if(err){
+            return reject(err);
+          }
+          _.merge(updatedObj, {api_detail});
+          updatedObj.markModified('api_detail');
+          updatedObj.save(function(err: any, savedObj: any) {
+            if (err) {
+              return reject(err);
+            }
+            resolve(savedObj);
+          });
+        }
+      );
+    });
   }
 
-  findByNameAndUpdateMany(objs: any[]){
+  findByNameAndUpdate(objs: any[]){
     return Promise.all(objs.map(function (obj) {
       return this.findByNameAndUpdate(obj);
     }));
