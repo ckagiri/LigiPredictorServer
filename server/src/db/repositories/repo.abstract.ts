@@ -1,9 +1,8 @@
 abstract class AbstractRepo {
-  provider = "LIGI";
+  provider: string;
+
   constructor(public model: any, public converter: any){
-    if(converter && converter.provider){
-      this.provider = converter.provider;
-    }
+    this.provider = converter.provider;
   }
 
   insert(obj: any){
