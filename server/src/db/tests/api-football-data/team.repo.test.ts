@@ -30,7 +30,7 @@ describe('team repo', () => {
     done();
   });
 
-  it('insert', function (done) {
+  xit('insert', function (done) {
     let manu = {
       name: "Manchester United",
       shortName: "Man United",
@@ -48,8 +48,29 @@ describe('team repo', () => {
       }, utils.errorHandler);
   });
   
-  it('id mapping', function (done) {
+  xit('find one by name', function (done) {
     teamRepo.findOneByNameAndUpdate(utils.pmTeams[0])
       .then((res: any) => done());
+  });
+
+  it('id mapping', function (done) {
+    let manu = {
+      name: "Manchester United",
+      shortName: "Man United",
+      code: "MUN",
+      slug: "man_united",
+      aliases: ["Manchester United FC", "ManU", "ManUtd"]
+    };
+    let expected: any;
+    Rx.Observable.fromPromise(ligiTeamRepo.insert(manu))
+      .flatMap(function (team: any) {
+        expected = team;
+        //console.log(team);
+        return ligiTeamRepo.idMapping(team.api_detail[ligiTeamRepo.provider].id)
+      })
+      .subscribe(function (actual: any) {
+        console.log(actual);
+        expect(expected._id.toString()).to.be.equal(actual.toString());
+      }, utils.errorHandler, done);
   });
 });

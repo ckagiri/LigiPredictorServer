@@ -49,11 +49,19 @@ abstract class AbstractRepo {
   }
 
   idMapping(id: string) {
+    let objectId: string;
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {
+      objectId = id;
+    } else {
+      objectId = '4edd40c86762e0fb12000003'
+    }
+    let providerProp = `api_detail.${this.provider}.id`;
     return this.model.findOne()
-      .where(`api_detail.${this.provider}.id`).equals(id)
+      .or([{[providerProp]: id}, {_id: objectId}])
       .lean()
       .then(function (obj: any) {
-          return Promise.resolve(obj ._id);
+        console.log(obj);
+          return Promise.resolve(obj._id);
     });
   }
 }
