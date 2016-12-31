@@ -39,7 +39,7 @@ describe('seasonRepo repo', () => {
     done();
   });
 
-  it('insert', function (done) {
+  xit('insert', function (done) {
     Rx.Observable.fromPromise(ligiLeagueRepo.insert(epl))
       .flatMap(function (league: any) {
         epl16.leagueId = league._id;
