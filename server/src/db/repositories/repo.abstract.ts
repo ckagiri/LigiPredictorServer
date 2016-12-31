@@ -55,13 +55,12 @@ abstract class AbstractRepo {
     } else {
       objectId = '4edd40c86762e0fb12000003'
     }
-    let providerProp = `api_detail.${this.provider}.id`;
+    let apiDetailId = `api_detail.${this.provider}.id`;
     return this.model.findOne()
-      .or([{[providerProp]: id}, {_id: objectId}])
+      .or([{_id: objectId}, {[apiDetailId]: id}])
       .lean()
       .then(function (obj: any) {
-        console.log(obj);
-          return Promise.resolve(obj._id);
+        return Promise.resolve(obj._id);
     });
   }
 }

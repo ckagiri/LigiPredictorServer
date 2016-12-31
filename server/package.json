@@ -11,6 +11,8 @@
     "start": "concurrently \"npm run tsc:w\" \"nodemon src/server.js\"",
     "db:drop": "SET NODE_ENV=development&&node src/db/tasks/drop.js",
     "db:seed": "SET NODE_ENV=development&&node src/db/tasks/seed.js",
+    "db:test:dropseed": "SET NODE_ENV=test&&node src/db/tasks/drop-seed.js",
+    "db:dev:dropseed": "SET NODE_ENV=development&&node src/db/tasks/drop-seed.js",
     "db:reset": "SET NODE_ENV=development&&node src/db/tasks/reset.js",
     "test": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
     "mocha": "node node_modules/mocha/bin/mocha  --reporter spec src/db/**/*.test.js"
@@ -37,6 +39,7 @@
     "lodash": "4.16.6 ",
     "mongoose": "4.6.7",
     "path": "0.12.7",
+    "request": "^2.79.0",
     "request-promise": "^4.1.1",
     "rxjs": "^5.0.2",
     "serve-favicon": "2.3.2"

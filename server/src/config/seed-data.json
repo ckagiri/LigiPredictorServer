@@ -31,42 +31,42 @@
       "aliases": []
     },
     "bournemouth":{
-      "name": "A.F.C. Bournemouth",
+      "name": "AFC Bournemouth",
       "shortName": "Bournemouth",
       "code": "BOU",
       "slug": "bournemouth",
       "aliases": []
     },
     "burnley":{
-      "name": "Burnley",
+      "name": "Burnley FC",
       "shortName": "Burnley",
       "code": "BUR",
       "slug": "burnley",
       "aliases": []
     },
     "chelsea":{
-      "name": "Chelsea",
+      "name": "Chelsea FC",
       "shortName": "Chelsea",
       "code": "CHE",
       "slug": "chelsea",
       "aliases": []
     },
     "crystal_palace":{
-      "name": "Crystal Palace",
+      "name": "Crystal Palace FC",
       "shortName": "Crystal Palace",
       "code": "CRY",
       "slug": "crystal_palace",
       "aliases": []
     },
     "everton":{
-      "name": "Everton",
+      "name": "Everton FC",
       "shortName": "Everton",
       "code": "EVE",
       "slug": "everton",
       "aliases": []
     },
     "hull_city":{
-      "name": "Hull City",
+      "name": "Hull City FC",
       "shortName": "Hull",
       "code": "HUL",
       "slug": "hull_city",
@@ -80,7 +80,7 @@
       "aliases": []
     },
     "liverpool":{
-      "name": "FC Liverpool",
+      "name": "Liverpool FC",
       "shortName": "Liverpool",
       "code": "LIV",
       "slug": "liverpool",
@@ -94,21 +94,21 @@
       "aliases": ["ManC"]
     },
     "man_united":{
-      "name": "Manchester United",
+      "name": "Manchester United FC",
       "shortName": "Man United",
       "code": "MUN",
       "slug": "man_united",
       "aliases": ["ManU", "ManUtd"]
     },
     "middlesbrough":{
-      "name": "Middlesbrough",
+      "name": "Middlesbrough FC",
       "shortName": "Middlesbrough",
       "code": "MID",
       "slug": "middlesbrough",
       "aliases": []
     },
     "southampton":{
-      "name": "Southampton",
+      "name": "Southampton FC",
       "shortName": "Southampton",
       "code": "SOU",
       "slug": "southampton",
@@ -129,7 +129,7 @@
       "aliases": []
     },
     "swansea_city":{
-      "name": "Swansea City AFC",
+      "name": "Swansea City FC",
       "shortName": "Swansea",
       "code": "SWA",
       "slug": "swansea_city",
@@ -157,7 +157,7 @@
       "aliases": []
     },
     "west_ham":{
-      "name": "West Ham United",
+      "name": "West Ham United FC",
       "shortName": "West Ham",
       "code": "WHU",
       "slug": "west_ham",
@@ -172,14 +172,12 @@
       "slug": "arsenal-liverpool",    
       "status": "PLAYED",
       "homeTeam": {
-        "name": "->teams.arsenal.shortName",
-        "slug": "->teams.arsenal.slug",
-        "code": "->teams.arsenal.code"
+        "id": "->teams.arsenal",
+        "name": "->teams.arsenal.shortName"
       },
       "awayTeam": {
-        "name": "->teams.liverpool.shortName",
-        "slug": "->teams.liverpool.slug",
-        "code": "->teams.liverpool.code"
+        "id": "->teams.liverpool",
+        "name": "->teams.liverpool.shortName"
       },
       "result":{
         "goalsHomeTeam": 3,

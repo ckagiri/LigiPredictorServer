@@ -1,6 +1,6 @@
 import * as async from 'async';
 import * as mongoose from 'mongoose';
-import {connect, drop, seed} from './common';
+import {connect, seed} from './common';
 
 function seedCollections() {
   console.log('Seeding collections.');

@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose';
-import {ITeamDetail} from '../team/team.model';
 const Schema = mongoose.Schema;
 
 export interface IFixture {
@@ -7,23 +6,17 @@ export interface IFixture {
   slug: string;
   round?: string;
   status: string;
-  homeTeam: ITeamDetail;
-  awayTeam: ITeamDetail
+  homeTeam: {
+    name: string, 
+    id: string
+  };
+  awayTeam: {
+    name: string,
+    id: string
+  };
 };
 
 interface IFixtureModel extends IFixture, mongoose.Document { }
-
-const teamDetailSchema = new Schema({
-  name: {
-    type: String
-  },
-  slug: {
-    type: String
-  },
-  code: {
-    type: String
-  }
-}, {_id : false });
 
 const fixtureSchema = new Schema({
   season: {
@@ -39,10 +32,28 @@ const fixtureSchema = new Schema({
     type: String
   },
   homeTeam: {
-    type: teamDetailSchema
+    name: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Team",
+      index: true,
+      required: true
+    }
   },
   awayTeam: {
-    type: teamDetailSchema
+    name: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Team",
+      index: true,
+      required: true
+    }
   },
   status: {
     type: String

@@ -3,36 +3,30 @@ const Schema = mongoose.Schema;
 
 export interface ITeam {
   name: string;
-  code?: string;
-  slug?: string;
+  slug: string;
   shortName: string;
+  code?: string;
   crestUrl?: string;
   aliases?: [string];
   api_detail?: any
 };
-
-export interface ITeamDetail {
-  name: string;
-  slug?: string;
-  code?: string;
-}
 
 export interface ITeamModel extends ITeam, mongoose.Document { }
 
 const teamSchema = new Schema({
   name: {
     type: String, 
-    required: true, 
-    trim: true
+    required: true
   },
   slug: {
     type: String, 
+    required: true, 
     trim: true
   },
-  code: {
+  shortName: {
     type: String
   },
-  shortName: {
+  code: {
     type: String
   },
   aliases: {

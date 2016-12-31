@@ -20,14 +20,18 @@ export default class TeamRepo extends AbstractRepo {
         {'aliases': name}
       ]
     };
-    return new Promise((resolve: any, reject: any) => {      
+    return new Promise((resolve: any, reject: any) => {    
       this.model.findOneAndUpdate(q, convertedObj, {new: true}, 
         function(err:any, updatedObj:any){
           if(err){
             return reject(err);
           }
-          _.merge(updatedObj, {api_detail});
-          updatedObj.markModified('api_detail');
+          if(_.has(updatedObj, 'api_detail')){
+            _.merge(updatedObj, {api_detail});
+            updatedObj.markModified('api_detail');
+          } else {
+            _.extend(updatedObj, {api_detail});
+          }
           updatedObj.save(function(err: any, savedObj: any) {
             if (err) {
               return reject(err);

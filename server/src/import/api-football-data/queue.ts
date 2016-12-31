@@ -40,7 +40,7 @@ export class Queue {
     return () => {
       if (this.tokensLeftInInterval > 0) {
         this.tokensLeftInInterval--;
-        job.start(self);
+        job.start(this);
         this.nextJob();
       } else {
         this.pending.push(this.jobWrapper(job));

@@ -1,5 +1,5 @@
 class DefaultSeasonConverter {
-  constructor(public provider = 'LIGI'){ }
+  provider = 'LIGI';
 
   from(obj: any) {
     return {

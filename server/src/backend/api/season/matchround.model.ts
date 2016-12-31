@@ -11,8 +11,7 @@ interface IMatchRoundModel extends IMatchRound, mongoose.Document { }
 export const matchRoundSchema = new Schema({
   name: {
     type: String, 
-    required: true,
-    trim: true
+    required: true
   },
   slug: {
     type: String, 

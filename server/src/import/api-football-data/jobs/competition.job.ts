@@ -16,30 +16,29 @@ export default class CompetitionJob {
 
     Rx.Observable.fromPromise(client.getCompetitionById(this.comp.id).getTeams())
         .map(res => {
-            return res.data.teams;
+          return res.data.teams;
         })
         .flatMap(teams => {
-            return this.teamRepo.findByNameAndUpdate(teams);
+          return  Rx.Observable.fromPromise(this.teamRepo.findByNameAndUpdate(teams));
         })
         .flatMap((teams: any[]) => {
-            this.updatedTeamIds = teams.map(function (team) {
-                return team._id;
-            });
-            return this.seasonRepo.findOneByYearAndUpdate(this.comp);
+            return teams;
+            //return this.seasonRepo.findOneByYearAndUpdate(this.comp);
         })
-        .flatMap(function (comp: any) {
-            this.updatedComp = comp;
-            return this.seasonRepo.addTeams(comp._id, this.updatedTeamIds);
-        })
-        .flatMap(function () {
-            return this.teamRepo.addCompetitions(this.updatedTeamIds, [this.updatedComp._id]);
-        })
+        // .flatMap(function (comp: any) {
+        //     this.updatedComp = comp;
+        //     return this.seasonRepo.addTeams(comp._id, this.updatedTeamIds);
+        // })
+        // .flatMap(function () {
+        //     return this.teamRepo.addCompetitions(this.updatedTeamIds, [this.updatedComp._id]);
+        // })
         .subscribe(function () {
             // let compStandingJob = new CompetitionStandingJob(self.savedComp);
             // self.queue.addJob(compStandingJob);
 
             // let compFixturesJob = new CompetitionFixturesJob(self.savedComp);
             // self.queue.addJob(compFixturesJob);
+            console.log('subscribed');
 
         }, function (err) {
             console.error(err);

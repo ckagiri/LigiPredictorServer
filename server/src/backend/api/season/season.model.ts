@@ -20,8 +20,7 @@ const seasonSchema = new Schema({
   },
   name: {
     type: String, 
-    required: true, 
-    trim: true
+    required: true
   },
   slug: {
     type: String, 

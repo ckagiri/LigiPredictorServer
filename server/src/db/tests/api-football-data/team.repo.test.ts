@@ -14,6 +14,13 @@ let expect = chai.expect;
 let utils = require('./test_utils');
 const Promise = require('bluebird'); 
 (<any>mongoose).Promise = Promise;
+let manu = {
+  name: "Manchester United FC",
+  shortName: "Man United",
+  code: "MUN",
+  slug: "man_united",
+  aliases: ["Manchester United", "ManU", "ManUtd"]
+};
 
 describe('team repo', () => {
   before(done => {
@@ -21,7 +28,7 @@ describe('team repo', () => {
   });
 
   afterEach(done => {
-    //db.drop();
+    db.drop();
     done();
   });
 
@@ -30,14 +37,7 @@ describe('team repo', () => {
     done();
   });
 
-  xit('insert', function (done) {
-    let manu = {
-      name: "Manchester United",
-      shortName: "Man United",
-      code: "MUN",
-      slug: "man_united",
-      aliases: ["Manchester United FC", "ManU", "ManUtd"]
-    };
+  it('insert', function (done) {
     Rx.Observable.fromPromise(ligiTeamRepo.insert(manu))
       .flatMap(function (team: any) {
         return Rx.Observable.fromPromise(ligiTeamRepo.findOne({_id: team._id}));
@@ -48,28 +48,25 @@ describe('team repo', () => {
       }, utils.errorHandler);
   });
   
-  xit('find one by name', function (done) {
-    teamRepo.findOneByNameAndUpdate(utils.pmTeams[0])
-      .then((res: any) => done());
+  it('find one by name', function (done) {
+    Rx.Observable.fromPromise(ligiTeamRepo.insert(manu))
+      .flatMap(function (team: any) {
+        return Rx.Observable.fromPromise(teamRepo.findOneByNameAndUpdate(utils.pmTeams[0]));
+      })
+      .subscribe(function (res: any) {
+        expect(res.name).to.be.equal(manu.name);
+        done();
+      }, utils.errorHandler);
   });
 
   it('id mapping', function (done) {
-    let manu = {
-      name: "Manchester United",
-      shortName: "Man United",
-      code: "MUN",
-      slug: "man_united",
-      aliases: ["Manchester United FC", "ManU", "ManUtd"]
-    };
     let expected: any;
     Rx.Observable.fromPromise(ligiTeamRepo.insert(manu))
       .flatMap(function (team: any) {
         expected = team;
-        //console.log(team);
         return ligiTeamRepo.idMapping(team.api_detail[ligiTeamRepo.provider].id)
       })
       .subscribe(function (actual: any) {
-        console.log(actual);
         expect(expected._id.toString()).to.be.equal(actual.toString());
       }, utils.errorHandler, done);
   });

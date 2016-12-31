@@ -8,7 +8,10 @@ export class MainJob {
     console.log("Main job")
     return client.getCompetitions(2016).then(({data: competitions}) => {
       for (let competition of competitions) {
-        let compJob = new CompetitionJob(competition);        
+        let compJob = new CompetitionJob(competition);      
+         if (competition.id !== 426) {
+          continue;
+        }  
         queue.addJob(compJob);
       }
     }).catch((err: any) => {
