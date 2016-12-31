@@ -45,8 +45,7 @@ export class TeamRepo extends AbstractRepo {
               });
             });
         }));      
-      }
-    );
+    });
   }
 
   findByNameAndUpdate(objs: any[]){
