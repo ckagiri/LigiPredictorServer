@@ -19,7 +19,7 @@ export default class CompetitionJob {
           return res.data.teams;
         })
         .flatMap(teams => {
-          return  Rx.Observable.fromPromise(this.teamRepo.findByNameAndUpdate(teams));
+          return  this.teamRepo.findByNameAndUpdate(teams);
         })
         .flatMap((teams: any[]) => {
             return teams;

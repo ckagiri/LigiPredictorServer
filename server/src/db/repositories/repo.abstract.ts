@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import * as Rx from 'rxjs';
 
 let partial = {
     _id: null as string,
@@ -14,18 +15,22 @@ export abstract class AbstractRepo {
   }
 
   insert(obj: any){
-    let convertedObj = this.converter.from(obj);
+    let source = this.converter.from(obj);
 
-    return this.model.create(convertedObj);
+    return source.flatMap((obj: any) => {
+      return Rx.Observable.fromPromise(this.model.create(obj));
+    });
   }
 
   insertMany(objs: any[]) {
-    let convertedObjs: any[] = [];
+    let sources: any[] = [];
     for (let obj of objs) {
-      convertedObjs.push(this.converter.from(obj));
+      sources.push(this.converter.from(obj));
     }
-    
-    return this.model.insertMany(convertedObjs);
+    return Rx.Observable.zip(sources)
+      .flatMap(convertedObjs => {
+        return Rx.Observable.fromPromise(this.model.insertMany(convertedObjs));
+      });
   }
 
   update(conditions: any, doc: any, options: any = {overwrite: false}){
