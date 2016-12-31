@@ -1,7 +1,7 @@
-import AbstractRepo from './repo.abstract';
-import modelFactory from './factory.model';
+import {AbstractRepo} from './repo.abstract';
+import {modelFactory} from './factory.model';
 
-export default class SeasonRepo extends AbstractRepo {
+export class SeasonRepo extends AbstractRepo {
   constructor(converter: any) {
     super(modelFactory.seasonModel, converter);
   }  

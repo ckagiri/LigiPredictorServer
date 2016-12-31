@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
-import AbstractRepo from './repo.abstract';
-import modelFactory from './factory.model';
+import {AbstractRepo} from './repo.abstract';
+import {modelFactory} from './factory.model';
 const Promise = require('bluebird'); 
 
-export default class TeamRepo extends AbstractRepo {
+export class TeamRepo extends AbstractRepo {
   constructor(converter: any) {
     super(modelFactory.teamModel, converter);
   }  

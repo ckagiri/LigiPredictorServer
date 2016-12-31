@@ -1,9 +1,12 @@
 import * as mongoose from 'mongoose';
-import TeamRepo from './repositories/repo.team';
-import SeasonRepo from './repositories/repo.season';
-import teamConverter from './converters/api-football-data/converter.team';
-import seasonConverter from './converters/api-football-data/converter.season';
-import ligiTeamConverter from './converters/default-converter.team';
+import {TeamRepo} from './repositories/repo.team';
+import {LeagueRepo} from './repositories/repo.league';
+import {SeasonRepo} from './repositories/repo.season';
+import {DefaultLeagueConverter} from './converters/default-converter.league';
+import {DefaultSeasonConverter} from './converters/default-converter.season';
+import {DefaultTeamConverter} from './converters/default-converter.team';
+import {TeamConverter} from './converters/api-football-data/converter.team';
+import {SeasonConverter} from './converters/api-football-data/converter.season';
 
 let connection: mongoose.Connection = null
 let dropped = false;
@@ -29,6 +32,9 @@ export const close = () => {
   mongoose.connection.close();
 }
 
-export const seasonRepo = new SeasonRepo(seasonConverter);
-export const teamRepo = new TeamRepo(teamConverter);
-export const ligiTeamRepo = new TeamRepo(ligiTeamConverter)
+export const seasonRepo = new SeasonRepo(new SeasonConverter());
+export const teamRepo = new TeamRepo(new TeamConverter());
+
+export const ligiLeagueRepo = new LeagueRepo(new DefaultLeagueConverter());
+export const ligiSeasonRepo = new SeasonRepo(new DefaultSeasonConverter(ligiLeagueRepo))
+export const ligiTeamRepo = new TeamRepo(new DefaultTeamConverter())

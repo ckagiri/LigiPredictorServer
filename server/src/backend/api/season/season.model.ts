@@ -15,8 +15,20 @@ export interface ISeasonModel extends ISeason, mongoose.Document { }
 
 const seasonSchema = new Schema({
   league: {
-    type: Schema.Types.ObjectId,
-    ref: 'League'
+    name: {
+      type: String,
+      required: true
+    },
+    slug: {
+      type: String,
+      required: true
+    },
+    id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "League",
+      index: true,
+      required: true
+    }
   },
   name: {
     type: String, 
@@ -26,6 +38,10 @@ const seasonSchema = new Schema({
     type: String, 
     required: true, 
     trim: true
+  },
+  year: {
+    type: String,
+    required: true
   },
   aliases: {
     type: [String]

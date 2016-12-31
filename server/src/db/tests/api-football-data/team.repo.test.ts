@@ -6,9 +6,6 @@ import * as mocha from 'mocha';
 import * as chai from 'chai';
 import {config} from '../../../config/environment';
 import * as db from '../../index';
-import RepoFactory from '../../repositories/factory.repo';
-import modelFactory from '../../repositories/factory.model';
-import {api_data} from '../../providers';
 import {seasonRepo, teamRepo, ligiTeamRepo} from '../../index';
 let expect = chai.expect;
 let utils = require('./test_utils');
@@ -43,8 +40,8 @@ describe('team repo', () => {
         return Rx.Observable.fromPromise(ligiTeamRepo.findOne({_id: team._id}));
       })
       .subscribe(function (res: any) {
-          expect(res.name).to.be.equal(manu.name);
-          done();
+        expect(res.name).to.be.equal(manu.name);
+        done();
       }, utils.errorHandler);
   });
   

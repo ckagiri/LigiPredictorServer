@@ -1,10 +1,11 @@
-import * as mongoose from 'mongoose';
-import {Season, ISeasonModel} from '../../backend/api/season/season.model';
-import {Team, ITeamModel} from '../../backend/api/team/team.model';
+import {Season} from '../../backend/api/season/season.model';
+import {Team} from '../../backend/api/team/team.model';
+import {League} from '../../backend/api/league/league.model';
 
 class ModelFactory {
   teamModel = Team;
   seasonModel = Season;
+  leagueModel = League;
 }
 
-export default new ModelFactory();
+export const modelFactory = new ModelFactory();

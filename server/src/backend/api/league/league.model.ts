@@ -8,7 +8,7 @@ export interface ILeague {
   aliases: [string]
 };
 
-interface ILeagueModel extends ILeague, mongoose.Document { }
+export interface ILeagueModel extends ILeague, mongoose.Document { }
 
 const leagueSchema = new Schema({
   name: {

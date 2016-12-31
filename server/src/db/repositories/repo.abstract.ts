@@ -6,7 +6,7 @@ let partial = {
     slug: null as string,
 };
 
-abstract class AbstractRepo {
+export abstract class AbstractRepo {
   provider: string;
 
   constructor(public model: any, public converter: any){
@@ -82,5 +82,3 @@ abstract class AbstractRepo {
     });
   }
 }
-
-export default AbstractRepo;

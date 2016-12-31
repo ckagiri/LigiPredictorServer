@@ -1,20 +1,18 @@
+import * as Rx from 'rxjs';
 import {config} from '../../../config/environment';
-import DefaultSeasonConverter from '../default-converter.season';
 
 let provider = config.api_providers.api_football_data.name;
 
-class SeasonConverter {
+export class SeasonConverter {
   provider = provider;
-
+  
   from(obj: any): any {
-    return {
+    return Rx.Observable.of({
       api_detail: {
         [this.provider]: {
           id: obj.id
         }
       }
-    };
+    });
   }
 }
-
-export default new SeasonConverter();

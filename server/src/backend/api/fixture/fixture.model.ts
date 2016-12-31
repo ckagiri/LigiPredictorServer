@@ -36,6 +36,10 @@ const fixtureSchema = new Schema({
       type: String,
       required: true
     },
+    slug: {
+      type: String,
+      required: true
+    },
     id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Team",
@@ -45,6 +49,10 @@ const fixtureSchema = new Schema({
   },
   awayTeam: {
     name: {
+      type: String,
+      required: true
+    },
+    slug: {
       type: String,
       required: true
     },
