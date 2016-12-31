@@ -67,7 +67,8 @@ describe('team repo', () => {
         return ligiTeamRepo.idMapping(team.api_detail[ligiTeamRepo.provider].id)
       })
       .subscribe(function (actual: any) {
-        expect(expected._id.toString()).to.be.equal(actual.toString());
+        console.log(actual);
+        expect(expected._id.toString()).to.be.equal(actual._id.toString());
       }, utils.errorHandler, done);
   });
 });

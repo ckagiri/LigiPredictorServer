@@ -1,3 +1,11 @@
+import * as _ from 'lodash';
+
+let partial = {
+    _id: null as string,
+    name: null as string,
+    slug: null as string,
+};
+
 abstract class AbstractRepo {
   provider: string;
 
@@ -60,7 +68,17 @@ abstract class AbstractRepo {
       .or([{_id: objectId}, {[apiDetailId]: id}])
       .lean()
       .then(function (obj: any) {
-        return Promise.resolve(obj._id);
+        partial._id = obj._id;
+        if(_.has(obj, 'name')){
+          partial.name = obj.name;
+        }
+        if(_.has(obj, 'shortName')){
+          partial.name = obj.shortName;
+        }
+        if(_.has(obj, 'slug')){
+          partial.slug = obj.slug
+        }
+        return Promise.resolve(partial);
     });
   }
 }
