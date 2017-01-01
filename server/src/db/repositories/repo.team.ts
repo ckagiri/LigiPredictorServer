@@ -48,11 +48,13 @@ export class TeamRepo extends AbstractRepo {
     });
   }
 
-  findByNameAndUpdate(objs: any[]){
-    return Rx.Observable.fromPromise(
-      Promise.all(objs.map((obj: any) => {
-        return this.findOneByNameAndUpdate(obj);
-      }))
-    );
+  findByNameAndUpdate(objs: any[]): any{
+    let obs: any[] = [];
+    
+    for (let obj of objs) {
+      obs.push(this.findOneByNameAndUpdate(obj));
+    }
+    
+    return Rx.Observable.forkJoin(obs);
   }
 }

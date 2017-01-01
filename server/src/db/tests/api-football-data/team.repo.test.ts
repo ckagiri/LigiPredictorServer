@@ -34,7 +34,7 @@ describe('team repo', () => {
     done();
   });
 
-  it('insert', function (done) {
+  xit('insert', function (done) {
     ligiTeamRepo.insert(manu)
       .flatMap(function (team: any) {
         return Rx.Observable.fromPromise(ligiTeamRepo.findOne({_id: team._id}));
@@ -45,7 +45,7 @@ describe('team repo', () => {
       }, utils.errorHandler);
   });
   
-  it('find one by name', function (done) {
+  xit('find one by name', function (done) {
     ligiTeamRepo.insert(manu)
       .flatMap(function (team: any) {
         return teamRepo.findOneByNameAndUpdate(utils.pmTeams[0]);
@@ -56,7 +56,20 @@ describe('team repo', () => {
       }, utils.errorHandler);
   });
 
-  it('id mapping', function (done) {
+  it('find by name', function (done) {
+    ligiTeamRepo.insert(manu)
+      .flatMap(function (team: any) {
+        let ateam = utils.pmTeams[0];
+        return teamRepo.findByNameAndUpdate([ateam]);
+      })
+      .subscribe(function (res: any) {
+        console.log('res', res)
+        expect(res[0].name).to.be.equal(manu.name);
+        done();
+      }, utils.errorHandler);
+  });
+
+  xit('id mapping', function (done) {
     let expected: any;
     ligiTeamRepo.insert(manu)
       .flatMap(function (team: any) {

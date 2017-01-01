@@ -26,7 +26,7 @@ let epl16 = {
 
 describe('seasonRepo repo', () => {
   before(done => {
-    db.init(config.mongo.uri, done, {drop: true});
+    db.init(config.mongo.uri, done, {drop: false});
   });
 
   afterEach(done => {
@@ -40,10 +40,10 @@ describe('seasonRepo repo', () => {
   });
 
   xit('insert', function (done) {
-    Rx.Observable.fromPromise(ligiLeagueRepo.insert(epl))
+    ligiLeagueRepo.insert(epl)
       .flatMap(function (league: any) {
         epl16.leagueId = league._id;
-        return Rx.Observable.fromPromise(ligiSeasonRepo.insert(epl16));
+        return ligiSeasonRepo.insert(epl16);
       })
       .subscribe(function (res: any) {
         console.log(res)

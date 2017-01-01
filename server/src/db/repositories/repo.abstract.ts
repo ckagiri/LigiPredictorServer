@@ -2,9 +2,9 @@ import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
 let partial = {
-    _id: null as string,
-    name: null as string,
-    slug: null as string,
+  _id: null as string,
+  name: null as string,
+  slug: null as string,
 };
 
 export abstract class AbstractRepo {
@@ -63,6 +63,7 @@ export abstract class AbstractRepo {
 
   idMapping(id: string) {
     let objectId: string;
+    id = id.toString();
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       objectId = id;
     } else {
