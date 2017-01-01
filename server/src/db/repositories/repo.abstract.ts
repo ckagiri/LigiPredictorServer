@@ -86,5 +86,54 @@ export abstract class AbstractRepo {
         }
         return Promise.resolve(partial);
     });
+  }  
+
+  findOneByNameAndUpdate(obj: any){
+    const {name} = obj;   
+    let q = {
+      $or: [ 
+        {'name': name},
+        {'shortName': name},
+        {'aliases': name}
+      ]
+    };
+    let source = this.converter.from(obj);
+
+    return source.flatMap((obj: any) => {
+      let {api_detail} = obj;
+      delete obj.api_detail;
+
+      return Rx.Observable.fromPromise(
+        new Promise((resolve: any, reject: any) => {    
+          this.model.findOneAndUpdate(q, obj, {new: true}, 
+            (err:any, updatedObj:any) => {
+              if(err){
+                return reject(err);
+              }
+              if(_.has(updatedObj, 'api_detail')){
+                _.merge(updatedObj, {api_detail});
+                updatedObj.markModified('api_detail');
+              } else {
+                _.extend(updatedObj, {api_detail});
+              }
+              updatedObj.save((err: any, savedObj: any) => {
+                if (err) {
+                  return reject(err);
+                }
+                resolve(savedObj);
+              });
+            });
+        }));      
+    });
+  }
+
+  findByNameAndUpdate(objs: any[]): any{
+    let obs: any[] = [];
+    
+    for (let obj of objs) {
+      obs.push(this.findOneByNameAndUpdate(obj));
+    }
+    
+    return Rx.Observable.forkJoin(obs);
   }
 }
