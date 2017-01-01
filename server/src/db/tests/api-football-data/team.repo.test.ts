@@ -21,7 +21,7 @@ let manu = {
 
 describe('team repo', () => {
   before(done => {
-    db.init(config.mongo.uri, done, {drop: true});
+    db.init(config.mongo.uri, done, {drop: false});
   });
 
   afterEach(done => {
@@ -56,7 +56,7 @@ describe('team repo', () => {
       }, utils.errorHandler);
   });
 
-  it('find by name', function (done) {
+  xit('find by name', function (done) {
     ligiTeamRepo.insert(manu)
       .flatMap(function (team: any) {
         let ateam = utils.pmTeams[0];

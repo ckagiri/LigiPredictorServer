@@ -136,4 +136,28 @@ export abstract class AbstractRepo {
     
     return Rx.Observable.forkJoin(obs);
   }
+
+  nameMapping(obj: any){
+    let q = {
+      $or: [ 
+        {'name': name},
+        {'shortName': name},
+        {'aliases': name}
+      ]
+    };
+    return this.model.findOne(q)
+      .then(function (obj: any) {
+        partial._id = obj._id;
+        if(_.has(obj, 'name')){
+          partial.name = obj.name;
+        }
+        if(_.has(obj, 'shortName')){
+          partial.name = obj.shortName;
+        }
+        if(_.has(obj, 'slug')){
+          partial.slug = obj.slug
+        }
+        return Promise.resolve(partial);
+    });
+  }
 }

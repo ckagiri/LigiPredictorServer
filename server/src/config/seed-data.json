@@ -11,7 +11,11 @@
   "seasons": {
     "_model": "Season",
     "epl_16": {
-      "league": "->leagues.epl",
+      "league": {
+        "id":"->leagues.epl",
+        "name":"->leagues.epl.name",
+        "slug":"->leagues.epl.slug"
+      },
       "name": "2016-2017",
       "slug": "16-17",
       "year": "2016",
@@ -173,11 +177,13 @@
       "status": "PLAYED",
       "homeTeam": {
         "id": "->teams.arsenal",
-        "name": "->teams.arsenal.shortName"
+        "name": "->teams.arsenal.shortName",
+        "slug": "->teams.arsenal.slug"
       },
       "awayTeam": {
         "id": "->teams.liverpool",
-        "name": "->teams.liverpool.shortName"
+        "name": "->teams.liverpool.shortName",
+        "slug": "->teams.liverpool.slug"
       },
       "result":{
         "goalsHomeTeam": 3,

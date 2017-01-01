@@ -32,7 +32,7 @@ export default class CompetitionJob {
         // .flatMap(function () {
         //     return this.teamRepo.addCompetitions(this.updatedTeamIds, [this.updatedComp._id]);
         // })
-        .subscribe(function () {
+        .subscribe(function (res) {
             // let compStandingJob = new CompetitionStandingJob(self.savedComp);
             // self.queue.addJob(compStandingJob);
 

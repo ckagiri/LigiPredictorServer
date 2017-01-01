@@ -2,9 +2,11 @@ import * as mongoose from 'mongoose';
 import {TeamRepo} from './repositories/repo.team';
 import {LeagueRepo} from './repositories/repo.league';
 import {SeasonRepo} from './repositories/repo.season';
+import {FixtureRepo} from './repositories/repo.fixture';
 import {DefaultLeagueConverter} from './converters/default-converter.league';
 import {DefaultSeasonConverter} from './converters/default-converter.season';
 import {DefaultTeamConverter} from './converters/default-converter.team';
+import {FixtureConverter} from './converters/api-football-data/converter.fixture';
 import {TeamConverter} from './converters/api-football-data/converter.team';
 import {SeasonConverter} from './converters/api-football-data/converter.season';
 
@@ -34,6 +36,7 @@ export const close = () => {
 
 export const seasonRepo = new SeasonRepo(new SeasonConverter());
 export const teamRepo = new TeamRepo(new TeamConverter());
+export const fixtureRepo = new FixtureRepo(new FixtureConverter());
 
 export const ligiLeagueRepo = new LeagueRepo(new DefaultLeagueConverter());
 export const ligiSeasonRepo = new SeasonRepo(new DefaultSeasonConverter(ligiLeagueRepo))

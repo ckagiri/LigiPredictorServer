@@ -8,10 +8,12 @@ export interface IFixture {
   status: string;
   homeTeam: {
     name: string, 
+    slug: string,
     id: string
   };
   awayTeam: {
     name: string,
+    slug: string,
     id: string
   };
 };
@@ -72,6 +74,20 @@ const fixtureSchema = new Schema({
     },
     goalsAwayTeam: {
       type: Number
+    }
+  },
+  odds: {
+    homeWin: {
+      type: Number,
+      default: 1
+    },
+    awayWin: {
+      type: Number,
+      default: 1
+    },
+    draw: {
+      type: Number,
+      default: 1
     }
   }
 });
