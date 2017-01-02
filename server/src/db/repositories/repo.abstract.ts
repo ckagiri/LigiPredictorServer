@@ -55,7 +55,7 @@ export abstract class AbstractRepo {
     return this.model.aggregate({$match: query}).group(group).sort(sort);
   }
 
-  idMapping(id: string) {
+  idMapping(id: any) {
     let objectId: string;
     objectId = id.toString();
     if (!objectId.match(/^[0-9a-fA-F]{24}$/)) {
@@ -84,6 +84,68 @@ export abstract class AbstractRepo {
         return Promise.resolve(partial);
     });
   }  
+  
+  nameMapping(name: string){
+    let q = {
+      $or: [ 
+        {'name': name},
+        {'shortName': name},
+        {'aliases': name}
+      ]
+    };
+    return this.model.findOne(q)
+      .then(function (obj: any) {
+        let partial = {
+          _id: null as string,
+          name: null as string,
+          slug: null as string,
+        };
+        partial._id = obj._id;
+        if(obj['name']){
+          partial.name = obj.name;
+        }
+        if(obj['shortName']){
+          partial.name = obj.shortName;
+        }
+        if(obj['slug']){
+          partial.slug = obj.slug
+        }
+        return Promise.resolve(partial);
+    });
+  }
+  
+
+  findOneByIdAndUpdate(id: any, obj: any){    
+    let source = this.converter.from(obj);
+
+    return source.flatMap((obj: any) => {   
+      let {api_detail} = obj;
+      delete obj.api_detail;
+  
+      return Rx.Observable.fromPromise(
+        new Promise((resolve: any, reject: any) => {    
+          this.model.findOneAndUpdate({_id: id}, obj, {new: true}, 
+            (err:any, updatedObj:any) => {
+              if(err){
+                return reject(err);
+              }
+              if(updatedObj['api_detail']){
+                _.merge(updatedObj, {api_detail});
+                updatedObj.markModified('api_detail');
+              } else {
+                _.extend(updatedObj, {api_detail});
+              }
+
+              updatedObj.save((err: any, savedObj: any) => {
+                if (err) {
+                  return reject(err);
+                }
+                resolve(savedObj);
+              });
+            });
+        }));      
+    });
+  }
 
   findOneByNameAndUpdate(obj: any){
     const {name} = obj;   
@@ -132,65 +194,6 @@ export abstract class AbstractRepo {
     
     return Rx.Observable.forkJoin(obs);
   }
-
-  nameMapping(name: string){
-    let q = {
-      $or: [ 
-        {'name': name},
-        {'shortName': name},
-        {'aliases': name}
-      ]
-    };
-    return this.model.findOne(q)
-      .then(function (obj: any) {
-        let partial = {
-          _id: null as string,
-          name: null as string,
-          slug: null as string,
-        };
-        partial._id = obj._id;
-        if(obj['name']){
-          partial.name = obj.name;
-        }
-        if(obj['shortName']){
-          partial.name = obj.shortName;
-        }
-        if(obj['slug']){
-          partial.slug = obj.slug
-        }
-        return Promise.resolve(partial);
-    });
-  }
-
-  findOneByIdAndUpdate(id: string, obj: any){    
-    let source = this.converter.from(obj);
-
-    return source.flatMap((obj: any) => {   
-      let {api_detail} = obj;
-      delete obj.api_detail;
-  
-      return Rx.Observable.fromPromise(
-        new Promise((resolve: any, reject: any) => {    
-          this.model.findOneAndUpdate({_id: id}, obj, {new: true}, 
-            (err:any, updatedObj:any) => {
-              if(err){
-                return reject(err);
-              }
-              if(updatedObj['api_detail']){
-                _.merge(updatedObj, {api_detail});
-                updatedObj.markModified('api_detail');
-              } else {
-                _.extend(updatedObj, {api_detail});
-              }
-
-              updatedObj.save((err: any, savedObj: any) => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(savedObj);
-              });
-            });
-        }));      
-    });
-  }
 }
+
+//FindByApiIdAndUpdate FindBySlugAndUpdate
