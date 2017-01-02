@@ -12,7 +12,9 @@ export class SeasonConverter {
         [this.provider]: {
           id: obj.id
         }
-      }
+      },
+      caption: obj.caption,
+      currentRound: obj.currentMatchday
     });
   }
 }

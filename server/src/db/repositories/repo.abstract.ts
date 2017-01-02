@@ -1,12 +1,6 @@
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
-let partial = {
-  _id: null as string,
-  name: null as string,
-  slug: null as string,
-};
-
 export abstract class AbstractRepo {
   provider: string;
 
@@ -63,25 +57,28 @@ export abstract class AbstractRepo {
 
   idMapping(id: string) {
     let objectId: string;
-    id = id.toString();
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      objectId = id;
-    } else {
-      objectId = '4edd40c86762e0fb12000003'
+    objectId = id.toString();
+    if (!objectId.match(/^[0-9a-fA-F]{24}$/)) {
+      objectId = '4edd40c86762e0fb12000003' //dummy
     }
     let apiDetailId = `api_detail.${this.provider}.id`;
     return this.model.findOne()
-      .or([{_id: objectId}, {[apiDetailId]: id}])
+      .or([{[apiDetailId]: id}, {_id: objectId}])
       .lean()
       .then(function (obj: any) {
+        let partial = {
+          _id: null as string,
+          name: null as string,
+          slug: null as string,
+        };
         partial._id = obj._id;
-        if(_.has(obj, 'name')){
+        if(obj['name']){
           partial.name = obj.name;
         }
-        if(_.has(obj, 'shortName')){
+        if(obj['shortName']){
           partial.name = obj.shortName;
         }
-        if(_.has(obj, 'slug')){
+        if(obj['slug']){
           partial.slug = obj.slug
         }
         return Promise.resolve(partial);
@@ -98,7 +95,6 @@ export abstract class AbstractRepo {
       ]
     };
     let source = this.converter.from(obj);
-
     return source.flatMap((obj: any) => {
       let {api_detail} = obj;
       delete obj.api_detail;
@@ -110,7 +106,7 @@ export abstract class AbstractRepo {
               if(err){
                 return reject(err);
               }
-              if(_.has(updatedObj, 'api_detail')){
+              if(updatedObj['api_detail']){
                 _.merge(updatedObj, {api_detail});
                 updatedObj.markModified('api_detail');
               } else {
@@ -137,7 +133,7 @@ export abstract class AbstractRepo {
     return Rx.Observable.forkJoin(obs);
   }
 
-  nameMapping(obj: any){
+  nameMapping(name: string){
     let q = {
       $or: [ 
         {'name': name},
@@ -147,17 +143,54 @@ export abstract class AbstractRepo {
     };
     return this.model.findOne(q)
       .then(function (obj: any) {
+        let partial = {
+          _id: null as string,
+          name: null as string,
+          slug: null as string,
+        };
         partial._id = obj._id;
-        if(_.has(obj, 'name')){
+        if(obj['name']){
           partial.name = obj.name;
         }
-        if(_.has(obj, 'shortName')){
+        if(obj['shortName']){
           partial.name = obj.shortName;
         }
-        if(_.has(obj, 'slug')){
+        if(obj['slug']){
           partial.slug = obj.slug
         }
         return Promise.resolve(partial);
+    });
+  }
+
+  findOneByIdAndUpdate(id: string, obj: any){    
+    let source = this.converter.from(obj);
+
+    return source.flatMap((obj: any) => {   
+      let {api_detail} = obj;
+      delete obj.api_detail;
+  
+      return Rx.Observable.fromPromise(
+        new Promise((resolve: any, reject: any) => {    
+          this.model.findOneAndUpdate({_id: id}, obj, {new: true}, 
+            (err:any, updatedObj:any) => {
+              if(err){
+                return reject(err);
+              }
+              if(updatedObj['api_detail']){
+                _.merge(updatedObj, {api_detail});
+                updatedObj.markModified('api_detail');
+              } else {
+                _.extend(updatedObj, {api_detail});
+              }
+
+              updatedObj.save((err: any, savedObj: any) => {
+                if (err) {
+                  return reject(err);
+                }
+                resolve(savedObj);
+              });
+            });
+        }));      
     });
   }
 }

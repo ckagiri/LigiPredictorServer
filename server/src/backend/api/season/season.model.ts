@@ -7,8 +7,10 @@ export interface ISeason {
   slug: string;
   aliases: [string];
   league: string;
+  caption: string;
   rounds: [IMatchRound]
-  currentRound: string
+  currentRound?: number,
+  api_detail?: any
 };
 
 export interface ISeasonModel extends ISeason, mongoose.Document { }
@@ -43,6 +45,9 @@ const seasonSchema = new Schema({
     type: String,
     required: true
   },
+  caption: {
+    type: String
+  },
   aliases: {
     type: [String]
   },
@@ -50,7 +55,10 @@ const seasonSchema = new Schema({
     type: [matchRoundSchema]
   },
   currentRound: {
-    type: String
+    type: Number
+  },
+  api_detail: {
+    type: Schema.Types.Mixed
   }
 });
 

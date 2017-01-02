@@ -9,12 +9,11 @@ export class FixtureConverter {
   constructor(private seasonRepo: any, private teamRepo: any){ }
   
   from(obj: any): any {
-    let round = obj.matchday.toString();
     return Rx.Observable.zip(
 			Rx.Observable.fromPromise(this.seasonRepo.idMapping(obj.seasonId)),
 			Rx.Observable.fromPromise(this.teamRepo.nameMapping(obj.homeTeamName)),
 			Rx.Observable.fromPromise(this.teamRepo.nameMapping(obj.awayTeamName)),
-			function (season: any, homeTeam: any, awayTeam: any) {
+			(season: any, homeTeam: any, awayTeam: any) => {
 				return {
 					api_detail: {
             [this.provider]: {
@@ -22,7 +21,7 @@ export class FixtureConverter {
             }
           },
 					season: season._id,
-					round: round,
+					round: obj.matchday,
           status: obj.status,
 					homeTeam: {
             slug: homeTeam.slug,
@@ -34,6 +33,7 @@ export class FixtureConverter {
 						name: awayTeam.name,
 						id: awayTeam._id
 					},
+          slug: `${homeTeam.slug}-${awayTeam.slug}`,
 					result: {
 						goalsHomeTeam: obj.result.goalsHomeTeam,
 						goalsAwayTeam: obj.result.goalsAwayTeam

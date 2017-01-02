@@ -9,11 +9,4 @@ export class SeasonRepo extends AbstractRepo {
   findByYear(year: number){    
     return this.findAll({year});
   }
-
-  findOneByYearAndUpdate(obj: any){
-    let newObj = this.converter.partial(obj)
-    const {year} = obj;       
-    let q = {year};
-    return this.model.update(q, newObj);
-  }
 }

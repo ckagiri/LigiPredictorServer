@@ -36,7 +36,7 @@ export const close = () => {
 
 export const seasonRepo = new SeasonRepo(new SeasonConverter());
 export const teamRepo = new TeamRepo(new TeamConverter());
-export const fixtureRepo = new FixtureRepo(new FixtureConverter());
+export const fixtureRepo = new FixtureRepo(new FixtureConverter(seasonRepo, teamRepo));
 
 export const ligiLeagueRepo = new LeagueRepo(new DefaultLeagueConverter());
 export const ligiSeasonRepo = new SeasonRepo(new DefaultSeasonConverter(ligiLeagueRepo))

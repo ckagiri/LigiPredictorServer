@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 export interface IFixture {
   season: string;
   slug: string;
-  round?: string;
+  round?: number;
   status: string;
   homeTeam: {
     name: string, 
@@ -16,6 +16,7 @@ export interface IFixture {
     slug: string,
     id: string
   };
+  api_detail?: any;
 };
 
 interface IFixtureModel extends IFixture, mongoose.Document { }
@@ -31,7 +32,7 @@ const fixtureSchema = new Schema({
     trim: true
   },
   round: {
-    type: String
+    type: Number
   },
   homeTeam: {
     name: {
@@ -89,6 +90,9 @@ const fixtureSchema = new Schema({
       type: Number,
       default: 1
     }
+  },
+  api_detail: {
+    type: Schema.Types.Mixed
   }
 });
 

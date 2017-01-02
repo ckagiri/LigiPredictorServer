@@ -7,8 +7,7 @@ export class DefaultSeasonConverter {
 
   from(obj: any): any {
     return Rx.Observable.fromPromise(this.leagueRepo.idMapping(obj.leagueId))
-      .flatMap(function (league: any) {
-        console.log(league);
+      .flatMap((league: any) => {
         return Rx.Observable.of({
           api_detail: {
             [this.provider]: {
