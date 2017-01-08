@@ -56,8 +56,7 @@ export abstract class AbstractRepo {
   }
 
   idMapping(id: any) {
-    let objectId: string;
-    objectId = id.toString();
+    let objectId: string = id.toString();
     if (!objectId.match(/^[0-9a-fA-F]{24}$/)) {
       objectId = '4edd40c86762e0fb12000003' //dummy
     }
@@ -65,24 +64,7 @@ export abstract class AbstractRepo {
     return this.model.findOne()
       .or([{[apiDetailId]: id}, {_id: objectId}])
       .lean()
-      .then(function (obj: any) {
-        let partial = {
-          _id: null as string,
-          name: null as string,
-          slug: null as string,
-        };
-        partial._id = obj._id;
-        if(obj['name']){
-          partial.name = obj.name;
-        }
-        if(obj['shortName']){
-          partial.name = obj.shortName;
-        }
-        if(obj['slug']){
-          partial.slug = obj.slug
-        }
-        return Promise.resolve(partial);
-    });
+      .then(this.mapPartial);
   }  
   
   nameMapping(name: string){
@@ -94,58 +76,55 @@ export abstract class AbstractRepo {
       ]
     };
     return this.model.findOne(q)
-      .then(function (obj: any) {
-        let partial = {
-          _id: null as string,
-          name: null as string,
-          slug: null as string,
-        };
-        partial._id = obj._id;
-        if(obj['name']){
-          partial.name = obj.name;
-        }
-        if(obj['shortName']){
-          partial.name = obj.shortName;
-        }
-        if(obj['slug']){
-          partial.slug = obj.slug
-        }
-        return Promise.resolve(partial);
-    });
-  }
-  
+      .then(this.mapPartial);
+  }  
 
-  findOneByIdAndUpdate(id: any, obj: any){    
+  findByIdAndUpdate(id: any, obj: any){    
     let source = this.converter.from(obj);
 
     return source.flatMap((obj: any) => {   
       let {api_detail} = obj;
       delete obj.api_detail;
-  
-      return Rx.Observable.fromPromise(
-        new Promise((resolve: any, reject: any) => {    
-          this.model.findOneAndUpdate({_id: id}, obj, {new: true}, 
-            (err:any, updatedObj:any) => {
-              if(err){
-                return reject(err);
-              }
-              if(updatedObj['api_detail']){
-                _.merge(updatedObj, {api_detail});
-                updatedObj.markModified('api_detail');
-              } else {
-                _.extend(updatedObj, {api_detail});
-              }
-
-              updatedObj.save((err: any, savedObj: any) => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(savedObj);
-              });
-            });
-        }));      
+      let q = {_id: id}
+      return Rx.Observable.fromPromise(this.findOneAndUpdate(q, obj, api_detail))
     });
   }
+
+  findByApiIdAndUpdate(apiId: any, obj?: any){
+    if (obj == undefined){
+      obj = apiId;
+      apiId = obj.id || obj.identifier;
+    }  
+    let source = this.converter.from(obj);
+
+    return source.flatMap((obj: any) => { 
+      let {api_detail} = obj;
+      delete obj.api_detail;
+      let apiDetailId = `api_detail.${this.provider}.id`;
+      let q = {[apiDetailId]: apiId}
+      return Rx.Observable.fromPromise(this.findOneAndUpdate(q, obj))
+    });
+  }
+
+  findOneBySlugAndUpdate(obj: any){
+   let source = this.converter.from(obj);
+
+    return source.flatMap((obj: any) => {   
+      let {api_detail, slug} = obj;
+      delete obj.api_detail;
+      let q = {slug}
+      return Rx.Observable.fromPromise(this.findOneAndUpdate(q, obj, api_detail))
+    });
+  }
+
+  findBySlugAndUpdate(objs: any[]): any{
+    let obs: any[] = [];
+    
+    for (let obj of objs) {
+      obs.push(this.findOneBySlugAndUpdate(obj));
+    }    
+    return Rx.Observable.forkJoin(obs);
+  }  
 
   findOneByNameAndUpdate(obj: any){
     const {name} = obj;   
@@ -160,28 +139,7 @@ export abstract class AbstractRepo {
     return source.flatMap((obj: any) => {
       let {api_detail} = obj;
       delete obj.api_detail;
-
-      return Rx.Observable.fromPromise(
-        new Promise((resolve: any, reject: any) => {    
-          this.model.findOneAndUpdate(q, obj, {new: true}, 
-            (err:any, updatedObj:any) => {
-              if(err){
-                return reject(err);
-              }
-              if(updatedObj['api_detail']){
-                _.merge(updatedObj, {api_detail});
-                updatedObj.markModified('api_detail');
-              } else {
-                _.extend(updatedObj, {api_detail});
-              }
-              updatedObj.save((err: any, savedObj: any) => {
-                if (err) {
-                  return reject(err);
-                }
-                resolve(savedObj);
-              });
-            });
-        }));      
+      return Rx.Observable.fromPromise(this.findOneAndUpdate(q, obj, api_detail));      
     });
   }
 
@@ -191,9 +149,67 @@ export abstract class AbstractRepo {
     for (let obj of objs) {
       obs.push(this.findOneByNameAndUpdate(obj));
     }
-    
     return Rx.Observable.forkJoin(obs);
+  }  
+
+  apiDetailIdKey() {
+    return `api_detail.${this.provider}.id`;
+  }
+
+  getByApiId(apiId: any) {
+    let apiDetailId = `api_detail.${this.provider}.id`;
+    let query = {[apiDetailId]: apiId}
+    return Rx.Observable.fromPromise(this.findOne(query));
+  }
+
+  getById(id: any) {
+    return Rx.Observable.fromPromise(this.findOne({_id: id}));
+  }
+
+  private mapPartial (obj: any) {
+    let partial = {
+      _id: null as string,
+      name: null as string,
+      slug: null as string,
+    };
+    partial._id = obj._id;
+    if(obj['name']){
+      partial.name = obj.name;
+    }
+    if(obj['shortName']){
+      partial.name = obj.shortName;
+    }
+    if(obj['slug']){
+      partial.slug = obj.slug
+    }
+    return Promise.resolve(partial);
+  }  
+
+  private findOneAndUpdate(query: any, obj: any, apiDetail?: any){
+    return new Promise((resolve: any, reject: any) => {    
+      this.model.findOneAndUpdate(query, obj, {new: true}, 
+        (err:any, updatedObj:any) => {
+          if(err){
+            return reject(err);
+          }
+          if(apiDetail == undefined) {
+            resolve(updatedObj);
+          } 
+          else {
+            if(updatedObj['api_detail']){
+              _.merge(updatedObj, {api_detail: apiDetail});
+              updatedObj.markModified('api_detail');
+            } else {
+              _.extend(updatedObj, {apiDetail: apiDetail});
+            }
+            updatedObj.save((err: any, savedObj: any) => {
+              if (err) {
+                return reject(err);
+              }
+              resolve(savedObj);
+            });
+          } 
+        });
+    });      
   }
 }
-
-//FindByApiIdAndUpdate FindBySlugAndUpdate

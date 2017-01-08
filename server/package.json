@@ -15,6 +15,7 @@
     "db:dev:dropseed": "SET NODE_ENV=development&&node src/db/tasks/drop-seed.js",
     "db:reset": "SET NODE_ENV=development&&node src/db/tasks/reset.js",
     "test": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
+    "test:mocha": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.test.ts",
     "mocha": "node node_modules/mocha/bin/mocha  --reporter spec src/db/**/*.test.js"
   },
   "repository": {

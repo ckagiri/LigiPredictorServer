@@ -2,13 +2,15 @@ import * as Rx from 'rxjs';
 import {config} from '../../../config/environment';
 import {client} from './main.job';
 import {seasonRepo, teamRepo} from '../index';
+import {CompetitionFixturesJob} from './competition-fixtures.job';
 
 export default class CompetitionJob {
   private queue: any;
   private teamRepo = teamRepo;
   private seasonRepo = seasonRepo;
   private updatedTeamIds: any[];
-  constructor(private comp: any){  }
+
+  constructor(private comp: any){ }
 
   start(queue: any) {
     this.queue = queue;
@@ -22,24 +24,12 @@ export default class CompetitionJob {
           return  this.teamRepo.findByNameAndUpdate(teams);
         })
         .flatMap((teams: any[]) => {
-            return teams;
-            //return this.seasonRepo.findOneByYearAndUpdate(this.comp);
+          return this.seasonRepo.findByApiIdAndUpdate(this.comp);
         })
-        // .flatMap(function (comp: any) {
-        //     this.updatedComp = comp;
-        //     return this.seasonRepo.addTeams(comp._id, this.updatedTeamIds);
-        // })
-        // .flatMap(function () {
-        //     return this.teamRepo.addCompetitions(this.updatedTeamIds, [this.updatedComp._id]);
-        // })
-        .subscribe(function (res) {
-            // let compStandingJob = new CompetitionStandingJob(self.savedComp);
-            // self.queue.addJob(compStandingJob);
-
-            // let compFixturesJob = new CompetitionFixturesJob(self.savedComp);
-            // self.queue.addJob(compFixturesJob);
+        .subscribe(savedComp => {
+            let compFixturesJob = new CompetitionFixturesJob(savedComp);
+            this.queue.addJob(compFixturesJob);
             console.log('subscribed');
-
         }, function (err) {
             console.error(err);
         }, function () {

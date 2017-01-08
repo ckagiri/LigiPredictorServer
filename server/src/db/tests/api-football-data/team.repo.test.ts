@@ -18,10 +18,16 @@ let manu = {
   slug: "man_united",
   aliases: ["Manchester United", "ManU", "ManUtd"]
 };
+let manu2 = {
+  id: 66,
+  name: "Manchester United",
+  slug: "man_united",
+  crestUrl: "http:manu.jpeg"
+}
 
 describe('team repo', () => {
   before(done => {
-    db.init(config.mongo.uri, done, {drop: false});
+    db.init(config.mongo.uri, done, {drop: true});
   });
 
   afterEach(done => {
@@ -63,8 +69,41 @@ describe('team repo', () => {
         return teamRepo.findByNameAndUpdate([ateam]);
       })
       .subscribe(function (res: any) {
-        console.log('res', res)
         expect(res[0].name).to.be.equal(manu.name);
+        done();
+      }, utils.errorHandler);
+  });
+
+  it('find by slug and update', function (done) {
+    let id: any;
+    ligiTeamRepo.insert(manu)
+      .flatMap(function (team: any) {
+        let ateam = utils.pmTeams[0];
+        id = team._id;
+        return ligiTeamRepo.findOneBySlugAndUpdate(manu2);
+      })
+      .subscribe(function (res: any) {
+        expect(res.name).to.be.equal(manu2.name);
+        done();
+      }, utils.errorHandler);
+  });
+
+  it('find by apidetail and update', function (done) {
+    let id: number, crestUrl = 'http: manchester.jpeg';
+    ligiTeamRepo.insert(manu)
+      .flatMap(function (team: any) {
+        let ateam = utils.pmTeams[0];
+        id = team._id;
+        return ligiTeamRepo.findBySlugAndUpdate([manu2]);
+      })
+      .flatMap(function(teams: any[]){
+        return teamRepo.findOneByNameAndUpdate(manu2)
+      })
+      .flatMap(function(team: any){
+        return teamRepo.findByApiIdAndUpdate(manu2.id, {crestUrl})
+      })
+      .subscribe(function (res: any) {
+        expect(res.crestUrl).to.be.equal(crestUrl);
         done();
       }, utils.errorHandler);
   });
@@ -77,7 +116,6 @@ describe('team repo', () => {
         return ligiTeamRepo.idMapping(team.api_detail[ligiTeamRepo.provider].id)
       })
       .subscribe(function (actual: any) {
-        console.log(actual);
         expect(expected._id.toString()).to.be.equal(actual._id.toString());
       }, utils.errorHandler, done);
   });

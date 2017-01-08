@@ -9,6 +9,13 @@ class CompetitionApi {
 
 		return makeRequest(this.apiKey, apiResource);
 	}
+
+  getFixtures(options?: any) {
+		let queryParams = options ? options : undefined;
+		let apiResource = "/competitions/" + this.id + "/fixtures";
+
+		return makeRequest(this.apiKey, apiResource, queryParams);
+	}
 }
 
 export default CompetitionApi;

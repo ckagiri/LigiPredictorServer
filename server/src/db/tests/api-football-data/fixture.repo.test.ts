@@ -53,7 +53,7 @@ describe('Fixtures Repository test', () => {
     done();
   });
 
-  it('insert', function (done) {
+  xit('insert', function (done) {
     let league: any, season: any, team1: any, team2: any;
     Rx.Observable.zip(
       ligiLeagueRepo.insert(epl),
@@ -72,13 +72,13 @@ describe('Fixtures Repository test', () => {
       })
       .flatMap(function (arr: any[]){
         season = arr[0];
-        return seasonRepo.findOneByIdAndUpdate(season._id, {id: 426,
+        return seasonRepo.findByIdAndUpdate(season._id, {id: 426,
           caption: "Premier League 2016/17",
           currentMatchday: 4
         });
       })
       .flatMap(function(obj: any){
-        let fixture = utils.fixtures[0]
+        let fixture = utils.fixtures[0];
         fixture.seasonId = 426
         return fixtureRepo.insert(fixture);
       })

@@ -11,11 +11,16 @@
   "seasons": {
     "_model": "Season",
     "epl_16": {
+      "api_detail": {
+        "API_FOOTBALL_DATA": {
+          "id": 426
+        }
+      },
       "league": {
         "id":"->leagues.epl",
         "name":"->leagues.epl.name",
         "slug":"->leagues.epl.slug"
-      },
+      },      
       "name": "2016-2017",
       "slug": "16-17",
       "year": "2016",
@@ -172,7 +177,7 @@
     "_model": "Fixture",
     "ars_liv": {
       "season":"->seasons.epl_16",
-      "round": "round-1",
+      "round": 1,
       "slug": "arsenal-liverpool",    
       "status": "PLAYED",
       "homeTeam": {
