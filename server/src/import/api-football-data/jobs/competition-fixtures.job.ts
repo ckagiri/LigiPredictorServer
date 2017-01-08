@@ -1,4 +1,5 @@
 import * as Rx from 'rxjs';
+import * as _ from 'lodash';
 import {config} from '../../../config/environment';
 import {client} from './main.job';
 import {seasonRepo, teamRepo, fixtureRepo} from '../index';
@@ -14,9 +15,14 @@ export class CompetitionFixturesJob {
     console.log("Competition fixtures job" + JSON.stringify(this.comp));
 
     let apiDetailIdKey = teamRepo.apiDetailIdKey();
-    Rx.Observable.fromPromise(client.getCompetitionById(this.comp[apiDetailIdKey]).getFixtures())
+    let competitionApiId = _.get(this.comp, apiDetailIdKey);
+    Rx.Observable.fromPromise(client.getCompetitionById(competitionApiId).getFixtures())
       .map(function (res) {
-        return res.data.fixtures;
+        let fixtures = res.data.fixtures;
+        for (let fixture of fixtures) {
+          fixture.seasonId = competitionApiId
+        }
+        return fixtures;
       })
       .flatMap(function (fixtures) {
         return fixtureRepo.findBySlugAndUpdate(fixtures);
@@ -25,7 +31,7 @@ export class CompetitionFixturesJob {
         }, (err) => {
             console.error(err);
         }, () => {
-            console.log("Saved fixtures for : " + this.comp.name)
+            console.log("Saved fixtures for : " + this.comp.caption)
         })
   }
 }

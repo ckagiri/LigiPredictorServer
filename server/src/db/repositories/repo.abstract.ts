@@ -187,7 +187,7 @@ export abstract class AbstractRepo {
 
   private findOneAndUpdate(query: any, obj: any, apiDetail?: any){
     return new Promise((resolve: any, reject: any) => {    
-      this.model.findOneAndUpdate(query, obj, {new: true}, 
+      this.model.findOneAndUpdate(query, obj, {new: true, upsert: true}, 
         (err:any, updatedObj:any) => {
           if(err){
             return reject(err);
