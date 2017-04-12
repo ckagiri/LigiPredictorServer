@@ -1,0 +1,27 @@
+{
+  "name": "LigiPredictorServer",
+  "version": "1.0.0",
+  "description": "Ligi Predictor Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ckagiri/LigiPredictorServer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ckagiri/LigiPredictorServer/issues"
+  },
+  "homepage": "https://github.com/ckagiri/LigiPredictorServer#readme",
+  "devDependencies": {
+    "browser-sync": "^2.18.8",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chalk": "^1.1.3",
+    "dateformat": "^2.0.0"
+  }
+}
