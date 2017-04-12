@@ -4,11 +4,17 @@
   "description": "Ligi Predictor Server",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/app/server.js",
+    "test": "gulp test",
+    "postinstall": "bower install && gulp build"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ckagiri/LigiPredictorServer.git"
+  },
+  "engines": {
+    "node": "6.9.x",
+    "npm": "3.10.x"
   },
   "keywords": [],
   "author": "",
