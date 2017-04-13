@@ -1,10 +1,37 @@
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
-  // for the documentation about the tasks.json format
-  "version": "0.1.0",
-  "command": "tsc",
-  "isShellCommand": true,
-  "args": ["-p", "."],
-  "showOutput": "silent",
-  "problemMatcher": "$tsc"
+    "version": "0.1.0",
+    "command": "gulp",
+    "isShellCommand": true,
+    "args": [
+        "--no-color"
+    ],
+    "tasks": [
+        {
+            "taskName": "serve-dev-debug",
+            "args": [
+                "serve-dev",
+                "--debug"
+            ],
+            "suppressTaskName": true,
+            "isWatching": false,
+            "problemMatcher": [
+                "$lessCompile",
+                "$tsc",
+                "$jshint"
+            ]
+        },{
+            "taskName": "tsc",
+            "problemMatcher": "$tsc"
+        },{
+            "taskName": "tsc-client",
+            "problemMatcher": "$tsc"
+        },{
+            "taskName": "tsc-server",
+            "problemMatcher": "$tsc"
+        },{
+            "taskName": "test",
+            "args": [],
+            "isTestCommand": true
+        }
+    ]
 }

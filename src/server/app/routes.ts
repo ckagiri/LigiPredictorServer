@@ -19,12 +19,12 @@ module.exports = router;
 
 //EG TODO: find type for next argument
 function getPeople(req: express.Request, res: express.Response, next: any) {
-    res.status(200).send(data.getPeople());
+res.status(200).send(data.getPeople());
 }
 
 function getPerson(req: express.Request, res: express.Response, next: any) {
-    var id = +req.params.id;
-    var person = data.getPeople().filter(function(p) {
+                            var id = +req.params.id;
+    var person = data.getPeople().filter(function(p: any) {
         return p.id === id;
     })[0];
 

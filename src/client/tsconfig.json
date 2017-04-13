@@ -3,8 +3,15 @@
     "noImplicitAny": true,
     "removeComments": false,
     "preserveConstEnums": true,
-    "target": "ES5",
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "sourceMap": true,
-    "listFiles": false
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "lib":[
+      "es5", "dom", "es2015.promise"
+      ]
   }
 }
