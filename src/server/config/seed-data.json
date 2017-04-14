@@ -1,0 +1,199 @@
+{
+  "leagues": {
+    "_model": "League",
+    "epl": {
+      "name": "English Premier League",
+      "code": "PL",
+      "slug": "premier-league",
+      "aliases": ["EPL"]
+    }
+  },
+  "seasons": {
+    "_model": "Season",
+    "epl_16": {
+      "api_detail": {
+        "API_FOOTBALL_DATA": {
+          "id": 426
+        }
+      },
+      "league": {
+        "id":"->leagues.epl",
+        "name":"->leagues.epl.name",
+        "slug":"->leagues.epl.slug"
+      },      
+      "name": "2016-2017",
+      "slug": "16-17",
+      "year": "2016",
+      "rounds": [{
+        "name": "Round 1",
+        "slug": "round-1"
+      }]
+    }
+  },
+  "teams": {
+    "_model": "Team",
+    "arsenal": {
+      "name": "Arsenal FC",
+      "shortName": "Arsenal",
+      "code": "ARS",
+      "slug": "arsenal",
+      "aliases": []
+    },
+    "bournemouth":{
+      "name": "AFC Bournemouth",
+      "shortName": "Bournemouth",
+      "code": "BOU",
+      "slug": "bournemouth",
+      "aliases": []
+    },
+    "burnley":{
+      "name": "Burnley FC",
+      "shortName": "Burnley",
+      "code": "BUR",
+      "slug": "burnley",
+      "aliases": []
+    },
+    "chelsea":{
+      "name": "Chelsea FC",
+      "shortName": "Chelsea",
+      "code": "CHE",
+      "slug": "chelsea",
+      "aliases": []
+    },
+    "crystal_palace":{
+      "name": "Crystal Palace FC",
+      "shortName": "Crystal Palace",
+      "code": "CRY",
+      "slug": "crystal_palace",
+      "aliases": []
+    },
+    "everton":{
+      "name": "Everton FC",
+      "shortName": "Everton",
+      "code": "EVE",
+      "slug": "everton",
+      "aliases": []
+    },
+    "hull_city":{
+      "name": "Hull City FC",
+      "shortName": "Hull",
+      "code": "HUL",
+      "slug": "hull_city",
+      "aliases": []
+    },
+    "leicester_city":{
+      "name": "Leicester City FC",
+      "shortName": "Leicester",
+      "code": "LEI",
+      "slug": "leicester_city",
+      "aliases": []
+    },
+    "liverpool":{
+      "name": "Liverpool FC",
+      "shortName": "Liverpool",
+      "code": "LIV",
+      "slug": "liverpool",
+      "aliases": []
+    },
+    "man_city":{
+      "name": "Manchester City FC",
+      "shortName": "Man City",
+      "code": "MCI",
+      "slug": "man_city",
+      "aliases": ["ManC"]
+    },
+    "man_united":{
+      "name": "Manchester United FC",
+      "shortName": "Man United",
+      "code": "MUN",
+      "slug": "man_united",
+      "aliases": ["ManU", "ManUtd"]
+    },
+    "middlesbrough":{
+      "name": "Middlesbrough FC",
+      "shortName": "Middlesbrough",
+      "code": "MID",
+      "slug": "middlesbrough",
+      "aliases": []
+    },
+    "southampton":{
+      "name": "Southampton FC",
+      "shortName": "Southampton",
+      "code": "SOU",
+      "slug": "southampton",
+      "aliases": []
+    },
+    "stoke_city":{
+      "name": "Stoke City FC",
+      "shortName": "Stoke",
+      "code": "STK",
+      "slug": "stoke_city",
+      "aliases": []
+    },
+    "sunderland":{
+      "name": "Sunderland AFC",
+      "shortName": "Sunderland",
+      "code": "SUN",
+      "slug": "sunderland",
+      "aliases": []
+    },
+    "swansea_city":{
+      "name": "Swansea City FC",
+      "shortName": "Swansea",
+      "code": "SWA",
+      "slug": "swansea_city",
+      "aliases": []
+    },
+    "tottenham":{
+      "name": "Tottenham Hotspur FC",
+      "shortName": "Tottenham",
+      "code": "TOT",
+      "slug": "tottenham",
+      "aliases": []
+    },
+    "watford":{
+      "name": "Watford FC",
+      "shortName": "Watford",
+      "code": "WAT",
+      "slug": "watford",
+      "aliases": []
+    },
+    "west_bromwich":{
+      "name": "West Bromwich Albion FC",
+      "shortName": "West Brom",
+      "code": "WBA",
+      "slug": "west_bromwich",
+      "aliases": []
+    },
+    "west_ham":{
+      "name": "West Ham United FC",
+      "shortName": "West Ham",
+      "code": "WHU",
+      "slug": "west_ham",
+      "aliases": []
+    }
+  },
+  "fixtures": {
+    "_model": "Fixture",
+    "ars_liv": {
+      "season":"->seasons.epl_16",
+      "round": 1,
+      "slug": "arsenal-liverpool",    
+      "status": "PLAYED",
+      "homeTeam": {
+        "id": "->teams.arsenal",
+        "name": "->teams.arsenal.shortName",
+        "slug": "->teams.arsenal.slug"
+      },
+      "awayTeam": {
+        "id": "->teams.liverpool",
+        "name": "->teams.liverpool.shortName",
+        "slug": "->teams.liverpool.slug"
+      },
+      "result":{
+        "goalsHomeTeam": 3,
+        "goalsAwayTeam": 4
+      }
+    }
+  }
+}

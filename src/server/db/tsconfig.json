@@ -8,8 +8,6 @@
     "experimentalDecorators": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
-		"preserveConstEnums": true,
     "lib":[
       "es5", "dom", "es2015.promise"
     ]
