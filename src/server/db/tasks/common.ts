@@ -23,7 +23,7 @@ export const drop = (models: any[], callback: any) => {
 };
 
 export const seed = (models: any[], callback: any) => {
-  seeder.seed(seedData, { dropCollections: false })
+  seeder.seed(seedData, { dropDatabase: true, dropCollections: true })
     .then(function(dbData: any){
       callback();      
     }).catch(function(err: any){

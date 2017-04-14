@@ -16,6 +16,6 @@ module.exports = {
     uri:  process.env.MONGOLAB_URI ||
           process.env.MONGOHQ_URL ||
           process.env.OPENSHIFT_MONGODB_DB_URL+process.env.OPENSHIFT_APP_NAME ||
-          'mongodb://localhost/ligi'
+          'mongodb://ckagiri:redwire@ds159880.mlab.com:59880/ligi'
     }
 }

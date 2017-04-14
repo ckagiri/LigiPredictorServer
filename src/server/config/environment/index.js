@@ -13,7 +13,7 @@ function requiredProcessEnv(name) {
 var all = {
     env: requiredProcessEnv('NODE_ENV'),
     // Root path of server
-    root: path.normalize(__dirname + '/../../../../..'),
+    rootPath: path.normalize(__dirname + '/../../../'),
     // Server port
     port: process.env.PORT || 9000,
     // MongoDB connection options

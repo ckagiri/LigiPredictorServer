@@ -7,10 +7,12 @@
     "start": "node src/server/backend/app.js",
     "tsc:w": "tsc -w",
     "mongodb": "mongod --dbpath=C:/data/db --port 27017",
-    "start:prod": "SET NODE_ENV=production && gulp build && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/app.js\"",
-    "start:dev": "SET NODE_ENV=development && gulp inject && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/app.js\"",
+		"start:prod": "SET NODE_ENV=production&&gulp build && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/app.js\"",
+    "start:dev": "SET NODE_ENV=development&&gulp inject && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/app.js\"",
     "test": "gulp test",
-    "tsd:reinstall": "tsd reinstall -so"
+    "tsd:reinstall": "tsd reinstall -so",
+		"db:seed": "SET NODE_ENV=development&&node src/server/db/tasks/seed.js",
+		"db:seed:prod": "SET NODE_ENV=production&&node src/server/db/tasks/seed.js"
   },
   "repository": {
     "type": "git",

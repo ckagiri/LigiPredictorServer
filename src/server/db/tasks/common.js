@@ -20,7 +20,7 @@ exports.drop = function (models, callback) {
     });
 };
 exports.seed = function (models, callback) {
-    seeder.seed(seedData, { dropCollections: false })
+    seeder.seed(seedData, { dropDatabase: true, dropCollections: true })
         .then(function (dbData) {
         callback();
     }).catch(function (err) {
