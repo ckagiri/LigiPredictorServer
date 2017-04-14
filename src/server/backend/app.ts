@@ -8,7 +8,7 @@ import { send404 } from './utils/notfound';
 
 const app = express();
 const port: number = process.env.PORT || 8001;
-const environment: string = process.env.NODE_ENV;
+const environment: string = process.env.NODE_ENV.trim();
 
 app.use(favicon(__dirname + '/favicon.ico'))
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,6 +23,7 @@ console.log('NODE_ENV=' + environment);
 
 switch (environment) {
     case 'build':
+		case 'production':
         console.log('** BUILD **');
         app.use(express.static('./build/'));
         // Any invalid calls for templateUrls are under app/* and should return 404
