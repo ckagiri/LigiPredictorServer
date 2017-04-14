@@ -4,7 +4,7 @@
   "description": "Ligi Predictor Server",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server/backend/app.js",
+    "start": "node src/server/backend/server.js",
     "tsc:w": "tsc -w",
     "mongodb": "mongod --dbpath=C:/data/db --port 27017",
 		"start:prod": "SET NODE_ENV=production&&gulp build && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/server.js\"",
