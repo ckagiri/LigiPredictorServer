@@ -7,7 +7,7 @@ import * as bodyParser from 'body-parser';
 import { send404 } from './utils/notfound';  
 
 const app = express();
-const port: number = process.env.PORT || 8001;
+const port: number = process.env.PORT || 3030;
 const environment: string = process.env.NODE_ENV.trim();
 
 app.use(favicon(__dirname + '/favicon.ico'))
