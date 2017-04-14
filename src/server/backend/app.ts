@@ -1,26 +1,21 @@
-/*jshint node:true*/
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
-'use strict';
+import * as express from 'express';
+import * as favicon from 'serve-favicon';
+import * as logger from 'morgan';
+import * as bodyParser from 'body-parser';
+import { send404 } from './utils/notfound';  
 
-import express = require('express');
-import favicon = require('serve-favicon');
-import logger = require('morgan');
-import bodyParser = require('body-parser');
-import { send404 } from './utils/notfound';  // use latest TS 1.5, inspired from ES6
-//import four0four = require('./utils/notfound');
-
-//var send404 = four0four.send404;
-
-var app: express.Express = express();
-var port: number = process.env.PORT || 8001;
-var environment: string = process.env.NODE_ENV || 'DEV';
+const app = express();
+const port: number = process.env.PORT || 8001;
+const environment: string = process.env.NODE_ENV;
 
 app.use(favicon(__dirname + '/favicon.ico'))
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-app.use('/api', require('./routes'));
+app.use('/api', require('./setour'));
 
 console.log('About to crank up node');
 console.log('PORT=' + port);
@@ -57,3 +52,5 @@ app.listen(port, () => {
         '\n__dirname = ' + __dirname +
         '\nprocess.cwd = ' + process.cwd());
 });
+
+

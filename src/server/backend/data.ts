@@ -21,7 +21,8 @@ namespace data {
             { id: 5, firstName: 'Ella', lastName: 'Jobs', age: 18, location: 'South Dakota' },
             { id: 6, firstName: 'Landon', lastName: 'Gates', age: 11, location: 'South Carolina' },
             { id: 7, firstName: 'Haley', lastName: 'Guthrie', age: 35, location: 'Wyoming' },
-            { id: 8, firstName: 'Aaron', lastName: 'Jinglehiemer', age: 22, location: 'Utah' }
+            { id: 8, firstName: 'Aaron', lastName: 'Jinglehiemer', age: 22, location: 'Utah' },
+						{ id: 9, firstName: 'Charles', lastName: 'Kagiri', age: 29, location: 'Nairobi' }
         ];
         return people;
     };
