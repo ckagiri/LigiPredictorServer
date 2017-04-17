@@ -30,7 +30,7 @@ switch (config.env) {
         console.log('** BUILD **');
         app.use(express.static('./build/'));
         // Any invalid calls for templateUrls are under app/* and should return 404
-        app.use('/app/*', (req: express.Request, res: express.Response, next: any) => {
+        app.use('/app/*', (req, res, next) => {
             send404(req, res);
         });
         // Any deep link calls should return index.html
@@ -42,7 +42,7 @@ switch (config.env) {
         app.use(express.static('./'));
         app.use(express.static('./tmp'));
         // Any invalid calls for templateUrls are under app/* and should return 404
-        app.use('/app/*', (req: express.Request, res: express.Response, next: any) => {
+        app.use('/app/*', (req, res, next) => {
             send404(req, res);
         });
         // Any deep link calls should return index.html
