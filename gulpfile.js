@@ -372,6 +372,29 @@ gulp.task('bump', function() {
  */
 gulp.task('browserSyncReload', ['optimize'], browserSync.reload);
 
+// Set NODE_ENV to 'test'
+gulp.task('env:test', function () {
+  process.env.NODE_ENV = 'test';
+});
+
+// Set NODE_ENV to 'development'
+gulp.task('env:dev', function () {
+  process.env.NODE_ENV = 'development';
+});
+
+// Set NODE_ENV to 'production'
+gulp.task('env:prod', function () {
+  process.env.NODE_ENV = 'production';
+});
+
+gulp.task('prod', ['build', 'env:prod'], function() {
+	log('Production');
+});
+
+gulp.task('dev', ['build', 'env:dev'], function() {
+	log('Development');
+});
+
 ////////////////
 
 /**
