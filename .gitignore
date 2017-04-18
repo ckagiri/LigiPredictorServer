@@ -80,3 +80,7 @@ journal
 *.tar
 *.xap
 *.zip
+
+# Web
+.tmp
+build

@@ -391,7 +391,7 @@ gulp.task('prod', ['build', 'env:prod'], function() {
 	log('Production');
 });
 
-gulp.task('dev', ['build', 'env:dev'], function() {
+gulp.task('dev', ['inject', 'env:dev'], function() {
 	log('Development');
 });
 
