@@ -9,14 +9,6 @@ namespace app.layout {
       private logger: blocks.logger.Logger) {
       this.logger.success(config.appTitle + ' loaded!', null);
     }
-
-    busyMessage = 'Please wait ...';
-    isBusy = true;
-		navline = {
-      title: this.config.appTitle,
-      text: 'Created by John Papa',
-      link: 'http://twitter.com/john_papa'
-    };    
   }
 
   angular
