@@ -24,8 +24,16 @@ namespace app.core {
     states.forEach(function(state) {
       $stateProvider.state(state.state, state.config);
     });
-    $locationProvider.html5Mode(true);
+    $locationProvider.hashPrefix('!');
     $urlRouterProvider.otherwise(otherwise);
+
+		homeRoute.$inject = ['$state'];
+		function homeRoute($state: ng.ui.IStateService) {
+			$state.go('app.matches', null, { reload: true });
+		}
+		$urlRouterProvider.when('', homeRoute);
+		
+		$urlRouterProvider.when('/', homeRoute);
   }
 
   function getStates() {

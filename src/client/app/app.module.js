@@ -3,10 +3,10 @@ var app;
     'use strict';
     angular.module('app', [
         'app.core',
-        'app.widgets',
+        'app.layout',
+        'app.auth',
         'app.admin',
-        'app.dashboard',
-        'app.layout'
+        'app.matches'
     ]);
 })(app || (app = {}));
 //# sourceMappingURL=app.module.js.map
