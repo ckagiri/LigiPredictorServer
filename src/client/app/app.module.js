@@ -6,6 +6,7 @@ var app;
         'app.layout',
         'app.auth',
         'app.admin',
+        'admin.leagues',
         'app.matches'
     ]);
 })(app || (app = {}));

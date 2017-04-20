@@ -37,9 +37,8 @@
 </head>
 
 <body>
-  <div>
-    <div ng-include="'app/layout/shell.html'"></div>    
-    </div>
+  <div ng-controller="ShellController as vm">
+		<div ui-view="shell"></div>
   </div>
 
   <!-- build:js js/lib.js -->
@@ -59,20 +58,16 @@
   <!-- build:js js/app.js-->
   <!-- inject:js -->
   <script src="/src/client/app/app.module.js"></script>
-  <script src="/src/client/app/admin/admin.module.js"></script>
-  <script src="/src/client/app/admin/leagues/leagues.module.js"></script>
-  <script src="/src/client/app/auth/auth.module.js"></script>
   <script src="/src/client/app/blocks/exception/exception.module.js"></script>
   <script src="/src/client/app/blocks/logger/logger.module.js"></script>
   <script src="/src/client/app/blocks/router/router-helper.module.js"></script>
   <script src="/src/client/app/core/core.module.js"></script>
   <script src="/src/client/app/layout/layout.module.js"></script>
+	<script src="/src/client/app/auth/auth.module.js"></script>
+	<script src="/src/client/app/admin/admin.module.js"></script>
+  <script src="/src/client/app/admin/leagues/leagues.module.js"></script>
   <script src="/src/client/app/matches/matches.module.js"></script>
-  <script src="/src/client/app/admin/leagues/league-detail.controller.js"></script>
-  <script src="/src/client/app/admin/leagues/leagues.controller.js"></script>
-  <script src="/src/client/app/admin/leagues/leagues.route.js"></script>
-  <script src="/src/client/app/auth/auth.route.js"></script>
-  <script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
+	<script src="/src/client/app/blocks/exception/exception-handler.provider.js"></script>
   <script src="/src/client/app/blocks/exception/exception.js"></script>
   <script src="/src/client/app/blocks/logger/logger.js"></script>
   <script src="/src/client/app/blocks/router/router-helper.service.js"></script>
@@ -81,8 +76,14 @@
   <script src="/src/client/app/core/core.route.js"></script>
   <script src="/src/client/app/layout/lp-top-nav.directive.js"></script>
   <script src="/src/client/app/layout/shell.controller.js"></script>
-	<script src="/src/client/app/matches/matches.route.js"></script>
+	<script src="/src/client/app/auth/auth.route.js"></script>
+  <script src="/src/client/app/auth/login.controller.js"></script>
+	<script src="/src/client/app/auth/signup.controller.js"></script>
+  <script src="/src/client/app/admin/leagues/league-detail.controller.js"></script>
+  <script src="/src/client/app/admin/leagues/leagues.controller.js"></script>
+  <script src="/src/client/app/admin/leagues/leagues.route.js"></script>
   <script src="/src/client/app/matches/matches.controller.js"></script>
+  <script src="/src/client/app/matches/matches.route.js"></script>
   <!-- endinject -->
 
   <!-- inject:templates:js -->

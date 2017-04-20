@@ -15,39 +15,25 @@ namespace app.auth {
 	}
 
 	function getStates() {
-    return [
+    return [			
 			{
-				state: 'admin',
-				config: {
-					abstract: true,
-					template: '<div ui-view class="shuffle-animation"></div>'
-				}
-			}, 
-			{
-        state: 'admin.home',
+        state: 'xapp.login',
         config: {
-          url: '/admin',
-          templateUrl: 'app/admin/leagues/leagues.html',
-          controller: 'LeaguesController',
+          url: '/login',
+          templateUrl: 'app/auth/login.html',
+          controller: 'LoginController',
           controllerAs: 'vm',
-          title: 'leagues'
+          title: 'login'
         }
       },
 			{
-				state: 'app',
-				config: {
-					abstract: true,
-					template: '<div ui-view class="shuffle-animation"></div>'
-				}
-			},
-			{
-        state: 'app.home',
+        state: 'xapp.signup',
         config: {
-          url: '/',
-          templateUrl: 'app/matches/matches.html',
-          controller: 'MatchesController',
+          url: '/signup',
+          templateUrl: 'app/auth/signup.html',
+          controller: 'SignupController',
           controllerAs: 'vm',
-          title: 'matches'
+          title: 'Signup'
         }
       }
     ];

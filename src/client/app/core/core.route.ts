@@ -24,22 +24,88 @@ namespace app.core {
     states.forEach(function(state) {
       $stateProvider.state(state.state, state.config);
     });
-    $locationProvider.hashPrefix('!');
+    $locationProvider.html5Mode(true);
     $urlRouterProvider.otherwise(otherwise);
 
 		homeRoute.$inject = ['$state'];
 		function homeRoute($state: ng.ui.IStateService) {
 			$state.go('app.matches', null, { reload: true });
 		}
-		$urlRouterProvider.when('', homeRoute);
-		
+
+		notFoundRoute.$inject = ['$state'];
+		function notFoundRoute($state: ng.ui.IStateService) {
+			$state.go('app.404');
+		}
+
+		$urlRouterProvider.when('', homeRoute);		
 		$urlRouterProvider.when('/', homeRoute);
+		$urlRouterProvider.when('/404', notFoundRoute);
   }
 
   function getStates() {
     return [
-      {
-        state: '404',
+			{
+				state: 'xapp',
+				config: {
+					abstract: true,
+ 					views: {
+						'shell': {
+							templateUrl: 'app/layout/shell.out.html'
+						}
+					}
+				}
+			},
+			{
+        state: 'xapp.404',
+        config: {
+          url: '/404',
+          templateUrl: 'app/core/404.html',
+          title: '404'
+        }
+      },
+			{
+				state: 'admin',
+				config: {
+					abstract: true,
+					url: '/admin',
+ 					views: {
+						'shell': {
+							templateUrl: 'app/layout/shell.in.html'
+						}
+					}
+				}
+			}, 
+			{
+        state: 'admin.home',
+        config: {
+					url: '',
+          templateUrl: 'app/admin/leagues/leagues.html',
+          controller: 'LeaguesController',
+          controllerAs: 'vm',
+          title: 'leagues'
+        }
+      },
+			{
+        state: 'admin.404',
+        config: {
+          url: '/404',
+          templateUrl: 'app/core/404.html',
+          title: '404'
+        }
+      },
+			{
+				state: 'app',
+				config: {
+					abstract: true,
+ 					views: {
+						'shell': {
+							templateUrl: 'app/layout/shell.in.html'
+						}
+					}
+				}
+			},
+			{
+        state: 'app.404',
         config: {
           url: '/404',
           templateUrl: 'app/core/404.html',
