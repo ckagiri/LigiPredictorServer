@@ -1,6 +1,14 @@
 namespace app.auth {
 	'use strict';
 
+	export interface ILoginServerResponse {
+		token: string, isLinking?: boolean
+	}
+
+	export interface IAuthenticateServerResponse {
+		token: string, isLinking?: boolean
+	}
+
 	export class LoginController {
 		static $inject: string[] = ['$auth', '$q', '$state', 'logger'];
 		constructor(
@@ -12,7 +20,7 @@ namespace app.auth {
 
 		user: { email: string; password: string; };
 		title: string = 'Login';
-		
+
 		login() {
       this.$auth.login(this.user)
         .then(() => {

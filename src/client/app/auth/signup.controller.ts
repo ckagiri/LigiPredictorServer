@@ -1,18 +1,35 @@
 namespace app.auth {
 	'use strict';
 
-	interface ISignupVm {
-		title: string;
+	export interface ISignupServerResponse {
+		token: string, isLinking?: boolean
 	}
 
-	export class SignupController implements ISignupVm {
-		static $inject: string[] = ['$q', 'logger'];
+	export class SignupController {
+		static $inject: string[] = ['$auth', '$q', '$state', 'logger'];
 
-		constructor(private $q: ng.IQService,
+		constructor(
+			private $auth: satellizer.IAuthService,
+			private $q: ng.IQService,
+			private $state: ng.ui.IStateService,
       private logger: blocks.logger.Logger) {
     }
 
+		user: { userName: string; email: string; password: string; };
+		confirmPassword: string;		
 		title: string = 'Signup';
+
+		signup() {
+      this.$auth.signup<ISignupServerResponse>(this.user)
+        .then((response) => {
+          this.$auth.setToken(response.data.token);
+          this.$state.go('/');
+          this.logger.info('You have successfully created a new account and have been signed-in');
+        })
+        .catch((response) => {
+          this.logger.error(response.data.message);
+        });
+    };
 	}
 
 	angular
