@@ -103,11 +103,19 @@ gulp.task('vet', function() {
         .pipe($.if(args.js, $.jscs()));
 });
 
+
+gulp.task('styles:css', ['clean-styles'], function() {
+	log('CSS');
+
+	return gulp.src(config.site)
+		.pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
+		.pipe(gulp.dest(config.temp));
+});
 /**
  * Compile less to css
  * @return {Stream}
  */
-gulp.task('styles', ['clean-styles'], function() {
+gulp.task('styles:less', ['clean-styles'], function() {
     log('Compiling Less --> CSS');
 
     return gulp
@@ -118,6 +126,8 @@ gulp.task('styles', ['clean-styles'], function() {
         .pipe($.autoprefixer({browsers: ['last 2 version', '> 5%']}))
         .pipe(gulp.dest(config.temp));
 });
+
+gulp.task('styles', ['styles:less', 'styles:css']);
 
 /**
  * Copy fonts
@@ -148,7 +158,7 @@ gulp.task('images', ['clean-images'], function() {
  * Watch LESS and recompile the CSS
  */
 gulp.task('less-watcher', function() {
-    gulp.watch([config.less], ['styles']);
+    gulp.watch([config.less], ['styles:less']);
 });
 
 /**
@@ -371,6 +381,29 @@ gulp.task('bump', function() {
  * Optimize the code and re-load browserSync
  */
 gulp.task('browserSyncReload', ['optimize'], browserSync.reload);
+
+// Set NODE_ENV to 'test'
+gulp.task('env:test', function () {
+  process.env.NODE_ENV = 'test';
+});
+
+// Set NODE_ENV to 'development'
+gulp.task('env:dev', function () {
+  process.env.NODE_ENV = 'development';
+});
+
+// Set NODE_ENV to 'production'
+gulp.task('env:prod', function () {
+  process.env.NODE_ENV = 'production';
+});
+
+gulp.task('prod', ['build', 'env:prod'], function() {
+	log('Production');
+});
+
+gulp.task('dev', ['inject', 'env:dev'], function() {
+	log('Development');
+});
 
 ////////////////
 

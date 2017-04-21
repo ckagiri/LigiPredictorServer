@@ -3,10 +3,12 @@ var app;
     'use strict';
     angular.module('app', [
         'app.core',
-        'app.widgets',
+        'app.directives',
+        'app.layout',
+        'app.auth',
         'app.admin',
-        'app.dashboard',
-        'app.layout'
+        'admin.leagues',
+        'app.matches'
     ]);
 })(app || (app = {}));
 //# sourceMappingURL=app.module.js.map

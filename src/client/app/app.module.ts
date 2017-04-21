@@ -3,9 +3,11 @@ namespace app {
 
   angular.module('app', [
     'app.core',
-    'app.widgets',
-    'app.admin',
-    'app.dashboard',
-    'app.layout'
+		'app.directives',
+		'app.layout',
+		'app.auth',
+		'app.admin',
+		'admin.leagues',
+		'app.matches'
   ]);
 }

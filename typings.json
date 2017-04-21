@@ -1,0 +1,5 @@
+{
+  "globalDependencies": {
+    "satellizer-missing": "file:./typings-missing/satellizer-missing.d.ts"
+  }
+}

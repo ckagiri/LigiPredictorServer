@@ -18,6 +18,14 @@ app.use(favicon(__dirname + '/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
+app.use(function(req, res, next) {
+    if (req.path.substr(-1) == '/' && req.path.length > 1) {
+        var query = req.url.slice(req.path.length);
+        res.redirect(301, req.path.slice(0, -1) + query);
+    } else {
+        next();
+    }
+});
 app.use('/api', routes);
 
 console.log('About to crank up node');
@@ -50,8 +58,8 @@ switch (config.env) {
         break;
 }
 
-mongoose.connect(config.mongo.uri, config.mongo.options);
-const db = mongoose.connection;
+// mongoose.connect(config.mongo.uri, config.mongo.options);
+// const db = mongoose.connection;
 
 const server: http.Server = app.listen(config.port, config.ip, () => {
 	const host = server.address().address;
@@ -61,14 +69,14 @@ const server: http.Server = app.listen(config.port, config.ip, () => {
 		'\n__dirname = ' + __dirname +
 		'\nprocess.cwd = ' + process.cwd());
 
-	db.on('error', (err: any) => {
-    console.error(`ERROR CONNECTING TO MONGO: ${err}`);
-    console.error(`Please make sure that ${config.mongo.uri} is running.`);
-  });
+	// db.on('error', (err: any) => {
+  //   console.error(`ERROR CONNECTING TO MONGO: ${err}`);
+  //   console.error(`Please make sure that ${config.mongo.uri} is running.`);
+  // });
 
-  db.once('open', () => {
-    console.info(`Connected to MongoDB: ${config.mongo.uri}`);
-  });
+  // db.once('open', () => {
+  //   console.info(`Connected to MongoDB: ${config.mongo.uri}`);
+  // });
 });
 
 export {server};
