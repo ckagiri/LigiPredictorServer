@@ -20,14 +20,14 @@
             </div>
           </div>
           <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.password.$invalid && signupForm.password.$dirty }">
-            <input class="form-control input-lg" type="password" name="password" ng-model="vm.user.password" placeholder="Password" required>
+            <input lp-password-strength class="form-control input-lg" type="password" name="password" ng-model="vm.user.password" placeholder="Password" required>
             <span class="fa fa-key form-control-feedback"></span>
             <div class="help-block text-danger" ng-if="signupForm.password.$dirty" ng-messages="signupForm.password.$error">
               <div ng-message="required">Password is required.</div>
             </div>
           </div>
           <div class="form-group has-feedback" ng-class="{ 'has-error' : signupForm.confirmPassword.$invalid && signupForm.confirmPassword.$dirty }">
-            <input password-match="user.password" class="form-control input-lg" type="password" name="confirmPassword" ng-model="vm.confirmPassword" placeholder="Confirm Password">
+            <input lp-password-match="vm.user.password" class="form-control input-lg" type="password" name="confirmPassword" ng-model="vm.confirmPassword" placeholder="Confirm Password">
             <span class="fa fa-key form-control-feedback"></span>
             <div class="help-block text-danger" ng-if="signupForm.confirmPassword.$dirty" ng-messages="signupForm.confirmPassword.$error">
               <div ng-message="compareTo">Password must match.</div>

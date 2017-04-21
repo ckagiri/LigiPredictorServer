@@ -3,6 +3,7 @@ namespace app {
 
   angular.module('app', [
     'app.core',
+		'app.directives',
 		'app.layout',
 		'app.auth',
 		'app.admin',
