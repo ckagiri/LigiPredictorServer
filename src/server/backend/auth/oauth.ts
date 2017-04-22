@@ -1,6 +1,6 @@
 import * as moment from 'moment';
 import * as jwt from 'jwt-simple';
-import {Router, Request, Response} from 'express';
+import {Router, Request, Response, NextFunction} from 'express';
 import {config} from '../../config/environment';
 import {IUserModel, User} from './user.model';
 
@@ -13,7 +13,7 @@ export function createJWT(user: IUserModel) {
   return jwt.encode(payload, config.TOKEN_SECRET);
 }
 
-export function ensureAuthenticated(req: Request, res: Response, next: Function) {
+export function ensureAuthenticated(req: Request, res: Response, next: NextFunction) {
   if (!req.header('Authorization')) {
     return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
   }

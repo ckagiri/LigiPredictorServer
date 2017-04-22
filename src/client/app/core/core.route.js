@@ -26,7 +26,7 @@ var app;
             $urlRouterProvider.otherwise(otherwise);
             homeRoute.$inject = ['$state'];
             function homeRoute($state) {
-                $state.go('app.matches', null, { reload: true });
+                $state.go('app.matches');
             }
             notFoundRoute.$inject = ['$state'];
             function notFoundRoute($state) {

@@ -29,7 +29,7 @@ namespace app.core {
 
 		homeRoute.$inject = ['$state'];
 		function homeRoute($state: ng.ui.IStateService) {
-			$state.go('app.matches', null, { reload: true });
+			$state.go('app.matches');
 		}
 
 		notFoundRoute.$inject = ['$state'];
@@ -41,7 +41,6 @@ namespace app.core {
 		$urlRouterProvider.when('/', homeRoute);
 		$urlRouterProvider.when('/404', notFoundRoute);
   }
-
   function getStates() {
     return [
 			{

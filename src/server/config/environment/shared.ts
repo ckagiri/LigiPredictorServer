@@ -10,6 +10,7 @@ module.exports = {
     }
   },
 	// OAuth 2.0
+	TOKEN_SECRET: process.env.TOKEN_SECRET || 'ligi123predictor456',
   FACEBOOK_SECRET: process.env.FACEBOOK_SECRET || '41314d248fddfc3a03bcb61147f7114d',
   GOOGLE_SECRET: process.env.GOOGLE_SECRET || 'V1JEeIkU_40xMVtJ1J34rfLA',
 

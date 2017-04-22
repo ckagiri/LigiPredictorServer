@@ -10,9 +10,10 @@ namespace app.auth {
 	}
 
 	export class LoginController {
-		static $inject: string[] = ['$auth', '$q', '$state', 'logger'];
+		static $inject: string[] = ['$auth', '$location', '$q', '$state', 'logger'];
 		constructor(
 			private $auth: satellizer.IAuthService,
+			private $location: ng.ILocationService,
 			private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
       private logger: blocks.logger.Logger) {
@@ -21,22 +22,26 @@ namespace app.auth {
 		user: { email: string; password: string; };
 		title: string = 'Login';
 
+		private navigateHome() {
+			this.$state.go('app.matches');
+		}
+
 		login() {
       this.$auth.login(this.user)
         .then(() => {
           this.logger.success('You have successfully signed in!');
-          this.$state.go('/');
+					this.navigateHome();
         })
         .catch((error) => {
           this.logger.error(error.data.message, error.status);
         });
-    };
+    }
 
     authenticate(provider: string) {
       this.$auth.authenticate(provider)
         .then(() => {
           this.logger.success('You have successfully signed in with ' + provider + '!');
-          this.$state.go('/');
+          this.navigateHome();
         })
         .catch((error) => {
           if (error.message) {
@@ -49,7 +54,7 @@ namespace app.auth {
             this.logger.error(error);
           }
         });
-    };
+    }
 	}
 
 	angular

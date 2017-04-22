@@ -5,7 +5,7 @@ namespace app.directives {
     otherModelValue: string;
   }
 	class LpPasswordMatch {
-		static $inject: Array<string> = [''];
+		static $inject: string[] = [''];
     constructor() { }
 		static instance(): ng.IDirective {
       return new LpPasswordMatch();

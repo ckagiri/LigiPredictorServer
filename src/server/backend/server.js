@@ -5,9 +5,13 @@ var express = require("express");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
 var notfound_1 = require("./utils/notfound");
-var routes_1 = require("./routes");
+var authRoutes_1 = require("./authRoutes");
+var apiRoutes_1 = require("./apiRoutes");
 var environment_1 = require("../config/environment");
+var Promise = require('bluebird');
+mongoose.Promise = Promise;
 var app = express();
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,7 +26,8 @@ app.use(function (req, res, next) {
         next();
     }
 });
-app.use('/api', routes_1.routes);
+app.use('/auth', authRoutes_1.routes);
+app.use('/api', apiRoutes_1.routes);
 console.log('About to crank up node');
 console.log('PORT=' + environment_1.config.port);
 console.log('NODE_ENV=' + environment_1.config.env);
@@ -51,8 +56,8 @@ switch (environment_1.config.env) {
         app.use('/*', express.static('./src/client/index.html'));
         break;
 }
-// mongoose.connect(config.mongo.uri, config.mongo.options);
-// const db = mongoose.connection;
+mongoose.connect(environment_1.config.mongo.uri, environment_1.config.mongo.options);
+var db = mongoose.connection;
 var server = app.listen(environment_1.config.port, environment_1.config.ip, function () {
     var host = server.address().address;
     var port = server.address().port;
@@ -60,13 +65,13 @@ var server = app.listen(environment_1.config.port, environment_1.config.ip, func
     console.log('env = ' + app.get('env') +
         '\n__dirname = ' + __dirname +
         '\nprocess.cwd = ' + process.cwd());
-    // db.on('error', (err: any) => {
-    //   console.error(`ERROR CONNECTING TO MONGO: ${err}`);
-    //   console.error(`Please make sure that ${config.mongo.uri} is running.`);
-    // });
-    // db.once('open', () => {
-    //   console.info(`Connected to MongoDB: ${config.mongo.uri}`);
-    // });
+    db.on('error', function (err) {
+        console.error("ERROR CONNECTING TO MONGO: " + err);
+        console.error("Please make sure that " + environment_1.config.mongo.uri + " is running.");
+    });
+    db.once('open', function () {
+        console.info("Connected to MongoDB: " + environment_1.config.mongo.uri);
+    });
 });
 exports.server = server;
 //# sourceMappingURL=server.js.map

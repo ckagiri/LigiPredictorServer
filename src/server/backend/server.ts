@@ -11,6 +11,8 @@ import { send404 } from './utils/notfound';
 import {routes as authRoutes} from './authRoutes';
 import {routes as apiRoutes} from './apiRoutes';
 import {config} from '../config/environment';
+const Promise = require('bluebird'); 
+(<any>mongoose).Promise = Promise;
 
 const app = express();
 
@@ -60,8 +62,8 @@ switch (config.env) {
         break;
 }
 
-// mongoose.connect(config.mongo.uri, config.mongo.options);
-// const db = mongoose.connection;
+mongoose.connect(config.mongo.uri, config.mongo.options);
+const db = mongoose.connection;
 
 const server: http.Server = app.listen(config.port, config.ip, () => {
 	const host = server.address().address;
@@ -71,14 +73,14 @@ const server: http.Server = app.listen(config.port, config.ip, () => {
 		'\n__dirname = ' + __dirname +
 		'\nprocess.cwd = ' + process.cwd());
 
-	// db.on('error', (err: any) => {
-  //   console.error(`ERROR CONNECTING TO MONGO: ${err}`);
-  //   console.error(`Please make sure that ${config.mongo.uri} is running.`);
-  // });
+	db.on('error', (err: any) => {
+    console.error(`ERROR CONNECTING TO MONGO: ${err}`);
+    console.error(`Please make sure that ${config.mongo.uri} is running.`);
+  });
 
-  // db.once('open', () => {
-  //   console.info(`Connected to MongoDB: ${config.mongo.uri}`);
-  // });
+  db.once('open', () => {
+    console.info(`Connected to MongoDB: ${config.mongo.uri}`);
+  });
 });
 
 export {server};

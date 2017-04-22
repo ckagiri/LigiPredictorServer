@@ -2,7 +2,7 @@ namespace app.directives {
   'use strict';
 
 	class LpPasswordStrength {
-		static $inject: Array<string> = [''];
+		static $inject: string[] = [''];
     constructor() { }
 		static instance(): ng.IDirective {
       return new LpPasswordStrength();

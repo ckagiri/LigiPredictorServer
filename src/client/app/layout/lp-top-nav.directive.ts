@@ -5,19 +5,18 @@ namespace applayout {
     navline: string
   }
 
-  class LpTopNav implements ng.IDirective {
-    static $inject: Array<string> = [''];
-    constructor() { }
 
+  class LpTopNav implements ng.IDirective {
+		static $inject: string[] = [''];
+    constructor() { }
     static instance(): ng.IDirective {
       return new LpTopNav();
     }
-
-    bindToController: boolean = true;
-    controller: TopNavController = TopNavController;
-    controllerAs: string = 'vm';
+    bindToController = true;
+    controller = TopNavController;
+    controllerAs = 'vm';
     link: (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => void;
-    restrict: string = 'EA';
+    restrict = 'EA';
     scope: ILpTopNavScope = {
       'navline': '='
     };
@@ -25,7 +24,24 @@ namespace applayout {
   }
 
   class TopNavController {
-    constructor() { }
+		static $inject: string[] = ['$auth', '$state', 'logger'];
+		constructor(private $auth: satellizer.IAuthService,
+			private $state: ng.ui.IStateService,
+			private logger: blocks.logger.Logger) {
+		}			
+
+		isAuthenticated() {
+			return this.$auth.isAuthenticated();
+		}
+
+		logout() {
+			if (!this.$auth.isAuthenticated()) { return; }
+			this.$auth.logout()
+      .then(() => {
+        this.logger.info('You have been logged out');
+        this.$state.go('xapp.login');
+      });
+		}
   }
 
   angular
