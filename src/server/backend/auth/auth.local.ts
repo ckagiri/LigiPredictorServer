@@ -11,7 +11,11 @@ export function login(req: Request, res: Response) {
       if (!isMatch) {
         return res.status(401).send({ message: 'Invalid email and/or password' });
       }
-      res.send({ token: createJWT(user) });
+      var token = createJWT(user);
+			var userObj:any = user.toObject();
+      delete userObj.password;
+
+      res.send({ token: token, user: userObj });
     });
   });
 }
@@ -30,7 +34,11 @@ export function signup(req: Request, res: Response) {
       if (err) {
         res.status(500).send({ message: err.message });
       }
-      res.send({ token: createJWT(result) });
+			var token = createJWT(user);
+			var userObj:any = user.toObject();
+      delete userObj.password;
+			
+			res.send({ token: token, user: userObj });
     });
   });
 }

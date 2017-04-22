@@ -43,7 +43,7 @@ export function facebookAuth(req: Request, res: Response) {
 						user.displayName = user.displayName || profile.name;
             user.save(function() {
               var token = createJWT(user);
-              res.send({ token: token });
+              res.send({ token: token, user: user });
             });
           });
         });
@@ -60,7 +60,7 @@ export function facebookAuth(req: Request, res: Response) {
           user.displayName = profile.name;
           user.save(function() {
             var token = createJWT(user);
-            res.send({ token: token });
+            res.send({ token: token, user: user });
           });
         });
       }

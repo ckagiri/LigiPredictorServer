@@ -43,7 +43,7 @@ export function googleAuth(req: Request, res: Response) {
 						user.displayName = user.displayName || profile.name;
             user.save(function() {
               var token = createJWT(user);
-              res.send({ token: token });
+              res.send({ token: token, user: user });
             });
           });
         });
@@ -51,15 +51,16 @@ export function googleAuth(req: Request, res: Response) {
         // Step 3b. Create a new user account or return an existing one.
         User.findOne({ google: profile.sub }, function(err, existingUser) {
           if (existingUser) {
-            return res.send({ token: createJWT(existingUser) });
+						var token = createJWT(existingUser);
+            return res.send({ token: token, user: existingUser });
           }
           var user = new User();
           user.google = profile.sub;
           user.picture = profile.picture.replace('sz=50', 'sz=200');
           user.displayName = profile.name;
           user.save(function(err) {
-            var token = createJWT(user);
-            res.send({ token: token });
+            var token = createJWT(user);						
+            res.send({ token: token, user: user });
           });
         });
       }

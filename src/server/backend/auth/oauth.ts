@@ -30,8 +30,15 @@ export function ensureAuthenticated(req: Request, res: Response, next: NextFunct
   if (payload.exp <= moment().unix()) {
     return res.status(401).send({ message: 'Token has expired' });
   }
-  req['user'] = payload.sub;
-  next();
+
+	User.findById(payload.sub, function(err, user) {
+    if (!user) {
+      return res.status(400).send({ message: 'User no longer exists.' });
+    }
+
+    req['user'] = user;
+    next();
+  })
 }
 
 export function unlink(req: Request, res: Response) {
@@ -42,7 +49,7 @@ export function unlink(req: Request, res: Response) {
     return res.status(400).send({ message: 'Unknown OAuth Provider' });
   }
 
-  User.findById(req['user'], function(err, user) {
+  User.findById(req['user']._id, function(err, user) {
     if (!user) {
       return res.status(400).send({ message: 'User Not Found' });
     }
