@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var path = require("path");
 var _ = require("lodash");
 function requiredProcessEnv(name) {
+    console.log(process.env[name]);
     if (!process.env[name]) {
         throw new Error('You must set the ' + name + ' environment variable');
     }

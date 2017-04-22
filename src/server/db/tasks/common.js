@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var async = require("async");
 var mongoose = require("mongoose");
 var models_1 = require("../../backend/api/models");

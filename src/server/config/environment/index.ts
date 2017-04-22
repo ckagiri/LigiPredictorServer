@@ -2,6 +2,7 @@ import path = require('path');
 import _ = require('lodash');
 
 function requiredProcessEnv(name: any) {
+	console.log(process.env[name]);
   if (!process.env[name]) {
     throw new Error('You must set the ' + name + ' environment variable');
   }

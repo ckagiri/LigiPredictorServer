@@ -11,7 +11,8 @@
     "start:dev": "gulp dev && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/server.js\"",
     "test": "gulp test",
     "tsd:reinstall": "tsd reinstall -so",
-    "db:seed": "gulp env:dev&&node src/server/db/tasks/seed.js"
+    "db:seed": "gulp env:dev&&node src/server/db/tasks/seed.js",
+		"db:dev:seeduser": "gulp tsc-server&&node src/server/db/tasks/seed-user.js"
   },
   "repository": {
     "type": "git",

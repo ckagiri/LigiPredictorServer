@@ -11,7 +11,8 @@ export interface IUser {
 	comparePassword: any,
   facebook: string,
   google: string,
-  twitter: string
+  twitter: string,
+	roles: [string]
 }
 
 export interface IUserModel extends IUser, mongoose.Document { }
@@ -29,12 +30,14 @@ let userSchema = new Schema({
 	displayName: String,
   userName:  { 
 		type: String, 
-		unique: true
+		unique: true,
+		lowercase: true 
 	},
   picture: String,
   facebook: String,
   google: String,
-  twitter: String
+  twitter: String,
+	roles: [String]
 });
 
 userSchema.pre('save', function(next) {

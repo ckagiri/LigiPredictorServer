@@ -2,7 +2,7 @@ namespace app.auth {
 	'use strict';
 
 	export interface ILoginServerResponse {
-		token: string, isLinking?: boolean
+		token: string, isLinking?: boolean, user: any
 	}
 
 	export interface IAuthenticateServerResponse {
@@ -27,8 +27,9 @@ namespace app.auth {
 		}
 
 		login() {
-      this.$auth.login(this.user)
-        .then(() => {
+      this.$auth.login<ILoginServerResponse>(this.user)
+        .then((response) => {
+					console.log(response.data);
           this.logger.success('You have successfully signed in!');
 					this.navigateHome();
         })
@@ -38,8 +39,9 @@ namespace app.auth {
     }
 
     authenticate(provider: string) {
-      this.$auth.authenticate(provider)
-        .then(() => {
+      this.$auth.authenticate<IAuthenticateServerResponse>(provider)
+        .then((response) => {
+					console.log(response.data);
           this.logger.success('You have successfully signed in with ' + provider + '!');
           this.navigateHome();
         })
