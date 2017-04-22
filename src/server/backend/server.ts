@@ -8,7 +8,8 @@ import * as mongoose from 'mongoose';
 import * as http from 'http';
 import * as path from 'path';
 import { send404 } from './utils/notfound';  
-import {routes} from './routes';
+import {routes as authRoutes} from './authRoutes';
+import {routes as apiRoutes} from './apiRoutes';
 import {config} from '../config/environment';
 
 
@@ -26,7 +27,9 @@ app.use(function(req, res, next) {
         next();
     }
 });
-app.use('/api', routes);
+app.use('/auth', authRoutes);
+app.use('/api', apiRoutes);
+
 
 console.log('About to crank up node');
 console.log('PORT=' + config.port);
