@@ -1,6 +1,7 @@
 namespace app.auth {
 	'use strict';
-
+ 
+	export const redirect: string = "name";
 	
   config.$inject = ['$authProvider'];
   function config($authProvider: any) {
@@ -14,5 +15,6 @@ namespace app.auth {
   }
 
 	angular.module('app.auth', ['app.core'])
-		.config(config);
+		.config(config)
+		.value('redirectToUrlAfterLogin', { url: '/' });
 }
