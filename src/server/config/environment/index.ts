@@ -42,6 +42,11 @@ interface Configurations {
     uri: string;
   };
   ip:string;
+	TOKEN_SECRET: string;
+	FACEBOOK_SECRET: string;
+	GOOGLE_SECRET: string;
+	TWITTER_KEY: string;
+	TWITTER_SECRET: string;
   api_providers: {
     api_football_data: {
       name: string,

@@ -12,7 +12,6 @@ import {routes as authRoutes} from './authRoutes';
 import {routes as apiRoutes} from './apiRoutes';
 import {config} from '../config/environment';
 
-
 const app = express();
 
 app.use(favicon(__dirname + '/favicon.ico'));

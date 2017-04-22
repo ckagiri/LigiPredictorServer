@@ -7,11 +7,11 @@
     "start": "node src/server/backend/server.js",
     "tsc:w": "tsc -w",
     "mongodb": "mongod --dbpath=C:/data/db --port 27017",
-		"start:prod": "gulp prod && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/server.js\"",
+    "start:prod": "gulp prod && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/server.js\"",
     "start:dev": "gulp dev && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/server.js\"",
     "test": "gulp test",
     "tsd:reinstall": "tsd reinstall -so",
-		"db:seed": "gulp env:dev&&node src/server/db/tasks/seed.js"
+    "db:seed": "gulp env:dev&&node src/server/db/tasks/seed.js"
   },
   "repository": {
     "type": "git",
@@ -30,9 +30,11 @@
   "homepage": "https://github.com/ckagiri/LigiPredictorServer#readme",
   "devDependencies": {
     "@types/async": "~2.0.40",
+    "@types/bcryptjs": "~2.4.0",
     "@types/body-parser": "~1.16.3",
     "@types/chai": "~3.5.0",
     "@types/express": "~4.0.35",
+    "@types/jwt-simple": "^0.5.33",
     "@types/lodash": "~4.14.62",
     "@types/mocha": "~2.2.40",
     "@types/moment": "~2.13.0",
@@ -97,10 +99,12 @@
   },
   "dependencies": {
     "async": "~2.3.0",
+    "bcryptjs": "^2.4.3",
     "bluebird": "~3.5.0",
     "body-parser": "~1.17.1",
     "concurrently": "^3.4.0",
     "express": "~4.15.2",
+    "jwt-simple": "^0.5.1",
     "lodash": "~4.17.4",
     "mongoose": "~4.9.4",
     "mongoose-seeder": "~1.2.1",
