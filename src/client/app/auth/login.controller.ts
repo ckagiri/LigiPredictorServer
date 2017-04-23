@@ -1,12 +1,8 @@
 namespace app.auth {
 	'use strict';
 
-	export interface ILoginServerResponse {
+	export interface IServerResponse {
 		token: string, isLinking?: boolean, user: any
-	}
-
-	export interface IAuthenticateServerResponse {
-		token: string, isLinking?: boolean
 	}
 
 	export class LoginController {
@@ -22,16 +18,12 @@ namespace app.auth {
 		user: { email: string; password: string; };
 		title: string = 'Login';
 
-		private navigateHome() {
-			this.$state.go('app.matches');
-		}
-
 		login() {
-      this.$auth.login<ILoginServerResponse>(this.user)
+      this.$auth.login<IServerResponse>(this.user)
         .then((response) => {
 					console.log(response.data);
           this.logger.success('You have successfully signed in!');
-					this.navigateHome();
+					this.$location.path('/');
         })
         .catch((error) => {
           this.logger.error(error.data.message, error.status);
@@ -39,11 +31,11 @@ namespace app.auth {
     }
 
     authenticate(provider: string) {
-      this.$auth.authenticate<IAuthenticateServerResponse>(provider)
+      this.$auth.authenticate<IServerResponse>(provider)
         .then((response) => {
 					console.log(response.data);
           this.logger.success('You have successfully signed in with ' + provider + '!');
-          this.navigateHome();
+					this.$location.path('/');
         })
         .catch((error) => {
           if (error.message) {

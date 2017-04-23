@@ -11,7 +11,7 @@ var app;
         angular
             .module('app.core')
             .run(appRun);
-        appRun.$inject = ['RouterHelper'];
+        appRun.$inject = ['routerHelper'];
         function appRun(routerHelper) {
             var states = getStates();
             routerHelper.configureStates(states);
@@ -50,7 +50,7 @@ var app;
                     }
                 },
                 {
-                    state: 'admin.home',
+                    state: 'admin.index',
                     config: {
                         url: '',
                         templateUrl: 'app/admin/leagues/leagues.html',
@@ -80,7 +80,7 @@ var app;
                     }
                 },
                 {
-                    state: 'app.home',
+                    state: 'app.index',
                     config: {
                         url: '',
                         templateUrl: 'app/matches/matches.html',

@@ -3,8 +3,8 @@ namespace app.core {
 
   angular
     .module('app.core', [
-      'ngAnimate', 'ngSanitize',
+      'ngAnimate', 'ngSanitize', 'ui.router', 
       'blocks.exception', 'blocks.logger', 'blocks.router',
-      'ui.router', 'ngplus', 'ngMessages', 'satellizer'
+      'ngplus', 'ngMessages', 'satellizer'
     ]);
 }

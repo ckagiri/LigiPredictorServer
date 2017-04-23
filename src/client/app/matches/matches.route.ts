@@ -5,7 +5,7 @@ namespace app.matches {
     .module('app.matches')
     .run(appRun);
 
-  appRun.$inject = ['RouterHelper'];
+  appRun.$inject = ['routerHelper'];
   function appRun(routerHelper: blocks.router.IRouterHelper) { 
 		var states = getStates();
 		routerHelper.configureStates(states);

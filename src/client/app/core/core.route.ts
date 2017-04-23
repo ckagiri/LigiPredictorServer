@@ -10,7 +10,7 @@ namespace app.core {
     .module('app.core')
     .run(appRun);
 
-  appRun.$inject = ['RouterHelper'];
+  appRun.$inject = ['routerHelper'];
   function appRun(routerHelper: blocks.router.IRouterHelper) { 
 		var states = getStates();
 		routerHelper.configureStates(states);
@@ -51,7 +51,7 @@ namespace app.core {
 				}
 			}, 
 			{
-        state: 'admin.home',
+        state: 'admin.index',
         config: {
 					url: '',
           templateUrl: 'app/admin/leagues/leagues.html',
@@ -81,7 +81,7 @@ namespace app.core {
 				}
 			},
 			{
-				state: 'app.home',
+				state: 'app.index',
 				config: {
 					url: '',
 					templateUrl: 'app/matches/matches.html',

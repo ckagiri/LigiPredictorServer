@@ -36,12 +36,13 @@ namespace blocks.router {
 					docTitle: '',
 					resolveAlways: {}
 			}
-			
+			this.$locationProvider.html5Mode(true);
+			this.$urlRouterProvider.when('', '/');
 			this.$get.$inject = ['$location', '$rootScope', '$state', 'logger'];
 		}
 
 		public configure(cfg: any) {
-			ng.extend(this.config, cfg);
+			angular.extend(this.config, cfg);
 		}
 
 		public $get(
@@ -73,31 +74,27 @@ namespace blocks.router {
 			return service;
 
 			function init(): void {
-				handleAppwideRouting();
+				configureAppWideRoutes();
 				handleRoutingErrors();
 				handleStateChanges();
 				updateDocTitle();
 			}
 
 			function configureStates(states: Array<IStateConfig>): void {
-				// Remap root calls, i.e. http://example.org/ --> http://example.org/#/
-				//$urlRouterProvider.when('', '/');
-
 				states.forEach(function(state) {
 					state.config.resolve =
-					ng.extend(state.config.resolve || {}, config.resolveAlways);
+						angular.extend(state.config.resolve || {}, config.resolveAlways);
 					$stateProvider.state(state.state, state.config);
 				});
 			}
 
-			function handleAppwideRouting(): void {
-				$locationProvider.html5Mode(true);
+			function configureAppWideRoutes(): void {
 				var otherwise = '/404';
 				$urlRouterProvider.otherwise(otherwise);
 
 				homeRoute.$inject = ['$state'];
 				function homeRoute($state: ng.ui.IStateService) {
-					$state.go('app.home');
+					$state.go('app.index', null, { reload: true });
 				}
 
 				notFoundRoute.$inject = ['$state'];
@@ -105,7 +102,6 @@ namespace blocks.router {
 					$state.go('app.404');
 				}
 
-				$urlRouterProvider.when('', homeRoute);		
 				$urlRouterProvider.when('/', homeRoute);
 				$urlRouterProvider.when('/404', notFoundRoute);
 			}
@@ -140,7 +136,7 @@ namespace blocks.router {
 						handlingStateChangeError = false;
 						//var title = config.docTitle + ' ' + (toState.title || '');
 						var title = (toState.title || '');
-						this.$rootScope.title = title; // data bind to <title>
+						$rootScope.title = title; // data bind to <title>
 					}
 				);
 			}
@@ -164,5 +160,5 @@ namespace blocks.router {
 
 	angular
 		.module('blocks.router')
-		.provider('RouterHelper', RouterHelperProvider);
+		.provider('routerHelper', RouterHelperProvider);
 }
