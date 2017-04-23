@@ -12,8 +12,7 @@ namespace app.auth {
 		requireAuthenticatedUser: any
 	}
 
-
-	export class securityService {
+	export class SecurityService implements ISecurityService {
 		static $inject: string[] = ['$auth', '$http', '$location', '$q', '$state', 'redirectToUrlAfterLogin', 'retryQueue'];
 		constructor(
 			private $auth: satellizer.IAuthService,
@@ -31,6 +30,8 @@ namespace app.auth {
 				}
 			});
 		}
+
+		currentUser:any = null;
 
 		login(credentials: any) {
 			var request = this.$auth.login(credentials);
@@ -51,11 +52,7 @@ namespace app.auth {
 		}
 
 		requestCurrentUser() {
-				if (this.isAuthenticated()) {
-						return this.$q.when(this.currentUser);
-				} else {
-						return this.$q.reject();
-				}
+			return this.$q.when(this.currentUser);
 		}
 
 		isAuthenticated() {
@@ -67,7 +64,7 @@ namespace app.auth {
 		}
 
 		requireAdminUser() {
-				var promise = this.requestCurrentUser().then(function(userInfo) {
+				var promise = this.requestCurrentUser().then((user) => {
 						if (!this.isAdmin()) {
 								return this.queue.pushRetryFn('unauthorized-client', this.requireAdminUser);
 						}
@@ -76,9 +73,9 @@ namespace app.auth {
 		}
 
 		requireAuthenticatedUser() {
-			var promise = this.requestCurrentUser().then(function(userInfo) {
+			var promise = this.requestCurrentUser().then(function() {
 				if (!this.isAuthenticated()) {
-					return this.queue.pushRetryFn('unauthenticated-client', service.requireAuthenticatedUser);
+					return this.queue.pushRetryFn('unauthenticated-client', this.requireAuthenticatedUser);
 				}
 			});
 			return promise;
@@ -103,4 +100,8 @@ namespace app.auth {
 			this.$location.path(url);
 		}
 	}
+
+	angular
+    .module('app.auth')
+    .service('securityservice', SecurityService);
 }

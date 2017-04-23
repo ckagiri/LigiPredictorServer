@@ -3,16 +3,13 @@ namespace app.matches {
 
   angular
     .module('app.matches')
-    .config(configureStates);
+    .run(appRun);
 
-  configureStates.$inject = ['$stateProvider'];
-  /* @ngInject */
-  function configureStates($stateProvider: ng.ui.IStateProvider) {
-    var states = getStates();
-    states.forEach(function(state) {
-      $stateProvider.state(state.state, state.config);
-    });
-  }
+  appRun.$inject = ['RouterHelper'];
+  function appRun(routerHelper: blocks.router.IRouterHelper) { 
+		var states = getStates();
+		routerHelper.configureStates(states);
+	}
 
   function getStates() {
     return [

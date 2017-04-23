@@ -7,8 +7,8 @@ namespace applayout {
 
 
   class LpTopNav implements ng.IDirective {
-		static $inject: string[] = ['security'];
-    constructor(private security) { }
+		static $inject: string[] = [''];
+    constructor() { }
     static instance(): ng.IDirective {
       return new LpTopNav();
     }
@@ -20,13 +20,7 @@ namespace applayout {
       'navline': '='
     };
     templateUrl: string = 'app/layout/lp-top-nav.html';
-		link (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) {
-			scope.$watch(function() {
-        return security.currentUser;
-      }, function(currentUser) {
-      	scope.currentUser = currentUser;
-      });
-		}
+		link (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) {};
   }
 
   class TopNavController {

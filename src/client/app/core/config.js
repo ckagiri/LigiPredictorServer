@@ -18,13 +18,17 @@ var app;
             toastr.options.timeOut = 4000;
             toastr.options.positionClass = 'toast-bottom-right';
         }
-        configure.$inject = ['$logProvider', 'exceptionHandlerProvider'];
+        configure.$inject = ['$logProvider', 'exceptionHandlerProvider', 'routerHelperProvider'];
         /* @ngInject */
-        function configure($logProvider, exceptionHandlerProvider) {
+        function configure($logProvider, exceptionHandlerProvider, routerHelperProvider) {
             if ($logProvider.debugEnabled) {
                 $logProvider.debugEnabled(true);
             }
             exceptionHandlerProvider.configure(config.appErrorPrefix);
+            routerHelperProvider.configure({
+                docTitle: 'LP: ',
+                resolveAlways: {}
+            });
         }
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));

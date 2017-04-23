@@ -8,41 +8,16 @@ namespace app.core {
 
   angular
     .module('app.core')
-    .config(configureStates)
     .run(appRun);
 
   appRun.$inject = ['RouterHelper'];
-  function appRun(RouterHelper: blocks.router.IRouterHelper) { }
+  function appRun(routerHelper: blocks.router.IRouterHelper) { 
+		var states = getStates();
+		routerHelper.configureStates(states);
+	}
 
-  configureStates.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
-  /* @ngInject */
-  function configureStates($stateProvider: ng.ui.IStateProvider,
-    $locationProvider: ng.ILocationProvider,
-    $urlRouterProvider: ng.ui.IUrlRouterProvider) {
-    var otherwise = '/404';
-    var states = getStates();
-    states.forEach(function(state) {
-      $stateProvider.state(state.state, state.config);
-    });
-    $locationProvider.html5Mode(true);
-    $urlRouterProvider.otherwise(otherwise);
-
-		homeRoute.$inject = ['$state'];
-		function homeRoute($state: ng.ui.IStateService) {
-			$state.go('app.matches');
-		}
-
-		notFoundRoute.$inject = ['$state'];
-		function notFoundRoute($state: ng.ui.IStateService) {
-			$state.go('app.404');
-		}
-
-		$urlRouterProvider.when('', homeRoute);		
-		$urlRouterProvider.when('/', homeRoute);
-		$urlRouterProvider.when('/404', notFoundRoute);
-  }
-  function getStates() {
-    return [
+ function getStates() {
+	return [
 			{
 				state: 'xapp',
 				config: {
@@ -71,7 +46,8 @@ namespace app.core {
 						'shell': {
 							templateUrl: 'app/layout/shell.in.html'
 						}
-					}
+					},
+
 				}
 			}, 
 			{
@@ -94,6 +70,7 @@ namespace app.core {
       },
 			{
 				state: 'app',
+				url: '/',
 				config: {
 					abstract: true,
  					views: {
@@ -104,6 +81,16 @@ namespace app.core {
 				}
 			},
 			{
+				state: 'app.home',
+				config: {
+					url: '',
+					templateUrl: 'app/matches/matches.html',
+					controller: 'MatchesController',
+					controllerAs: 'vm',
+					title: 'matches'
+				}
+      },
+			{
         state: 'app.404',
         config: {
           url: '/404',
@@ -111,6 +98,6 @@ namespace app.core {
           title: '404'
         }
       }
-    ];
+    ]
   }
 }

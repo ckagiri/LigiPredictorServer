@@ -19,13 +19,18 @@ namespace app.core {
     toastr.options.positionClass = 'toast-bottom-right';
   }
 
-  configure.$inject = ['$logProvider', 'exceptionHandlerProvider'];
+  configure.$inject = ['$logProvider', 'exceptionHandlerProvider', 'routerHelperProvider'];
   /* @ngInject */
   function configure($logProvider: ng.ILogProvider,
-    exceptionHandlerProvider: blocks.exception.ExceptionHandlerProvider) {
+    exceptionHandlerProvider: blocks.exception.ExceptionHandlerProvider,
+		routerHelperProvider: blocks.router.RouterHelperProvider) {
     if ($logProvider.debugEnabled) {
       $logProvider.debugEnabled(true);
     }
     exceptionHandlerProvider.configure(config.appErrorPrefix);
+		routerHelperProvider.configure({
+			docTitle: 'LP: ',
+			resolveAlways: {}
+		});
   }
 }

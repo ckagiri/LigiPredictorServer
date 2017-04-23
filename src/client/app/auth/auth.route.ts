@@ -3,15 +3,12 @@ namespace app.auth {
 
 	angular
 		.module('app.auth')
-		.config(configureStates);
+    .run(appRun);
 
-	configureStates.$inject = ['$stateProvider'];
-
-	function configureStates($stateProvider: ng.ui.IStateProvider) {
+  appRun.$inject = ['RouterHelper'];
+  function appRun(routerHelper: blocks.router.IRouterHelper) { 
 		var states = getStates();
-    states.forEach(function(state) {
-      $stateProvider.state(state.state, state.config);
-    });
+		routerHelper.configureStates(states);
 	}
 
 	function getStates() {

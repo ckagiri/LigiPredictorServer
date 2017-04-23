@@ -10,31 +10,11 @@ var app;
         'use strict';
         angular
             .module('app.core')
-            .config(configureStates)
             .run(appRun);
         appRun.$inject = ['RouterHelper'];
-        function appRun(RouterHelper) { }
-        configureStates.$inject = ['$stateProvider', '$locationProvider', '$urlRouterProvider'];
-        /* @ngInject */
-        function configureStates($stateProvider, $locationProvider, $urlRouterProvider) {
-            var otherwise = '/404';
+        function appRun(routerHelper) {
             var states = getStates();
-            states.forEach(function (state) {
-                $stateProvider.state(state.state, state.config);
-            });
-            $locationProvider.html5Mode(true);
-            $urlRouterProvider.otherwise(otherwise);
-            homeRoute.$inject = ['$state'];
-            function homeRoute($state) {
-                $state.go('app.matches');
-            }
-            notFoundRoute.$inject = ['$state'];
-            function notFoundRoute($state) {
-                $state.go('app.404');
-            }
-            $urlRouterProvider.when('', homeRoute);
-            $urlRouterProvider.when('/', homeRoute);
-            $urlRouterProvider.when('/404', notFoundRoute);
+            routerHelper.configureStates(states);
         }
         function getStates() {
             return [
@@ -66,7 +46,7 @@ var app;
                             'shell': {
                                 templateUrl: 'app/layout/shell.in.html'
                             }
-                        }
+                        },
                     }
                 },
                 {
@@ -89,6 +69,7 @@ var app;
                 },
                 {
                     state: 'app',
+                    url: '/',
                     config: {
                         abstract: true,
                         views: {
@@ -96,6 +77,16 @@ var app;
                                 templateUrl: 'app/layout/shell.in.html'
                             }
                         }
+                    }
+                },
+                {
+                    state: 'app.home',
+                    config: {
+                        url: '',
+                        templateUrl: 'app/matches/matches.html',
+                        controller: 'MatchesController',
+                        controllerAs: 'vm',
+                        title: 'matches'
                     }
                 },
                 {
