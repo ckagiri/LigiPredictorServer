@@ -47,7 +47,11 @@ namespace app.core {
 							templateUrl: 'app/layout/shell.in.html'
 						}
 					},
-
+					resolve: {
+						admin: ['securityService', function(security: app.auth.SecurityService) {
+							return security.requireAdminUser();
+						}]
+					}
 				}
 			}, 
 			{
@@ -77,6 +81,11 @@ namespace app.core {
 						'shell': {
 							templateUrl: 'app/layout/shell.in.html'
 						}
+					},
+					resolve: {
+						admin: ['securityService', function(security: app.auth.SecurityService) {
+							return security.requireAuthenticatedUser();
+						}]
 					}
 				}
 			},

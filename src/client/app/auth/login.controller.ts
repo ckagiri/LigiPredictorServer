@@ -6,7 +6,7 @@ namespace app.auth {
 	}
 
 	export class LoginController {
-		static $inject: string[] = ['$auth', '$location', '$q', '$state', 'logger'];
+		static $inject: string[] = ['securityService', '$location', '$q', '$state', 'logger'];
 		constructor(
 			private security: app.auth.ISecurityService,
 			private $location: ng.ILocationService,

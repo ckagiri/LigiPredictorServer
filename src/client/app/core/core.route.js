@@ -47,6 +47,11 @@ var app;
                                 templateUrl: 'app/layout/shell.in.html'
                             }
                         },
+                        resolve: {
+                            admin: ['securityService', function (security) {
+                                    return security.requireAdminUser();
+                                }]
+                        }
                     }
                 },
                 {
@@ -76,6 +81,11 @@ var app;
                             'shell': {
                                 templateUrl: 'app/layout/shell.in.html'
                             }
+                        },
+                        resolve: {
+                            admin: ['securityService', function (security) {
+                                    return security.requireAuthenticatedUser();
+                                }]
                         }
                     }
                 },

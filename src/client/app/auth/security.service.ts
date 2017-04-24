@@ -2,11 +2,11 @@ namespace app.auth {
 	'use strict';
 
 	export interface ISecurityService {
-		login: any;
-		logout: any,
-		signup: any,
-		authenticate: any;
-		requestCurrentUser: any,
+		login: (user: any) => ng.IPromise<any>;
+		logout: (redirectTo: string) => void;
+		signup: (user: any) => ng.IPromise<any>;
+		authenticate: (provider: string) => ng.IPromise<any>;
+		requestCurrentUser: () => ng.IPromise<any>;
 		currentUser: null,
 		isAuthenticated: () => boolean,
 		isAdmin: () => boolean,
@@ -18,7 +18,7 @@ namespace app.auth {
 	}
 
 	export class SecurityService implements ISecurityService {
-		static $inject: string[] = ['$auth', '$http', '$location', '$q', '$state', 'localstorage', 
+		static $inject: string[] = ['$auth', '$http', '$location', '$q', '$state', 'localStorage', 
 			'redirectToUrlAfterLogin', 'retryQueue'];
 		constructor(
 			private $auth: satellizer.IAuthService,
@@ -145,5 +145,5 @@ namespace app.auth {
 
 	angular
     .module('app.auth')
-    .service('securityservice', SecurityService);
+    .service('securityService', SecurityService);
 }

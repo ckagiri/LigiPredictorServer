@@ -88,7 +88,7 @@ namespace app.auth {
 
 	angular
     .module('app.auth')
-    .service('retryqueue', RetryQueue);
+    .service('retryQueue', RetryQueue);
 }
 
 	

@@ -6,7 +6,7 @@ namespace app.auth {
 	}
 
 	export class SignupController {
-		static $inject: string[] = ['$auth', '$q', '$state', 'logger'];
+		static $inject: string[] = ['securityService', '$q', '$state', 'logger'];
 
 		constructor(
 			private security: app.auth.ISecurityService,
