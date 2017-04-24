@@ -14,7 +14,13 @@ namespace app.auth {
     });
   }
 
+	appRun.$inject = ['securityservice']
+	function appRun(securityservice: app.auth.ISecurityService) {
+		securityservice.prepareUser();
+	}
+
 	angular.module('app.auth', ['app.core'])
 		.config(config)
-		.value('redirectToUrlAfterLogin', { url: '/' });
+		.value('redirectToUrlAfterLogin', { url: '/' })
+		.run(appRun);
 }

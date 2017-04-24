@@ -8,7 +8,7 @@ namespace app.auth {
 	export class LoginController {
 		static $inject: string[] = ['$auth', '$location', '$q', '$state', 'logger'];
 		constructor(
-			private $auth: satellizer.IAuthService,
+			private security: app.auth.ISecurityService,
 			private $location: ng.ILocationService,
 			private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
@@ -19,25 +19,18 @@ namespace app.auth {
 		title: string = 'Login';
 
 		login() {
-      this.$auth.login<IServerResponse>(this.user)
-        .then((response) => {
-					console.log(response.data);
+      this.security.login(this.user)
+        .then(() => {
           this.logger.success('You have successfully signed in!');
-					this.$location.path('/');
         })
-        .catch((error) => {
+        .catch((error: any) => {
           this.logger.error(error.data.message, error.status);
         });
     }
 
     authenticate(provider: string) {
-      this.$auth.authenticate<IServerResponse>(provider)
-        .then((response) => {
-					console.log(response.data);
-          this.logger.success('You have successfully signed in with ' + provider + '!');
-					this.$location.path('/');
-        })
-        .catch((error) => {
+      this.security.authenticate(provider)
+        .catch((error: any) => {
           if (error.message) {
             // Satellizer promise reject error.
             this.logger.error(error.message);

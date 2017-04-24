@@ -9,7 +9,7 @@ namespace app.auth {
 		static $inject: string[] = ['$auth', '$q', '$state', 'logger'];
 
 		constructor(
-			private $auth: satellizer.IAuthService,
+			private security: app.auth.ISecurityService,
 			private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
       private logger: blocks.logger.Logger) {
@@ -20,13 +20,11 @@ namespace app.auth {
 		title: string = 'Signup';
 
 		signup() {
-      this.$auth.signup<ISignupServerResponse>(this.user)
-        .then((response) => {
-          this.$auth.setToken(response.data.token);
-          this.$state.go('/');
+      this.security.signup(this.user)
+        .then(() => {
           this.logger.info('You have successfully created a new account and have been signed-in');
         })
-        .catch((response) => {
+        .catch((response: any) => {
           this.logger.error(response.data.message);
         });
     };
