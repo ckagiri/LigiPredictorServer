@@ -92,9 +92,11 @@ namespace blocks.router {
 				var otherwise = '/404';
 				$urlRouterProvider.otherwise(otherwise);
 
-				homeRoute.$inject = ['$state'];
-				function homeRoute($state: ng.ui.IStateService) {
-					$state.go('app.index', null, { reload: true });
+				homeRoute.$inject = ['$state', '$timeout'];
+				function homeRoute($state: ng.ui.IStateService, $timeout: ng.ITimeoutService) {
+					$timeout(function() {  // Necessary to prevent race condition with UI router (site loads in popup)
+						$state.go('app.index', null, { reload: true });
+					}, 500);
 				}
 
 				notFoundRoute.$inject = ['$state'];

@@ -61,13 +61,15 @@ namespace app.auth {
 		signup(user: any) {
 			return this.$auth.signup(user).then((response: any) => {
 				this.saveUser(response.data.user);
+				this.$location.path('/');
 			});
 		}		
 
 		authenticate(provider: string) {
 			return this.$auth.authenticate(provider)
-        .then((response) => {
+        .then((response: any) => {
 					console.log(response.data);
+					this.saveUser(response.data.user);
 					this.$location.path('/');
         })
 		}
