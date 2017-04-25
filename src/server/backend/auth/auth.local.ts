@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import {User} from './user.model';
-import {createJWT} from './oauth';
+import {createJWT} from './helpers';
 
 export function login(req: Request, res: Response) {
   User.findOne({ email: req.body.email }, '+password', function(err, user) {

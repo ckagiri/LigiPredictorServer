@@ -3,7 +3,7 @@ import * as request from 'request';
 import * as jwt from 'jwt-simple';
 import {config} from '../../config/environment';
 import {User} from './user.model';
-import {createJWT} from './oauth';
+import {createJWT} from './helpers';
 
 export function facebookAuth(req: Request, res: Response) {
   var fields = ['id', 'email', 'first_name', 'last_name', 'link', 'name'];
@@ -52,7 +52,7 @@ export function facebookAuth(req: Request, res: Response) {
         User.findOne({ facebook: profile.id }, function(err, existingUser) {
           if (existingUser) {
             var token = createJWT(existingUser);
-            return res.send({ token: token });
+            return res.send({ token: token, user: existingUser });
           }
           var user = new User();
           user.facebook = profile.id;

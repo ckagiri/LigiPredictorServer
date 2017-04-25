@@ -3,7 +3,7 @@ import * as request from 'request';
 import * as jwt from 'jwt-simple';
 import {config} from '../../config/environment';
 import {User} from './user.model';
-import {createJWT} from './oauth';
+import {createJWT} from './helpers';
 
 export function googleAuth(req: Request, res: Response) {
   var accessTokenUrl = 'https://accounts.google.com/o/oauth2/token';
