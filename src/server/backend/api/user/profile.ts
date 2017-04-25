@@ -1,7 +1,7 @@
 import {Router, Request, Response} from 'express';
 import * as moment from 'moment';
 import * as jwt from "jwt-simple";
-import {ensureAuthenticated} from '../../auth/oauth';
+import {ensureAuthenticated} from '../../auth/helpers';
 import {config} from '../../../config/environment';
 import {User} from '../../auth/user.model';
 let router = Router();
