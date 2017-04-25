@@ -31,7 +31,7 @@ namespace app.auth {
 		push(retryItem: IRetryItem) {
 			this.retryQueue.push(retryItem);
 				// Call all the onItemAdded callbacks
-				ng.forEach(this.onItemAddedCallbacks, function(cb) {
+				angular.forEach(this.onItemAddedCallbacks, (cb) => {
 					try {
 						cb(retryItem);
 					} catch(e) {

@@ -14,9 +14,9 @@ namespace app.auth {
     });
   }
 
-	appRun.$inject = ['securityservice']
-	function appRun(securityservice: app.auth.ISecurityService) {
-		securityservice.prepareUser();
+	appRun.$inject = ['securityService']
+	function appRun(security: app.auth.ISecurityService) {
+		security.prepareUser();
 	}
 
 	angular.module('app.auth', ['app.core'])

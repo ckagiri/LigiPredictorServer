@@ -139,6 +139,12 @@ namespace blocks.router {
 						$rootScope.title = title; // data bind to <title>
 					}
 				);
+
+				$rootScope.$on('$stateChangeSuccess', function () {
+					setTimeout(function () {
+						window.scrollTo(0, 0);
+					}, 50);
+        });
 			}
 
 			function getStates(): ng.ui.IState[] {

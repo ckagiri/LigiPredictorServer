@@ -18,7 +18,7 @@ namespace app.auth {
 	}
 
 	export class SecurityService implements ISecurityService {
-		static $inject: string[] = ['$auth', '$http', '$location', '$q', '$state', 'localStorage', 
+		static $inject: string[] = ['$auth', '$http', '$location', '$q', '$state', 'localstorage', 
 			'redirectToUrlAfterLogin', 'retryQueue'];
 		constructor(
 			private $auth: satellizer.IAuthService,
@@ -30,7 +30,7 @@ namespace app.auth {
 			private redirectToUrlAfterLogin: any,
 			private queue: IRetryQueue
 		) {	
-			this.queue.onItemAddedCallbacks.push(function(retryItem: any) {
+			this.queue.onItemAddedCallbacks.push((retryItem: any) => {
 				if (queue.hasMore()) {
 					this.saveAttemptUrl();
 					this.gotoLogin();
