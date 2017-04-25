@@ -12,10 +12,7 @@ export function login(req: Request, res: Response) {
         return res.status(401).send({ message: 'Invalid email and/or password' });
       }
       var token = createJWT(user);
-			var userObj:any = user.toObject();
-      delete userObj.password;
-
-      res.send({ token: token, user: userObj });
+      res.send({ token: token, user: user });
     });
   });
 }
@@ -34,11 +31,8 @@ export function signup(req: Request, res: Response) {
       if (err) {
         res.status(500).send({ message: err.message });
       }
-			var token = createJWT(user);
-			var userObj:any = user.toObject();
-      delete userObj.password;
-			
-			res.send({ token: token, user: userObj });
+			var token = createJWT(user);		
+			res.send({ token: token, user: user });
     });
   });
 }
