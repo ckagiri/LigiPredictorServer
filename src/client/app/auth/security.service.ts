@@ -3,7 +3,7 @@ namespace app.auth {
 
 	export interface ISecurityService {
 		login: (user: any) => ng.IPromise<any>;
-		logout: (redirectTo: string) => void;
+		logout: (redirectTo?: string) => ng.IPromise<any>;
 		signup: (user: any) => ng.IPromise<any>;
 		authenticate: (provider: string) => ng.IPromise<any>;
 		requestCurrentUser: () => ng.IPromise<any>;
@@ -33,7 +33,7 @@ namespace app.auth {
 			this.queue.onItemAddedCallbacks.push((retryItem: any) => {
 				if (queue.hasMore()) {
 					this.saveAttemptUrl();
-					this.gotoLogin();
+					this.$location.path('/login');
 				}
 			});
 		}
@@ -51,10 +51,10 @@ namespace app.auth {
 			});
 		}
 
-		logout(redirectTo: string) {
-			this.$auth.logout().then(() => {
+		logout(redirectTo?: string) {
+			return this.$auth.logout().then(() => {
 				this.clearUser();
-				this.$location.path('/login');
+				this.$location.path(redirectTo);
 			});
 		}
 		
@@ -133,10 +133,6 @@ namespace app.auth {
 		clearUser() {
 			this.storage.removeItem('user');
 			this.currentUser = null;
-		}
-
-		private gotoLogin() {
-			this.$location.path('/login');
 		}
 
 		private redirect(url: string) {

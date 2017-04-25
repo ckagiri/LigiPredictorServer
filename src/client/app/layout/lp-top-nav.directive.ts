@@ -5,7 +5,6 @@ namespace applayout {
     navline: string
   }
 
-
   class LpTopNav implements ng.IDirective {
 		static $inject: string[] = [''];
     constructor() { }
@@ -24,23 +23,22 @@ namespace applayout {
   }
 
   class TopNavController {
-		static $inject: string[] = ['$auth', '$state', 'logger'];
-		constructor(private $auth: satellizer.IAuthService,
-			private $state: ng.ui.IStateService,
-			private logger: blocks.logger.Logger) {
+		static $inject: string[] = ['$state', 'logger', 'securityService'];
+		constructor(private $state: ng.ui.IStateService,
+			private logger: blocks.logger.Logger,
+			private security: app.auth.ISecurityService) {
 		}			
 
 		isAuthenticated() {
-			return this.$auth.isAuthenticated();
+			return this.security.isAuthenticated();
 		}
 
 		logout() {
-			if (!this.$auth.isAuthenticated()) { return; }
-			this.$auth.logout()
-      .then(() => {
-        this.logger.info('You have been logged out');
-        this.$state.go('xapp.login');
-      });
+			if (!this.security.isAuthenticated()) { return; }
+			this.security.logout()
+				.then(() => {
+					this.logger.info('You have been logged out');
+				});
 		}
   }
 

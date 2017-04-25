@@ -4,7 +4,7 @@
   </div>
   <ul class="nav navbar-nav">
     <li><a href="/">Home</a></li>
-    <li ng-if="vm.isAuthenticated()"><a href="/#/profile">Profile</a></li>
+    <li ng-if="vm.isAuthenticated()"><a href="">Profile</a></li>
   </ul>
   <ul ng-if="!vm.isAuthenticated()" class="nav navbar-nav pull-right">
     <li><a ui-sref="xapp.login">Login</a></li>
