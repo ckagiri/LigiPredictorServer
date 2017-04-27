@@ -68,9 +68,12 @@ namespace app.auth {
 		authenticate(provider: string) {
 			return this.$auth.authenticate(provider)
         .then((response: any) => {
-					this.saveUser(response.data.user);
-					this.redirect();
-        })
+				this.currentUser = response.data.user;
+				if (this.isAuthenticated()) {
+						this.queue.clear();
+				}
+				this.redirectToAttemptedUrl();
+			});
 		}
 
 		requestCurrentUser() {
