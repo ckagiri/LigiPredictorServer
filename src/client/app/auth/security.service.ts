@@ -33,7 +33,7 @@ namespace app.auth {
 			this.queue.onItemAddedCallbacks.push((retryItem: any) => {
 				if (queue.hasMore()) {
 					this.saveAttemptUrl();
-					this.$location.path('/login');
+					this.redirect('/login');
 				}
 			});
 		}
@@ -43,34 +43,33 @@ namespace app.auth {
 		login(credentials: any) {
 			var request = this.$auth.login(credentials);
 			return request.then((response: any) => {
-					this.currentUser = response.data.user;
-					if (this.isAuthenticated()) {
-							this.queue.clear();
-					}
-					return this.isAuthenticated();
+				this.currentUser = response.data.user;
+				if (this.isAuthenticated()) {
+						this.queue.clear();
+				}
+				this.redirectToAttemptedUrl();
 			});
 		}
 
 		logout(redirectTo?: string) {
 			return this.$auth.logout().then(() => {
 				this.clearUser();
-				this.$location.path(redirectTo);
+				this.redirect(redirectTo);
 			});
 		}
 		
 		signup(user: any) {
 			return this.$auth.signup(user).then((response: any) => {
 				this.saveUser(response.data.user);
-				this.$location.path('/');
+				this.redirect();
 			});
 		}		
 
 		authenticate(provider: string) {
 			return this.$auth.authenticate(provider)
         .then((response: any) => {
-					console.log(response.data);
 					this.saveUser(response.data.user);
-					this.$location.path('/');
+					this.redirect();
         })
 		}
 
@@ -79,20 +78,20 @@ namespace app.auth {
 		}
 
 		isAuthenticated() {
-				return !!this.currentUser;
+			return !!this.currentUser;
 		}
 
 		isAdmin() {
-				return !!(this.currentUser && this.currentUser.admin);
+			return !!(this.currentUser && this.currentUser.admin);
 		}
 
 		requireAdminUser() {
-				var promise = this.requestCurrentUser().then((user) => {
-						if (!this.isAdmin()) {
-								return this.queue.pushRetryFn('unauthorized-client', this.requireAdminUser);
-						}
-				});
-				return promise;
+			var promise = this.requestCurrentUser().then((user) => {
+				if (!this.isAdmin()) {
+					return this.queue.pushRetryFn('unauthorized-client', this.requireAdminUser);
+				}
+			});
+			return promise;
 		}
 
 		requireAuthenticatedUser() {
@@ -104,7 +103,7 @@ namespace app.auth {
 			return promise;
 		}
 
-    saveAttemptUrl() {
+		saveAttemptUrl() {
 			if (this.$location.path().toLowerCase() != '/login') {
 				this.redirectToUrlAfterLogin.url = this.$location.path();
 			}
@@ -114,7 +113,7 @@ namespace app.auth {
 			this.redirect(this.redirectToUrlAfterLogin.url);
 		}
 
-		prepareUser(user: any) {
+		prepareUser(user?: any) {
 			let currentUser = user || this.storage.getItem('user');
 			if(currentUser) {
 				this.currentUser = this.currentUser = currentUser;
@@ -135,7 +134,7 @@ namespace app.auth {
 			this.currentUser = null;
 		}
 
-		private redirect(url: string) {
+		private redirect(url?: string) {
 			url = url || '/';
 			this.$location.path(url);
 		}

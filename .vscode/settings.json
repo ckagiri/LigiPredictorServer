@@ -4,5 +4,6 @@
 		"**/*.js.map": true,
     "**/*.js": {"when": "$(basename).ts"}
   },
+  "editor.tabSize": 2,
   "typescript.tsdk": "./node_modules/typescript/lib"
 }
