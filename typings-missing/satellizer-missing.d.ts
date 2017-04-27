@@ -1,5 +1,4 @@
-﻿/// <reference path="./tsd.d.ts" />
-declare module satellizer {
+﻿declare module satellizer {
     //TODO finalize the declaration and propose it to definitely typed .org
 
     //https://github.com/sahat/satellizer#api-reference
@@ -21,7 +20,7 @@ declare module satellizer {
          *      password: $scope.password
          * });
         */
-        login<T>(user: any): angular.IHttpPromise<T>;
+        login<T>(user: any): ng.IHttpPromise<T>;
 
         /**
          * $auth.signup(user)
@@ -39,9 +38,9 @@ declare module satellizer {
          *      }).then(function(response) {
          *          console.log(response.data);});
          */
-        signup<T>(user: any): angular.IHttpPromise<T>;
-        authenticate<T>(name: string, userData?: any): angular.IHttpPromise<T>;
-        logout<T>(): angular.IHttpPromise<T>; //TODO double check the type of the response
+        signup<T>(user: any): ng.IHttpPromise<T>;
+        authenticate<T>(name: string, userData?: any): ng.IHttpPromise<T>;
+        logout<T>(): ng.IHttpPromise<T>; //TODO double check the type of the response
 
         /**
          * $auth.isAuthenticated()
@@ -67,11 +66,11 @@ declare module satellizer {
          *      </ul>
          */
         isAuthenticated():boolean;
-        link<T>(provider, userData?: any):angular.IHttpPromise<T>;
-        unlink(provider: string): angular.IHttpPromise<void>;
+        link<T>(provider: string, userData?: any):ng.IHttpPromise<T>;
+        unlink(provider: string): ng.IHttpPromise<void>;
         getToken():string;
         getPayload():string;
-        setToken(token: string, isLinking?: boolean);
-        removeToken();
+        setToken(token: string, isLinking?: boolean): void;
+        removeToken(): void;
     }
 }
