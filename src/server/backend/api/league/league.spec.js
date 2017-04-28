@@ -16,6 +16,7 @@ var clearAllLeagues = function (done) {
 };
 var newLeague = { name: 'English Premier League' };
 var addLeague = function (league) {
+    console.log(league);
     return new Promise(function (resolve) {
         request(server_1.server)
             .post('/api/leagues')

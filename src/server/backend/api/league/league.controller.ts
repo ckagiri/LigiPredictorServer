@@ -30,6 +30,7 @@ export class LeagueController {
     let newLeague = req.body;
     League.create(newLeague, (err, league) => {
       if (err) {
+				console.log(err);
         return res.status(400).json(err);
       }
       return res.status(201).json(league);

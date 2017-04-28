@@ -51,7 +51,6 @@ testem.log
 src/**/*.map
 src/**/*.js
 
-
 # testing
 **/test/coverage
 report

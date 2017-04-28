@@ -18,9 +18,10 @@ const clearAllLeagues = (done: any) => {
   });
 }
 
-const newLeague = {name: 'English Premier League'}
+const newLeague = {name: 'English Premier League', slug: "english_premier_league"}
 
 const addLeague = (league: any) => {
+	console.log(league);
   return new Promise((resolve: any) => {
     request(app)
       .post('/api/leagues')
@@ -28,7 +29,7 @@ const addLeague = (league: any) => {
       .expect('Content-Type', /json/)
       .expect(201)
       .end((err: any) => {
-        if (err) { throw err.message; }
+        if (err) { throw err; }
         resolve();
       });
   });

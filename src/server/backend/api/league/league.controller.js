@@ -30,6 +30,7 @@ var LeagueController = (function () {
         var newLeague = req.body;
         league_model_1.League.create(newLeague, function (err, league) {
             if (err) {
+                console.log(err);
                 return res.status(400).json(err);
             }
             return res.status(201).json(league);
