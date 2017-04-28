@@ -384,17 +384,17 @@ gulp.task('browserSyncReload', ['optimize'], browserSync.reload);
 
 // Set NODE_ENV to 'test'
 gulp.task('env:test', function () {
-  process.env.NODE_ENV = 'test';
+  return process.env.NODE_ENV = 'test';
 });
 
 // Set NODE_ENV to 'development'
 gulp.task('env:dev', function () {
-  process.env.NODE_ENV = 'development';
+	return process.env.NODE_ENV = 'development';
 });
 
 // Set NODE_ENV to 'production'
 gulp.task('env:prod', function () {
-  process.env.NODE_ENV = 'production';
+  return process.env.NODE_ENV = 'production';
 });
 
 gulp.task('prod', ['build', 'env:prod'], function() {

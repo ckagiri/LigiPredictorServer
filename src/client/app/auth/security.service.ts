@@ -43,7 +43,7 @@ namespace app.auth {
 		login(credentials: any) {
 			var request = this.$auth.login(credentials);
 			return request.then((response: any) => {
-				this.currentUser = response.data.user;
+				this.saveUser(response.data.user);
 				if (this.isAuthenticated()) {
 						this.queue.clear();
 				}
@@ -68,11 +68,11 @@ namespace app.auth {
 		authenticate(provider: string) {
 			return this.$auth.authenticate(provider)
         .then((response: any) => {
-				this.currentUser = response.data.user;
-				if (this.isAuthenticated()) {
-						this.queue.clear();
-				}
-				this.redirectToAttemptedUrl();
+					this.saveUser(response.data.user);
+					if (this.isAuthenticated()) {
+							this.queue.clear();
+					}
+					this.redirectToAttemptedUrl();
 			});
 		}
 

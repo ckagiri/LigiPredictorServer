@@ -11,8 +11,14 @@
     "start:dev": "gulp dev && concurrently \"gulp tsc-watcher\" \"nodemon src/server/backend/server.js\"",
     "test": "gulp test",
     "tsd:reinstall": "tsd reinstall -so",
-    "db:seed": "gulp env:dev&&node src/server/db/tasks/seed.js",
-		"db:dev:seeduser": "gulp tsc-server&&node src/server/db/tasks/seed-user.js"
+		"db:dev:seeduser": "gulp tsc-server&&node src/server/db/tasks/seed-user.js",
+		"db:seed": "SET NODE_ENV=development&&node src/server/db/tasks/seed.js",
+    "db:test:dropseed": "SET NODE_ENV=test&&node src/server/db/tasks/drop-seed.js",
+    "db:dev:dropseed": "SET NODE_ENV=development&&node src/server/db/tasks/drop-seed.js",
+    "db:reset": "SET NODE_ENV=development&&node src/server/db/tasks/reset.js",
+		"test:mocha": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
+    "test:mocha:spec": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.test.ts",
+    "mocha": "node node_modules/mocha/bin/mocha  --reporter spec src/server/db/**/*.test.js"
   },
   "repository": {
     "type": "git",
