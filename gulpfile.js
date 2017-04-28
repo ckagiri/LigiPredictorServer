@@ -384,7 +384,9 @@ gulp.task('browserSyncReload', ['optimize'], browserSync.reload);
 
 // Set NODE_ENV to 'test'
 gulp.task('env:test', function () {
-  return process.env.NODE_ENV = 'test';
+	const envs = $.env.set({
+    NODE_ENV: 'debug'
+  });
 });
 
 // Set NODE_ENV to 'development'

@@ -14,7 +14,7 @@ var clearAllLeagues = function (done) {
         done();
     });
 };
-var newLeague = { name: 'English Premier League' };
+var newLeague = { name: 'English Premier League', slug: "english_premier_league" };
 var addLeague = function (league) {
     console.log(league);
     return new Promise(function (resolve) {
@@ -25,7 +25,7 @@ var addLeague = function (league) {
             .expect(201)
             .end(function (err) {
             if (err) {
-                throw err.message;
+                throw err;
             }
             resolve();
         });
