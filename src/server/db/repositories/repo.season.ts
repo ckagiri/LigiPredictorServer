@@ -1,9 +1,9 @@
 import {AbstractRepo} from './repo.abstract';
-import {modelFactory} from './factory.model';
+import {Season} from '../models/season.model';
 
 export class SeasonRepo extends AbstractRepo {
   constructor(converter: any) {
-    super(modelFactory.seasonModel, converter);
+    super(Season, converter);
   }  
 
   findByYear(year: number){    

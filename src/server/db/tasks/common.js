@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var async = require("async");
 var mongoose = require("mongoose");
-var models_1 = require("../../backend/api/models");
+var models_1 = require("../../db/models");
 var environment_1 = require("../../config/environment");
 var Promise = require('bluebird');
 mongoose.Promise = Promise;

@@ -2,7 +2,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 import * as async from 'async';
 import * as mongoose from 'mongoose';
-import dataModels from '../../backend/api/models';
+import dbModels from '../../db/models';
 import {config} from '../../config/environment';
 
 const Promise = require('bluebird'); 
@@ -13,7 +13,7 @@ const seeder = require('mongoose-seeder');
 
 export const connect = (callback: any) => {
   mongoose.connect(config.mongo.uri);
-  mongoose.connection.on('open', callback.bind(callback, null, dataModels));
+  mongoose.connection.on('open', callback.bind(callback, null, dbModels));
 };
 
 export const drop = (models: any[], callback: any) => {

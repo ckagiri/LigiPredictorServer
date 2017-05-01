@@ -11,11 +11,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
-var factory_model_1 = require("./factory.model");
+var fixture_model_1 = require("../models/fixture.model");
 var FixtureRepo = (function (_super) {
     __extends(FixtureRepo, _super);
     function FixtureRepo(converter) {
-        return _super.call(this, factory_model_1.modelFactory.fixtureModel, converter) || this;
+        return _super.call(this, fixture_model_1.Fixture, converter) || this;
     }
     return FixtureRepo;
 }(repo_abstract_1.AbstractRepo));

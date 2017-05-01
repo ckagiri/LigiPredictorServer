@@ -1,8 +1,8 @@
 import {AbstractRepo} from './repo.abstract';
-import {modelFactory} from './factory.model';
+import {Fixture} from '../models/fixture.model';
 
 export class FixtureRepo extends AbstractRepo {
   constructor(converter: any) {
-    super(modelFactory.fixtureModel, converter);
+    super(Fixture, converter);
   }  
 }

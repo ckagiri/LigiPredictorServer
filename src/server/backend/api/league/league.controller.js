@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("lodash");
-var league_model_1 = require("./league.model");
+var league_model_1 = require("../../../db/models/league.model");
 var LeagueController = (function () {
     function LeagueController() {
     }

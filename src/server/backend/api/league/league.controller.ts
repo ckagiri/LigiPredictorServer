@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import * as _ from 'lodash';
-import {League} from './league.model';
+import {League} from '../../../db/models/league.model';
 
 export class LeagueController {
 

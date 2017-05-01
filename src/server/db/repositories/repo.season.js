@@ -11,11 +11,11 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
-var factory_model_1 = require("./factory.model");
+var season_model_1 = require("../models/season.model");
 var SeasonRepo = (function (_super) {
     __extends(SeasonRepo, _super);
     function SeasonRepo(converter) {
-        return _super.call(this, factory_model_1.modelFactory.seasonModel, converter) || this;
+        return _super.call(this, season_model_1.Season, converter) || this;
     }
     SeasonRepo.prototype.findByYear = function (year) {
         return this.findAll({ year: year });

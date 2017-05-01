@@ -4,7 +4,7 @@ process.env.NODE_ENV = 'test';
 var chai = require("chai");
 var request = require("supertest");
 var server_1 = require("../../server");
-var league_model_1 = require("./league.model");
+var league_model_1 = require("../../../db/models/league.model");
 var mongoose = require("mongoose");
 var Promise = require('bluebird');
 chai.should();

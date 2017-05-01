@@ -2,7 +2,7 @@
 
 import * as async from 'async';
 import * as mongoose from 'mongoose';
-import {User, IUserModel} from '../../backend/auth/user.model'
+import {User, IUserModel} from '../../db/models/user.model'
 import {config} from '../../config/environment';
 
 const Promise = require('bluebird'); 

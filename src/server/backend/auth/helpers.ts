@@ -2,7 +2,7 @@ import * as moment from 'moment';
 import * as jwt from 'jwt-simple';
 import {Router, Request, Response, NextFunction} from 'express';
 import {config} from '../../config/environment';
-import {IUserModel, User} from './user.model';
+import {IUserModel, User} from '../../db/models/user.model';
 
 export function createJWT(user: IUserModel) {
   var payload = {

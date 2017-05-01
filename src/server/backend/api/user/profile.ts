@@ -3,7 +3,7 @@ import * as moment from 'moment';
 import * as jwt from "jwt-simple";
 import {ensureAuthenticated} from '../../auth/helpers';
 import {config} from '../../../config/environment';
-import {User} from '../../auth/user.model';
+import {User} from '../../../db/models/user.model';
 let router = Router();
 
 class ProfileRouter {

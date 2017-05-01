@@ -11,12 +11,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
-var factory_model_1 = require("./factory.model");
+var team_model_1 = require("../models/team.model");
 var Promise = require('bluebird');
 var TeamRepo = (function (_super) {
     __extends(TeamRepo, _super);
     function TeamRepo(converter) {
-        return _super.call(this, factory_model_1.modelFactory.teamModel, converter) || this;
+        return _super.call(this, team_model_1.Team, converter) || this;
     }
     return TeamRepo;
 }(repo_abstract_1.AbstractRepo));

@@ -2,7 +2,7 @@ import {Request, Response} from 'express';
 import * as request from 'request';
 import * as jwt from 'jwt-simple';
 import {config} from '../../config/environment';
-import {User} from './user.model';
+import {User} from '../../db/models/user.model';
 import {createJWT} from './helpers';
 
 export function googleAuth(req: Request, res: Response) {

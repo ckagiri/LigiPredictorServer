@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import {User} from './user.model';
+import {User} from '../../db/models/user.model';
 import {createJWT} from './helpers';
 
 export function login(req: Request, res: Response) {

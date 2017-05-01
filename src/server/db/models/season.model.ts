@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import {IMatchRound, matchRoundSchema} from './matchround.model';
+import {IMatchRound, matchRoundSchema} from './match-round.model';
 const Schema = mongoose.Schema;
 
 export interface ISeason {
