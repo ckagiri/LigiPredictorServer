@@ -90,7 +90,7 @@ namespace app.auth {
 
 		requireAdminUser() {
 			var promise = this.requestCurrentUser().then((user) => {
-				if (!this.isAdmin()) {
+				if (!this.isAuthenticated()) {
 					return this.queue.pushRetryFn('unauthorized-client', this.requireAdminUser);
 				}
 			});

@@ -61,7 +61,12 @@ var app;
                         templateUrl: 'app/admin/leagues/leagues.html',
                         controller: 'LeaguesController',
                         controllerAs: 'vm',
-                        title: 'leagues'
+                        title: 'leagues',
+                        resolve: {
+                            leagues: ['LeaguesResource', function (Leagues) {
+                                    return Leagues.all();
+                                }]
+                        }
                     }
                 },
                 {

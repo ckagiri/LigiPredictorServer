@@ -61,7 +61,12 @@ namespace app.core {
           templateUrl: 'app/admin/leagues/leagues.html',
           controller: 'LeaguesController',
           controllerAs: 'vm',
-          title: 'leagues'
+          title: 'leagues',
+					resolve:{
+						leagues:['LeaguesResource', function (Leagues: app.core.ILeaguesResource) {
+							return Leagues.all();
+						}]
+					}
         }
       },
 			{

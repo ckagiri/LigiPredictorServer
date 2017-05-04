@@ -1,74 +1,114 @@
-import {HttpService} from './http.service';
+namespace app.core {
+  'use strict';
 
-export class Resource {
-    public url: string;
+	export interface StaticResource {
+		all(cb?: any, errorcb?: any): ng.IPromise<any>;
+		query(queryJson?: any, successcb?: any, errorcb?: any): ng.IPromise<any>;
+		getById(id: number, successcb?: any, errorcb?: any): ng.IPromise<any>;
+	}
+	export interface InstanceResource {
+		id(): number;
+		save(successcb?: any, errorcb?: any): ng.IPromise<any>;
+		update(successcb?: any, errorcb?: any): ng.IPromise<any>;
+		remove(successcb?: any, errorcb?: any): ng.IPromise<any>;
+		saveOrUpdate(successcb?: any, errorcb?: any, errorSavecb?: any, errorUpdatecb?: any): ng.IPromise<any>;
+	}
 
-    constructor(protected httpService: HttpService) { }
+	export interface IResource extends StaticResource, InstanceResource {	}
 
-    create(data: any): ng.IPromise<any> {
-       return this.request('POST', `${this.addSlash(this.url)}new`, null, data);
-    }
+	ResourceFactory.$inject = ['config','$http', '$q']
+	function ResourceFactory(config: any, $http: ng.IHttpService, $q: ng.IQService) {
+		return function (resourceName: string) {
+			var url = config.baseUrl + '/api/' + resourceName;
+			var defaultParams = {};
 
-    get(id: string): ng.IPromise<any> {
-       return this.request('GET', `${this.addSlash(this.url)}:id`, {id});
-    }
+			var Resource: StaticResource;
+			Resource = class Resource implements InstanceResource {
+				constructor(data: any) {
+					angular.extend(this, data);
+				}
 
-    update(id: string, data: any): ng.IPromise<any> {
-       return this.request('PUT', `${this.addSlash(this.url)}:id`, {id}, data);
-    }
+				_id: number;
 
-    delete(id: string): ng.IPromise<any> {
-       return this.request('DELETE', `${this.addSlash(this.url)}:id`, {id});
-    }
+				static all(cb: any, errorcb: any) {
+					return Resource.query({}, cb, errorcb);
+				}
 
-		protected addSlash(url: string): string {
-			return url && url.indexOf('/', url.length - 1) === -1 ? `${url}/` : url;
-    }
+				static query(queryJson: any, successcb: any, errorcb: any) {
+					var params = angular.isObject(queryJson) ? {q:JSON.stringify(queryJson)} : {};
+					var httpPromise = $http.get(url, {params:angular.extend({}, defaultParams, params)});
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb, true);
+				}
 
-    protected request(method: string,
-                      url: string,
-                      parameters?: any,
-                      data?: any,
-                      headers?: any,
-                      responseHandler?: (response: any) => void,
-                      errorHandler?: (error: any, response?: any, request?: any) => void): ng.IPromise<any> {
-        let body = JSON.stringify(data);
-        let headers_ = headers;
-        let options = { headers: headers_ };
+				static getById(id: number, successcb: any, errorcb: any) {
+					var httpPromise = $http.get(url + '/' + id, {params:defaultParams});
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
+				}
 
-        let request_ = { method, url, parameters, data, headers };
-        if(method === 'POST') {
-            return this.addHandlers(
-							this.httpService.post(url, parameters, body, options), responseHandler, errorHandler, request_);
-        } if(method === 'PUT') {
-            return this.addHandlers(
-							this.httpService.put(url, parameters, body, options), responseHandler, errorHandler, request_);
-        } if(method === 'DELETE') {
-            return this.addHandlers(
-							this.httpService.delete(url, parameters, options), responseHandler, errorHandler, request_);
-        } else { // method === 'GET'
-            return this.addHandlers(
-							this.httpService.get(url, parameters, options), responseHandler, errorHandler, request_);
-        }
-    }
+				id() {
+					if (this._id) {
+						return this._id;
+					}
+					return 0;
+				}
 
-    protected addHandlers(promise: ng.IPromise<any>,
-                     responseHandler?: (response: any) => void,
-                     errorHandler?: (error: any, response?: any, request?: any) => void,
-                     request?: any): ng.IPromise<any> {
-        return promise.catch((error:any) => {
-            let error_ = error.text() ? error.json() : error.text();
-            if(errorHandler) {
-                errorHandler(error_, error, request);
-            }
-            return null;//promise.(error_);
-        }).then((response: any) => {
-            if(responseHandler) {
-                responseHandler(response);
-            }
-            return response;
-        });
-    }
+				save(successcb: any, errorcb: any) {
+					var httpPromise = $http.post(url, this, {params:defaultParams});
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
+				}
 
-   
+				update(successcb: any, errorcb: any) {
+					var httpPromise = $http.put(url + "/" + this.id(), angular.extend({}, this, {_id:undefined}), {params:defaultParams});
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
+				}
+
+				remove(successcb: any, errorcb: any) {
+					var httpPromise = $http['delete'](url + "/" + this.id(), {params:defaultParams});
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
+				}
+
+				saveOrUpdate(savecb: any, updatecb: any, errorSavecb: any, errorUpdatecb: any) {
+					if (this.id()) {
+						return this.update(updatecb, errorUpdatecb);
+					} else {
+						return this.save(savecb, errorSavecb);
+					}
+				}
+
+				private static thenFactoryMethod(httpPromise: ng.IHttpPromise<any>, successcb: any, errorcb: any, isArray?: boolean) {
+					var scb = successcb || angular.noop;
+					var ecb = errorcb || angular.noop;
+
+					return httpPromise.then(function (response: any) {
+						var result;
+						if (isArray) {
+							result = [];
+							for (var i = 0; i < response.data.length; i++) {
+								result.push(new Resource(response.data[i]));
+							}
+						} else {
+							if (response.data === " null "){
+								return $q.reject({
+									code:'resource.notfound',
+									resource:resourceName
+								});
+							} else {
+								result = new Resource(response.data);
+							}
+						}
+						scb(result, response.status, response.headers, response.config);
+						return result;
+					}, function (response: any) {
+						ecb(undefined, response.status, response.headers, response.config);
+						return undefined;
+					})
+				}
+			}
+			return Resource;
+		}
+	}
+
+  angular
+    .module('app.core')
+    .factory('resource', ResourceFactory);
 }

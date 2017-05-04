@@ -3,7 +3,8 @@ namespace app.core {
 
   var config = {
     appErrorPrefix: '[Ligi:Error] ',
-    appTitle: 'Ligi Predictor'
+    appTitle: 'Ligi Predictor',
+		baseUrl: ''
   };
 
   angular

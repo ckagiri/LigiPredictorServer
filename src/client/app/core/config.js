@@ -5,7 +5,8 @@ var app;
         'use strict';
         var config = {
             appErrorPrefix: '[Ligi:Error] ',
-            appTitle: 'Ligi Predictor'
+            appTitle: 'Ligi Predictor',
+            baseUrl: ''
         };
         angular
             .module('app.core')

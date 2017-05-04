@@ -6,9 +6,10 @@ namespace admin.leagues {
 	}
 
 	export class LeaguesController implements ILeaguesVm {
-		static $inject: string[] = ['$q', 'logger'];
+		static $inject: string[] = ['$q', 'leagues', 'logger'];
 
 		constructor(private $q: ng.IQService,
+			private leagues: app.core.IResource,
       private logger: blocks.logger.Logger) {
     }
 
