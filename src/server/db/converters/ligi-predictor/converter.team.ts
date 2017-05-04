@@ -1,6 +1,6 @@
 import * as Rx from 'rxjs';
 
-export class DefaultLeagueConverter {
+export class TeamConverter {
   provider = 'LIGI';
 
   from(obj: any) {
@@ -11,8 +11,10 @@ export class DefaultLeagueConverter {
         }
       },
       name: obj.name,
+      shortName: obj.shortName,
       code: obj.code,
-      slug: obj.slug
+      slug: obj.slug,
+      aliases: obj.aliases
     });
   }
 }

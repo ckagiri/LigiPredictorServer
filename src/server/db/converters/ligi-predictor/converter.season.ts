@@ -1,6 +1,6 @@
 import * as Rx from 'rxjs';
 
-export class DefaultSeasonConverter {
+export class SeasonConverter {
   provider = 'LIGI';
 
   constructor(private leagueRepo: any){ }

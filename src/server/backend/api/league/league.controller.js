@@ -2,16 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("lodash");
 var league_model_1 = require("../../../db/models/league.model");
+var repo_league_1 = require("../../../db/repositories/repo.league");
+var converter_league_1 = require("../../../db/converters/ligi-predictor/converter.league");
 var LeagueController = (function () {
     function LeagueController() {
+        this.leaguRepo = new repo_league_1.LeagueRepo(new converter_league_1.LeagueConverter());
     }
     LeagueController.prototype.list = function (req, res) {
-        league_model_1.League.find({}, function (err, leagues) {
-            if (err) {
-                return res.status(500).json(err);
-            }
-            ;
-            return res.status(200).json(leagues);
+        this.leaguRepo.findAll()
+            .subscribe(function (leagues) {
+            res.status(200).json(leagues);
+        }, function (err) {
+            console.error(err);
+            res.status(500).json(err);
         });
     };
     LeagueController.prototype.show = function (req, res) {

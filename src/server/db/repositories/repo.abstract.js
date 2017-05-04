@@ -45,6 +45,7 @@ var AbstractRepo = (function () {
         return this.model.findOne(query, projection);
     };
     AbstractRepo.prototype.findAll = function (query, projection, options) {
+        if (query === void 0) { query = {}; }
         return this.model.find(query, projection, options);
     };
     AbstractRepo.prototype.aggregate = function (query, group, sort) {

@@ -1,16 +1,19 @@
 import {Request, Response} from 'express';
 import * as _ from 'lodash';
-import {League} from '../../../db/models/league.model';
+import {League, ILeague, ILeagueModel} from '../../../db/models/league.model';
+import {LeagueRepo} from '../../../db/repositories/repo.league';
+import {LeagueConverter} from '../../../db/converters/ligi-predictor/converter.league';
 
 export class LeagueController {
-
+	private leaguRepo = new LeagueRepo(new LeagueConverter());
   list (req: Request, res: Response) {
-    League.find({}, (err, leagues) => {
-      if (err) {
-        return res.status(500).json(err);
-      };
-      return res.status(200).json(leagues);
-    });
+		this.leaguRepo.findAll()
+			.subscribe((leagues: ILeagueModel[]) => {
+					res.status(200).json(leagues);
+				}, (err: any) => {
+					console.error(err);
+					res.status(500).json(err);
+    		});
   }
 
   show(req: Request, res: Response) {

@@ -47,7 +47,7 @@ export abstract class AbstractRepo {
     return this.model.findOne(query, projection);
   }
 
-  findAll(query: any, projection?: any, options?: any){
+  findAll(query: any = {}, projection?: any, options?: any){
     return this.model.find(query, projection, options);
   }
 
