@@ -3,11 +3,12 @@ import * as _ from 'lodash';
 import {League, ILeague, ILeagueModel} from '../../../db/models/league.model';
 import {LeagueRepo} from '../../../db/repositories/repo.league';
 import {LeagueConverter} from '../../../db/converters/ligi-predictor/converter.league';
+import * as Rx from 'rxjs';
+let leagueRepo = new LeagueRepo(new LeagueConverter());
 
 export class LeagueController {
-	private leaguRepo = new LeagueRepo(new LeagueConverter());
   list (req: Request, res: Response) {
-		this.leaguRepo.findAll()
+		leagueRepo.findAll()
 			.subscribe((leagues: ILeagueModel[]) => {
 					res.status(200).json(leagues);
 				}, (err: any) => {

@@ -4,12 +4,12 @@ var _ = require("lodash");
 var league_model_1 = require("../../../db/models/league.model");
 var repo_league_1 = require("../../../db/repositories/repo.league");
 var converter_league_1 = require("../../../db/converters/ligi-predictor/converter.league");
+var leagueRepo = new repo_league_1.LeagueRepo(new converter_league_1.LeagueConverter());
 var LeagueController = (function () {
     function LeagueController() {
-        this.leaguRepo = new repo_league_1.LeagueRepo(new converter_league_1.LeagueConverter());
     }
     LeagueController.prototype.list = function (req, res) {
-        this.leaguRepo.findAll()
+        leagueRepo.findAll()
             .subscribe(function (leagues) {
             res.status(200).json(leagues);
         }, function (err) {

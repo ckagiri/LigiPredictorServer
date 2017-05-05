@@ -46,7 +46,7 @@ var AbstractRepo = (function () {
     };
     AbstractRepo.prototype.findAll = function (query, projection, options) {
         if (query === void 0) { query = {}; }
-        return this.model.find(query, projection, options);
+        return Rx.Observable.fromPromise(this.model.find(query, projection, options));
     };
     AbstractRepo.prototype.aggregate = function (query, group, sort) {
         return this.model.aggregate({ $match: query }).group(group).sort(sort);
