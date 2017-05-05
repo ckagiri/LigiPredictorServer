@@ -149,11 +149,11 @@ var AbstractRepo = (function () {
     AbstractRepo.prototype.getByApiId = function (apiId) {
         var apiDetailId = "api_detail." + this.provider + ".id";
         var query = (_a = {}, _a[apiDetailId] = apiId, _a);
-        return Rx.Observable.fromPromise(this.findOne(query));
+        return this.findOne(query);
         var _a;
     };
     AbstractRepo.prototype.getById = function (id) {
-        return Rx.Observable.fromPromise(this.findOne({ _id: id }));
+        return this.findOne({ _id: id });
     };
     AbstractRepo.prototype.mapPartial = function (obj) {
         var partial = {

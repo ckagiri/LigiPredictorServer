@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 process.env.NODE_ENV = 'test';
-var Rx = require("rxjs");
 var mongoose = require("mongoose");
 var chai = require("chai");
 var environment_1 = require("../../../config/environment");
@@ -39,7 +38,7 @@ describe('team repo', function () {
     xit('insert', function (done) {
         index_1.ligiTeamRepo.insert(manu)
             .flatMap(function (team) {
-            return Rx.Observable.fromPromise(index_1.ligiTeamRepo.findOne({ _id: team._id }));
+            return index_1.ligiTeamRepo.findOne({ _id: team._id });
         })
             .subscribe(function (res) {
             expect(res.name).to.be.equal(manu.name);

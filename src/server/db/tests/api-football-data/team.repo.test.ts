@@ -43,7 +43,7 @@ describe('team repo', () => {
   xit('insert', function (done) {
     ligiTeamRepo.insert(manu)
       .flatMap(function (team: any) {
-        return Rx.Observable.fromPromise(ligiTeamRepo.findOne({_id: team._id}));
+        return ligiTeamRepo.findOne({_id: team._id});
       })
       .subscribe(function (res: any) {
         expect(res.name).to.be.equal(manu.name);

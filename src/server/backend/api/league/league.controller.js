@@ -16,11 +16,8 @@ var LeagueController = (function () {
         });
     };
     LeagueController.prototype.show = function (req, res) {
-        var slug = req.params.leagueId;
+        var slug = req.params.slug;
         leagueRepo.findOne({ slug: slug })
-            .flatMap(function (league) {
-            return league;
-        })
             .subscribe(function (league) {
             res.status(200).json(league);
         }, function (err) {

@@ -159,11 +159,11 @@ export abstract class AbstractRepo {
   getByApiId(apiId: any) {
     let apiDetailId = `api_detail.${this.provider}.id`;
     let query = {[apiDetailId]: apiId}
-    return Rx.Observable.fromPromise(this.findOne(query));
+    return this.findOne(query);
   }
 
   getById(id: any) {
-    return Rx.Observable.fromPromise(this.findOne({_id: id}));
+    return this.findOne({_id: id});
   }
 
   private mapPartial (obj: any) {

@@ -18,11 +18,8 @@ export class LeagueController {
   }
 
 	show (req: Request, res: Response) {
-		let slug = req.params.leagueId;
+		let slug = req.params.slug;
 		leagueRepo.findOne({slug})
-			.flatMap((league:any) => {
-				return league
-			})
 			.subscribe((league: any) => {
 					res.status(200).json(league);
 				}, (err: any) => {
