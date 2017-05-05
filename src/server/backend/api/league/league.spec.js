@@ -15,14 +15,12 @@ var clearAllLeagues = function (done) {
     });
 };
 var newLeague = { name: 'English Premier League', slug: "english_premier_league" };
-var addLeague = function (league) {
-    console.log(league);
+var getLeagues = function () {
     return new Promise(function (resolve) {
         request(server_1.server)
-            .post('/api/leagues')
-            .send(league)
+            .get('/api/leagues')
             .expect('Content-Type', /json/)
-            .expect(201)
+            .expect(200)
             .end(function (err) {
             if (err) {
                 throw err;
@@ -35,14 +33,8 @@ describe('League API', function () {
     before(function (done) { return clearAllLeagues(done); });
     afterEach(function (done) { return clearAllLeagues(done); });
     it('should add new league to the database', function (done) {
-        addLeague(newLeague).then(function (checkDatabase) {
-            league_model_1.League.find({}, function (err, leagues) {
-                if (err) {
-                    return done(err);
-                }
-                leagues.should.have.length(1);
-                done();
-            });
+        getLeagues().then(function (leagues) {
+            console.log(leagues);
         });
     });
 });

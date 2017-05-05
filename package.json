@@ -14,7 +14,7 @@
     "db:dev:seeduser": "cross-env NODE_ENV=development ts-node src/server/db/tasks/seed-user.ts",
     "db:seed": "SET NODE_ENV=development&&node src/server/db/tasks/seed.js",
     "db:test:dropseed": "SET NODE_ENV=test&&node src/server/db/tasks/drop-seed.js",
-    "db:dev:dropseed": "node src/server/db/tasks/drop-seed.js",
+    "db:dev:dropseed": "cross-env NODE_ENV=development ts-node src/server/db/tasks/drop-seed.ts",
     "db:reset": "SET NODE_ENV=development&&node src/server/db/tasks/reset.js",
     "test:mocha": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
     "test:mocha:spec": "mocha --reporter spec --compilers ts:ts-node/register src/**/*.test.ts",

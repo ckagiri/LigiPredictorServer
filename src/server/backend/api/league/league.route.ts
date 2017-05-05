@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import {LeagueController} from './league.controller';
+import {SeasonController} from '../season/season.controller'
 
 let router = Router();
 
@@ -8,12 +9,7 @@ class LeagueRouter {
 
     get routes () {
         router.get('/', this.controller.list);
-        router.get('/:id', this.controller.show);
-        router.post('/', this.controller.create);
-        router.put('/:id', this.controller.update);
-        router.patch('/:id', this.controller.update);
-        router.delete('/:id', this.controller.destroy);
-
+				router.get('/:slug', this.controller.show)
         return router;
     }
 }

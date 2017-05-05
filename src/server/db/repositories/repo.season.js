@@ -20,6 +20,9 @@ var SeasonRepo = (function (_super) {
     SeasonRepo.prototype.findByYear = function (year) {
         return this.findAll({ year: year });
     };
+    SeasonRepo.prototype.getByLeague = function (leagueId) {
+        return this.findAll({ leagueId: leagueId });
+    };
     return SeasonRepo;
 }(repo_abstract_1.AbstractRepo));
 exports.SeasonRepo = SeasonRepo;

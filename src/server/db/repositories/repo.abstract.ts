@@ -44,7 +44,7 @@ export abstract class AbstractRepo {
   }
 
   findOne(query: any, projection?: any){
-    return this.model.findOne(query, projection);
+    return Rx.Observable.fromPromise(this.model.findOne(query, projection));
   }
 
   findAll(query: any = {}, projection?: any, options?: any){

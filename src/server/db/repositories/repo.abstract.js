@@ -42,7 +42,7 @@ var AbstractRepo = (function () {
         return this.model.remove({ _id: id });
     };
     AbstractRepo.prototype.findOne = function (query, projection) {
-        return this.model.findOne(query, projection);
+        return Rx.Observable.fromPromise(this.model.findOne(query, projection));
     };
     AbstractRepo.prototype.findAll = function (query, projection, options) {
         if (query === void 0) { query = {}; }

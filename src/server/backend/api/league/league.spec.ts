@@ -20,14 +20,12 @@ const clearAllLeagues = (done: any) => {
 
 const newLeague = {name: 'English Premier League', slug: "english_premier_league"}
 
-const addLeague = (league: any) => {
-	console.log(league);
+const getLeagues = () => {
   return new Promise((resolve: any) => {
     request(app)
-      .post('/api/leagues')
-      .send(league)
+      .get('/api/leagues')
       .expect('Content-Type', /json/)
-      .expect(201)
+      .expect(200)
       .end((err: any) => {
         if (err) { throw err; }
         resolve();
@@ -40,12 +38,8 @@ describe('League API', () => {
   afterEach(done => clearAllLeagues(done));
 
   it('should add new league to the database', done => {
-    addLeague(newLeague).then((checkDatabase: any) => {
-      League.find({}, (err, leagues) => {
-        if (err) { return done(err); }
-        leagues.should.have.length(1);
-        done();
+    getLeagues().then((leagues: any[]) => {
+      console.log(leagues)
       });
-    });
-  });
+	});
 });
