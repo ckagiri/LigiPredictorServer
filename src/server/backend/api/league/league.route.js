@@ -10,7 +10,7 @@ var LeagueRouter = (function () {
     Object.defineProperty(LeagueRouter.prototype, "routes", {
         get: function () {
             router.get('/', this.controller.list);
-            router.get('/:slug', this.controller.show);
+            router.get('/:id', this.controller.show);
             return router;
         },
         enumerable: true,

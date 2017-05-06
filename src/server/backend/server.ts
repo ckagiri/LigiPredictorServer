@@ -68,7 +68,7 @@ const db = mongoose.connection;
 const server: http.Server = app.listen(config.port, config.ip, () => {
 	const host = server.address().address;
   const port = server.address().port;
-  console.log(`Express Server listening at http://${host}:${port}`);
+	console.log(`${config.env} Express Server listening on http://localhost:${port}`);
 	console.log('env = ' + app.get('env') +
 		'\n__dirname = ' + __dirname +
 		'\nprocess.cwd = ' + process.cwd());
