@@ -11,6 +11,8 @@ var LeagueRouter = (function () {
         get: function () {
             router.get('/', this.controller.list);
             router.get('/:id', this.controller.show);
+            router.get('/:leagueId/seasons', this.controller.listSeasons);
+            router.get('/:leagueId/seasons/:seasonId', this.controller.showSeason);
             return router;
         },
         enumerable: true,
