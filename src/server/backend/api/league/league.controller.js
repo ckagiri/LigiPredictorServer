@@ -49,19 +49,20 @@ var LeagueController = (function () {
         });
     };
     LeagueController.prototype.showSeason = function (req, res) {
-        var leagueId = req.params.leagueId;
+        var _a = req.params, leagueId = _a.leagueId, seasonId = _a.seasonId;
         singleLeague(leagueId)
-            .subscribe(function (league) {
-            return res.sendStatus(404);
-        }, function (err) {
-            if (err) {
-                return res.status(500).json(err);
+            .flatMap(function (league) {
+            if (!league) {
+                res.sendStatus(404);
+                return Rx.Observable.throw(Error("bad"));
             }
-        });
-        var seasonId = req.params.leagueId;
-        singleSeason(seasonId)
-            .subscribe(function (league) {
-            res.status(200).json(league);
+            return Rx.Observable.of(league);
+        })
+            .flatMap(function (league) {
+            return singleSeason(leagueId, seasonId);
+        })
+            .subscribe(function (season) {
+            res.status(200).json(season);
         }, function (err) {
             console.error(err);
             res.status(500).json(err);
@@ -71,19 +72,34 @@ var LeagueController = (function () {
 }());
 exports.LeagueController = LeagueController;
 function singleLeague(id) {
-    return findOne(id, leagueRepo);
-}
-function singleSeason(id) {
-    return findOne(id, seasonRepo);
-}
-function findOne(id, repo) {
-    var one;
+    var league;
     if (isMongoId_1.default(id)) {
-        one = repo.findOne({ _id: id });
+        league = leagueRepo.findOne({ _id: id });
     }
     else {
-        one = repo.findOne({ slug: id });
+        league = leagueRepo.findOne({ slug: id });
     }
-    return one;
+    return league;
+}
+function singleSeason(leagueId, seasonId) {
+    var query;
+    if (isMongoId_1.default(leagueId)) {
+        if (isMongoId_1.default(seasonId)) {
+            query = { $and: [{ 'league.id': leagueId }, { _id: seasonId }] };
+        }
+        else {
+            query = { $and: [{ 'league.id': leagueId }, { slug: seasonId }] };
+        }
+    }
+    else {
+        if (isMongoId_1.default(seasonId)) {
+            query = { $and: [{ 'league.slug': leagueId }, { _id: seasonId }] };
+        }
+        else {
+            query = { $and: [{ 'league.slug': leagueId }, { slug: seasonId }] };
+        }
+    }
+    var season = seasonRepo.findOne(query);
+    return season;
 }
 //# sourceMappingURL=league.controller.js.map
