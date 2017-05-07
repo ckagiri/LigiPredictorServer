@@ -31,7 +31,7 @@ namespace admin.seasons {
         }
       },
 			{
-        state: 'admin.seasons-edit',
+        state: 'admin.season-edit',
         config: {
           url: '/leagues/:leagueId/seasons/:seasonId',
           templateUrl: 'app/admin/seasons/seasons.html',

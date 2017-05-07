@@ -1,37 +1,35 @@
-<div class="container">
-  <div class="panel panel-default">
-    <div class="panel-heading">Home Page</div>
-    <div class="panel-body">
-      <div class="row">
-        <div class="col-sm-6">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-            tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-            fermentum massa justo sit amet risus. Etiam porta sem malesuada
-            magna mollis euismod. Donec sed odio dui.</p>
-          <p><a class="btn btn-primary" href="#">View details »</a></p>
-        </div>
-        <div class="col-sm-6">
-          <h2>Heading</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus,
-            tellus ac cursus commodo, tortor mauris condimentum nibh, ut
-            fermentum massa justo sit amet risus. Etiam porta sem malesuada
-            magna mollis euismod. Donec sed odio dui.</p>
-          <p><a class="btn btn-primary" href="#">View details »</a></p>
-        </div>
-      </div>
+<section data-ng-controller="FixturesController" data-ng-init="find()">
+	<form data-ng-submit="createPredictions()" novalidate>
+    <div class="page-header">
+			<h1>Fixtures</h1>
+			<h2><small>Matchday {{matchday}}</small></h2>
     </div>
-    <div class="panel-footer text-center">
-      <ul class="list-inline">
-        <li><i class="ion-star"></i> {{stars | number}} stars</li>
-        <li><i class="ion-fork-repo"></i> {{forks | number}} forks</li>
-        <li><i class="ion-pull-request"></i> {{issues | number}} issues</li>
-      </ul>
+    <div class="col-md-offset-3 col-md-6">
+			<div class="    ">
+				<div class="col-md-2 text-center btn btn-primary" ng-click="prevMatchday()"><i class="fa fa-arrow-left"></i></div>
+				<div class="col-md-8 text-center btn btn-primary">Now</div>
+				<div class="col-md-2 text-center btn btn-primary" ng-click="nextMatchday()"><i class="fa fa-arrow-right"></i></div>
+			</div>
     </div>
-  </div>
-</div>
-<div class="text-center">
-  <a class="btn btn-default" href="https://github.com/sahat/satellizer"><i class="ion-social-github"></i> GitHub project</a>
-  <a class="btn btn-default" href="https://github.com/sahat/satellizer/issues/new"><i class="ion-bug"></i> Report issue</a>
-</div>
-</div>
+    <div class="row" class="" ng-repeat="fixture in fixtures | orderBy:'date' | filter:matchday:true">
+			<div class="col-md-6 col-md-offset-3 score-container">
+				<div class="row text-center">
+					<div class="col-xs-12 date">{{fixture.date * 1000}} {{fixture.date | date:'EEEE MMMM d y, h:mma'}}</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-xs-3 vcentre">
+						<img height="60px" ng-src={{fixture.homeTeam.crestUrl}} ></img><br>
+						<small>{{fixture.homeTeam.name}}</small>
+					</div>
+					<div class="col-xs-6 score-result">
+						{{fixture.result.goalsHomeTeam}} - {{fixture.result.goalsAwayTeam}}
+					</div>
+					<div class="col-xs-3 vcentre">
+						<img height="60px" ng-src={{fixture.awayTeam.crestUrl}} ></img><br>
+						<small>{{fixture.awayTeam.name}}</small>
+					</div>
+				</div>
+			</div>
+    </div>
+	</form>
+</section>

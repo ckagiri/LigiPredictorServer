@@ -29,10 +29,10 @@ namespace admin.leagues {
         }
       },
 			{
-        state: 'admin.leagues-edit',
+        state: 'admin.league-detail',
         config: {
           url: '/leagues/:leagueId',
-          templateUrl: 'app/admin/leagues/leagues.html',
+          templateUrl: 'app/admin/leagues/league-detail.html',
           controller: 'LeaguesController',
           controllerAs: 'vm',
           title: 'leagues',

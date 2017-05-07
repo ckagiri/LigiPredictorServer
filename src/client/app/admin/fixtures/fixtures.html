@@ -1,0 +1,15 @@
+<table><tr>
+	<td>
+		<Link to={`/admin/match/${match._id}`}><i className="fa fa-pencil fa-2x pointer"></i></Link>
+	</td>
+	<td>{{match.teamHome.name}}</td>
+	<td>{{match.teamAway.name}}</td>
+	<td>{{`${match.teamHomeScores} - ${match.teamAwayScores}`}}</td>
+	<td>{{Moment(match.date).format('lll')}}</td>
+	<td>{{match.played ? 'played' : 'not played' }}</td>
+	<th>
+		<i className="fa fa-remove pointer fa-2x" >
+			<!--onClick={{(e) => this.onMatchRemove(e, match)-->
+			</i>
+	</th>
+</tr></table>

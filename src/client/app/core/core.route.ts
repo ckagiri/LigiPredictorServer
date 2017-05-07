@@ -88,7 +88,7 @@ namespace app.core {
 						}
 					},
 					resolve: {
-						admin: ['securityService', function(security: app.auth.SecurityService) {
+						currentUser: ['securityService', function(security: app.auth.SecurityService) {
 							return security.requireAuthenticatedUser();
 						}]
 					}
