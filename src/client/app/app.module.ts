@@ -8,6 +8,7 @@ namespace app {
 		'app.auth',
 		'app.admin',
 		'admin.leagues',
+		'admin.seasons',
 		'app.matches'
   ]);
 }

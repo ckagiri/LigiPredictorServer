@@ -21,12 +21,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 app.use(function(req, res, next) {
-    if (req.path.substr(-1) == '/' && req.path.length > 1) {
-        var query = req.url.slice(req.path.length);
-        res.redirect(301, req.path.slice(0, -1) + query);
-    } else {
-        next();
-    }
+	if (req.path.substr(-1) == '/' && req.path.length > 1) {
+		var query = req.url.slice(req.path.length);
+		res.redirect(301, req.path.slice(0, -1) + query);
+	} else {
+		next();
+	}
 });
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
@@ -37,29 +37,29 @@ console.log('PORT=' + config.port);
 console.log('NODE_ENV=' + config.env);
 
 switch (config.env) {
-    case 'build':
-		case 'production':
-        console.log('** BUILD **');
-        app.use(express.static('./build/'));
-        // Any invalid calls for templateUrls are under app/* and should return 404
-        app.use('/app/*', (req, res, next) => {
-            send404(req, res);
-        });
-        // Any deep link calls should return index.html
-        app.use('/*', express.static('./build/index.html'));
-        break;
-    default:
-        console.log('** DEV **');
-        app.use(express.static('./src/client/'));
-        app.use(express.static('./'));
-        app.use(express.static('./tmp'));
-        // Any invalid calls for templateUrls are under app/* and should return 404
-        app.use('/app/*', (req, res, next) => {
-            send404(req, res);
-        });
-        // Any deep link calls should return index.html
-        app.use('/*', express.static('./src/client/index.html'));
-        break;
+	case 'build':
+	case 'production':
+		console.log('** BUILD **');
+		app.use(express.static('./build/'));
+		// Any invalid calls for templateUrls are under app/* and should return 404
+		app.use('/app/*', (req, res, next) => {
+			send404(req, res);
+		});
+		// Any deep link calls should return index.html
+		app.use('/*', express.static('./build/index.html'));
+		break;
+	default:
+		console.log('** DEV **');
+		app.use(express.static('./src/client/'));
+		app.use(express.static('./'));
+		app.use(express.static('./tmp'));
+		// Any invalid calls for templateUrls are under app/* and should return 404
+		app.use('/app/*', (req, res, next) => {
+			send404(req, res);
+		});
+		// Any deep link calls should return index.html
+		app.use('/*', express.static('./src/client/index.html'));
+		break;
 }
 
 mongoose.connect(config.mongo.uri, config.mongo.options);

@@ -3,11 +3,12 @@ namespace app.core {
 
 	export interface StaticResource {
 		all(cb?: any, errorcb?: any): ng.IPromise<any>;
-		query(queryJson?: any, successcb?: any, errorcb?: any): ng.IPromise<any>;
-		getById(id: number, successcb?: any, errorcb?: any): ng.IPromise<any>;
+		getList(endpoint: string, parameters?: any, successcb?: any, errorcb?: any): ng.IPromise<any>;
+		getOne(endpoint: string, parameters?: any, successcb?: any, errorcb?: any): ng.IPromise<any>;
+		getById(id: string, successcb?: any, errorcb?: any): ng.IPromise<any>;
 	}
 	export interface InstanceResource {
-		id(): number;
+		id(): string;
 		save(successcb?: any, errorcb?: any): ng.IPromise<any>;
 		update(successcb?: any, errorcb?: any): ng.IPromise<any>;
 		remove(successcb?: any, errorcb?: any): ng.IPromise<any>;
@@ -28,11 +29,24 @@ namespace app.core {
 					angular.extend(this, data);
 				}
 
-				_id: number;
+				_id: string;
 
 				static all(cb: any, errorcb: any) {
 					return Resource.query({}, cb, errorcb);
 				}
+
+				static getList(endpoint: string, parameters: any, successcb: any, errorcb: any) {
+					let epUrl = constructUrl(url + endpoint, parameters);
+					var httpPromise = $http.get(epUrl, defaultParams);
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb, true);
+				}
+
+				static getOne(endpoint: string, parameters: any, successcb: any, errorcb: any) {
+					let epUrl = constructUrl(url + endpoint, parameters);
+					var httpPromise = $http.get(epUrl, defaultParams);
+					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
+				}
+
 
 				static query(queryJson: any, successcb: any, errorcb: any) {
 					var params = angular.isObject(queryJson) ? {q:JSON.stringify(queryJson)} : {};
@@ -40,7 +54,7 @@ namespace app.core {
 					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb, true);
 				}
 
-				static getById(id: number, successcb: any, errorcb: any) {
+				static getById(id: string, successcb: any, errorcb: any) {
 					var httpPromise = $http.get(url + '/' + id, {params:defaultParams});
 					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
 				}
@@ -49,7 +63,7 @@ namespace app.core {
 					if (this._id) {
 						return this._id;
 					}
-					return 0;
+					return "";
 				}
 
 				save(successcb: any, errorcb: any) {
@@ -106,6 +120,47 @@ namespace app.core {
 			}
 			return Resource;
 		}
+	}
+
+	//('https://your.domain.here/hero?name=:name', { name: name })
+	//('https://your.domain.here/hero/:id', {id: id})
+	function constructUrl(endpoint: string, parameters?: any): string {
+		let formatted = endpoint;
+		let tokens = parameters;
+		let query:any = {};
+		for (let propName in tokens) {
+			let propValue = tokens[propName];
+			let temp = formatted.replace(':'+propName, propValue);
+			if(temp === formatted) {
+					query[propName] = propValue;
+			}
+			formatted = temp;
+		}
+
+		let querystring = toQueryString(query);
+		if(formatted && querystring) {
+			if(formatted.indexOf('?') !== -1) {
+				formatted = formatted + querystring;
+			} else {
+				formatted = `${formatted}?${querystring}`;
+			}
+		}
+
+		return formatted;
+	}
+
+	function toQueryString(keyValuePair: any): string {
+		let queryString = '';
+		for (let key in keyValuePair) {
+			if (keyValuePair.hasOwnProperty(key)) {
+				let value = keyValuePair[key];
+				if(queryString) {
+						queryString += '&';
+				}
+				queryString += `${key}=${value}`;
+			}
+		}
+		return queryString;
 	}
 
   angular

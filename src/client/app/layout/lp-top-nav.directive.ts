@@ -1,4 +1,4 @@
-namespace applayout {
+namespace app.layout {
   'use strict';
 
   interface ILpTopNavScope {
@@ -27,7 +27,7 @@ namespace applayout {
 		constructor(private $state: ng.ui.IStateService,
 			private logger: blocks.logger.Logger,
 			private security: app.auth.ISecurityService) {
-		}			
+		}		
 
 		isAuthenticated() {
 			return this.security.isAuthenticated();
@@ -40,6 +40,20 @@ namespace applayout {
 					this.logger.info('You have been logged out');
 				});
 		}
+
+		isCurrent(route: { title: string }) {
+      var currentState: any = this.$state.current;
+      if (!route.title || !currentState || !currentState.title) {
+        return '';
+      }
+      var menuName: string = route.title;
+      return currentState.title.substr(0, menuName.length) === menuName ? 'current' : '';
+    }
+
+		isNavbarActive(navBarPath: string) {
+			return true;
+    	//return navBarPath === breadcrumbs.getFirst().name;
+  	}
   }
 
   angular

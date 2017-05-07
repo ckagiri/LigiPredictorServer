@@ -2,15 +2,46 @@
   <div class="navbar-header">
     <a class="navbar-brand" href="/"><i class="ion-ios7-pulse-strong"></i> LP</a>
   </div>
-  <ul class="nav navbar-nav">
+	<ul class="nav navbar-nav">
+		<li ng-class="{active:isNavbarActive('matches')}"><a href="/">Home</a></li>
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin
+							<b class="caret"></b></a>
+			<ul class="dropdown-menu" role="menu" >
+					<li><a href="/admin/leagues">Manage Leagues</a></li>
+					<li><a href="/admin/fixtures">Manage Fixtues</a></li>
+					<li class="divider"></li>
+					<li>
+							<a href="/admin/teams">Mangage Teams</a>
+					</li>
+			</ul>
+		</li>
+	</ul>
+	
+  <!--<ul class="nav navbar-nav">
     <li><a href="/">Home</a></li>
     <li ng-if="vm.isAuthenticated()"><a href="">Profile</a></li>
-  </ul>
+  </ul>-->
+	 <!--<ul class="nav pull-right">
+			<li class="divider-vertical"></li>
+			<li><a href="#"><img src="/static/img/spinner.gif"></a></li>
+		</ul>-->
   <ul ng-if="!vm.isAuthenticated()" class="nav navbar-nav pull-right">
-    <li><a ui-sref="xapp.login">Login</a></li>
-    <li><a ui-sref="xapp.signup">Sign up</a></li>
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Sign up</a></li>
   </ul>
-  <ul ng-if="vm.isAuthenticated()" class="nav navbar-nav pull-right">
-    <li><a href="" ng-click="vm.logout()">Logout</a></li>
-  </ul>
+  <ul ng-if="vm.isAuthenticated()" class="nav navbar-nav navbar-right">
+		<li class="dropdown">
+			<a href="#" data-toggle="dropdown" class="dropdown-toggle">ckagiri
+				<b class="caret"></b></a>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/me">Profile</a></li>
+				<li class="divider"></li>
+				<li>
+						<a href="" data-ng-click="vm.logout()">Logout</a>
+				</li>
+			</ul>
+		</li>
+		<li><span style="margin-left:32px"></span></li>
+	</ul>      
 </div>

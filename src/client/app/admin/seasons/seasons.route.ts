@@ -29,7 +29,25 @@ namespace admin.seasons {
 						}]
 					}
         }
-      }
+      },
+			{
+        state: 'admin.seasons-edit',
+        config: {
+          url: '/leagues/:leagueId/seasons/:seasonId',
+          templateUrl: 'app/admin/seasons/seasons.html',
+          controller: 'SeasonsController',
+          controllerAs: 'vm',
+          title: 'seasons',
+					resolve:{
+						seasons:['$stateParams', 'SeasonsResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Seasons: app.core.ISeasonsResource) {
+								let {leagueId, seasonId} = $stateParams;
+								return Seasons.getById(leagueId, seasonId);
+						}]
+					}
+        }
+			}
     ];
   }
 }
