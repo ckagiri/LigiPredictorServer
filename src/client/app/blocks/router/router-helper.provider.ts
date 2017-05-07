@@ -38,7 +38,7 @@ namespace blocks.router {
 			}
 			this.$locationProvider.html5Mode(true);
 			this.$urlRouterProvider.when('', '/');
-			this.$get.$inject = ['$location', '$rootScope', '$state', 'logger'];
+			this.$get.$inject = ['$injector', '$location', '$rootScope', '$state', 'logger'];
 		}
 
 		public configure(cfg: any) {
@@ -46,10 +46,12 @@ namespace blocks.router {
 		}
 
 		public $get(
+			$injector: ng.auto.IInjectorService,
 			$location: ng.ILocationService,
 			$rootScope: ng.IRootScopeService,
 			$state: ng.ui.IStateService,
-			logger: blocks.logger.ILogger): IRouterHelper {
+			logger: blocks.logger.ILogger
+			): IRouterHelper {
 			var $stateProvider = this.$stateProvider;
 			var $locationProvider = this.$locationProvider;
 			var $urlRouterProvider = this.$urlRouterProvider;
@@ -147,6 +149,19 @@ namespace blocks.router {
 						window.scrollTo(0, 0);
 					}, 50);
         });
+
+				$rootScope.$on('$stateChangeSuccess', function() {
+					let breadcrumbs: app.core.IBreadcrumbsService = $injector.get('breadcrumbs');
+					var pathElements = $location.path().split('/'), result = [], i;
+					var breadcrumbPath = function (index: number) {
+							return '/' + (pathElements.slice(0, index + 1)).join('/');
+					};
+					pathElements.shift();
+					for (i=0; i<pathElements.length; i++) {
+							result.push({name: pathElements[i] || 'home', path: breadcrumbPath(i)});
+					}
+					breadcrumbs.setAll(result);
+				});
 			}
 
 			function getStates(): ng.ui.IState[] {

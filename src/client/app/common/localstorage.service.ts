@@ -7,7 +7,7 @@ namespace app.core {
 		removeItem: (key: string) => boolean;
 	}
 
-	export class LocalStorageService {
+	export class LocalStorageService implements ILocalStorageService {
 		static $inject: Array<string> = ['$window'];
 		private localStorage: Storage;
 

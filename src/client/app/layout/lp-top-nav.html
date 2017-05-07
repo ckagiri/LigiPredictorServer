@@ -17,15 +17,6 @@
 			</ul>
 		</li>
 	</ul>
-	
-  <!--<ul class="nav navbar-nav">
-    <li><a href="/">Home</a></li>
-    <li ng-if="vm.isAuthenticated()"><a href="">Profile</a></li>
-  </ul>-->
-	 <!--<ul class="nav pull-right">
-			<li class="divider-vertical"></li>
-			<li><a href="#"><img src="/static/img/spinner.gif"></a></li>
-		</ul>-->
   <ul ng-if="!vm.isAuthenticated()" class="nav navbar-nav pull-right">
     <li><a href="/login">Login</a></li>
     <li><a href="/register">Sign up</a></li>
