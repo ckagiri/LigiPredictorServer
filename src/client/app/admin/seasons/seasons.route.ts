@@ -31,19 +31,19 @@ namespace admin.seasons {
         }
       },
 			{
-        state: 'admin.season-edit',
+        state: 'admin.season-teams',
         config: {
-          url: '/leagues/:leagueId/seasons/:seasonId',
-          templateUrl: 'app/admin/seasons/seasons.html',
-          controller: 'SeasonsController',
+          url: '/leagues/:leagueId/seasons/:seasonId/teams',
+          templateUrl: 'app/admin/seasons/season-teams.html',
+          controller: 'SeasonTeamsController',
           controllerAs: 'vm',
           title: 'seasons',
 					resolve:{
 						seasons:['$stateParams', 'SeasonsResource', 
 							function ($stateParams: ng.ui.IStateParamsService, 
-								Seasons: app.core.ISeasonsResource) {
+								Teams: app.core.ITeamsResource) {
 								let {leagueId, seasonId} = $stateParams;
-								return Seasons.getById(leagueId, seasonId);
+								return Teams.forSeason(leagueId, seasonId);
 						}]
 					}
         }

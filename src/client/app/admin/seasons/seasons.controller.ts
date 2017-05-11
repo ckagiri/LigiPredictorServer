@@ -1,11 +1,7 @@
 namespace admin.seasons {
 	'use strict';
 
-	interface ISeasonsVm {
-		title: string;
-	}
-
-	export class SeasonsController implements ISeasonsVm {
+	export class SeasonsController {
 		static $inject: string[] = ['$q', 'seasons', 'logger'];
 
 		constructor(private $q: ng.IQService,

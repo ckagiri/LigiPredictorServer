@@ -65,6 +65,7 @@
     "gulp-autoprefixer": "~1.0.1",
     "gulp-bump": "~0.2.2",
     "gulp-bytediff": "~0.2.1",
+		"gulp-cached": "~1.1.0",
     "gulp-concat": "~2.6.1",
     "gulp-csso": "~0.2.9",
     "gulp-env": "~0.4.0",
