@@ -9,7 +9,12 @@ var app;
         'app.admin',
         'admin.leagues',
         'admin.seasons',
-        'app.matches'
+        'admin.rounds',
+        'admin.fixtures',
+        'admin.teams',
+        'admin.users',
+        'app.matches',
+        'app.predictions'
     ]);
 })(app || (app = {}));
 //# sourceMappingURL=app.module.js.map

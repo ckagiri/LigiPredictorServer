@@ -25,7 +25,7 @@ namespace admin.teams {
 						teams:['$stateParams', 'TeamsResource', 
 							function ($stateParams: ng.ui.IStateParamsService, 
 								Teams: app.core.ITeamsResource) {
-								return Teams.forLeague($stateParams.leagueId);
+								return Teams.all();
 						}]
 					}
         }
@@ -59,8 +59,8 @@ namespace admin.teams {
 						teams:['$stateParams', 'FixturesResource', 
 							function ($stateParams: ng.ui.IStateParamsService, 
 								Fixtures: app.core.IFixturesResource) {
-								let {leagueId, teamId} = $stateParams;
-								return Fixtures.forTeam(teamId);
+								let {leagueId, seasonId, teamId} = $stateParams;
+								return Fixtures.forTeam(leagueId, seasonId, teamId);
 						}]
 					}
         }

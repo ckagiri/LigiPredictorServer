@@ -88,7 +88,7 @@ var app;
                             }
                         },
                         resolve: {
-                            admin: ['securityService', function (security) {
+                            currentUser: ['securityService', function (security) {
                                     return security.requireAuthenticatedUser();
                                 }]
                         }

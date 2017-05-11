@@ -25,7 +25,7 @@ namespace admin.fixtures {
 						fixtures:['$stateParams', 'FixturesResource', 
 							function ($stateParams: ng.ui.IStateParamsService, 
 								Fixtures: app.core.IFixturesResource) {
-								let {leagueId, fixtureId, roundId} = $stateParams;
+								let {leagueId, seasonId, roundId} = $stateParams;
 								return Fixtures.forRound(leagueId, seasonId, roundId);
 						}]
 					}
@@ -62,7 +62,7 @@ namespace admin.fixtures {
 							function ($stateParams: ng.ui.IStateParamsService, 
 								Fixtures: app.core.IFixturesResource) {
 								let {leagueId, seasonId, roundId, fixtureId} = $stateParams;
-								return Fixtures.getById(leagueId, seasonId, roundId, fixtureId);
+								return Fixtures.getOne(leagueId, seasonId, roundId, fixtureId);
 						}]
 					}
         }
