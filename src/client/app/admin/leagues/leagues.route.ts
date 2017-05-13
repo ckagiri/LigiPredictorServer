@@ -27,7 +27,24 @@ namespace admin.leagues {
 						}]
 					}
         }
-      }
+      },
+			{
+        state: 'admin.league-detail',
+        config: {
+          url: '/leagues/:leagueId',
+          templateUrl: 'app/admin/leagues/league-detail.html',
+          controller: 'LeagueDetailController',
+          controllerAs: 'vm',
+          title: 'League',
+					resolve:{
+						league:['$stateParams', 'LeaguesResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Leagues: app.core.ILeaguesResource) {
+								return Leagues.getById($stateParams.leagueId);
+						}]
+					}
+        }
+			}
     ];
   }
 }

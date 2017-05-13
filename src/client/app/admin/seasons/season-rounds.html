@@ -1,0 +1,25 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div title="Rounds" subtitle="{{vm.matchrounds.length}}"></div>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Start/End</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="round in vm.rounds">
+						<td>{{$index + 1}}</td>
+						<td class="text-left">{{round.name}}</td>
+						<td class="text-left">{{round.year}}</td>
+					</tr>
+					<tr ng-show="!vm.rounds.length">
+						<td colspan="3">No match-rounds defined</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

@@ -5,7 +5,7 @@ namespace admin.seasons {
 		static $inject: string[] = ['$q', 'teams', 'logger'];
 
 		constructor(private $q: ng.IQService,
-			private teams: app.core.IResource,
+			private teams: app.core.ITeamsResource,
       private logger: blocks.logger.Logger) {
     }
 

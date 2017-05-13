@@ -1,11 +1,11 @@
-namespace admin.rounds {
+namespace admin.seasons {
 	'use strict';
 
-	export class RoundsController {
+	export class SeasonRoundsController {
 		static $inject: string[] = ['$q', 'rounds', 'logger'];
 
 		constructor(private $q: ng.IQService,
-			private rounds: app.core.IResource,
+			private rounds: app.core.IRoundsResource,
       private logger: blocks.logger.Logger) {
     }
 
@@ -13,6 +13,6 @@ namespace admin.rounds {
 	}
 
 	angular
-    .module('admin.rounds')
-    .controller('RoundsController', RoundsController);
+    .module('admin.seasons')
+    .controller('SeasonRoundsController', SeasonRoundsController);
 }

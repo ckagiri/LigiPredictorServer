@@ -8,7 +8,6 @@ var app;
         'app.auth',
         'admin.leagues',
         'admin.seasons',
-        'admin.rounds',
         'admin.fixtures',
         'admin.teams',
         'admin.users',

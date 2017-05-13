@@ -1,1 +1,27 @@
-<p>{{vm.leagues}}</p>
+<div class="row">
+	<div class="col-sm-12">
+		<div title="Leagues" subtitle="{{vm.leagues.length}}"></div>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Code</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="league in vm.leagues">
+						<td>{{$index + 1}}</td>
+						<td class="text-left">{{league.name}}</td>
+						<td class="text-left">{{league.code}}</td>
+						<td class="text-left">
+							<a class="text-primary" ui-sref="admin.seasons({leagueId: league.slug})">
+								<span>Seasons</span>
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	</div>
+</div>

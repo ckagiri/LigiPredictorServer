@@ -48,8 +48,7 @@ namespace app.core {
 				}
 
 
-				static query(queryJson: any, successcb: any, errorcb: any) {
-					var params = angular.isObject(queryJson) ? {q:JSON.stringify(queryJson)} : {};
+				static query(params: any, successcb: any, errorcb: any) {
 					var httpPromise = $http.get(url, {params:angular.extend({}, defaultParams, params)});
 					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb, true);
 				}
@@ -132,7 +131,7 @@ namespace app.core {
 			let propValue = tokens[propName];
 			let temp = formatted.replace(':'+propName, propValue);
 			if(temp === formatted) {
-					query[propName] = propValue;
+				query[propName] = propValue;
 			}
 			formatted = temp;
 		}

@@ -1,1 +1,38 @@
-<p>{{vm.seasons}}</p>
+<div class="row">
+	<div class="col-sm-12">
+		<div title="Seasons" subtitle="{{vm.seasons.length}}"></div>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Year</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="season in vm.seasons">
+						<td>{{$index + 1}}</td>
+						<td class="text-left">{{season.name}}</td>
+						<td class="text-left">{{season.year}}</td>
+						<td class="text-left">
+							<a class="text-primary" ui-sref="admin.season-fixtures({leagueId: vm.leagueId, seasonId: season.slug, round: 'round-1'})">
+								<span>Fixtures</span>
+							</a>
+							&nbsp;&nbsp;&nbsp;
+							<a class="text-primary" ui-sref="admin.season-rounds({leagueId: vm.leagueId, seasonId: season.slug})">
+								<span>Rounds</span>
+							</a>
+							&nbsp;&nbsp;&nbsp;
+							<a class="text-primary" ui-sref="admin.season-teams({leagueId: vm.leagueId, seasonId: season.slug})">
+								<span>Teams</span></a>
+						</td>
+						</tr>
+						<tr ng-show="!vm.seasons.length">
+							<td colspan="7">No seasons defined</td>
+						</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
