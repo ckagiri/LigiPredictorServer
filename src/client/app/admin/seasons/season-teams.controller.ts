@@ -13,6 +13,6 @@ namespace admin.seasons {
 	}
 
 	angular
-    .module('admin.teams')
+    .module('admin.seasons')
     .controller('SeasonTeamsController', SeasonTeamsController);
 }

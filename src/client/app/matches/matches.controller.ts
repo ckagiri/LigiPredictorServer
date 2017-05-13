@@ -1,11 +1,7 @@
 namespace app.matches {
 	'use strict';
 
-	interface IMatchesVm {
-		title: string;
-	}
-
-	export class MatchesController implements IMatchesVm {
+	export class MatchesController {
 		static $inject: string[] = ['$q', 'logger'];
 
 		constructor(private $q: ng.IQService,

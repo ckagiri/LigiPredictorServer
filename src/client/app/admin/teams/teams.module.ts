@@ -1,5 +1,5 @@
-namespace app.teams {
+namespace admin.teams {
 	'use strict';
 
-	angular.module('app.teams', ['app.core']);
+	angular.module('admin.teams', ['app.core']);
 }

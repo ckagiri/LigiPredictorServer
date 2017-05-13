@@ -1,5 +1,5 @@
-namespace app.fixtures {
+namespace admin.fixtures {
 	'use strict';
 
-	angular.module('app.fixtures', ['app.core']);
+	angular.module('admin.fixtures', ['app.core']);
 }

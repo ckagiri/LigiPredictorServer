@@ -1,5 +1,5 @@
-namespace app.rounds {
+namespace admin.rounds {
 	'use strict';
 
-	angular.module('app.rounds', ['app.core']);
+	angular.module('admin.rounds', ['app.core']);
 }

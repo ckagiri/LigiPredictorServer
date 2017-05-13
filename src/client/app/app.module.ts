@@ -6,7 +6,6 @@ namespace app {
 		'app.directives',
 		'app.layout',
 		'app.auth',
-		'app.admin',
 		'admin.leagues',
 		'admin.seasons',
 		'admin.rounds',
@@ -14,6 +13,7 @@ namespace app {
 		'admin.teams',
 		'admin.users',
 		'app.matches',
-		'app.predictions'
+		'app.predictions',
+		'app.leaderboards'
   ]);
 }

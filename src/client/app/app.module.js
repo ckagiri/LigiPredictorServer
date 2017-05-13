@@ -6,7 +6,6 @@ var app;
         'app.directives',
         'app.layout',
         'app.auth',
-        'app.admin',
         'admin.leagues',
         'admin.seasons',
         'admin.rounds',
@@ -14,7 +13,8 @@ var app;
         'admin.teams',
         'admin.users',
         'app.matches',
-        'app.predictions'
+        'app.predictions',
+        'app.leaderboards'
     ]);
 })(app || (app = {}));
 //# sourceMappingURL=app.module.js.map
