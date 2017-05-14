@@ -18,11 +18,8 @@ var SeasonRepo = (function (_super) {
     function SeasonRepo(converter) {
         return _super.call(this, season_model_1.Season, converter) || this;
     }
-    SeasonRepo.prototype.findByYear = function (year) {
-        return this.findAll({ year: year });
-    };
-    SeasonRepo.prototype.findByLeague = function (leagueId) {
-        return this.findAll({ leagueId: leagueId });
+    SeasonRepo.prototype.findAllByLeague = function (leagueId) {
+        return this.findAll({ 'league.id': leagueId });
     };
     SeasonRepo.prototype.getTeams = function (seasonId) {
         return Rx.Observable.fromPromise(this.model.find({ seasonId: seasonId }).populate('teams').exec(function (err, season) {

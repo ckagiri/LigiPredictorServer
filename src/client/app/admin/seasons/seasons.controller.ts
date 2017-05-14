@@ -12,7 +12,6 @@ namespace admin.seasons {
 	
 		title: string = 'Seasons';
 		leagueId: string = this.$stateParams.leagueId
-		seasonId: string = this.$stateParams.seasonId;
 	}
 
 	angular

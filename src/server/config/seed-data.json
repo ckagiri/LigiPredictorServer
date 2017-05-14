@@ -195,6 +195,7 @@
 				"->teams.west_bromwich",
 				"->teams.west_ham"			
 			],
+			"currentRound": 2,
 			"numberOfRounds": 38,
 			"numberOfTeams": 20,
 			"numberOfGames": 380,

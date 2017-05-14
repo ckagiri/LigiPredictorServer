@@ -6,14 +6,18 @@
 					<tr>
 						<th></th>
 						<th>Name</th>
-						<th>Start/End</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr ng-repeat="round in vm.rounds">
 						<td>{{$index + 1}}</td>
 						<td class="text-left">{{round.name}}</td>
-						<td class="text-left">{{round.year}}</td>
+						<td class="text-left">
+							<a class="text-primary" 
+								 ui-sref="admin.season-round-fixtures({leagueId: vm.leagueId, seasonId: vm.seasonId, roundId: round.slug})">
+								<span>Fixtures</span>
+							</a>
 					</tr>
 					<tr ng-show="!vm.rounds.length">
 						<td colspan="3">No match-rounds defined</td>

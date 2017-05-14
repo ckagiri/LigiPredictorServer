@@ -7,12 +7,8 @@ export class SeasonRepo extends AbstractRepo {
     super(Season, converter);
   }  
 
-  findByYear(year: number){    
-    return this.findAll({year});
-  }
-
-	findByLeague(leagueId: string) {
-		return this.findAll({leagueId});
+	findAllByLeague(leagueId: string) {
+		return this.findAll({'league.id': leagueId});
 	}
 
 	getTeams(seasonId: string) {

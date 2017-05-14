@@ -86,6 +86,24 @@ namespace admin.seasons {
         }
 			},
 			{
+        state: 'admin.season-round-fixtures',
+        config: {
+          url: '/leagues/:leagueId/seasons/:seasonId/rounds/:roundId/fixtures',
+          templateUrl: 'app/admin/fixtures/fixtures.html',
+          controller: 'FixturesController',
+          controllerAs: 'vm',
+          title: 'season-Fixtures',
+					resolve:{
+						fixtures:['$stateParams', 'FixturesResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Fixtures: app.core.IFixturesResource) {
+								let {leagueId, seasonId, roundId} = $stateParams;
+								return Fixtures.forRound(leagueId, seasonId, roundId);
+						}]
+					}
+        }
+			},
+			{
         state: 'admin.season-teams',
         config: {
           url: '/leagues/:leagueId/seasons/:seasonId/teams',

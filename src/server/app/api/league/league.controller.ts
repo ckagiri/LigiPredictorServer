@@ -43,7 +43,7 @@ export class LeagueController {
 				return Rx.Observable.of(league)
 			})
 			.flatMap((league: any) => {
-				return seasonRepo.findByLeague(leagueId)
+				return seasonRepo.findAllByLeague(league._id)
 			})
 			.subscribe((seasons: any[]) => {
 					res.status(200).json(seasons);
@@ -110,7 +110,8 @@ export class LeagueController {
 			})
 			.map((rNum: number) => {
 					return {
-						round: `Round-${rNum}`
+						name: `Round ${rNum}`,
+						slug: `round-${rNum}`,
 					}
 				})
 			.toArray()
@@ -158,6 +159,7 @@ export class LeagueController {
 			})
 			.flatMap((season: any) => {
 				if (roundId) {
+					roundId = roundId.split('-').pop();
 					return fixtureRepo.findAllBySeasonRound(season._id, roundId);
 				}
 				return fixtureRepo.findAllBySeason(season._id);

@@ -1,1 +1,31 @@
-<p>{{vm.fixtures}}</p>
+<div class="row">
+	<div class="col-sm-12">
+		<div title="Fixtures" subtitle="{{vm.fixtures.length}}"></div>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Kick-Off</th>
+						<th>Team</th>
+						<th>Team</th>
+						<th>Score</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="fixture in vm.fixtures">
+						<td>{{$index + 1}}</td>
+						<td class="text-left">{{fixture.date | date:'d MMM yyyy hh:mm a'}}</td>
+						<td class="text-left">{{fixture.homeTeam.name}}</td>
+						<td class="text-left">{{fixture.awayTeam.name}}</td>
+						<td class="text-left">{{fixture.result.goalsHomeTeam + ' - ' + fixture.result.goalsAwayTeam}}</td>
+						<td class="text-left">{{fixture.status}}</td>
+					</tr>
+					<tr ng-show="!vm.fixtures.length">
+						<td colspan="6">No fixtures found</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

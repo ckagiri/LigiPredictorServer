@@ -18,10 +18,10 @@ var FixtureRepo = (function (_super) {
         return _super.call(this, fixture_model_1.Fixture, converter) || this;
     }
     FixtureRepo.prototype.findAllBySeason = function (seasonId) {
-        return this.findAll({ seasonId: seasonId });
+        return this.findAll({ 'season': seasonId });
     };
     FixtureRepo.prototype.findAllBySeasonRound = function (season, round) {
-        var query = { $and: [{ 'season': season }, { round: round }] };
+        var query = { $and: [{ season: season }, { round: round }] };
         return this.findAll(query);
     };
     return FixtureRepo;

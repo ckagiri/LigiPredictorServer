@@ -48,7 +48,7 @@ export abstract class AbstractRepo {
   }
 
   findAll(query: any = {}, projection?: any, options?: any){
-    return Rx.Observable.fromPromise(this.model.find(query, projection, options));
+    return Rx.Observable.fromPromise(this.model.find(query, projection, options).lean());
   }
 
   aggregate(query: any, group: any, sort: any){
