@@ -13,10 +13,15 @@ export class SeasonRepo extends AbstractRepo {
 
 	getTeams(seasonId: string) {
 		return Rx.Observable.fromPromise(
-			this.model.find({seasonId}).populate('teams').exec(function(err: any, season: any) {
-			if (err) throw('Bad');
-			if (!season) throw(new Error('Failed to load Fixture ' + seasonId));
-			return season.teams;
+			new Promise((resolve: any, reject: any) => {    
+				this.model.findOne({_id: seasonId})
+					.populate('teams')
+					.lean()
+					.exec(function(err: any, season: any) {
+						if (err) reject(err);
+						if (!season) reject(new Error('Failed to load Fixture ' + seasonId));
+						return resolve(season.teams);
+					});
 		}));
 	}
 }

@@ -1,1 +1,25 @@
-<p>{{vm.teams}}</p>
+<div class="row">
+	<div class="col-sm-12">
+		<div title="SeasonTeams" subtitle="{{vm.teams.length}}"></div>
+			<table class="table table-condensed table-striped">
+				<thead>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Code</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="team in vm.teams">
+						<td>{{$index + 1}}</td>
+						<td class="text-left">{{team.name}}</td>
+						<td class="text-left">{{team.code}}</td>
+					</tr>
+					<tr ng-show="!vm.teams.length">
+						<td colspan="3">No teams defined</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>        
+	</div>
+</div>

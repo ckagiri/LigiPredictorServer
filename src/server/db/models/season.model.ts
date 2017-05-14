@@ -59,7 +59,7 @@ const seasonSchema = new Schema({
   },
 	teams: [{
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "Teams"
+		ref: "Team"
 	}],
   currentRound: {
     type: Number

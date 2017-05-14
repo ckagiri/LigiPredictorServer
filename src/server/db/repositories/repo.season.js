@@ -22,12 +22,18 @@ var SeasonRepo = (function (_super) {
         return this.findAll({ 'league.id': leagueId });
     };
     SeasonRepo.prototype.getTeams = function (seasonId) {
-        return Rx.Observable.fromPromise(this.model.find({ seasonId: seasonId }).populate('teams').exec(function (err, season) {
-            if (err)
-                throw ('Bad');
-            if (!season)
-                throw (new Error('Failed to load Fixture ' + seasonId));
-            return season.teams;
+        var _this = this;
+        return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
+            _this.model.findOne({ _id: seasonId })
+                .populate('teams')
+                .lean()
+                .exec(function (err, season) {
+                if (err)
+                    reject(err);
+                if (!season)
+                    reject(new Error('Failed to load Fixture ' + seasonId));
+                return resolve(season.teams);
+            });
         }));
     };
     return SeasonRepo;

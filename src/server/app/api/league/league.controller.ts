@@ -85,7 +85,7 @@ export class LeagueController {
 				return Rx.Observable.of(season)
 			})
 			.flatMap((season: any) => {
-				return seasonRepo.getTeams(seasonId);
+				return seasonRepo.getTeams(season._id);
 			})	
 			.subscribe((teams: any[]) => {
 					res.status(200).json(teams);
