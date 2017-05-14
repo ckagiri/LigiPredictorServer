@@ -1,14 +1,14 @@
 import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export interface IMatchRound {
+export interface IRound {
     name: string;
     slug: string;
 };
 
-interface IMatchRoundModel extends IMatchRound, mongoose.Document { }
+interface IRoundModel extends IRound, mongoose.Document { }
 
-export const matchRoundSchema = new Schema({
+export const roundSchema = new Schema({
   name: {
     type: String, 
     required: true

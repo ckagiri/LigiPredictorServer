@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import {IMatchRound, matchRoundSchema} from './match-round.model';
+import {IRound, roundSchema} from './round.model';
 const Schema = mongoose.Schema;
 
 export interface ISeason {
@@ -8,7 +8,8 @@ export interface ISeason {
   aliases: [string];
   league: string;
   caption: string;
-  rounds: [IMatchRound]
+  rounds: [IRound];
+	numberOfRounds?: number,
   currentRound?: number,
   api_detail?: any
 };
@@ -52,11 +53,24 @@ const seasonSchema = new Schema({
     type: [String]
   },
   rounds: {
-    type: [matchRoundSchema]
+    type: [roundSchema]
   },
+	teams: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Teams"
+	}],
   currentRound: {
     type: Number
   },
+	numberOfRounds: {
+		type: Number
+	},
+	numberOfTeams: {
+		type: Number
+	},
+	numberOfGames: {
+		type: Number
+	},
   api_detail: {
     type: Schema.Types.Mixed
   }
