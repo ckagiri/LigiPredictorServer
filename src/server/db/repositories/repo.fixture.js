@@ -17,6 +17,13 @@ var FixtureRepo = (function (_super) {
     function FixtureRepo(converter) {
         return _super.call(this, fixture_model_1.Fixture, converter) || this;
     }
+    FixtureRepo.prototype.findAllBySeason = function (seasonId) {
+        return this.findAll({ seasonId: seasonId });
+    };
+    FixtureRepo.prototype.findAllBySeasonRound = function (season, round) {
+        var query = { $and: [{ 'season': season }, { round: round }] };
+        return this.findAll(query);
+    };
     return FixtureRepo;
 }(repo_abstract_1.AbstractRepo));
 exports.FixtureRepo = FixtureRepo;

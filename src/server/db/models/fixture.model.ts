@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 export interface IFixture {
   season: string;
   slug: string;
+	date?: any;
   round?: number;
   status: string;
   homeTeam: {
@@ -24,7 +25,9 @@ interface IFixtureModel extends IFixture, mongoose.Document { }
 const fixtureSchema = new Schema({
   season: {
     type: Schema.Types.ObjectId,
-    ref: 'Season'
+    ref: 'Season',
+		index: true,
+		required: true
   },
   slug: {
     type: String, 
@@ -34,7 +37,11 @@ const fixtureSchema = new Schema({
   round: {
     type: Number
   },
-  homeTeam: {
+ 	date: {
+		type: Date,
+		required: true
+	},  
+	homeTeam: {
     name: {
       type: String,
       required: true

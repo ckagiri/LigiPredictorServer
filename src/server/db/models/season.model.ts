@@ -11,6 +11,8 @@ export interface ISeason {
   rounds: [IRound];
 	numberOfRounds?: number,
   currentRound?: number,
+	seasonStart?: any,
+	seasonEnd?: any
   api_detail?: any
 };
 
@@ -70,6 +72,12 @@ const seasonSchema = new Schema({
 	},
 	numberOfGames: {
 		type: Number
+	},
+	seasonStart: {
+		type: Date
+	},
+	seasonEnd: {
+		type: Date
 	},
   api_detail: {
     type: Schema.Types.Mixed

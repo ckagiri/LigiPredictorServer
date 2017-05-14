@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
 var season_model_1 = require("../models/season.model");
+var Rx = require("rxjs");
 var SeasonRepo = (function (_super) {
     __extends(SeasonRepo, _super);
     function SeasonRepo(converter) {
@@ -20,8 +21,17 @@ var SeasonRepo = (function (_super) {
     SeasonRepo.prototype.findByYear = function (year) {
         return this.findAll({ year: year });
     };
-    SeasonRepo.prototype.getByLeague = function (leagueId) {
+    SeasonRepo.prototype.findByLeague = function (leagueId) {
         return this.findAll({ leagueId: leagueId });
+    };
+    SeasonRepo.prototype.getTeams = function (seasonId) {
+        return Rx.Observable.fromPromise(this.model.find({ seasonId: seasonId }).populate('teams').exec(function (err, season) {
+            if (err)
+                throw ('Bad');
+            if (!season)
+                throw (new Error('Failed to load Fixture ' + seasonId));
+            return season.teams;
+        }));
     };
     return SeasonRepo;
 }(repo_abstract_1.AbstractRepo));
