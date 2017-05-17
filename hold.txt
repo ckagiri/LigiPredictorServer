@@ -313,3 +313,90 @@ exports.create = function(req, res) {
 	res.jsonp(predictions);
 };
 
+function processGambleWithBetsOnEvent(Event $event)
+{
+	// Select all gambles having the event in its bets
+	$gambles = findAllGambleHavingBetsOnEvent($event);
+	foreach ($gambles as $gamble) {
+		$this->processor->process($gamble, $event, $this->date);
+	}
+}
+
+interface GambleProcessorInterface
+{
+	public function process(Gamble $gamble, Event $event, \DateTime $date);
+	public function apply(Gamble $gamble);
+}
+
+class GambleProcessor
+{
+	protected $processors;
+	protected $logger;
+
+	function process(Gamble $gamble, Event $event, \DateTime $date)
+	{
+		foreach ($this->processors as $process) {
+			if (!$process->apply($gamble)) {
+				$this->log('Gamble  #'.$gamble->getId().' : processor '.get_class($process).' not applied');
+				continue;
+			}
+			$process->process($gamble, $event, $date);
+		}
+	}
+}
+
+CompleteGambleProcessor implements GambleProcessorInterface
+{
+	public CalculatorInterface $calculator)
+	{
+		$this->calculator = $calculator;
+	}
+
+	process(Gamble $gamble, Event $event, \DateTime $date)
+	{
+		// Fill the winner field in the gamble according to the winner field in its bets
+		$gamble->fillWinner();
+		if (!$gamble->getWinner()) {
+			// Process the case of a losing gamble
+			$score = $this.calculator->calculateLosingGamble($gamble);
+		} 
+		$gamble->setPoint($score);
+		$gamble->setProcessedDate($date);
+	}
+
+	public function apply(Gamble $gamble)
+	{
+		return $gamble->hasEnded();
+	}
+}
+
+class EventGambleProcessor implements GambleProcessorInterface
+{
+	protected $betTypeChain;
+	public function __construct(BetTypeChain $betTypeChain)
+	{
+		$this->betTypeChain = $betTypeChain;
+	}
+
+	public function process(Gamble $gamble, Event $event, \DateTime $date)
+	{
+		$bets = $gamble->findBetsWithEvent($event);
+		foreach ($bets as $bet) {
+			// Update the winner field in each bet
+			$betTypeEntity = $this->betTypeChain->findByEventTypeAndType($event->getType(), $bet->getType());
+			$result = $betTypeEntity->processBet($bet);
+			if (is_bool($result)) {
+				$bet->setWinner($result);
+			}
+		}
+	}
+
+	public function apply(Gamble $gamble)
+	{
+		return !$gamble->hasEnded();
+	}
+}
+
+
+
+
