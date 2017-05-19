@@ -397,6 +397,15 @@ class EventGambleProcessor implements GambleProcessorInterface
 	}
 }
 
+BoardInfo
+snId, rdId, groupId
+status compute_started, scores_added, compute_finished[ui: pending, complete](started, scoresAdded, positionsUpdated)]
+userCount
+lastRefreshUpdate: 
 
+LeaderBoard
+standing=>ssn, rnd, user, score, pos,  preds
 
-
+sub-> up8Pred -> upd8BoardInfoStatus[use {}] -> up8Snst -> up8Rdst -> up8minis
+onComp -> movePos[pushPred]
+movePos onlyIf scores_added
