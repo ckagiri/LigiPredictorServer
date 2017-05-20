@@ -24,10 +24,16 @@ export class FixtureController {
   }
 
   list(req: Request, res: Response) {
-		let {leagueId, seasonId, roundId}= req.params;
+		let {leagueId, seasonId, roundId}= req.query;
 		roundId = roundId.split('-').pop();
 		let user = req['user'];
-		singleSeason(leagueId, seasonId)
+		let source: Rx.Observable<any>;
+		if(leagueId == null && seasonId == null) {
+			source = seasonRepo.getDefault();
+		} else {
+			source = singleSeason(leagueId, seasonId)
+		}
+		source
 			.flatMap((season: any) => {
 				if(!season) {
 					res.sendStatus(404);
@@ -36,16 +42,20 @@ export class FixtureController {
 				return Rx.Observable.of(season)
 			})
 			.flatMap((season: any) => {
-				return fixtureRepo.findAllBySeasonRound(season._id, roundId);
+				return fixtureRepo.findAllBySeasonRound(season._id, roundId || season.currentRound);
 			})
 			.flatMap((fixtures: any[]) => {
 				return Rx.Observable.of(fixtures);
 			})	
 			.flatMap((fixture: any) => {
-				return predictionRepo.findOrCreateDefault(user._id, fixture._id)
-					.map((prediction: any) => {
-						return fixture.prediction = prediction;
-					})
+				fixture.prediction = {
+					fixtureId: fixture._id
+				}
+				return Rx.Observable.of(fixture)
+				// return predictionRepo.findOneOrCreateDefault(user._id, fixture._id)
+				// 	.map((prediction: any) => {
+				// 		return fixture.prediction = prediction;
+				// 	})
 			})
 			.toArray()
 			.subscribe((fixtures: any[]) => {

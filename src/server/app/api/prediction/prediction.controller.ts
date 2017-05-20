@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import * as _ from 'lodash';
-import {League, ILeague, ILeagueModel} from '../../../db/models/league.model';
+import {IPrediction, Prediction	} from '../../../db/models/prediction.model';
 import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo} from '../../../db/repositories';
 import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../../db/converters/ligi-predictor';
 let leagueRepo = new LeagueRepo(new LeagueConverter())
@@ -40,4 +40,10 @@ export class PredictionController {
 					res.status(500).json(err);
 			});
   }
+}
+
+function createPredictionNullo(fixtureId: string) {
+	return {
+		fixture: fixtureId
+	}
 }

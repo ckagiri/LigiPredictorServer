@@ -19,9 +19,23 @@ export class SeasonRepo extends AbstractRepo {
 					.lean()
 					.exec(function(err: any, season: any) {
 						if (err) reject(err);
-						if (!season) reject(new Error('Failed to load Fixture ' + seasonId));
+						if (!season) reject(new Error('Failed to load Season ' + seasonId));
 						return resolve(season.teams);
 					});
 		}));
+	}
+
+	getDefault(){
+		return Rx.Observable.fromPromise(
+			new Promise((resolve: any, reject: any) => {
+				this.model.findOne({'league.slug': 'premier-league', year: '2016'})
+					.lean()
+					.exec(function(err: any, season: any) {
+						if (err) reject(err);
+						if (!season) reject(new Error('Failed to load Default Season'));
+							return resolve(season);
+					});
+			})
+		)
 	}
 }
