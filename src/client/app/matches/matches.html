@@ -1,1 +1,57 @@
-<p>{{vm.matches}}</p>
+<section data-ng-controller="PredictionsController" data-ng-init="find()">
+    <form data-ng-submit="createPredictions()" novalidate>
+
+    <div class="page-header">
+        <h1>Matches</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 score-container date-picker">
+            <div class="btn-group">
+                <div class="col-xs-2 btn btn-primary" ng-click="prevMatchday()"><i class="glyphicon glyphicon-chevron-left"></i></div>
+                <div class="col-xs-8 btn btn-primary" ng-click="currMatchday()">Today</div>
+                <div class="col-xs-2 btn btn-primary" ng-click="nextMatchday()"><i class="glyphicon glyphicon-chevron-right"></i></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3 score-container">
+            <div class="row">
+                <div class="date text-center">This Week Scores</div>
+            </div>
+            <h2>Total Score {{resultValue | calcScore}}<h2>
+            <h4>Correct Result: {{resultValue | countScore:2}}<h4>
+            <h4>Correct Score: {{resultValue | countScore:3}}<h4>
+        </div>
+    </div>
+
+    <div class="row" class="" ng-repeat="fixture in vm.fixtures">
+        <div class="col-md-6 col-md-offset-3 score-container">
+            <div class="row text-center">
+                <div class="col-xs-12 date">{{fixture.date | date:'EEEE MMMM d y, h:mma'}}</div>
+            </div>
+            <div class="row text-center">
+                <div class="col-xs-3 vcentre">
+                    <img height="60px" ng-src={{fixture.homeTeam.crestUrl}} ></img><br>
+                    <small>{{fixture.homeTeam.name}}</small>
+                </div>
+                <div class="col-xs-6">
+                    <match-prediction></match-prediction>
+                </div>
+                <div class="col-xs-3 vcentre">
+                    <img height="60px" ng-src={{fixture.awayTeam.crestUrl}} ></img><br>
+                    <small>{{fixture.awayTeam.name}}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">            
+            <button class="btn btn-block btn-success btn-lg btn-submit-pred" type="submit">Submit Predictions <i class="glyphicon glyphicon-ok"></i></button>
+        </div>
+    </div>
+
+    </form>
+</section>

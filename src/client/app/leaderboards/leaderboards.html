@@ -1,0 +1,32 @@
+<section>
+	<div class="page-header">
+        <h1>Leaderboard</h1>
+    </div>
+	<div class="text-container leaderboard">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Pos</th>
+					<th>Name</th>
+					<th>Correct Result</th>
+					<th>Correct Score</th>
+					<th>Total Points</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="score in scores">
+					<td>
+						<i ng-if="score.change > 0" class="glyphicon glyphicon-chevron-up"></i> 
+						<i ng-if="score.change < 0" class="glyphicon glyphicon-chevron-down"></i> 
+						<i ng-if="score.change === 0" class="glyphicon glyphicon-minus"></i>
+						{{score.rank}}
+					</td>
+					<td>{{score.User.displayName}}</td>
+					<td>{{score.ScoreCount[2] || 0}}</td>
+					<td>{{score.ScoreCount[3] || 0}}</td>
+					<td>{{score.SumOfScores || 0}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</section>
