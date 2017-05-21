@@ -20,6 +20,10 @@ export class PredictionController {
     		});
   }
 
+	create(req: Request, res: Response) {
+
+	}
+
 	mine(req: Request, res: Response) {
 		fixtureRepo.findAll()
 			.subscribe((leagues: any[]) => {

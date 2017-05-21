@@ -11,8 +11,8 @@ let fixtureRepo = new FixtureRepo(new FixtureConverter(seasonRepo, TeamRepo))
 export class FixtureController {
 	list(req: Request, res: Response) {
 		fixtureRepo.findAll()
-			.subscribe((leagues: any[]) => {
-					res.status(200).json(leagues);
+			.subscribe((fixtures: any[]) => {
+					res.status(200).json(fixtures);
 				}, (err: any) => {
 					console.error(err);
 					res.status(500).json(err);

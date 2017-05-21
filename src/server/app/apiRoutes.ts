@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import {profileRouter} from './api/user/profile';
 import {leagueRouter} from './api/league/league.route';
+import {fixtureRouter} from './api/fixture/fixture.route';
 import { send404, notFoundMiddleware } from './utils/notfound'; 
 
 const router = Router();
@@ -11,6 +12,7 @@ router.get('/ping', (req, res) => {
 
 router.use('/me', profileRouter.routes);
 router.use('/leagues', leagueRouter.routes);
+router.use('/matches', fixtureRouter.routes)
 router.get('/*', notFoundMiddleware);
 
 export const routes = router;

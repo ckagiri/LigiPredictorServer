@@ -12,7 +12,7 @@ export class FixtureRepo extends AbstractRepo {
 	}
 
 	findAllBySeasonRound(season: string, round: number) {
-			let query = {$and: [{season}, {round}]}
-			return this.findAll(query)
+		let query = {$and: [{season}, {round}]}
+		return this.findAll(query)
 	}
 }

@@ -19,6 +19,7 @@ const predictionSchema = new Schema({
 		required: 'User required'
 	},
 	fixture: {
+		type: Schema.Types.ObjectId,
 		ref: 'Fixture',
 		index: true,
 		required: 'Fixture required'

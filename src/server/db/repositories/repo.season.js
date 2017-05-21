@@ -31,8 +31,22 @@ var SeasonRepo = (function (_super) {
                 if (err)
                     reject(err);
                 if (!season)
-                    reject(new Error('Failed to load Fixture ' + seasonId));
+                    reject(new Error('Failed to load Season ' + seasonId));
                 return resolve(season.teams);
+            });
+        }));
+    };
+    SeasonRepo.prototype.getDefault = function () {
+        var _this = this;
+        return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
+            _this.model.findOne({ 'league.slug': 'premier-league', year: '2016' })
+                .lean()
+                .exec(function (err, season) {
+                if (err)
+                    reject(err);
+                if (!season)
+                    reject(new Error('Failed to load Default Season'));
+                return resolve(season);
             });
         }));
     };

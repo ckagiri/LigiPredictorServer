@@ -8,9 +8,9 @@ class FixtureRouter {
 
     get routes () {
         router.get('/', this.controller.list);
-				router.get('/:id', this.controller.show)
+        router.get('/:id', this.controller.show)
         return router;
     }
 }
 
-export const leagueRouter = new FixtureRouter();
+export const fixtureRouter = new FixtureRouter();

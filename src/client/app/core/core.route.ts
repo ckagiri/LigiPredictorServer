@@ -97,12 +97,18 @@ namespace app.core {
 			{
 				state: 'app.index',
 				config: {
-					url: '',
-					templateUrl: 'app/matches/matches.html',
-					controller: 'MatchesController',
-					controllerAs: 'vm',
-					title: 'matches'
-				}
+          url: '/matches',
+          templateUrl: 'app/matches/matches.html',
+          controller: 'MatchesController',
+          controllerAs: 'vm',
+          title: 'matches',
+          resolve:{
+						matches:['MatchesResource', 
+							function (Matches: app.core.IMatchesResource) {
+								return Matches.default();
+						}]
+					}
+        }
       },
 			{
         state: 'app.404',

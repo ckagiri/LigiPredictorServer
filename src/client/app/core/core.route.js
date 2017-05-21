@@ -97,11 +97,17 @@ var app;
                 {
                     state: 'app.index',
                     config: {
-                        url: '',
+                        url: '/matches',
                         templateUrl: 'app/matches/matches.html',
                         controller: 'MatchesController',
                         controllerAs: 'vm',
-                        title: 'matches'
+                        title: 'matches',
+                        resolve: {
+                            matches: ['MatchesResource',
+                                function (Matches) {
+                                    return Matches.default();
+                                }]
+                        }
                     }
                 },
                 {

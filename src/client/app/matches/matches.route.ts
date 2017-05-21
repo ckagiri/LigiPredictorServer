@@ -20,7 +20,31 @@ namespace app.matches {
           templateUrl: 'app/matches/matches.html',
           controller: 'MatchesController',
           controllerAs: 'vm',
-          title: 'matches'
+          title: 'matches',
+          resolve:{
+						matches:['MatchesResource', 
+							function (Matches: app.core.IMatchesResource) {
+								return Matches.default();
+						}]
+					}
+        }
+      },   
+			{
+        state: 'app.matches-alt',
+        config: {
+          url: '/matches?league&season&round',
+          templateUrl: 'app/matches/matches.html',
+          controller: 'MatchesController',
+          controllerAs: 'vm',
+          title: 'matches',
+					resolve:{
+						matches:['$stateParams', 'MatchesResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Matches: app.core.IMatchesResource) {
+								let {league, season, round} = $stateParams;
+								return Matches.forRound(league, season, round);
+						}]
+					}
         }
       }
     ];
