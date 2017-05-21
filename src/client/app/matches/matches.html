@@ -1,11 +1,11 @@
-<section data-ng-controller="PredictionsController" data-ng-init="find()">
-  <form data-ng-submit="createPredictions()" novalidate>
+<section>
+  <form data-ng-submit="vm.createPredictions()" novalidate>
     <div class="row">
       <div class="col-md-8 col-md-offset-1 score-container date-picker">
         <div class="btn-group">
-          <div class="col-xs-2 btn btn-primary" ng-click="prevMatchday()"><i class="fa fa-chevron-left"></i></div>
-          <div class="col-xs-8 btn btn-primary" ng-click="currMatchday()">Matchday 1</div>
-          <div class="col-xs-2 btn btn-primary" ng-click="nextMatchday()"><i class="fa fa-chevron-right"></i></div>
+          <div class="col-xs-2 btn btn-primary" ng-click="vm.prevMatchday()"><i class="fa fa-chevron-left"></i></div>
+          <div class="col-xs-8 btn btn-primary" ng-click="vm.currMatchday()">Matchday 1</div>
+          <div class="col-xs-2 btn btn-primary" ng-click="vm.nextMatchday()"><i class="fa fa-chevron-right"></i></div>
         </div>
       </div>
     </div>

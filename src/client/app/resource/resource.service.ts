@@ -2,6 +2,7 @@ namespace app.core {
   'use strict';
 
 	export interface StaticResource {
+	  newInstance(data: any): InstanceResource;
 		all(cb?: any, errorcb?: any): ng.IPromise<any>;
 		getList(endpoint: string, parameters?: any, successcb?: any, errorcb?: any): ng.IPromise<any>;
 		getOne(endpoint: string, parameters?: any, successcb?: any, errorcb?: any): ng.IPromise<any>;
@@ -30,6 +31,10 @@ namespace app.core {
 				}
 
 				_id: string;
+
+				static newInstance(data: any) {
+					return new Resource(data);
+				}
 
 				static all(cb: any, errorcb: any) {
 					return Resource.query({}, cb, errorcb);

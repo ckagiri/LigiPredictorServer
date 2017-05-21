@@ -16,12 +16,12 @@ namespace app.matches {
 		matchday: number = 1;
 
 		createPredictions = () => {
-			// var predictions = new Predictions($scope.predictions);
-			// predictions.$save(function(response: any){
-			// 	this.fixtures = Predictions.query();
-			// }, function(errorResponse: any) {
-			// 	this.error = errorResponse.data.message;
-			// });
+			var predictions = this.Predictions.newInstance(this.predictions);
+			predictions.save(function(response: any){
+				console.log(response);
+			}, function(errorResponse: any) {
+				this.error = errorResponse.data.message;
+			});
 		};
 
 		score = (match: any, side: string, change: number) => {

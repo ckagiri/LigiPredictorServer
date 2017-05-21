@@ -6,7 +6,6 @@ namespace app.core {
 
 	PredictionsResource.$inject = ['resource'];
 	function PredictionsResource (resource: (resourceName: string) => IPredictionsResource) {
-		var Leagues: ILeaguesResource = resource("leagues");
 		var Predictions: IPredictionsResource = resource("predictions");
 		return Predictions;
 	}
