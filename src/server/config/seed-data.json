@@ -15,6 +15,7 @@
       "shortName": "Arsenal",
       "code": "ARS",
       "slug": "arsenal",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
       "aliases": []
     },
     "bournemouth":{
@@ -22,6 +23,7 @@
       "shortName": "Bournemouth",
       "code": "BOU",
       "slug": "bournemouth",
+      "crestUrl": "https://upload.wikimedia.org/wikipedia/de/4/41/Afc_bournemouth.svg",
       "aliases": []
     },
     "burnley":{
@@ -29,6 +31,7 @@
       "shortName": "Burnley",
       "code": "BUR",
       "slug": "burnley",
+      "crestUrl": "https://upload.wikimedia.org/wikipedia/en/0/02/Burnley_FC_badge.png",
       "aliases": []
     },
     "chelsea":{
@@ -36,6 +39,7 @@
       "shortName": "Chelsea",
       "code": "CHE",
       "slug": "chelsea",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/5/5c/Chelsea_crest.svg",
       "aliases": []
     },
     "crystal_palace":{
@@ -43,6 +47,7 @@
       "shortName": "Crystal Palace",
       "code": "CRY",
       "slug": "crystal_palace",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/b/bf/Crystal_Palace_F.C._logo_(2013).png",
       "aliases": []
     },
     "everton":{
@@ -50,6 +55,7 @@
       "shortName": "Everton",
       "code": "EVE",
       "slug": "everton",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/f/f9/Everton_FC.svg",
       "aliases": []
     },
     "hull_city":{
@@ -57,6 +63,7 @@
       "shortName": "Hull",
       "code": "HUL",
       "slug": "hull_city",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/a/a9/Hull_City_AFC.svg",
       "aliases": []
     },
     "leicester_city":{
@@ -64,6 +71,7 @@
       "shortName": "Leicester",
       "code": "LEI",
       "slug": "leicester_city",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/en/6/63/Leicester02.png",
       "aliases": []
     },
     "liverpool":{
@@ -71,6 +79,7 @@
       "shortName": "Liverpool",
       "code": "LIV",
       "slug": "liverpool",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/0/0a/FC_Liverpool.svg",
       "aliases": []
     },
     "man_city":{
@@ -78,6 +87,7 @@
       "shortName": "Man City",
       "code": "MCI",
       "slug": "man_city",
+      "crestUrl": "https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg",
       "aliases": ["ManC"]
     },
     "man_united":{
@@ -85,6 +95,7 @@
       "shortName": "Man United",
       "code": "MUN",
       "slug": "man_united",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/d/da/Manchester_United_FC.svg",
       "aliases": ["ManU", "ManUtd"]
     },
     "middlesbrough":{
@@ -92,6 +103,7 @@
       "shortName": "Middlesbrough",
       "code": "MID",
       "slug": "middlesbrough",
+      "crestUrl": "https://upload.wikimedia.org/wikipedia/en/2/2c/Middlesbrough_FC_crest.svg",
       "aliases": []
     },
     "southampton":{
@@ -99,6 +111,7 @@
       "shortName": "Southampton",
       "code": "SOU",
       "slug": "southampton",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/c/c9/FC_Southampton.svg",
       "aliases": []
     },
     "stoke_city":{
@@ -106,6 +119,7 @@
       "shortName": "Stoke",
       "code": "STK",
       "slug": "stoke_city",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/a/a3/Stoke_City.svg",
       "aliases": []
     },
     "sunderland":{
@@ -113,6 +127,7 @@
       "shortName": "Sunderland",
       "code": "SUN",
       "slug": "sunderland",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/6/60/AFC_Sunderland.svg",
       "aliases": []
     },
     "swansea_city":{
@@ -120,6 +135,7 @@
       "shortName": "Swansea",
       "code": "SWA",
       "slug": "swansea_city",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/a/ab/Swansea_City_Logo.svg",
       "aliases": []
     },
     "tottenham":{
@@ -127,6 +143,7 @@
       "shortName": "Tottenham",
       "code": "TOT",
       "slug": "tottenham",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/b/b4/Tottenham_Hotspur.svg",
       "aliases": []
     },
     "watford":{
@@ -134,6 +151,7 @@
       "shortName": "Watford",
       "code": "WAT",
       "slug": "watford",
+      "crestUrl": "https://upload.wikimedia.org/wikipedia/en/e/e2/Watford.svg",
       "aliases": []
     },
     "west_bromwich":{
@@ -141,6 +159,7 @@
       "shortName": "West Brom",
       "code": "WBA",
       "slug": "west_bromwich",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/8/8b/West_Bromwich_Albion.svg",
       "aliases": []
     },
     "west_ham":{
@@ -148,6 +167,7 @@
       "shortName": "West Ham",
       "code": "WHU",
       "slug": "west_ham",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/e/e0/West_Ham_United_FC.svg",
       "aliases": []
     }
   },
@@ -172,6 +192,11 @@
         "slug": "round-1",
 				"startDate": "=new Date('2016-08-13T13:30:00+0200')",
 				"endDate": "=new Date('2016-08-15T21:00:00+0200')"
+      },{
+        "name": "Round 2",
+        "slug": "round-2",
+				"startDate": "=new Date('2016-08-19T21:00:00+0200')",
+				"endDate": "=new Date('2016-08-21T17:00:00+0200')"
       }],
 			"teams": [
 				"->teams.arsenal",
@@ -195,7 +220,7 @@
 				"->teams.west_bromwich",
 				"->teams.west_ham"			
 			],
-			"currentRound": 2,
+			"currentRound": 1,
 			"numberOfRounds": 38,
 			"numberOfTeams": 20,
 			"numberOfGames": 380,
@@ -214,21 +239,135 @@
       "homeTeam": {
         "id": "->teams.arsenal",
         "name": "->teams.arsenal.shortName",
-        "slug": "->teams.arsenal.slug"
+        "slug": "->teams.arsenal.slug", 
+        "crestUrl": "->teams.arsenal.crestUrl"
       },
       "awayTeam": {
         "id": "->teams.liverpool",
         "name": "->teams.liverpool.shortName",
-        "slug": "->teams.liverpool.slug"
+        "slug": "->teams.liverpool.slug",
+        "crestUrl": "->teams.liverpool.crestUrl"
       },
 			"odds": {
-				"homeWin": 2.36,
-				"awayWin": 2.99,
-				"draw": 3.45
+				"homeWin": 2.2,
+        "draw": 3.2,
+        "awayWin": 3.25
 			},
       "result":{
         "goalsHomeTeam": 3,
         "goalsAwayTeam": 4
+      }
+    },
+    "eve_tot": {
+      "season":"->seasons.epl_16",
+      "round": 1,
+			"date": "=new Date('2016-08-13T13:30:00+0200')",
+      "slug": "everton-tottenham",    
+      "status": "PLAYED",
+      "homeTeam": {
+        "id": "->teams.everton",
+        "name": "->teams.everton.shortName",
+        "slug": "->teams.everton.slug", 
+        "crestUrl": "->teams.everton.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.tottenham",
+        "name": "->teams.tottenham.shortName",
+        "slug": "->teams.tottenham.slug",
+        "crestUrl": "->teams.tottenham.crestUrl"
+      },
+			"odds": {
+				"homeWin": 2.9,
+        "draw": 3.25,
+        "awayWin": 2.37
+			},
+      "result":{
+        "goalsHomeTeam": 1,
+        "goalsAwayTeam": 1
+      }
+    },
+    "che_whu": {
+      "season":"->seasons.epl_16",
+      "round": 1,
+			"date": "=new Date('2016-08-13T13:30:00+0200')",
+      "slug": "chelsea-west_ham",    
+      "status": "PLAYED",
+      "homeTeam": {
+        "id": "->teams.chelsea",
+        "name": "->teams.chelsea.shortName",
+        "slug": "->teams.chelsea.slug", 
+        "crestUrl": "->teams.chelsea.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.west_ham",
+        "name": "->teams.west_ham.shortName",
+        "slug": "->teams.west_ham.slug",
+        "crestUrl": "->teams.west_ham.crestUrl"
+      },
+			"odds": {
+			  "homeWin": 1.61,
+        "draw": 3.75,
+        "awayWin": 5.5
+			},
+      "result":{
+        "goalsHomeTeam": 2,
+        "goalsAwayTeam": 1
+      }
+    },
+    "stk_mci": {
+      "season":"->seasons.epl_16",
+      "round": 2,
+			"date": "=new Date('2016-08-20T13:30:00+0200')",
+      "slug": "stoke_city-man_city",    
+      "status": "PLAYED",
+      "homeTeam": {
+        "id": "->teams.stoke_city",
+        "name": "->teams.stoke_city.shortName",
+        "slug": "->teams.stoke_city.slug", 
+        "crestUrl": "->teams.stoke_city.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.man_city",
+        "name": "->teams.man_city.shortName",
+        "slug": "->teams.man_city.slug",
+        "crestUrl": "->teams.man_city.crestUrl"
+      },
+			"odds": {
+				"homeWin": 5.0,
+        "draw": 3.75,
+        "awayWin": 1.7
+			},
+      "result":{
+        "goalsHomeTeam": 1,
+        "goalsAwayTeam": 4
+      }
+    },
+    "mun_sou": {
+      "season":"->seasons.epl_16",
+      "round": 2,
+			"date": "=new Date('2016-08-20T13:30:00+0200')",
+      "slug": "man_united-southampton",    
+      "status": "PLAYED",
+      "homeTeam": {
+        "id": "->teams.man_united",
+        "name": "->teams.man_united.shortName",
+        "slug": "->teams.man_united.slug", 
+        "crestUrl": "->teams.man_united.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.southampton",
+        "name": "->teams.southampton.shortName",
+        "slug": "->teams.southampton.slug",
+        "crestUrl": "->teams.southampton.crestUrl"
+      },
+			"odds": {
+				"homeWin": 1.44,
+        "draw": 4.2,
+        "awayWin": 8.0
+			},
+      "result":{
+        "goalsHomeTeam": 2,
+        "goalsAwayTeam": 0
       }
     }
   }

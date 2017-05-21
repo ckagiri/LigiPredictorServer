@@ -10,11 +10,13 @@ export interface IFixture {
   homeTeam: {
     name: string, 
     slug: string,
+    crestUrl: string,
     id: string
   };
   awayTeam: {
     name: string,
     slug: string,
+    crestUrl: string,
     id: string
   };
   api_detail?: any;
@@ -50,6 +52,9 @@ const fixtureSchema = new Schema({
       type: String,
       required: true
     },
+    crestUrl: {
+      type: String
+    },
     id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Team",
@@ -65,6 +70,9 @@ const fixtureSchema = new Schema({
     slug: {
       type: String,
       required: true
+    },
+    crestUrl: {
+      type: String
     },
     id: {
       type: mongoose.Schema.Types.ObjectId,
