@@ -1,0 +1,35 @@
+<div ng-if="fixture.prediction && !fixture.predictionDisabled" >
+    <div class="col-xs-6">
+        <div class="score-selector">
+            <a class="btn-score"><i class="fa fa-chevron-up"></i></a>
+            <div class="score-selector-inner">
+                <input tabindex={{$index+1}} type="tel" class="input-score" pattern="\d" length="1" min="0" value="0" ng-model="predictions[fixture._id].goalsHomeTeam">
+            </div>
+            <a class="btn-score" ng-click="score(fixture._id,'Home',-1)"><i class="fa fa-chevron-down"></i></a>
+        </div>
+    </div>
+    <div class="col-xs-6" >
+       <div class="score-selector" >
+            <a class="btn-score"><i class="fa fa-chevron-up"></i></a>
+            <div class="score-selector-inner">
+                <input tabindex={{$index+1}} type="tel" class="input-score" pattern="\d" length="1" min="0" value="0" ng-model="predictions[fixture._id].goalsAwayTeam">
+            </div>
+            <a class="btn-score"><i class="fa fa-chevron-down"></i></a>
+        </div>
+    </div>
+</div>
+<div class="score-result text-center">
+    <div class="row">
+        <div class="col-xs-4">{{(fixture.prediction.goalsHomeTeam !== undefined) ? fixture.prediction.goalsHomeTeam : '1'}}</div>
+        <div class="col-xs-4 prediction-heading">Predicted</div>
+        <div class="col-xs-4">{{(fixture.prediction.goalsAwayTeam !== undefined) ? fixture.prediction.goalsAwayTeam : '2'}}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4">2</div>
+        <div class="col-xs-4 prediction-heading">Result</div>
+        <div class="col-xs-4">2</div>
+    </div>   
+    <div class="row" >
+        <div class="col-xs-12"><span class="label label-warning">Points 1</span></div>
+    </div> 
+</div>

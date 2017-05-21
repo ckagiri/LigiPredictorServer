@@ -1,0 +1,209 @@
+ /* Basics */
+/* Divs */
+.content-main {
+	background: #fff;
+	border-radius: 5px;
+}
+.text-container {
+	background: #fff;
+	border-radius: 5px;
+	padding:10px;
+}
+.inner-container {
+	background: #fff;
+	border-radius: 5px;
+	padding:10px;
+}
+.vcenter {
+	vertical-align: center;
+	display: inline-block;
+	float: none;
+}
+.undecorated-link:hover {
+	text-decoration: none;
+}
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+	display: none !important;
+}
+.ng-invalid.ng-dirty {
+	border-color: #FA787E;
+}
+.ng-valid.ng-dirty {
+	border-color: #78FA89;
+}
+.dropdown {
+	cursor: pointer;
+}
+.table tbody>tr>td {
+	vertical-align: middle;
+}
+.table-fixtures {
+	max-width: 800px;
+	margin:auto;
+}
+.fixture-nav {
+	color:white;
+	padding: 0;
+}
+.grad-background {
+	background: rgba(20,30,40,1);
+	background: -moz-linear-gradient(left, rgba(20,30,40,1) 0%, rgba(19,41,64,1) 100%);
+	background: -webkit-gradient(left top, right top, color-stop(0%, rgba(20,30,40,1)), color-stop(100%, rgba(19,41,64,1)));
+	background: -webkit-linear-gradient(left, rgba(20,30,40,1) 0%, rgba(19,41,64,1) 100%);
+	background: -o-linear-gradient(left, rgba(20,30,40,1) 0%, rgba(19,41,64,1) 100%);
+	background: -ms-linear-gradient(left, rgba(20,30,40,1) 0%, rgba(19,41,64,1) 100%);
+	background: linear-gradient(to right, rgba(20,30,40,1) 0%, rgba(19,41,64,1) 100%);
+}
+.footer-wrapper {
+	min-height: 200px;
+	color:white;
+	font-weight: bold;
+	bottom: 0;
+	padding-top:20px;
+}
+.footer-wrapper a {
+	color: white;
+}
+.footer-wrapper a:hover {
+	text-decoration: underline;	
+}
+.prediction-heading {
+	font-size: 9pt;
+	color: #999;
+	margin:0;
+	margin-top:10px;
+}
+.score-result {
+	font-family: 'Raleway', sans-serif;
+	font-size: 22pt;
+	height: 120px;
+	vertical-align: middle;
+	margin-top: 10px;
+	line-height: 1.2;
+}
+.score-prediction {
+	font-family: 'Raleway', sans-serif;
+	font-size: 26pt;
+	margin:30px 0 30px 0;
+	color:'#e6e6e6';
+}
+.score-container {
+	background: white;
+	margin-bottom: 10px;
+	border-radius: 5px;
+}
+.score-container img {
+	margin: 10px 0 10px 0;
+}
+.score-container .date {
+	background: #337ab7;
+	color: white;
+	border-radius: 5px 5px 0 0 ;
+	border-bottom: 2px solid #999999;
+}
+.date-picker {
+	background: transparent;
+	color:white;
+	text-align: center;
+	padding: 0;
+}
+.date-picker > .btn-group {
+	display: block;
+	margin-bottom: 10px;
+}
+.col-xs-2.btn.btn-primary, .col-xs-8.btn.btn-primary{
+	margin-left:0;
+	margin-right: 0;
+}
+.date-picker-center {
+	border-left: 1px solid #999999;
+}
+.vcentre {
+	text-align: center;
+}
+.leaderboard .glyphicon-chevron-up {
+	color:green;
+}
+.leaderboard .glyphicon-chevron-down {
+	color:red;
+}
+/* Elements */
+.score-selector {
+	width: 70px;
+	text-align: center;
+	display: inline-block;
+}
+.score-selector > a {
+	display: block;
+	line-height: 40px;
+	cursor: pointer;
+}
+.score-selector > a:hover {
+	background-color: #e6e6e6
+}
+.score-selector-inner {
+	border-top:1px solid #e6e6e6;
+	border-bottom:1px solid #e6e6e6;
+}
+.score-selector-inner > input.middle:focus {
+    outline-width: 0;
+}
+.btn-score {
+	-moz-user-select: none;
+	-webkit-user-select: none; 
+	-ms-user-select:none; 
+	user-select:none;
+	-o-user-select:none;
+}
+.btn-social {
+	width: 240px;
+	margin-right:30px;
+}
+.input-score {
+	height:40px;
+	width:40px;
+	vertical-align: middle;
+	display: table-cell;
+	font-family:  'Raleway', sans-serif;
+	font-size: 16pt;
+	font-weight: bold;
+	border: 0;
+	text-align: center;
+
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance:textfield;
+    margin: 0;
+}
+.btn-facebook {
+	background: #3a5795;
+	color: white;
+}
+.btn-twitter {
+	background: #2FC2EF;
+	color: white;
+}
+.btn-submit-pred {
+	margin: 30px 0 30px 0;
+}
+.btn-matchday {
+	padding: 0;
+	margin-bottom: 15px;
+}
+.loader {
+	padding: 2px 0 2px 0;
+}
+.score-result .label {
+	font-size:12pt;
+}
+.red {
+	background-color: red;
+}
+.green {
+	background-color: green;
+}
+.grey {
+	background-color: #666666;
+}
