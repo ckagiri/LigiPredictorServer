@@ -13,22 +13,6 @@ namespace app.matches {
 
   function getStates() {
     return [
-      {
-        state: 'app.matches',
-        config: {
-          url: '/matches',
-          templateUrl: 'app/matches/matches.html',
-          controller: 'MatchesController',
-          controllerAs: 'vm',
-          title: 'matches',
-          resolve:{
-						matches:['MatchesResource', 
-							function (Matches: app.core.IMatchesResource) {
-								return Matches.default();
-						}]
-					}
-        }
-      },   
 			{
         state: 'app.matches-alt',
         config: {
@@ -42,7 +26,10 @@ namespace app.matches {
 							function ($stateParams: ng.ui.IStateParamsService, 
 								Matches: app.core.IMatchesResource) {
 								let {league, season, round} = $stateParams;
-								return Matches.forRound(league, season, round);
+                if(league != null && season != null && round != null) {
+                  return Matches.forRound(league, season, round);
+                }
+                return Matches.default();
 						}]
 					}
         }

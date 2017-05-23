@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {FixtureController} from './fixture.controler';
+import {FixtureController} from './fixture.controller';
 
 let router = Router();
 

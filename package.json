@@ -6,6 +6,7 @@
   "scripts": {
 		"tsc:client": "tsc -p src/client",
 		"tsc:server": "tsc -p src/server",
+    "tsc:cs": "npm run tsc:client && npm run tsc:server",
 		"mongodb": "mongod --dbpath=C:/data/db --port 27017",
 		"start": "concurrently \"tsc -p src/server\" \"tsc -p src/client\" && node src/server/app/server.js",    
 		"start:prod": "gulp prod && concurrently \"gulp tsc-watcher\" \"nodemon src/server/app/server.js\"",

@@ -24,14 +24,14 @@ export class FixtureController {
   }
 
   list(req: Request, res: Response) {
-		let {leagueId, seasonId, roundId}= req.query;
-		roundId = roundId.split('-').pop();
+		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
+		matchday = matchday && matchday.split('-').pop();
 		let user = req['user'];
 		let source: Rx.Observable<any>;
-		if(leagueId == null && seasonId == null) {
+		if(leagueSlug == null && seasonSlug == null) {
 			source = seasonRepo.getDefault();
 		} else {
-			source = singleSeason(leagueId, seasonId)
+			source = singleSeason(leagueSlug, seasonSlug)
 		}
 		source
 			.flatMap((season: any) => {
@@ -42,10 +42,10 @@ export class FixtureController {
 				return Rx.Observable.of(season)
 			})
 			.flatMap((season: any) => {
-				return fixtureRepo.findAllBySeasonRound(season._id, roundId || season.currentRound);
+				return fixtureRepo.findAllBySeasonRound(season._id, matchday || season.currentRound);
 			})
 			.flatMap((fixtures: any[]) => {
-				return Rx.Observable.of(fixtures);
+				return Rx.Observable.from(fixtures);
 			})	
 			.flatMap((fixture: any) => {
 				fixture.prediction = {

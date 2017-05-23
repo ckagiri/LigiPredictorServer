@@ -336,11 +336,7 @@
 				"homeWin": 5.0,
         "draw": 3.75,
         "awayWin": 1.7
-			},
-      "result":{
-        "goalsHomeTeam": 1,
-        "goalsAwayTeam": 4
-      }
+			}
     },
     "mun_sou": {
       "season":"->seasons.epl_16",
@@ -364,11 +360,7 @@
 				"homeWin": 1.44,
         "draw": 4.2,
         "awayWin": 8.0
-			},
-      "result":{
-        "goalsHomeTeam": 2,
-        "goalsAwayTeam": 0
-      }
+			}
     }
   }
 }

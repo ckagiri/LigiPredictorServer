@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 import {IPrediction, Prediction	} from '../../../db/models/prediction.model';
 import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo} from '../../../db/repositories';
 import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../../db/converters/ligi-predictor';
+import * as Rx from 'rxjs';
+
 let leagueRepo = new LeagueRepo(new LeagueConverter())
 let seasonRepo = new SeasonRepo(new SeasonConverter(leagueRepo));
 let teamRepo = new TeamRepo(new TeamConverter())
@@ -21,8 +23,31 @@ export class PredictionController {
   }
 
 	create(req: Request, res: Response) {
-
-	}
+		let predictions = req.body;
+		let user = req['user'];
+		let arr = [];
+		for(let key in predictions){
+			let prediction: IPrediction = {
+				user: user._id,
+				choice: {
+					goalsHomeTeam: predictions[key].goalsHomeTeam,
+					goalsAwayTeam: predictions[key].goalsAwayTeam,
+					isComputerGenerated: false 
+				},
+				fixture: key	
+			}
+			arr.push(prediction); 
+		}
+		
+		predictionRepo.create(arr)
+			.subscribe((predictions: any[]) => {
+					console.log(predictions);
+					res.status(200).json(predictions);
+				}, (err: any) => {
+					console.error(err);
+					res.status(500).json(err);
+    		});
+		}
 
 	mine(req: Request, res: Response) {
 		fixtureRepo.findAll()
@@ -44,10 +69,4 @@ export class PredictionController {
 					res.status(500).json(err);
 			});
   }
-}
-
-function createPredictionNullo(fixtureId: string) {
-	return {
-		fixture: fixtureId
-	}
 }

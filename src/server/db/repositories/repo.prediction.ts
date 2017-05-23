@@ -41,9 +41,18 @@ export class PredictionRepo {
 			}))
 	}
 
-	 update(prediction: any, options: any = {overwrite: false}){
-		 let {_id} = prediction;
+  update(prediction: any, options: any = {overwrite: false}){
+    let {_id} = prediction;
     return Rx.Observable.fromPromise(Prediction.update({_id}, prediction, options));
+  }
+
+  create(predictions: any[]) {
+    return Rx.Observable.fromPromise(	new Promise((resolve: any, reject: any) => {    
+      Prediction.create(predictions, function(err: any, savedPredictions: any) {
+        if (err) reject(err);
+        return resolve(savedPredictions);
+      })
+    }));
   }
 
 	private getMatchScores(fixture: any) {

@@ -6,7 +6,8 @@ export interface IPrediction {
   fixture: string;
 	choice: {
 		goalsHomeTeam: number,
-		goalsAwayTeam: number
+		goalsAwayTeam: number,
+		isComputerGenerated: boolean
 	}
 };
 
@@ -16,13 +17,13 @@ const predictionSchema = new Schema({
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
-		required: 'User required'
+		required: [true, 'User required']
 	},
 	fixture: {
 		type: Schema.Types.ObjectId,
 		ref: 'Fixture',
 		index: true,
-		required: 'Fixture required'
+		required: [true, 'Fixture required']
 	},
 	choice: {
 		goalsHomeTeam: {
@@ -30,6 +31,10 @@ const predictionSchema = new Schema({
 		},
 		goalsAwayTeam: {
 			type: Number
+		},
+		isComputerGenerated: {
+			type: Boolean,
+			default: true
 		}
 	},
 	timestamp :{

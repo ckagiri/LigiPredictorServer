@@ -97,7 +97,7 @@ var app;
                 {
                     state: 'app.index',
                     config: {
-                        url: '/matches',
+                        url: '',
                         templateUrl: 'app/matches/matches.html',
                         controller: 'MatchesController',
                         controllerAs: 'vm',

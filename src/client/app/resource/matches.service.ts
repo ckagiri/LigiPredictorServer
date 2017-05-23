@@ -12,10 +12,12 @@ namespace app.core {
 		Matches.default = function() {
 			return Matches.all();
 		}
-		Matches.forRound = function (leagueId: string, seasonId: string, roundId: string) {
-			return Matches.getList('?league=:leagueId&season=:seasonId&round=:roundId', 
-				{leagueId, seasonId, roundId});
+		Matches.forRound = function (league: string, season: string, round: string) {
+			return Matches.getList('?league=:league&season=:season&round=:round', {
+				league, season, round
+			});
   	}
+
 		return Matches;
 	}
 
