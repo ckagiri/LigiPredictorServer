@@ -11,11 +11,12 @@ import { send404 } from './utils/notfound';
 import {routes as authRoutes} from './authRoutes';
 import {routes as apiRoutes} from './apiRoutes';
 import {config} from '../config/environment';
+const globalMiddleware = require('./middleware/global.middleware');
+
 const Promise = require('bluebird'); 
 (<any>mongoose).Promise = Promise;
-
 const app = express();
-
+globalMiddleware(app)
 app.use(favicon(__dirname + '/favicon.ico'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

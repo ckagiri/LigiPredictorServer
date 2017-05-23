@@ -20,9 +20,9 @@
 </div>
 <div ng-if="fixture.result" class="score-result text-center">
     <div class="row">
-        <div class="col-xs-4">{{(fixture.prediction.goalsHomeTeam !== undefined) ? fixture.prediction.goalsHomeTeam : '1'}}</div>
+        <div class="col-xs-4">{{(fixture.prediction.choice.goalsHomeTeam !== undefined) ? fixture.prediction.choice.goalsHomeTeam : '-'}}</div>
         <div class="col-xs-4 prediction-heading">Predicted</div>
-        <div class="col-xs-4">{{(fixture.prediction.goalsAwayTeam !== undefined) ? fixture.prediction.goalsAwayTeam : '2'}}</div>
+        <div class="col-xs-4">{{(fixture.prediction.choice.goalsAwayTeam !== undefined) ? fixture.prediction.choice.goalsAwayTeam : '-'}}</div>
     </div>
     <div class="row">
         <div class="col-xs-4">{{fixture.result.goalsHomeTeam}}</div>
