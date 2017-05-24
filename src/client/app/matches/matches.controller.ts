@@ -2,18 +2,29 @@ namespace app.matches {
 	'use strict';
 
 	export class MatchesController {
-		static $inject: string[] = ['$q', 'matches', 'logger', 'PredictionsResource'];
+		static $inject: string[] = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger', 'PredictionsResource'];
 
 		constructor(private $q: ng.IQService,
-			private fixtures: app.core.IResource,
+			private $state: ng.ui.IStateService,
+			private $stateParams: ng.ui.IStateParamsService,
+			private fixtures: any,
+			private season: any,
       private logger: blocks.logger.Logger,
 			private Predictions: app.core.IPredictionsResource) {
+				this.currentRound = this.season.currentRound;
+			  this.leagueSlug = this.$stateParams.league;
+				this.seasonSlug = this.$stateParams.season;
+				let matchday = parseInt(this.$stateParams.round || 1)
+				this.matchday = matchday;
     }
 
 		title: string = 'Matches';
 		predictions: any = {};
 		error: any;
-		matchday: number = 1;
+		leagueSlug: string;
+		seasonSlug: string;
+		matchday: number;
+		currentRound: number;
 
 		createPredictions = () => {
 			var predictions = this.Predictions.newInstance(this.predictions);
@@ -26,11 +37,11 @@ namespace app.matches {
 
 		score = (match: any, side: string, change: number) => {
 			this.predictions[match] = this.predictions[match] || {};
-			var goals = this.predictions[match]['goals'+side+'Team'] || 0;
-			if (!(goals === 0 && change === -1)){
+			var goals = this.predictions[match]['goals'+side+'Team'];
+			if (!(goals == null) && !(goals === 0 && change === -1)){
 				goals += change;
 			}
-			this.predictions[match]['goals'+side+'Team'] = goals;
+			this.predictions[match]['goals'+side+'Team'] = goals || 0;
 		};
 
 		pointsClass(points: any) {
@@ -44,15 +55,30 @@ namespace app.matches {
 		};
 
 		nextMatchday() {
-			this.matchday += 1;
+			if(this.matchday < this.season.numberOfRounds) {
+				this.matchday += 1;
+				this.gotoMatchday();
+			}
 		}
 
 		prevMatchday() {
-			this.matchday -= 1;
+			if(this.matchday > 1) {
+				this.matchday -= 1;
+				this.gotoMatchday();
+			}
 		}
 
 		currMatchday() {
-			this.matchday = 1;
+			this.matchday = this.currentRound;
+			this.gotoMatchday();
+		}
+
+		private gotoMatchday() {
+			this.$state.go('app.matches', {
+				league: this.leagueSlug, 
+				season: this.seasonSlug, 
+				round: this.matchday
+			});
 		}
 	}
 

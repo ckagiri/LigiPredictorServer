@@ -14,7 +14,7 @@ namespace app.matches {
   function getStates() {
     return [
 			{
-        state: 'app.matches-alt',
+        state: 'app.matches',
         config: {
           url: '/matches?league&season&round',
           templateUrl: 'app/matches/matches.html',
@@ -22,6 +22,15 @@ namespace app.matches {
           controllerAs: 'vm',
           title: 'matches',
 					resolve:{
+            season: ['$stateParams', 'SeasonsResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Seasons: app.core.ISeasonsResource) {
+                let {league, season} = $stateParams;
+                if(league != null && season != null) {
+                  return Seasons.getOne(league, season);
+                }
+                return Seasons.default();
+            }],
 						matches:['$stateParams', 'MatchesResource', 
 							function ($stateParams: ng.ui.IStateParamsService, 
 								Matches: app.core.IMatchesResource) {

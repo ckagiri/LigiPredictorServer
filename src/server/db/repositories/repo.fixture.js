@@ -24,6 +24,16 @@ var FixtureRepo = (function (_super) {
         var query = { $and: [{ 'season': seasonId }, { round: round }] };
         return this.findAll(query);
     };
+    FixtureRepo.prototype.getByApiIds = function (apiIds) {
+        return this.findAll({ "api_detail.id": { $in: apiIds } });
+    };
+    FixtureRepo.prototype.updateFixture = function (fixtureId, result, status, odds) {
+        return this.update({ _id: fixtureId }, { $set: {
+                result: result,
+                status: status,
+                odds: odds
+            } });
+    };
     return FixtureRepo;
 }(repo_abstract_1.AbstractRepo));
 exports.FixtureRepo = FixtureRepo;

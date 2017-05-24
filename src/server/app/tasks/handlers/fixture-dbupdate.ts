@@ -1,5 +1,5 @@
 import {fixtureRepo} from '../common'
-import {fixturePublishHandler} from './fixture-publish'
+// import {fixturePublishHandler} from './fixture-publish'
 
 let getFixtureName = (fixture: any) => {
 	return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
@@ -14,7 +14,7 @@ class FixtureDbUpdateHandler {
 				.subscribe ((status: any) => {
 					console.log(status);
 					console.log("the game : " + getFixtureName(fixture) + " has updated");
-          fixturePublishHandler.handle(fixture);
+          // fixturePublishHandler.handle(fixture);
 				});
 		}
   }

@@ -29,7 +29,7 @@ var AbstractRepo = (function () {
     };
     AbstractRepo.prototype.update = function (conditions, doc, options) {
         if (options === void 0) { options = { overwrite: false }; }
-        return this.model.update(conditions, doc, options);
+        return Rx.Observable.fromPromise(this.model.update(conditions, doc, options));
     };
     AbstractRepo.prototype.updateMany = function (conditions, doc) {
         var options = {
@@ -39,7 +39,7 @@ var AbstractRepo = (function () {
         return this.update(conditions, doc, options);
     };
     AbstractRepo.prototype.delete = function (id) {
-        return this.model.remove({ _id: id });
+        return Rx.Observable.fromPromise(this.model.remove({ _id: id }));
     };
     AbstractRepo.prototype.findOne = function (query, projection) {
         return Rx.Observable.fromPromise(this.model.findOne(query, projection));
@@ -49,7 +49,7 @@ var AbstractRepo = (function () {
         return Rx.Observable.fromPromise(this.model.find(query, projection, options).lean());
     };
     AbstractRepo.prototype.aggregate = function (query, group, sort) {
-        return this.model.aggregate({ $match: query }).group(group).sort(sort);
+        return Rx.Observable.fromPromise(this.model.aggregate({ $match: query }).group(group).sort(sort));
     };
     AbstractRepo.prototype.idMapping = function (id) {
         var objectId = id.toString();

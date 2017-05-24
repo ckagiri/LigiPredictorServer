@@ -59,3 +59,26 @@ export function unlink(req: Request, res: Response) {
     });
   });
 }
+
+export function attachUser(req: Request, res: Response, next: NextFunction) {
+  var token = req.header('Authorization') && req.header('Authorization').split(' ')[1];
+  var payload = null;
+  try {
+    payload = token && jwt.decode(token, config.TOKEN_SECRET);
+  }
+  catch (err) {
+  }
+
+  if (payload && payload.exp <= moment().unix()) {
+    payload = null;
+  }
+
+  if(payload != null) {
+    User.findById(payload.sub, function(err, user) {
+      req['user'] = user;
+      next();
+    })
+  } else {
+    next();
+  }
+}

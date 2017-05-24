@@ -49,6 +49,11 @@ export class FixtureController {
 				return Rx.Observable.from(fixtures);
 			})	
 			.flatMap((fixture: any) => {
+				if(userId == null) {
+					return Rx.Observable.of({
+						fixture, prediction: {fixture: fixture._id}
+					})
+				}
 				return predictionRepo.findOneOrCreate(userId, fixture._id, fixture.odds)
 					.map((prediction) => {
 						return {

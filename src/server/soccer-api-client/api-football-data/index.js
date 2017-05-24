@@ -14,6 +14,14 @@ var FootballApiClient = (function () {
     FootballApiClient.prototype.getCompetitionById = function (compId) {
         return new competition_1.default(this.apiKey, compId);
     };
+    FootballApiClient.prototype.getFixtures = function () {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                //LigiApiId
+                resolve({});
+            }, 1000);
+        });
+    };
     return FootballApiClient;
 }());
 exports.default = FootballApiClient;
