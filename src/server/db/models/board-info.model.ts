@@ -1,4 +1,37 @@
-// snId, rdId
-// status compute_started, scores_added, compute_finished
-// userCount
-// lastRefreshUpdate [scores_added & compute_fnsd]
+import * as mongoose from 'mongoose';
+const Schema = mongoose.Schema;
+
+export interface IBoardInfo { 
+  season: string;
+  round: number;
+  group: string;
+  status: string;
+  userCount: number;
+  lastStatusUpdate: any;
+}
+
+export interface IBoardInfoModel extends IBoardInfo, mongoose.Document { }
+
+const boardInfoSchema = new Schema({
+  season: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "League",
+		index: true
+  },
+  round: {
+		type: Number,
+		index: true
+  },
+  status: {
+    type: String,
+    enum: ['compute_started', 'scores_added', 'compute_finished']
+  },
+  userCount: {
+    type: Number
+  },
+  lastStatusUpdate: {
+    type: String
+  }
+});
+
+export const BoardInfo = mongoose.model<IBoardInfoModel>('BoardInfo', boardInfoSchema);

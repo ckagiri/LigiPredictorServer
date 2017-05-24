@@ -16,6 +16,17 @@ class FootballApiClient{
   getCompetitionById(compId: any){
     return new CompetitionApi(this.apiKey, compId);
   }
+
+  getFixtures() {
+    return new Promise((resolve: any, reject: any) => {    
+      setTimeout(() => {
+        //LigiApiId
+        resolve({
+
+        });
+      }, 1000);
+    })
+  }
 }
 
 export default FootballApiClient;

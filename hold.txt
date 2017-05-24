@@ -401,7 +401,7 @@ BoardInfo
 snId, rdId, groupId
 status compute_started, scores_added, compute_finished[ui: pending, complete](started, scoresAdded, positionsUpdated)]
 userCount
-lastRefreshUpdate: 
+lastStatusUpdate: 
 
 LeaderBoard
 standing=>ssn, rnd, user, score, pos,  preds

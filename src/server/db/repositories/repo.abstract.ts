@@ -28,7 +28,7 @@ export abstract class AbstractRepo {
   }
 
   update(conditions: any, doc: any, options: any = {overwrite: false}){
-    return this.model.update(conditions, doc, options);
+    return Rx.Observable.fromPromise(this.model.update(conditions, doc, options));
   }
 
   updateMany(conditions: any, doc: any){
@@ -40,7 +40,7 @@ export abstract class AbstractRepo {
   }
 
   delete(id: string){
-    return this.model.remove({_id : id});
+    return Rx.Observable.fromPromise(this.model.remove({_id : id}));
   }
 
   findOne(query: any, projection?: any){
@@ -52,7 +52,8 @@ export abstract class AbstractRepo {
   }
 
   aggregate(query: any, group: any, sort: any){
-    return this.model.aggregate({$match: query}).group(group).sort(sort);
+    return Rx.Observable.fromPromise(
+      this.model.aggregate({$match: query}).group(group).sort(sort));
   }
 
   idMapping(id: any) {

@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-export interface IScore {
+export interface ILeaderboard {
 	season: string;
 	round?: number;
   user: string;
@@ -14,9 +14,9 @@ export interface IScore {
 	posNew: number;
 }
 
-export interface IScoreModel extends IScore, mongoose.Document { }
+export interface ILeaderboardModel extends ILeaderboard, mongoose.Document { }
 
-const scoreSchema = new Schema({
+const leaderboardSchema = new Schema({
 	season: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "League",
@@ -25,7 +25,7 @@ const scoreSchema = new Schema({
 	},
 	round: {
 		type: Number,
-		index: true,
+		index: true
 	},
 	user: {
 		type: Schema.Types.ObjectId,
@@ -56,4 +56,4 @@ const scoreSchema = new Schema({
 	}
 });
 
-export const Score = mongoose.model<IScoreModel>('Score', scoreSchema);
+export const Leaderboard = mongoose.model<ILeaderboardModel>('Leaderboard', leaderboardSchema);
