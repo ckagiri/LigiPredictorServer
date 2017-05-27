@@ -31,7 +31,7 @@ namespace admin.users {
         }
       },
 			{
-        state: 'admin.user-edit',
+        state: 'admin.user-detail',
         config: {
           url: '/users/:id',
           templateUrl: 'app/admin/users/users.html',

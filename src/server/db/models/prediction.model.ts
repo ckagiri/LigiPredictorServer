@@ -40,6 +40,32 @@ const predictionSchema = new Schema({
 	timestamp :{
 		type: Date,
 		default: Date.now()
+	},
+	scorePoints: {
+		matchOutcome: {
+			type: Number
+		}, 
+		goalDifference: {
+			type: Number
+		}, 
+		teamScore: {
+			type: Number
+		}, 
+		matchScore: {
+			type: Number
+		}, 
+		teamScoreOfTwoOrMore: {
+			type: Number
+		}, 
+		plusOrMinusOneGoal: {
+			type: Number
+		}
+	},
+	points: {
+		type: Number
+	},
+	goalDiff: {
+		type: Number
 	}
 });
 
