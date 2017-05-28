@@ -2,12 +2,12 @@ import * as Rx from 'rxjs'
 import {fixtureRepo, userRepo, predictionRepo} from '../common'
 import {predictionProcessor} from '../../../helpers/prediction-processor';
 
-class FixturePublishHandler {
-  handle(changedFixture: any) {
+class PredictionHandler {
+  handle(changedFixture: any): Rx.Observable<any> {
     let boards = {};
-    console.log("fixture publish handler");
+    console.log("prediction handler");
     if (changedFixture.status === 'FINISHED') {
-      userRepo.findAll()
+      return userRepo.findAll()
         .flatMap((users: any[]) => {
           return Rx.Observable.from(users);
         })
@@ -33,52 +33,22 @@ class FixturePublishHandler {
           prediction.goalDiff = score.goalDiff;
           return Rx.Observable.of({user, fixture, prediction})
         })
-        .subscribe(
-          (map: any) => {
-            let {user, fixture, prediction} = map;
-            predictionRepo.insert(prediction)
-              .do(() => {
-                // if(!boards[fixture.season]) {
-                //   return boardInfoRepo.updateStatus('compute-started')
-                //     .onErrorResumeNext(Rx.Observable.empty())
-                // }
-                return Rx.Observable.empty()
-              })
-              .flatMap((pred) => {
-                let userId = user.id;
-                let seasonId = fixture.seasonId;
-                let predictionId = prediction.id;
-                let predictionScore = prediction.score;
-                //return leaderboardRepo.findOneAndUpdateScore(userId, seasonId, predictionId, predictionScore)
-                return Rx.Observable.empty()
-              }).subscribe(() => {})
-          },
-          (err: any) => {console.log(`Oops... ${err}`)},
-          () => {console.log('complete')})
     }
+    return Rx.Observable.throw(new Error(`Oops!! fixture: ${changedFixture._id}`));
   }
 }
-export const fixturePublishHandler = new FixturePublishHandler();
+export const predictionHandler = new PredictionHandler();
 
-//         .subscribe({
-//           onNext: (map: any) => {
-//             let {user, fixture, prediction} = map;
-//             predictionRepo.insert(prediction)
-//               .flatMap(() => {
-//                 if(!boards[fixture.season]) {
-//                   return boardInfoRepo.updateStatus('compute-started')
-//                     .onErrorResumeNext(Rx.Observable.empty())
-//                 }
-//                 return Rx.Observable.empty()
-//               })
-//               .flatMap(() => {
-//                 let userId = user.id;
-//                 let seasonId = fixture.seasonId;
-//                 let predictionId = prediction.id;
-//                 let predictionScore = prediction.score;
-//                 return leaderboardRepo.findOneAndUpdateScore(userId, seasonId, predictionId, predictionScore)
-//               })
-//           },
+
+
+
+
+
+
+
+
+
+
 //           oError: (err: any) => console.log(`Oops... ${err}`),
 //           onComplete: () => {
 //             leaderboardRepo.findAll({q: season})
@@ -99,4 +69,3 @@ export const fixturePublishHandler = new FixturePublishHandler();
 //       })
 //   }
 // }
-

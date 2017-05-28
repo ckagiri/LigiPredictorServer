@@ -1,5 +1,5 @@
-import {fixtureRepo, toObjectId} from '../common'
-import {fixturePublishHandler} from './fixture-publish'
+import {fixtureRepo, predictionRepo, toObjectId} from '../common'
+import {predictionHandler} from './fixture-publish'
 import * as Rx from 'rxjs'
 
 let getFixtureName = (fixture: any) => {
@@ -16,14 +16,42 @@ class FixtureDbUpdateHandler {
 			.flatMap((fixture: any) => {
 				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status, fixture.odds)
 			})
-			.subscribe((fixture: any) => {
+			.do((fixture: any) => {
 				console.log("the game : " + getFixtureName(fixture) + " has been updated");
-			}, (err) => {
-				console.log(err);
-			}, () => {
-				console.log("done");
+			})
+			.flatMap((fixture: any) => {
+				return predictionHandler.handle(fixture)
+					.flatMap((map: any) => {
+						let {user, fixture, prediction} = map;
+						return predictionRepo.update(prediction)
+							.do(() => {
+								// if(!boards[fixture.season]) {
+								//   return boardInfoRepo.updateStatus('compute-started')
+								//     .onErrorResumeNext(Rx.Observable.empty())
+								// }
+								return Rx.Observable.empty()
+							})
+							.flatMap((status: any) => {
+								let userId = user._id;
+								let seasonId = fixture.season;
+								let predictionId = prediction._id;
+								let scorePoints = prediction.scorePoints.toObject();
+								let {points, goalDiff} = prediction
+								let predictionScore = {
+									scorePoints, points, goalDiff
+								}
+								//return leaderboardRepo.findOneAndUpdateScore(userId, seasonId, predictionId, predictionScore)
+								return Rx.Observable.of({user, fixture, prediction})
+							})
+					})
+			})
+			.onErrorResumeNext()
+			.subscribe(
+				(map: any) => {
+					console.log("user-fixture-prediction has been processed");
+				},
+				(err: any) => {console.log(`Oops... ${err}`)},
+				() => {console.log("To process rankings...");})
 			}
-			);
-  }
 }
 export const fixtureDbUpdateHandler = new FixtureDbUpdateHandler();

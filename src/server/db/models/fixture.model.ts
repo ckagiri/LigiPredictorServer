@@ -83,7 +83,7 @@ const fixtureSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['SCHEDULED', 'TIMED', 'IN_PLAY', 'CANCELED', 'POSTPONED', 'PLAYED', 'FINISHED']
+    enum: ['SCHEDULED', 'TIMED', 'IN_PLAY', 'CANCELED', 'POSTPONED', 'FINISHED']
   },
   result: {
     goalsHomeTeam: {

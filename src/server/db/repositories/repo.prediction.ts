@@ -14,7 +14,7 @@ export class PredictionRepo {
 		pred.choice = matchScores;
 		return Rx.Observable.fromPromise(
 			new Promise((resolve: any, reject: any) => {    
-				Prediction.findOne (query, (err, result) => {
+				Prediction.findOne(query, (err, result) => {
 					if (err) return reject(err);
 					if (result) return resolve(result);
 					Prediction.create(pred, (err: any, result: any) => {
