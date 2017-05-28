@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import {profileRouter} from './api/user/profile';
+import {userRouter} from './api/user/user.route';
 import {leagueRouter} from './api/league/league.route';
 import {fixtureRouter} from './api/fixture/fixture.route';
 import {seasonRouter} from './api/season/season.route';
@@ -13,6 +14,7 @@ router.get('/ping', (req, res) => {
 });
 
 router.use('/me', profileRouter.routes);
+router.use('/users', userRouter.routes);
 router.use('/leagues', leagueRouter.routes);
 router.use('/seasons', seasonRouter.routes);
 router.use('/matches', attachUser, fixtureRouter.routes)

@@ -6,7 +6,7 @@ namespace app.core {
 
 	UsersResource.$inject = ['resource'];
 	function UsersResource (resource: (resourceName: string) => IUsersResource) {
-		var Users: IUsersResource = resource("leagues");
+		var Users: IUsersResource = resource("users");
 		return Users;
 	}
 

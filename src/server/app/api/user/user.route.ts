@@ -1,10 +1,10 @@
 import {Router} from 'express';
-import {FixtureController} from './fixture.controller';
+import {UserController} from './user.controller';
 
 let router = Router();
 
-class FixtureRouter {
-    private controller: FixtureController = new FixtureController();
+class UserRouter {
+    private controller: UserController = new UserController();
 
     get routes () {
         router.get('/', this.controller.list);
@@ -13,4 +13,4 @@ class FixtureRouter {
     }
 }
 
-export const fixtureRouter = new FixtureRouter();
+export const userRouter = new UserRouter();
