@@ -20,11 +20,27 @@ export class FixtureRepo extends AbstractRepo {
 		return this.findAll({"api_detail.id": {$in: apiIds}});
 	}
 
-	updateFixture(fixtureId: string, result: any, status: any, odds: any) {
-		return this.update({_id: fixtureId}, {$set: {
+	findById(fixtureId: any) {
+		return this.findOne({_id: fixtureId});
+	}
+
+	updateFixture(fixtureId: any, result: any, status: any, odds: any) {
+		let update = {
 			result: result,
 			status: status,
 			odds: odds
-		}});
+		}
+		Object.keys(update).forEach((key) => (update[key] == null) && delete update[key])
+		return this.update({_id: fixtureId}, {$set: update});
+	}
+
+	updateFixtureById(fixtureId: any, result: any, status: any, odds: any) {
+		let update = {
+			result: result,
+			status: status,
+			odds: odds
+		}
+		Object.keys(update).forEach((key) => (update[key] == null) && delete update[key])
+		return this.updateById({_id: fixtureId}, {$set: update});
 	}
 }

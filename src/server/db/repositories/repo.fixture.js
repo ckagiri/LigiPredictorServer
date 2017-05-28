@@ -27,12 +27,26 @@ var FixtureRepo = (function (_super) {
     FixtureRepo.prototype.getByApiIds = function (apiIds) {
         return this.findAll({ "api_detail.id": { $in: apiIds } });
     };
+    FixtureRepo.prototype.findById = function (fixtureId) {
+        return this.findOne({ _id: fixtureId });
+    };
     FixtureRepo.prototype.updateFixture = function (fixtureId, result, status, odds) {
-        return this.update({ _id: fixtureId }, { $set: {
-                result: result,
-                status: status,
-                odds: odds
-            } });
+        var update = {
+            result: result,
+            status: status,
+            odds: odds
+        };
+        Object.keys(update).forEach(function (key) { return (update[key] == null) && delete update[key]; });
+        return this.update({ _id: fixtureId }, { $set: update });
+    };
+    FixtureRepo.prototype.updateFixtureById = function (fixtureId, result, status, odds) {
+        var update = {
+            result: result,
+            status: status,
+            odds: odds
+        };
+        Object.keys(update).forEach(function (key) { return (update[key] == null) && delete update[key]; });
+        return this.updateById({ _id: fixtureId }, { $set: update });
     };
     return FixtureRepo;
 }(repo_abstract_1.AbstractRepo));

@@ -29,7 +29,11 @@ var AbstractRepo = (function () {
     };
     AbstractRepo.prototype.update = function (conditions, doc, options) {
         if (options === void 0) { options = { overwrite: false }; }
-        return Rx.Observable.fromPromise(this.model.update(conditions, doc, options));
+        return this.model.update(conditions, doc, options);
+    };
+    AbstractRepo.prototype.updateById = function (conditions, doc, options) {
+        if (options === void 0) { options = { overwrite: false, new: true }; }
+        return this.model.findByIdAndUpdate(conditions, doc, options);
     };
     AbstractRepo.prototype.updateMany = function (conditions, doc) {
         var options = {

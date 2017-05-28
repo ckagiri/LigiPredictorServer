@@ -3,6 +3,10 @@ import Client from '../../soccer-api-client/api-football-data';
 import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo} from '../../db/repositories';
 import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../db/converters/ligi-predictor';
 
+import * as mongoose from 'mongoose';
+const Promise = require('bluebird'); 
+(<any>mongoose).Promise = Promise;
+
 export const leagueRepo = new LeagueRepo(new LeagueConverter())
 export const seasonRepo = new SeasonRepo(new SeasonConverter(leagueRepo));
 export const teamRepo = new TeamRepo(new TeamConverter())
@@ -11,3 +15,8 @@ export const predictionRepo = new PredictionRepo();
 export const userRepo = new UserRepo();
 export const client = new Client(config.api_providers.api_football_data.apiKey);
 
+export const toObjectId = (_id: string): mongoose.Types.ObjectId => {
+  return mongoose.Types.ObjectId.createFromHexString(_id)
+}
+
+mongoose.connect(config.mongo.uri, config.mongo.options);

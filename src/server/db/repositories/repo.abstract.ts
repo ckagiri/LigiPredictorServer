@@ -28,7 +28,11 @@ export abstract class AbstractRepo {
   }
 
   update(conditions: any, doc: any, options: any = {overwrite: false}){
-    return Rx.Observable.fromPromise(this.model.update(conditions, doc, options));
+    return this.model.update(conditions, doc, options);
+  }
+
+  updateById(conditions: any, doc: any, options: any = {overwrite: false, new: true}) {
+    return this.model.findByIdAndUpdate(conditions, doc, options);
   }
 
   updateMany(conditions: any, doc: any){
