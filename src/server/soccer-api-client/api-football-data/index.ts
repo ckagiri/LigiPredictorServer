@@ -18,12 +18,12 @@ class FootballApiClient{
   }
 
   getFixtures() {
-    var seasonId = "592a863caf45460c305e8649";
+    var seasonId = "592b2483f9e52d41b0007db4";
     return new Promise((resolve: any, reject: any) => {    
       setTimeout(() => {
         //LigiApiId
         resolve([{ //evetot
-          _id: "592a863caf45460c305e864d",
+          _id: "592b2483f9e52d41b0007db8",
           season: seasonId,
           round: 1,
           status: 'FINISHED',
@@ -32,7 +32,7 @@ class FootballApiClient{
             goalsAwayTeam: 1
           }
         }, { //chewhu
-          _id: "592a863caf45460c305e864e",
+          _id: "592b2483f9e52d41b0007db9",
           season: seasonId,
           round: 1,
           status: 'FINISHED',

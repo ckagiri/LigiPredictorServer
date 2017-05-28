@@ -15,6 +15,9 @@ var AbstractRepo = (function () {
             return Rx.Observable.fromPromise(_this.model.create(obj));
         });
     };
+    AbstractRepo.prototype.create = function (obj) {
+        return Rx.Observable.fromPromise(this.model.create(obj));
+    };
     AbstractRepo.prototype.insertMany = function (objs) {
         var _this = this;
         var sources = [];
@@ -33,7 +36,7 @@ var AbstractRepo = (function () {
     };
     AbstractRepo.prototype.updateById = function (conditions, doc, options) {
         if (options === void 0) { options = { overwrite: false, new: true }; }
-        return this.model.findByIdAndUpdate(conditions, doc, options);
+        return Rx.Observable.fromPromise(this.model.findByIdAndUpdate(conditions, doc, options));
     };
     AbstractRepo.prototype.updateMany = function (conditions, doc) {
         var options = {

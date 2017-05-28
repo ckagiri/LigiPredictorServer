@@ -1,4 +1,4 @@
-import {fixtureRepo, predictionRepo, toObjectId} from '../common'
+import {boardInfoRepo, leaderboardRepo, fixtureRepo, predictionRepo, toObjectId} from '../common'
 import {predictionHandler} from './fixture-publish'
 import * as Rx from 'rxjs'
 
@@ -8,6 +8,7 @@ let getFixtureName = (fixture: any) => {
 
 class FixtureDbUpdateHandler {
   handle(changedFixtures: any[]) {
+		let boards: any = {};
 		console.log("fixture db update handler");
 		Rx.Observable.from(changedFixtures)
 			.flatMap((fixture: any) => {
@@ -25,33 +26,42 @@ class FixtureDbUpdateHandler {
 						let {user, fixture, prediction} = map;
 						return predictionRepo.update(prediction)
 							.do(() => {
-								// if(!boards[fixture.season]) {
-								//   return boardInfoRepo.updateStatus('compute-started')
-								//     .onErrorResumeNext(Rx.Observable.empty())
-								// }
+								let seasonId = fixture.season.toString();
+								if(!boards[seasonId]) {
+									boards[seasonId] = 1;													 
+								  return boardInfoRepo.updateStatus(seasonId, 'compute-started')
+								}
 								return Rx.Observable.empty()
 							})
 							.flatMap((status: any) => {
 								let userId = user._id;
 								let seasonId = fixture.season;
+								let round = fixture.round;
 								let predictionId = prediction._id;
 								let scorePoints = prediction.scorePoints.toObject();
 								let {points, goalDiff} = prediction
 								let predictionScore = {
 									scorePoints, points, goalDiff
 								}
-								//return leaderboardRepo.findOneAndUpdateScore(userId, seasonId, predictionId, predictionScore)
-								return Rx.Observable.of({user, fixture, prediction})
+				  			return leaderboardRepo.createOrfindOneAndUpdate(userId, seasonId, round, predictionId, predictionScore)
+															.delay(7000)
+
 							})
-					})
+							.map((status: any) => {
+								return {user, fixture, prediction}
+							})
+						})
 			})
 			.onErrorResumeNext()
 			.subscribe(
 				(map: any) => {
-					console.log("user-fixture-prediction has been processed");
+					console.log("user-fixture-prediction has been upserted");
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
-				() => {console.log("To process rankings...");})
-			}
+				() => {
+					console.log("To process rankings...");
+				})
+	}
 }
+
 export const fixtureDbUpdateHandler = new FixtureDbUpdateHandler();

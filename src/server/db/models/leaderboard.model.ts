@@ -19,8 +19,7 @@ export interface ILeaderboardModel extends ILeaderboard, mongoose.Document { }
 const leaderboardSchema = new Schema({
 	season: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "League",
-		index: true,
+		ref: "Season",
 		required: true
 	},
 	round: {
@@ -28,7 +27,7 @@ const leaderboardSchema = new Schema({
 		index: true
 	},
 	user: {
-		type: Schema.Types.ObjectId,
+		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
 		required: 'User required'
 	},	

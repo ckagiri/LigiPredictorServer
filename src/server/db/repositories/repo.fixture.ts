@@ -25,7 +25,7 @@ export class FixtureRepo extends AbstractRepo {
 	}
 
 	updateFixture(fixtureId: any, result: any, status: any, odds: any) {
-		let update = {
+		let update: any = {
 			result: result,
 			status: status,
 			odds: odds
@@ -35,7 +35,7 @@ export class FixtureRepo extends AbstractRepo {
 	}
 
 	updateFixtureById(fixtureId: any, result: any, status: any, odds: any) {
-		let update = {
+		let update: any = {
 			result: result,
 			status: status,
 			odds: odds

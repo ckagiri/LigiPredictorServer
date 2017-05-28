@@ -15,12 +15,12 @@ var FootballApiClient = (function () {
         return new competition_1.default(this.apiKey, compId);
     };
     FootballApiClient.prototype.getFixtures = function () {
-        var seasonId = "592a863caf45460c305e8649";
+        var seasonId = "592b2483f9e52d41b0007db4";
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
                 //LigiApiId
                 resolve([{
-                        _id: "592a863caf45460c305e864d",
+                        _id: "592b2483f9e52d41b0007db8",
                         season: seasonId,
                         round: 1,
                         status: 'FINISHED',
@@ -29,7 +29,7 @@ var FootballApiClient = (function () {
                             goalsAwayTeam: 1
                         }
                     }, {
-                        _id: "592a863caf45460c305e864e",
+                        _id: "592b2483f9e52d41b0007db9",
                         season: seasonId,
                         round: 1,
                         status: 'FINISHED',

@@ -16,6 +16,10 @@ export abstract class AbstractRepo {
     });
   }
 
+  create(obj: any) {
+    return Rx.Observable.fromPromise(this.model.create(obj));
+  }
+
   insertMany(objs: any[]) {
     let sources: any[] = [];
     for (let obj of objs) {
@@ -32,7 +36,7 @@ export abstract class AbstractRepo {
   }
 
   updateById(conditions: any, doc: any, options: any = {overwrite: false, new: true}) {
-    return this.model.findByIdAndUpdate(conditions, doc, options);
+    return Rx.Observable.fromPromise(this.model.findByIdAndUpdate(conditions, doc, options));
   }
 
   updateMany(conditions: any, doc: any){

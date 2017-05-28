@@ -1,6 +1,6 @@
 import {config} from '../../config/environment';
 import Client from '../../soccer-api-client/api-football-data';
-import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo} from '../../db/repositories';
+import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo, BoardInfoRepo, LeaderboardRepo} from '../../db/repositories';
 import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../db/converters/ligi-predictor';
 
 import * as mongoose from 'mongoose';
@@ -13,6 +13,9 @@ export const teamRepo = new TeamRepo(new TeamConverter())
 export const fixtureRepo = new FixtureRepo(new FixtureConverter(seasonRepo, TeamRepo))
 export const predictionRepo = new PredictionRepo();
 export const userRepo = new UserRepo();
+export const boardInfoRepo = new BoardInfoRepo();
+export const leaderboardRepo = new LeaderboardRepo();
+
 export const client = new Client(config.api_providers.api_football_data.apiKey);
 
 export const toObjectId = (_id: string): mongoose.Types.ObjectId => {

@@ -15,16 +15,13 @@ export interface IBoardInfoModel extends IBoardInfo, mongoose.Document { }
 const boardInfoSchema = new Schema({
   season: {
 		type: mongoose.Schema.Types.ObjectId,
-		ref: "League",
-		index: true
+		ref: "Season"
   },
   round: {
-		type: Number,
-		index: true
+		type: Number
   },
   status: {
     type: String,
-    enum: ['compute_started', 'scores_added', 'compute_finished']
   },
   userCount: {
     type: Number
