@@ -1,4 +1,4 @@
-import {IMatchScore} from './IMatchScore'
+import {IMatchScore} from './contracts'
 class GoalDiffCalculator {
   process(choice: IMatchScore, result: IMatchScore): number {
     let choiceGd = Math.abs(choice.goalsHomeTeam - choice.goalsAwayTeam);
@@ -9,13 +9,13 @@ class GoalDiffCalculator {
     }
     let homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
     if(homeGoalsGd === 0) {
-      homeGoalsGd = result.goalsHomeTeam;
+      homeGoalsGd = result.goalsHomeTeam || 1;
     } else {
       homeGoalsGd = -homeGoalsGd;
     }
     let awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);
     if(awayGoalsGd === 0) {
-      awayGoalsGd = result.goalsAwayTeam;
+      awayGoalsGd = result.goalsAwayTeam || 1;
     } else {
       awayGoalsGd = -awayGoalsGd;
     }
