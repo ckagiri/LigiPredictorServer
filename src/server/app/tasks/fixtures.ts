@@ -36,28 +36,34 @@ class FixturesTask {
     console.log("fixture job begin");
 
     Rx.Observable.fromPromise(client.getFixtures())
-    .map((fixtures: any[]) => {
-      return createIdToFixtureMap(fixtures);
-    })
-    .flatMap((idToFixtureMap) => {
-      return fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
-        .map((dbFixtures: any[]) => {
-          return {
-            dbFixtures: dbFixtures,
-            idToFixtureMap: idToFixtureMap
-          }
-        })
-    })
-    .subscribe((map: any) => {
-      let changedFixtures = [];
-      for (let dbFixture of map.dbFixtures) {
-        let newFixture = map.idToFixtureMap[dbFixture.api_detail.id];
-        if (fixtureChanged(newFixture, dbFixture)) {
-            newFixture._id = dbFixture._id;
-            changedFixtures.push(newFixture);
-        }
-      }
+      .subscribe((changedFixtures: any[]) => {
       fixtureDbUpdateHandler.handle(changedFixtures);
     })
+    // .map((fixtures: any[]) => {
+    //   return createIdToFixtureMap(fixtures);
+    // })
+    // .flatMap((idToFixtureMap) => {
+    //   return fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
+    //     .map((dbFixtures: any[]) => {
+    //       return {
+    //         dbFixtures: dbFixtures,
+    //         idToFixtureMap: idToFixtureMap
+    //       }
+    //     })
+    // })
+    // .subscribe((map: any) => {
+    //   let changedFixtures = [];
+    //   for (let dbFixture of map.dbFixtures) {
+    //     let newFixture = map.idToFixtureMap[dbFixture.api_detail.id];
+    //     if (fixtureChanged(newFixture, dbFixture)) {
+    //         newFixture._id = dbFixture._id;
+    //         changedFixtures.push(newFixture);
+    //     }
+    //   }
+    //   fixtureDbUpdateHandler.handle(changedFixtures);
+    // })
   }
 }
+
+export const fixturesTask = new FixturesTask();
+fixturesTask.run();

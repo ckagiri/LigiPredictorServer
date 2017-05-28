@@ -12,7 +12,7 @@ export interface IScorePoints {
   plusOrMinusOneGoal: number;
 }
 
-export interface IPredictionPoints {
+export interface IPredictionScore {
   scorePoints: IScorePoints;
   points: number;
   goalDiff: number

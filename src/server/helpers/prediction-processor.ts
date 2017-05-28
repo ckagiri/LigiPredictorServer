@@ -1,9 +1,9 @@
 import {goalDiffCalculator} from './goaldiff-calculator'
 import {pointsCalculator} from './points-calculator'
-import {IMatchScore, IScorePoints, IPredictionPoints} from './contracts'
+import {IMatchScore, IScorePoints, IPredictionScore} from './contracts'
 
 class PredictionProcessor {
-  process(choice: IMatchScore, result: IMatchScore): IPredictionPoints {
+  process(choice: IMatchScore, result: IMatchScore): IPredictionScore {
     let goalDiff = goalDiffCalculator.process(choice, result);
     let scorePoints = pointsCalculator.process(choice, result);
     let points = Object.keys(scorePoints)
@@ -14,4 +14,4 @@ class PredictionProcessor {
   }
 }
 
-export const predicitonProcessor = new PredictionProcessor();
+export const predictionProcessor = new PredictionProcessor();
