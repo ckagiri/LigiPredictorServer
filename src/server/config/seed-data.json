@@ -278,7 +278,7 @@
       "round": 1,
 			"date": "=new Date('2016-08-13T13:30:00+0200')",
       "slug": "everton-tottenham",    
-      "status": "PLAYED",
+      "status": "SCHEDULED",
       "homeTeam": {
         "id": "->teams.everton",
         "name": "->teams.everton.shortName",
@@ -295,18 +295,14 @@
 				"homeWin": 2.9,
         "draw": 3.25,
         "awayWin": 2.37
-			},
-      "result":{
-        "goalsHomeTeam": 1,
-        "goalsAwayTeam": 1
-      }
+			}
     },
     "che_whu": {
       "season":"->seasons.epl_16",
       "round": 1,
 			"date": "=new Date('2016-08-13T13:30:00+0200')",
       "slug": "chelsea-west_ham",    
-      "status": "PLAYED",
+      "status": "SCHEDULED",
       "homeTeam": {
         "id": "->teams.chelsea",
         "name": "->teams.chelsea.shortName",
@@ -323,18 +319,14 @@
 			  "homeWin": 1.61,
         "draw": 3.75,
         "awayWin": 5.5
-			},
-      "result":{
-        "goalsHomeTeam": 2,
-        "goalsAwayTeam": 1
-      }
+			}
     },
     "stk_mci": {
       "season":"->seasons.epl_16",
       "round": 2,
 			"date": "=new Date('2016-08-20T13:30:00+0200')",
       "slug": "stoke_city-man_city",    
-      "status": "PLAYED",
+      "status": "SCHEDULED",
       "homeTeam": {
         "id": "->teams.stoke_city",
         "name": "->teams.stoke_city.shortName",
@@ -358,7 +350,7 @@
       "round": 2,
 			"date": "=new Date('2016-08-20T13:30:00+0200')",
       "slug": "man_united-southampton",    
-      "status": "PLAYED",
+      "status": "SCHEDULED",
       "homeTeam": {
         "id": "->teams.man_united",
         "name": "->teams.man_united.shortName",
@@ -376,6 +368,43 @@
         "draw": 4.2,
         "awayWin": 8.0
 			}
+    }
+  },
+  "predictions": {
+    "_model": "Prediction",
+    "wagz_evetot": {
+      "user": "->users.wagz",
+      "fixture": "->fixtures.eve_tot",
+      "choice": {
+		    "goalsHomeTeam": 1,
+		    "goalsAwayTeam": 1,
+		    "isComputerGenerated": false
+	    }
+    },
+    "wagz_chewhu": {
+      "user": "->users.wagz",
+      "fixture": "->fixtures.che_whu",
+      "choice": {
+		    "goalsHomeTeam": 2,
+		    "goalsAwayTeam": 0,
+		    "isComputerGenerated": false
+	    }
+    },
+    "kagz_evetot": {
+      "user": "->users.kagz",
+      "fixture": "->fixtures.eve_tot",
+      "choice": {
+		    "goalsHomeTeam": 2,
+		    "goalsAwayTeam": 1
+	    }
+    },
+    "kagz_chewhu": {
+      "user": "->users.kagz",
+      "fixture": "->fixtures.che_whu",
+      "choice": {
+		    "goalsHomeTeam": 2,
+		    "goalsAwayTeam": 1
+	    }
     }
   }
 }
