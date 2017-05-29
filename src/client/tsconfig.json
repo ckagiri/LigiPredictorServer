@@ -5,6 +5,10 @@
     "preserveConstEnums": true,
     "target": "ES5",
     "sourceMap": true,
-    "listFiles": false
+    "listFiles": false,
+    "typeRoots": [
+      "typings/global",
+      "typings/modules"
+    ]
   }
 }

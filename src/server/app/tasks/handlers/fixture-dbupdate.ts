@@ -22,35 +22,39 @@ class FixtureDbUpdateHandler {
 			})
 			.flatMap((fixture: any) => {
 				return predictionHandler.handle(fixture)
-					.flatMap((map: any) => {
-						let {user, fixture, prediction} = map;
-						return predictionRepo.update(prediction)
-							.do(() => {
-								let seasonId = fixture.season.toString();
-								if(!boards[seasonId]) {
-									boards[seasonId] = 1;													 
-								  return boardInfoRepo.updateStatus(seasonId, 'compute-started')
-								}
-								return Rx.Observable.empty()
-							})
-							.flatMap((status: any) => {
-								let userId = user._id;
-								let seasonId = fixture.season;
-								let round = fixture.round;
-								let predictionId = prediction._id;
-								let scorePoints = prediction.scorePoints.toObject();
-								let {points, goalDiff} = prediction
-								let predictionScore = {
-									scorePoints, points, goalDiff
-								}
-				  			return leaderboardRepo.createOrfindOneAndUpdate(userId, seasonId, round, predictionId, predictionScore)
-															.delay(7000)
-
-							})
-							.map((status: any) => {
-								return {user, fixture, prediction}
-							})
-						})
+			})
+			.onErrorResumeNext()
+			.flatMap((map: any) => {
+				let {user, fixture, prediction} = map;
+				return predictionRepo.update(prediction)
+					.map((status: any) => {
+						return {user, fixture, prediction}
+					})
+			})
+			.do((map) => {
+				let seasonId = map.fixture.season.toString();
+				if(!boards[seasonId]) {
+					boards[seasonId] = 1;													 
+				  boardInfoRepo.updateStatus(seasonId, 'compute-started')
+						.subscribe(() => {});
+				}
+			})
+			.flatMap((map: any) => {
+				let{user, fixture, prediction} = map;
+				let userId = user._id;
+				let seasonId = fixture.season;
+				let round = fixture.round;
+				let predictionId = prediction._id;
+				let scorePoints = prediction.scorePoints.toObject();
+				let {points, goalDiff} = prediction
+				let predictionScore = {
+					scorePoints, points, goalDiff
+				}
+				return leaderboardRepo.createOrfindOneAndUpdate(
+					userId, seasonId, round, predictionId, predictionScore)
+					.map((status: any) => {
+						return {user, fixture, prediction}
+					})
 			})
 			.onErrorResumeNext()
 			.subscribe(

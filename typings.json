@@ -1,5 +1,15 @@
 {
+  "name": "LigiPredictorServer",
   "globalDependencies": {
+    "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#52fa2b9ce36f2c5843204e9bfbaada7cded9b47a",
+    "angular": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular.d.ts#52fa2b9ce36f2c5843204e9bfbaada7cded9b47a",
+    "angular-ui-router": "github:DefinitelyTyped/DefinitelyTyped/angular-ui-router/angular-ui-router.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
+    "bootstrap": "github:DefinitelyTyped/DefinitelyTyped/bootstrap/bootstrap.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
+    "moment": "github:DefinitelyTyped/DefinitelyTyped/moment/moment.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
+    "toastr": "github:DefinitelyTyped/DefinitelyTyped/toastr/toastr.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
+    "angular-animate": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-animate.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
+    "angular-sanitize": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-sanitize.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
+    "angular-mocks": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-mocks.d.ts#52fa2b9ce36f2c5843204e9bfbaada7cded9b47a",
     "satellizer-missing": "file:./typings-missing/satellizer-missing.d.ts"
   }
 }
