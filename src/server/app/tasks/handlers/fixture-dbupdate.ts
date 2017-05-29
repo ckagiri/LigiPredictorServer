@@ -39,7 +39,7 @@ class FixtureDbUpdateHandler {
 						.subscribe(() => {});
 				}
 			})
-			.flatMap((map: any) => {
+			.concatMap((map: any) => {
 				let{user, fixture, prediction} = map;
 				let userId = user._id;
 				let seasonId = fixture.season;

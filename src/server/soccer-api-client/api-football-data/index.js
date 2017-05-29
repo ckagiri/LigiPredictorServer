@@ -16,12 +16,17 @@ var FootballApiClient = (function () {
     };
     FootballApiClient.prototype.getFixtures = function () {
         var seasonId = "592b2483f9e52d41b0007db4";
+        var seasonId2 = "592bef2018d2d02620b2dbd9";
+        var fixture1 = "592b2483f9e52d41b0007db8";
+        var fixture11 = "592bef2018d2d02620b2dbdd";
+        var fixture2 = "592b2483f9e52d41b0007db9";
+        var fixture22 = "592bef2018d2d02620b2dbde";
         return new Promise(function (resolve, reject) {
             setTimeout(function () {
                 //LigiApiId
                 resolve([{
-                        _id: "592b2483f9e52d41b0007db8",
-                        season: seasonId,
+                        _id: fixture11,
+                        season: seasonId2,
                         round: 1,
                         status: 'FINISHED',
                         result: {
@@ -29,8 +34,8 @@ var FootballApiClient = (function () {
                             goalsAwayTeam: 1
                         }
                     }, {
-                        _id: "592b2483f9e52d41b0007db9",
-                        season: seasonId,
+                        _id: fixture22,
+                        season: seasonId2,
                         round: 1,
                         status: 'FINISHED',
                         result: {
