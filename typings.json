@@ -10,6 +10,6 @@
     "angular-animate": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-animate.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
     "angular-sanitize": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-sanitize.d.ts#ed38db403a56da84731a6f77b545762ee477a45b",
     "angular-mocks": "github:DefinitelyTyped/DefinitelyTyped/angularjs/angular-mocks.d.ts#52fa2b9ce36f2c5843204e9bfbaada7cded9b47a",
-    "satellizer-missing": "file:./typings-missing/satellizer-missing.d.ts"
+    "satellizer-missing": "file:./src/client/typings-missing/satellizer-missing.d.ts"
   }
 }

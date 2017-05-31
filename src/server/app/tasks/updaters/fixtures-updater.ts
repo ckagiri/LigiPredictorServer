@@ -1,7 +1,8 @@
 import * as Rx from 'rxjs';
-import {client, fixtureRepo} from './common'
-import {fixtureDbUpdateHandler} from './handlers/fixture-dbupdate';
+import {client, fixtureRepo} from '../common'
+import {fixtureDbUpdateHandler} from '../handlers/fixture-dbupdate';
 
+let Moment = require('moment');
 let createIdToFixtureMap = (fixtures: any[]) => {
   let map = {};
   for (let fixture of fixtures) {
@@ -30,15 +31,14 @@ let fixtureChanged = (updated: any, fromDb: any) => {
   }
   return false;
 }
+class FixturesUpdater {
+  update(callback: Function) {
+  callback(Moment().add(3, 'seconds')); 
 
-class FixturesTask {
-  run () {
-    console.log("fixture job begin");
-
-    Rx.Observable.fromPromise(client.getFixtures())
-      .subscribe((changedFixtures: any[]) => {
-      fixtureDbUpdateHandler.handle(changedFixtures);
-    })
+    // Rx.Observable.fromPromise(client.getFixtures())
+    //   .subscribe((changedFixtures: any[]) => {
+    //     fixtureDbUpdateHandler.handle(changedFixtures);
+    // })
     // .map((fixtures: any[]) => {
     //   return createIdToFixtureMap(fixtures);
     // })
@@ -65,5 +65,4 @@ class FixturesTask {
   }
 }
 
-export const fixturesTask = new FixturesTask();
-fixturesTask.run();
+export const fixturesUpdater = new FixturesUpdater();

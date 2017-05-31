@@ -22,6 +22,7 @@ const boardInfoSchema = new Schema({
   },
   status: {
     type: String,
+    enum: ['Refreshed', 'UpdatingScores', 'UpdatingRankings']
   },
   userCount: {
     type: Number

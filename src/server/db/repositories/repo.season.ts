@@ -38,4 +38,16 @@ export class SeasonRepo extends AbstractRepo {
 			})
 		)
 	}
+
+	updateCurrentRound(seasonId: any, round: number) {
+		return this.update({_id: seasonId}, {$set: {currentRound: round}});
+	}
+
+	getByIds(ids: any[]) {
+		return this.findAll({_id : {$in : ids}})
+	}
+
+	getByApiIds(apiIds: any[]) {
+		return this.findAll({"api_detail.id" : {$in : apiIds}});
+	}
 }

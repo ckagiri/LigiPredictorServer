@@ -50,6 +50,15 @@ var SeasonRepo = (function (_super) {
             });
         }));
     };
+    SeasonRepo.prototype.updateCurrentRound = function (seasonId, round) {
+        return this.update({ _id: seasonId }, { $set: { currentRound: round } });
+    };
+    SeasonRepo.prototype.getByIds = function (ids) {
+        return this.findAll({ _id: { $in: ids } });
+    };
+    SeasonRepo.prototype.getByApiIds = function (apiIds) {
+        return this.findAll({ "api_detail.id": { $in: apiIds } });
+    };
     return SeasonRepo;
 }(repo_abstract_1.AbstractRepo));
 exports.SeasonRepo = SeasonRepo;
