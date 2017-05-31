@@ -35,7 +35,7 @@ class FixtureDbUpdateHandler {
 				let seasonId = map.fixture.season.toString();
 				if(!boards[seasonId]) {
 					boards[seasonId] = 1;													 
-				  boardInfoRepo.updateStatus(seasonId, 'compute-started')
+				  boardInfoRepo.updateStatus(seasonId, 'UpdatingScores')
 						.subscribe(() => {});
 				}
 			})

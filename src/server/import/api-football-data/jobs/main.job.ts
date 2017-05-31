@@ -1,5 +1,5 @@
 import {config} from '../../../config/environment';
-import Client from '../../../soccer-api-client/api-football-data';
+import Client from '../../../soccer-api/api-football-data';
 import CompetitionJob from './competition.job';
 export const client = new Client(config.api_providers.api_football_data.apiKey);
 

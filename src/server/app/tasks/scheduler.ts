@@ -7,8 +7,8 @@ let dataTimeout: any;
 let fixturesTimeout: any;
 
 export const run = () => {
-  //updateData();
-  schedule.scheduleJob('*/1 * * * *', heartbeatCheck);
+  updateData();
+  schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
 }
 
 const heartbeatCheck = () => {

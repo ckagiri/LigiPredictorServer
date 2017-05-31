@@ -1,5 +1,5 @@
 import {config} from '../../config/environment';
-import Client from '../../soccer-api-client/api-football-data';
+import Client from '../../soccer-api/api-football-data';
 import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo, BoardInfoRepo, LeaderboardRepo} from '../../db/repositories';
 import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../db/converters/ligi-predictor';
 

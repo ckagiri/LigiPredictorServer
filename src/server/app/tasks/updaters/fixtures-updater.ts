@@ -33,12 +33,11 @@ let fixtureChanged = (updated: any, fromDb: any) => {
 }
 class FixturesUpdater {
   update(callback: Function) {
-  callback(Moment().add(3, 'seconds')); 
-
-    // Rx.Observable.fromPromise(client.getFixtures())
-    //   .subscribe((changedFixtures: any[]) => {
-    //     fixtureDbUpdateHandler.handle(changedFixtures);
-    // })
+    Rx.Observable.fromPromise(client.getFixtures())
+      .subscribe((changedFixtures: any[]) => {
+        fixtureDbUpdateHandler.handle(changedFixtures);
+        callback(Moment().add(5, 'minutes')); 
+    })
     // .map((fixtures: any[]) => {
     //   return createIdToFixtureMap(fixtures);
     // })
