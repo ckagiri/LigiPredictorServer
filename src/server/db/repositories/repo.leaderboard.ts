@@ -49,6 +49,12 @@ export class LeaderboardRepo {
         })
       }))
   }
+  getByBoardInfoIdOrderByPoints(boardInfoId: string) {
+    return Rx.Observable.empty()  
+  }
+  update(score: any) {
+    return Rx.Observable.empty();
+  }
 }
 
 interface IScore {

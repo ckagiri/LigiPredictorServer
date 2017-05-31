@@ -31,6 +31,10 @@ const leaderboardSchema = new Schema({
 		ref: 'User',
 		required: 'User required'
 	},	
+	boardInfo: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'BoardInfo'
+	},
 	predictions: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Prediction"

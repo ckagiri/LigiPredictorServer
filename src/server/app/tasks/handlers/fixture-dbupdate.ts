@@ -1,6 +1,7 @@
 import {boardInfoRepo, leaderboardRepo, fixtureRepo, predictionRepo, toObjectId} from '../common'
 import {predictionHandler} from './fixture-publish'
 import * as Rx from 'rxjs'
+import * as _ from 'lodash'
 
 let getFixtureName = (fixture: any) => {
 	return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
@@ -33,11 +34,23 @@ class FixtureDbUpdateHandler {
 			})
 			.do((map) => {
 				let seasonId = map.fixture.season.toString();
-				if(!boards[seasonId]) {
-					boards[seasonId] = 1;													 
-				  boardInfoRepo.updateStatus(seasonId, 'UpdatingScores')
-						.subscribe(() => {});
-				}
+				let seasonKey = `seasons.${seasonId}`;
+				let round = map.fixture.round;
+				let roundKey = `seasons.rounds.${round}`;
+				_.setWith(boards, seasonKey, '0');
+				_.setWith(boards, roundKey, '0')
+				if(!_.get(boards, seasonKey)) {
+				  boardInfoRepo.updateStatus(seasonId, null, 'UpdatingScores')
+						.subscribe((info: any) => {
+							_.setWith(boards, seasonKey, info._id);
+						});
+				}	
+				if(!_.get(boards, roundKey)) {
+				  boardInfoRepo.updateStatus(seasonId, round, 'UpdatingScores')
+						.subscribe((info: any) => {
+							_.setWith(boards, roundKey, info._id);
+						});
+				}	
 			})
 			.concatMap((map: any) => {
 				let{user, fixture, prediction} = map;
@@ -63,8 +76,30 @@ class FixtureDbUpdateHandler {
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
 				() => {
-					console.log("To process rankings...");
-				})
+					let seasonKeys = _.without(_.keys(boards.seasons), 'rounds');
+					let sBoardInfoIds = _.map(boards, a => seasonKeys.map(k => a[k]));
+					let roundKeys = _.keys(boards.seasons.rounds);					
+					let rBoardInfoIds = _.map(boards, a => roundKeys.map(k => a[k]));
+
+					Rx.Observable.from(sBoardInfoIds)
+						.flatMap((boardInfoIds: any[]) => {
+							return Rx.Observable.from(sBoardInfoIds);
+						})
+						.flatMap((boardInfoId: any) => { 
+							return leaderboardRepo.getByBoardInfoIdOrderByPoints(boardInfoId);
+						})
+						.flatMap((score: any, index: number) => { 
+							 let previousPosition = score.posNew;
+      				 score.posOld = previousPosition;
+      				 score.posNew = index;
+							 return leaderboardRepo.update(score);
+						})
+						.subscribe(
+							() => {},
+							(err: any) => {},
+							() => {}
+						)
+					})
 	}
 }
 

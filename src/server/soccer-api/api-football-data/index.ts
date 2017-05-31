@@ -24,12 +24,12 @@ class FootballApiClient{
     var fixture11 = "592bef2018d2d02620b2dbdd";
     var fixture2 = "592b2483f9e52d41b0007db9";
     var fixture22 = "592bef2018d2d02620b2dbde";
-    return new Promise((resolve: any, reject: any) => {    
+    return new Promise((resolve: any, reject: any) => {   
       setTimeout(() => {
         //LigiApiId
         resolve([{ //evetot
-          _id: fixture11,
-          season: seasonId2,
+          _id: fixture1,
+          season: seasonId,
           round: 1,
           status: 'FINISHED',
           result: {
@@ -37,8 +37,8 @@ class FootballApiClient{
             goalsAwayTeam: 1
           }
         }, { //chewhu
-          _id: fixture22,
-          season: seasonId2,
+          _id: fixture2,
+          season: seasonId,
           round: 1,
           status: 'FINISHED',
           result: {
