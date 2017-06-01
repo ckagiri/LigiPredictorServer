@@ -27,6 +27,8 @@ export default class CompetitionJob {
           return this.seasonRepo.findByApiIdAndUpdate(this.comp);
         })
         .subscribe(savedComp => {
+            Object.keys(savedComp).forEach(key => savedComp[key] == null && delete savedComp[key])
+            Object.keys(savedComp).forEach(key => Array.isArray(savedComp[key]) && savedComp[key].length === 0 && delete savedComp[key])
             let compFixturesJob = new CompetitionFixturesJob(savedComp);
             this.queue.addJob(compFixturesJob);
             console.log('subscribed');

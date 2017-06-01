@@ -1,4 +1,4 @@
-import {leaderboardRepo, userScoreRepo, fixtureRepo, predictionRepo, toObjectId} from '../common'
+import {leaderboardRepo, userScoreRepo, fixtureRepo, predictionRepo} from '../common'
 import {predictionHandler} from './fixture-publish'
 import * as Rx from 'rxjs'
 import * as _ from 'lodash'

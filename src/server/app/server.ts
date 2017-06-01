@@ -1,4 +1,4 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 
 import * as express from 'express';
 import * as favicon from 'serve-favicon';
@@ -11,11 +11,9 @@ import { send404 } from './utils/notfound';
 import {routes as authRoutes} from './authRoutes';
 import {routes as apiRoutes} from './apiRoutes';
 import {config} from '../config/environment';
-
+import {run as runScheduler} from './tasks/scheduler';
 const globalMiddleware = require('./middleware/global.middleware');
 const Promise = require('bluebird'); 
-const scheduler = require('./tasks/scheduler');
-
 (<any>mongoose).Promise = Promise;
 const app = express();
 globalMiddleware(app)
@@ -64,7 +62,6 @@ switch (config.env) {
 		app.use('/*', express.static('./src/client/index.html'));
 		break;
 }
-
 mongoose.connect(config.mongo.uri, config.mongo.options);
 const db = mongoose.connection;
 
@@ -83,6 +80,7 @@ const server: http.Server = app.listen(config.port, config.ip, () => {
 
   db.once('open', () => {
     console.info(`Connected to MongoDB: ${config.mongo.uri}`);
+		runScheduler();
   });
 });
 

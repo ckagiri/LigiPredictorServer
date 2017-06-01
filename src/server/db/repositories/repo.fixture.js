@@ -36,7 +36,7 @@ var FixtureRepo = (function (_super) {
             status: status,
             odds: odds
         };
-        Object.keys(update).forEach(function (key) { return (update[key] == null) && delete update[key]; });
+        Object.keys(update).forEach(function (key) { return update[key] == null && delete update[key]; });
         return this.update({ _id: fixtureId }, { $set: update });
     };
     FixtureRepo.prototype.updateFixtureById = function (fixtureId, result, status, odds) {

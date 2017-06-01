@@ -25,6 +25,8 @@ var CompetitionJob = (function () {
             return _this.seasonRepo.findByApiIdAndUpdate(_this.comp);
         })
             .subscribe(function (savedComp) {
+            Object.keys(savedComp).forEach(function (key) { return savedComp[key] == null && delete savedComp[key]; });
+            Object.keys(savedComp).forEach(function (key) { return Array.isArray(savedComp[key]) && savedComp[key].length === 0 && delete savedComp[key]; });
             var compFixturesJob = new competition_fixtures_job_1.CompetitionFixturesJob(savedComp);
             _this.queue.addJob(compFixturesJob);
             console.log('subscribed');

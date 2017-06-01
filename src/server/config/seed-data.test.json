@@ -1,4 +1,19 @@
 {
+  "users": {
+    "_model": "User",
+    "wagz": {
+      "displayName": "Wagz Kagiri",
+      "picture": "https://graph.facebook.com/1646463362033950/picture?type=large",
+      "facebook": "1646463362033950",
+      "roles": ["user"]
+    },
+    "kagz": {
+      "displayName": "Charles Kagiri",
+      "picture": "https://lh4.googleusercontent.com/--XOpvH4lV5k/AAAAAAAAAAI/AAAAAAAAAHk/bDip3Sp_1P8/photo.jpg?sz=200",
+      "google": "117125501101965763112",
+      "roles": ["admin"]
+    }
+  },
   "leagues": {
     "_model": "League",
     "epl": {
@@ -226,6 +241,170 @@
 			"numberOfGames": 380,
 			"seasonStart": "=new Date('2016-08-13T00:00:00+0200')",
 			"seasonEnd": "=new Date('2017-05-21T00:00:00+0200')"
+    }
+  },
+  "fixtures": {
+    "_model": "Fixture",
+    "ars_liv": {
+      "season":"->seasons.epl_16",
+      "round": 1,
+			"date": "=new Date('2016-08-13T13:30:00+0200')",
+      "slug": "arsenal-liverpool",    
+      "status": "FINISHED",
+      "homeTeam": {
+        "id": "->teams.arsenal",
+        "name": "->teams.arsenal.shortName",
+        "slug": "->teams.arsenal.slug", 
+        "crestUrl": "->teams.arsenal.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.liverpool",
+        "name": "->teams.liverpool.shortName",
+        "slug": "->teams.liverpool.slug",
+        "crestUrl": "->teams.liverpool.crestUrl"
+      },
+			"odds": {
+				"homeWin": 2.2,
+        "draw": 3.2,
+        "awayWin": 3.25
+			},
+      "result":{
+        "goalsHomeTeam": 3,
+        "goalsAwayTeam": 4
+      }
+    },
+    "eve_tot": {
+      "season":"->seasons.epl_16",
+      "round": 1,
+			"date": "=new Date('2016-08-13T13:30:00+0200')",
+      "slug": "everton-tottenham",    
+      "status": "SCHEDULED",
+      "homeTeam": {
+        "id": "->teams.everton",
+        "name": "->teams.everton.shortName",
+        "slug": "->teams.everton.slug", 
+        "crestUrl": "->teams.everton.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.tottenham",
+        "name": "->teams.tottenham.shortName",
+        "slug": "->teams.tottenham.slug",
+        "crestUrl": "->teams.tottenham.crestUrl"
+      },
+			"odds": {
+				"homeWin": 2.9,
+        "draw": 3.25,
+        "awayWin": 2.37
+			}
+    },
+    "che_whu": {
+      "season":"->seasons.epl_16",
+      "round": 1,
+			"date": "=new Date('2016-08-13T13:30:00+0200')",
+      "slug": "chelsea-west_ham",    
+      "status": "SCHEDULED",
+      "homeTeam": {
+        "id": "->teams.chelsea",
+        "name": "->teams.chelsea.shortName",
+        "slug": "->teams.chelsea.slug", 
+        "crestUrl": "->teams.chelsea.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.west_ham",
+        "name": "->teams.west_ham.shortName",
+        "slug": "->teams.west_ham.slug",
+        "crestUrl": "->teams.west_ham.crestUrl"
+      },
+			"odds": {
+			  "homeWin": 1.61,
+        "draw": 3.75,
+        "awayWin": 5.5
+			}
+    },
+    "stk_mci": {
+      "season":"->seasons.epl_16",
+      "round": 2,
+			"date": "=new Date('2016-08-20T13:30:00+0200')",
+      "slug": "stoke_city-man_city",    
+      "status": "SCHEDULED",
+      "homeTeam": {
+        "id": "->teams.stoke_city",
+        "name": "->teams.stoke_city.shortName",
+        "slug": "->teams.stoke_city.slug", 
+        "crestUrl": "->teams.stoke_city.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.man_city",
+        "name": "->teams.man_city.shortName",
+        "slug": "->teams.man_city.slug",
+        "crestUrl": "->teams.man_city.crestUrl"
+      },
+			"odds": {
+				"homeWin": 5.0,
+        "draw": 3.75,
+        "awayWin": 1.7
+			}
+    },
+    "mun_sou": {
+      "season":"->seasons.epl_16",
+      "round": 2,
+			"date": "=new Date('2016-08-20T13:30:00+0200')",
+      "slug": "man_united-southampton",    
+      "status": "SCHEDULED",
+      "homeTeam": {
+        "id": "->teams.man_united",
+        "name": "->teams.man_united.shortName",
+        "slug": "->teams.man_united.slug", 
+        "crestUrl": "->teams.man_united.crestUrl"
+      },
+      "awayTeam": {
+        "id": "->teams.southampton",
+        "name": "->teams.southampton.shortName",
+        "slug": "->teams.southampton.slug",
+        "crestUrl": "->teams.southampton.crestUrl"
+      },
+			"odds": {
+				"homeWin": 1.44,
+        "draw": 4.2,
+        "awayWin": 8.0
+			}
+    }
+  },
+  "predictions": {
+    "_model": "Prediction",
+    "wagz_evetot": {
+      "user": "->users.wagz",
+      "fixture": "->fixtures.eve_tot",
+      "choice": {
+		    "goalsHomeTeam": 1,
+		    "goalsAwayTeam": 1,
+		    "isComputerGenerated": false
+	    }
+    },
+    "wagz_chewhu": {
+      "user": "->users.wagz",
+      "fixture": "->fixtures.che_whu",
+      "choice": {
+		    "goalsHomeTeam": 2,
+		    "goalsAwayTeam": 0,
+		    "isComputerGenerated": false
+	    }
+    },
+    "kagz_evetot": {
+      "user": "->users.kagz",
+      "fixture": "->fixtures.eve_tot",
+      "choice": {
+		    "goalsHomeTeam": 2,
+		    "goalsAwayTeam": 1
+	    }
+    },
+    "kagz_chewhu": {
+      "user": "->users.kagz",
+      "fixture": "->fixtures.che_whu",
+      "choice": {
+		    "goalsHomeTeam": 2,
+		    "goalsAwayTeam": 1
+	    }
     }
   }
 }

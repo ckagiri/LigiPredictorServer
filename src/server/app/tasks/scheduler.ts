@@ -7,8 +7,7 @@ let dataTimeout: any;
 let fixturesTimeout: any;
 
 export const run = () => {
-  //updateData();
-  updateFixtures();
+  updateData();
   schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
 }
 
@@ -46,5 +45,3 @@ const scheduleFixturesUpdate = (date: any) => {
 	fixturesTimeout = setTimeout(() => updateFixtures(), ms);
 	console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + ms + "ms");
 }
-
-run();

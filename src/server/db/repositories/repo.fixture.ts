@@ -30,7 +30,7 @@ export class FixtureRepo extends AbstractRepo {
 			status: status,
 			odds: odds
 		}
-		Object.keys(update).forEach((key) => (update[key] == null) && delete update[key])
+		Object.keys(update).forEach(key => update[key] == null && delete update[key])
 		return this.update({_id: fixtureId}, {$set: update});
 	}
 
