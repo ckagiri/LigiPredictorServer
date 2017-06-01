@@ -12,9 +12,9 @@ namespace app.matches {
       private logger: blocks.logger.Logger,
 			private Predictions: app.core.IPredictionsResource) {
 				this.currentRound = this.season.currentRound;
-			  this.leagueSlug = this.$stateParams.league;
-				this.seasonSlug = this.$stateParams.season;
-				let matchday = parseInt(this.$stateParams.round || 1)
+			  this.leagueSlug = this.$stateParams.league || this.season.league.slug;
+				this.seasonSlug = this.$stateParams.season || this.season.slug;
+				let matchday = parseInt(this.$stateParams.round || this.currentRound)
 				this.matchday = matchday;
     }
 
