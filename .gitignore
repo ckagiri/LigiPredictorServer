@@ -50,6 +50,7 @@ testem.log
 .tmp
 #src/**/*.map
 #src/**/*.js
+#build
 
 # testing
 **/test/coverage
@@ -81,6 +82,4 @@ journal
 *.zip
 
 # Web
-.tmp
-build
 /bower_components
