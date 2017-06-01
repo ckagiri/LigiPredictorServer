@@ -38,9 +38,9 @@ class FixtureDbUpdateHandler {
 				// getCached
 				return leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
 					.map((leaderboard: any) => {
-						let boardId = leaderboard._id;
+						let boardId = leaderboard._id.toString();
 						if (boardIds.indexOf(boardId) === -1) {
-							boardIds.push();
+							boardIds.push(boardId);
 						}
 						return {user, fixture, prediction, leaderboard}
 					})
@@ -64,31 +64,46 @@ class FixtureDbUpdateHandler {
 			.onErrorResumeNext()
 			.subscribe(
 				(map: any) => {
-					console.log("user-fixture-prediction has been upserted");
+					let {user, fixture, prediction} = map;
+					let choiceGoalsHomeTeam = prediction.choice.goalsHomeTeam;
+					let choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
+					console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
 				() => {
 					Rx.Observable.from(boardIds)
 						.flatMap((leaderboardIds: any[]) => {
-							return Rx.Observable.from(leaderboardIds);
+							return Rx.Observable.from(boardIds);
 						})
 						.flatMap((leaderboardId: any) => { 
 							return leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "UpdatingRankings")
 						})	
-						.flatMap((leaderboard: any) => { 
-							return userScoreRepo.getByLeaderboardOrderByPoints(leaderboard._id);						
-						})	
-						.flatMap((score: any, index: number) => { 
-							 let previousPosition = score.posNew;
-      				 score.posOld = previousPosition;
-      				 score.posNew = index;
-							 return userScoreRepo.update(score);
+						.do((leaderboard: any) => { 
+							let leaderboardId = leaderboard._id;
+							userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)						
+								.flatMap((userScores: any[]) => {
+									return Rx.Observable.from(userScores);
+								})	
+								.flatMap((score: any, index: number) => { 
+									index += 1;
+									let previousPosition = score.posNew || 0;
+									let posOld = previousPosition;
+									let posNew = index;
+									return userScoreRepo.update(score._id, {posOld, posNew});
+								})
+								.subscribe(
+									() => {},
+									(err: any) => {},
+									() => {
+										leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "Refreshed")
+									})
 						})
 						.subscribe(
 							() => {},
 							(err: any) => {},
-							() => {}
-						)
+							() => {
+								console.log('rankings updated')
+							})
 					})
 	}
 }

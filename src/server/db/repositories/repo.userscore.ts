@@ -14,7 +14,7 @@ export class UserScoreRepo {
     }
     return Rx.Observable.fromPromise(
       new Promise((resolve: any, reject: any) => {    
-        UserScore.findOne({leaderboard: leaderboardId}, 
+        UserScore.findOne({leaderboard: leaderboardId, user: userId}, 
         (err, standing: any) => {
           if(standing == null) {
             score.predictions = [predictionId]
@@ -50,11 +50,11 @@ export class UserScoreRepo {
   }
   
   getByLeaderboardOrderByPoints(leaderboardId: string) {
-    return UserScore.find({leaderboard: leaderboardId}, null, {sort: {points: -1, goalDiff: -1}});
+    return Rx.Observable.fromPromise(
+      UserScore.find({leaderboard: leaderboardId}, null, {sort: {points: -1, goalDiff: -1}}));
   }
 
-  update(score: any) {
-    let {_id} = score;  
-    return Rx.Observable.fromPromise(UserScore.findByIdAndUpdate({_id}, {$set: score}));
+  update(scoreId: string, positions: any) {
+    return Rx.Observable.fromPromise(UserScore.findByIdAndUpdate({_id: scoreId}, {$set: positions}));
   }
 }
