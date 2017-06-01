@@ -8,7 +8,7 @@ import {config} from '../../config/environment';
 const Promise = require('bluebird'); 
 (<any>mongoose).Promise = Promise;
 
-const seedData = require('../../config/seed-data');
+const seedData = require('../../config/seed-data.test');
 const seeder = require('mongoose-seeder');
 
 export const connect = (callback: any) => {

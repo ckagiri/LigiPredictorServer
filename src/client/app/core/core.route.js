@@ -97,14 +97,26 @@ var app;
                 {
                     state: 'app.index',
                     config: {
-                        url: '',
+                        url: '/matches?league&season&round',
                         templateUrl: 'app/matches/matches.html',
                         controller: 'MatchesController',
                         controllerAs: 'vm',
                         title: 'matches',
                         resolve: {
-                            matches: ['MatchesResource',
-                                function (Matches) {
+                            season: ['$stateParams', 'SeasonsResource',
+                                function ($stateParams, Seasons) {
+                                    var league = $stateParams.league, season = $stateParams.season;
+                                    if (league != null && season != null) {
+                                        return Seasons.getOne(league, season);
+                                    }
+                                    return Seasons.default();
+                                }],
+                            matches: ['$stateParams', 'MatchesResource',
+                                function ($stateParams, Matches) {
+                                    var league = $stateParams.league, season = $stateParams.season, round = $stateParams.round;
+                                    if (league != null && season != null && round != null) {
+                                        return Matches.forRound(league, season, round);
+                                    }
                                     return Matches.default();
                                 }]
                         }

@@ -96,16 +96,30 @@ namespace app.core {
 			},
 			{
 				state: 'app.index',
-				config: {
-          url: '',
+        config: {
+          url: '/matches?league&season&round',
           templateUrl: 'app/matches/matches.html',
           controller: 'MatchesController',
           controllerAs: 'vm',
           title: 'matches',
-          resolve:{
-						matches:['MatchesResource', 
-							function (Matches: app.core.IMatchesResource) {
-								return Matches.default();
+					resolve:{
+            season: ['$stateParams', 'SeasonsResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Seasons: app.core.ISeasonsResource) {
+                let {league, season} = $stateParams;
+                if(league != null && season != null) {
+                  return Seasons.getOne(league, season);
+                }
+                return Seasons.default();
+            }],
+						matches:['$stateParams', 'MatchesResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Matches: app.core.IMatchesResource) {
+								let {league, season, round} = $stateParams;
+                if(league != null && season != null && round != null) {
+                  return Matches.forRound(league, season, round);
+                }
+                return Matches.default();
 						}]
 					}
         }
