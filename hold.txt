@@ -411,3 +411,13 @@ onComp -> movePos[pushPred]
 movePos onlyIf scores_added
 
 http://localhost:3000/matches?league=premier-league&season=16-17&round=2
+
+
+, {
+			fixtureId: "$_id",
+			date: "$date",
+			result: "$result",
+			homeTeam: "$homeTeam",
+			awayTeam: "$awayTeam",
+			odds: "$odds"
+		}

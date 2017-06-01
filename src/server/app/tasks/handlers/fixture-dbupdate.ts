@@ -1,4 +1,4 @@
-import {boardInfoRepo, leaderboardRepo, fixtureRepo, predictionRepo, toObjectId} from '../common'
+import {leaderboardRepo, userScoreRepo, fixtureRepo, predictionRepo, toObjectId} from '../common'
 import {predictionHandler} from './fixture-publish'
 import * as Rx from 'rxjs'
 import * as _ from 'lodash'
@@ -10,6 +10,7 @@ let getFixtureName = (fixture: any) => {
 class FixtureDbUpdateHandler {
   handle(changedFixtures: any[]) {
 		let boards: any = {};
+		let boardIds: any[] = [];
 		console.log("fixture db update handler");
 		Rx.Observable.from(changedFixtures)
 			.flatMap((fixture: any) => {
@@ -32,39 +33,30 @@ class FixtureDbUpdateHandler {
 						return {user, fixture, prediction}
 					})
 			})
-			.do((map) => {
-				let seasonId = map.fixture.season.toString();
-				let seasonKey = `seasons.${seasonId}`;
-				let round = map.fixture.round;
-				let roundKey = `seasons.rounds.${round}`;
-				_.setWith(boards, seasonKey, '0');
-				_.setWith(boards, roundKey, '0')
-				if(!_.get(boards, seasonKey)) {
-				  boardInfoRepo.updateStatus(seasonId, null, 'UpdatingScores')
-						.subscribe((info: any) => {
-							_.setWith(boards, seasonKey, info._id);
-						});
-				}	
-				if(!_.get(boards, roundKey)) {
-				  boardInfoRepo.updateStatus(seasonId, round, 'UpdatingScores')
-						.subscribe((info: any) => {
-							_.setWith(boards, roundKey, info._id);
-						});
-				}	
+			.flatMap((map: any) => {
+				let {user, fixture, prediction} = map;
+				// getCached
+				return leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
+					.map((leaderboard: any) => {
+						let boardId = leaderboard._id;
+						if (boardIds.indexOf(boardId) === -1) {
+							boardIds.push();
+						}
+						return {user, fixture, prediction, leaderboard}
+					})
 			})
 			.concatMap((map: any) => {
-				let{user, fixture, prediction} = map;
+				let{leaderboard, user, fixture, prediction} = map;
+				let leaderboardId = leaderboard._id;
 				let userId = user._id;
-				let seasonId = fixture.season;
-				let round = fixture.round;
 				let predictionId = prediction._id;
 				let scorePoints = prediction.scorePoints.toObject();
 				let {points, goalDiff} = prediction
 				let predictionScore = {
 					scorePoints, points, goalDiff
 				}
-				return leaderboardRepo.createOrfindOneAndUpdate(
-					userId, seasonId, round, predictionId, predictionScore)
+				return userScoreRepo.createOrfindOneAndUpdate(
+					leaderboardId, userId, predictionId, predictionScore)
 					.map((status: any) => {
 						return {user, fixture, prediction}
 					})
@@ -76,23 +68,21 @@ class FixtureDbUpdateHandler {
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
 				() => {
-					let seasonKeys = _.without(_.keys(boards.seasons), 'rounds');
-					let sBoardInfoIds = _.map(boards, a => seasonKeys.map(k => a[k]));
-					let roundKeys = _.keys(boards.seasons.rounds);					
-					let rBoardInfoIds = _.map(boards, a => roundKeys.map(k => a[k]));
-
-					Rx.Observable.from(sBoardInfoIds)
-						.flatMap((boardInfoIds: any[]) => {
-							return Rx.Observable.from(sBoardInfoIds);
+					Rx.Observable.from(boardIds)
+						.flatMap((leaderboardIds: any[]) => {
+							return Rx.Observable.from(leaderboardIds);
 						})
-						.flatMap((boardInfoId: any) => { 
-							return leaderboardRepo.getByBoardInfoIdOrderByPoints(boardInfoId);
-						})
+						.flatMap((leaderboardId: any) => { 
+							return leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "UpdatingRankings")
+						})	
+						.flatMap((leaderboard: any) => { 
+							return userScoreRepo.getByLeaderboardOrderByPoints(leaderboard._id);						
+						})	
 						.flatMap((score: any, index: number) => { 
 							 let previousPosition = score.posNew;
       				 score.posOld = previousPosition;
       				 score.posNew = index;
-							 return leaderboardRepo.update(score);
+							 return userScoreRepo.update(score);
 						})
 						.subscribe(
 							() => {},

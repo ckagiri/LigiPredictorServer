@@ -4,8 +4,8 @@ import {Team} from './team.model'
 import {Fixture} from './fixture.model'
 import {User} from './user.model'
 import {Prediction} from './prediction.model'
-import {BoardInfo} from './board-info.model'
 import {Leaderboard} from './leaderboard.model'
+import {UserScore} from './user-score.model'
 
 export default [
   League, 
@@ -14,6 +14,6 @@ export default [
   Fixture,
   User,
   Prediction,
-  BoardInfo,
-  Leaderboard
+  Leaderboard,
+  UserScore
 ]

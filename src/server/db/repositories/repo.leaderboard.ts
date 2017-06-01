@@ -1,67 +1,32 @@
 import * as Rx from 'rxjs';
-import {AbstractRepo} from './repo.abstract';
-import {Leaderboard, ILeaderboard} from '../models/leaderboard.model';
+import {Leaderboard} from '../models/leaderboard.model';
 
 export class LeaderboardRepo {
-  createOrfindOneAndUpdate(userId: string, seasonId: string, round: number, predictionId: string, predictionScore: any) {
-    let {points, goalDiff} = predictionScore;
-    let query: any = {$and: [{user: userId}, {season: seasonId}]},
-    score: IScore = {
-      user: userId, 
-      season: seasonId,
-      round: round,
-      points: points,
-      goalDiff: goalDiff
-    }
-    return Rx.Observable.fromPromise(
-      new Promise((resolve: any, reject: any) => {    
-        Leaderboard.findOne({$and: [{user: userId}, {season: seasonId}]}, 
-        (err, standing: any) => {
-          if(standing == null) {
-            score.predictions = [predictionId]
-            Leaderboard.create(score, (err: any, result: any) => {
-	            if (err) return reject(err);
-              return resolve(result);
-        	  });
-          } else {
-            let predExists = false;
-            standing.predictions.forEach(function(predId: any){
-              if(predId.toString() == predictionId) {
-                predExists = true;
-              }
-            })
-            if(predExists) {
-              return resolve(standing)
-            }
-            standing.points += score.points;
-            standing.goalDiff += score.goalDiff;
-            Leaderboard.findByIdAndUpdate(
-              {_id: standing._id}, 
-              {
-                $set: {points: standing.points, goalDiff: standing.goalDiff},
-                $push: {predictions: predictionId}
-              },
-              (err: any, result: any) => {
-                if (err) return reject(err);
-                return resolve(result);
-              })
-          }
-        })
-      }))
-  }
-  getByBoardInfoIdOrderByPoints(boardInfoId: string) {
-    return Rx.Observable.empty()  
-  }
-  update(score: any) {
-    return Rx.Observable.empty();
-  }
-}
+  updateStatus(query: any, update: any) {
+		let options = { upsert: true, new: true };
 
-interface IScore {
-  user: string;
-  season: string;
-  round?: number
-  points?: number;
-  goalDiff?: number;
-  predictions?: any[]
+		return Rx.Observable.fromPromise(
+			new Promise((resolve: any, reject: any) => {    
+				Leaderboard.findOneAndUpdate(query, update, 
+					{new: true, upsert: true}, 
+        	(err:any, result:any) => {
+						if(err){
+							return reject(err);
+						}
+						resolve(result);
+					})
+			}))
+	}
+
+	findOneBySeasonAndUpdateStatus(seasonId: string, status: string) {
+		let query: any = {season: seasonId};
+		let update: any  = {season: seasonId, status}
+		return this.updateStatus(query, update)
+	}
+
+	findByIdAndUpdateStatus(leaderboardId: string, status: string) {
+		let query: any = {_id: leaderboardId};
+		let update: any  = {status}
+		return this.updateStatus(query, update)
+	}
 }

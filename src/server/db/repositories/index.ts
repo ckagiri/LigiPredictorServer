@@ -4,9 +4,9 @@ import {TeamRepo} from './repo.team'
 import {FixtureRepo} from './repo.fixture'
 import {PredictionRepo} from './repo.prediction'
 import {UserRepo} from './repo.user'
-import {BoardInfoRepo} from './repo.boardinfo'
 import {LeaderboardRepo} from './repo.leaderboard'
+import {UserScoreRepo} from './repo.userscore'
 
 export {
-	LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo, BoardInfoRepo, LeaderboardRepo
+	LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo, LeaderboardRepo, UserScoreRepo
 }
