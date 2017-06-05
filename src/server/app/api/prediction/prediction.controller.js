@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var prediction_model_1 = require("../../../db/models/prediction.model");
 var repositories_1 = require("../../../db/repositories");
 var ligi_predictor_1 = require("../../../db/converters/ligi-predictor");
 var leagueRepo = new repositories_1.LeagueRepo(new ligi_predictor_1.LeagueConverter());
@@ -33,14 +34,15 @@ var PredictionController = (function () {
                 },
                 fixture: key
             };
-            arr.push(prediction);
+            prediction['_id'] = predictions[key]['_id'];
+            var pred = new prediction_model_1.Prediction(prediction);
+            pred.isNew = false;
+            arr.push(pred);
         }
         predictionRepo.create(arr)
             .subscribe(function (predictions) {
-            console.log(predictions);
             res.status(200).json(predictions);
         }, function (err) {
-            console.error(err);
             res.status(500).json(err);
         });
     };
@@ -49,7 +51,6 @@ var PredictionController = (function () {
             .subscribe(function (leagues) {
             res.status(200).json(leagues);
         }, function (err) {
-            console.error(err);
             res.status(500).json(err);
         });
     };

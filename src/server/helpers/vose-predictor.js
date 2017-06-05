@@ -22,7 +22,6 @@ var VosePredictor = (function () {
         var outcome = outcomes[v.next()];
         var score = '';
         if (outcome === 'HOME') {
-            console.log(homeWinWeight);
             if (homeWinWeight > awayWinWeight) {
                 score = this.getFavouriteScore(true);
             }
@@ -31,7 +30,6 @@ var VosePredictor = (function () {
             }
         }
         if (outcome === 'AWAY') {
-            console.log(awayWinWeight);
             if (awayWinWeight > homeWinWeight) {
                 score = this.getFavouriteScore(false);
             }
@@ -40,10 +38,8 @@ var VosePredictor = (function () {
             }
         }
         if (outcome === 'DRAW') {
-            console.log(drawWeight);
             score = this.getDrawScore();
         }
-        console.log(score);
     };
     VosePredictor.prototype.getFavouriteScore = function (isHomeTeam) {
         var scores = [];
@@ -83,12 +79,4 @@ var VosePredictor = (function () {
     };
     return VosePredictor;
 }());
-var v = new VosePredictor({
-    homeWin: 1.61,
-    draw: 3.75,
-    awayWin: 5.5
-});
-for (var i = 0; i < 12; i++) {
-    v.predict();
-}
 //# sourceMappingURL=vose-predictor.js.map

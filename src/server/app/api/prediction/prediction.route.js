@@ -19,5 +19,5 @@ var PredictionRouter = (function () {
     });
     return PredictionRouter;
 }());
-exports.leagueRouter = new PredictionRouter();
+exports.predictionRouter = new PredictionRouter();
 //# sourceMappingURL=prediction.route.js.map

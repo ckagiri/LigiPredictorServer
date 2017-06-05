@@ -18,13 +18,12 @@ var app;
                 this.createPredictions = function () {
                     var predictions = _this.Predictions.newInstance(_this.predictions);
                     predictions.save(function (response) {
-                        console.log(response);
+                        _this.logger.success('Successfully Saved!');
                     }, function (errorResponse) {
-                        this.error = errorResponse.data.message;
+                        _this.error = errorResponse.data.message;
                     });
                 };
                 this.score = function (match, side, change) {
-                    _this.predictions[match] = _this.predictions[match] || {};
                     var goals = _this.predictions[match]['goals' + side + 'Team'];
                     if (!(goals == null) && !(goals === 0 && change === -1)) {
                         goals += change;
@@ -36,7 +35,22 @@ var app;
                 this.seasonSlug = this.$stateParams.season || this.season.slug;
                 var matchday = parseInt(this.$stateParams.round || this.currentRound);
                 this.matchday = matchday;
+                this.init();
             }
+            MatchesController.prototype.init = function () {
+                for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
+                    var match = _a[_i];
+                    if (!match.result) {
+                        var choice = match.prediction.choice || {};
+                        this.predictions[match._id] = this.predictions[match._id] || {};
+                        this.predictions[match._id]['_id'] = match.prediction._id;
+                        if (!choice.isComputerGenerated) {
+                            this.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
+                            this.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
+                        }
+                    }
+                }
+            };
             MatchesController.prototype.pointsClass = function (points) {
                 if (points === 3) {
                     return 'label-success';

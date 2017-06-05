@@ -36,15 +36,16 @@ export class PredictionController {
 				},
 				fixture: key	
 			}
-			arr.push(prediction); 
+			prediction['_id'] = predictions[key]['_id'];
+			let pred = new Prediction(prediction);
+			pred.isNew = false;
+			arr.push(pred); 
 		}
 		
 		predictionRepo.create(arr)
 			.subscribe((predictions: any[]) => {
-					console.log(predictions);
 					res.status(200).json(predictions);
 				}, (err: any) => {
-					console.error(err);
 					res.status(500).json(err);
     		});
 		}
@@ -54,7 +55,6 @@ export class PredictionController {
 			.subscribe((leagues: any[]) => {
 					res.status(200).json(leagues);
 				}, (err: any) => {
-					console.error(err);
 					res.status(500).json(err);
     		});
   }
