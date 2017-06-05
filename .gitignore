@@ -48,9 +48,9 @@ testem.log
 
 # compiled output
 .tmp
-#src/**/*.map
-#src/**/*.js
-#build
+src/**/*.map
+src/**/*.js
+build
 
 # testing
 **/test/coverage
