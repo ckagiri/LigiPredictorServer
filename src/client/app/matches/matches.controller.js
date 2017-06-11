@@ -16,7 +16,13 @@ var app;
                 this.vosePredictorFactory = vosePredictorFactory;
                 this.title = 'Matches';
                 this.predictions = {};
+                this.luckyDipEnabled = false;
                 this.createPredictions = function () {
+                    Object.keys(_this.predictions).forEach(function (key) {
+                        if (_this.predictions[key].vosePredictor != null) {
+                            delete _this.predictions[key].vosePredictor;
+                        }
+                    });
                     var predictions = _this.Predictions.newInstance(_this.predictions);
                     predictions.save(function (response) {
                         _this.logger.success('Successfully Saved!');
@@ -45,7 +51,7 @@ var app;
                         var choice = match.prediction.choice || {};
                         this_1.predictions[match._id] = this_1.predictions[match._id] || {};
                         this_1.predictions[match._id]['_id'] = match.prediction._id;
-                        if (choice.goalsHomeTeam && choice.goalsAwayTeam) {
+                        if (isInt(choice.goalsHomeTeam) && isInt(choice.goalsAwayTeam)) {
                             this_1.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
                             this_1.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
                         }
@@ -61,7 +67,7 @@ var app;
                                 prediction['goalsHomeTeam'] = goalsHomeTeam;
                                 prediction['goalsAwayTeam'] = goalsAwayTeam;
                             };
-                            this_1.showLuckyDip = true;
+                            this_1.luckyDipEnabled = true;
                         }
                     }
                 };
@@ -107,6 +113,13 @@ var app;
                     }
                 });
             };
+            MatchesController.prototype.showLuckyDip = function () {
+                var _this = this;
+                var res = Object.keys(this.predictions).some(function (key) {
+                    return _this.predictions[key].vosePredictor != null;
+                });
+                return this.luckyDipEnabled || res;
+            };
             MatchesController.prototype.gotoMatchday = function () {
                 this.$state.go('app.matches', {
                     league: this.leagueSlug,
@@ -119,6 +132,10 @@ var app;
         MatchesController.$inject = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger',
             'PredictionsResource', 'vosePredictorFactory'];
         matches.MatchesController = MatchesController;
+        function isInt(value) {
+            var regex = /^-?[0-9]+$/;
+            return regex.test(value);
+        }
         angular
             .module('app.matches')
             .controller('MatchesController', MatchesController);

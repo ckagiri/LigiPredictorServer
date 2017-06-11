@@ -28,7 +28,7 @@ namespace app.matches {
 		seasonSlug: string;
 		matchday: number;
 		currentRound: number;
-		showLuckyDip: true;
+		luckyDipEnabled = false;
 
 		private init() {
 			for(let match of this.fixtures) {
@@ -36,7 +36,7 @@ namespace app.matches {
 					let choice = match.prediction.choice || {}
 					this.predictions[match._id] = this.predictions[match._id] || {};
 					this.predictions[match._id]['_id'] = match.prediction._id;
-					if(choice.goalsHomeTeam && choice.goalsAwayTeam) {
+					if(isInt(choice.goalsHomeTeam) && isInt(choice.goalsAwayTeam)) {
 						this.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
 						this.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
 					} else {
@@ -51,13 +51,18 @@ namespace app.matches {
 							prediction['goalsHomeTeam'] = goalsHomeTeam;
 							prediction['goalsAwayTeam'] = goalsAwayTeam;
 						}
-						this.showLuckyDip = true;
+						this.luckyDipEnabled = true;
 					}
 				}
 			}
 		}
 
 		createPredictions = () => {
+			Object.keys(this.predictions).forEach((key: any) => {
+				if(this.predictions[key].vosePredictor != null) {
+					delete this.predictions[key].vosePredictor;
+				}
+			}) 
 			var predictions = this.Predictions.newInstance(this.predictions);
 			predictions.save((response: any) => {
 				this.logger.success('Successfully Saved!');
@@ -111,6 +116,13 @@ namespace app.matches {
 			}) 
 		}
 
+		showLuckyDip() {
+			let res = Object.keys(this.predictions).some((key: any) => {
+				return this.predictions[key].vosePredictor != null;
+			});
+			return this.luckyDipEnabled || res;
+		}
+
 		private gotoMatchday() {
 			this.$state.go('app.matches', {
 				league: this.leagueSlug, 
@@ -118,6 +130,11 @@ namespace app.matches {
 				round: this.matchday
 			});
 		}
+	}
+
+	function isInt(value: any) {
+		var regex = /^-?[0-9]+$/;
+		return regex.test(value);
 	}
 
 	angular
