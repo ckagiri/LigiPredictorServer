@@ -4,7 +4,7 @@ var app;
     (function (matches) {
         'use strict';
         var MatchesController = (function () {
-            function MatchesController($q, $state, $stateParams, fixtures, season, logger, Predictions) {
+            function MatchesController($q, $state, $stateParams, fixtures, season, logger, Predictions, vosePredictorFactory) {
                 var _this = this;
                 this.$q = $q;
                 this.$state = $state;
@@ -13,6 +13,7 @@ var app;
                 this.season = season;
                 this.logger = logger;
                 this.Predictions = Predictions;
+                this.vosePredictorFactory = vosePredictorFactory;
                 this.title = 'Matches';
                 this.predictions = {};
                 this.createPredictions = function () {
@@ -38,17 +39,33 @@ var app;
                 this.init();
             }
             MatchesController.prototype.init = function () {
-                for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
-                    var match = _a[_i];
+                var _this = this;
+                var _loop_1 = function (match) {
                     if (!match.result) {
                         var choice = match.prediction.choice || {};
-                        this.predictions[match._id] = this.predictions[match._id] || {};
-                        this.predictions[match._id]['_id'] = match.prediction._id;
+                        this_1.predictions[match._id] = this_1.predictions[match._id] || {};
+                        this_1.predictions[match._id]['_id'] = match.prediction._id;
                         if (!choice.isComputerGenerated) {
-                            this.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
-                            this.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
+                            this_1.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
+                            this_1.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
                         }
+                        this_1.predictions[match._id]['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(match.odds);
+                        this_1.predictions[match._id]['predict'] = function () {
+                            var prediction = _this.predictions[match._id];
+                            var predictor = prediction['vosePredictor'];
+                            var score = predictor.predict();
+                            var goals = score.split('-');
+                            var goalsHomeTeam = goals[0];
+                            var goalsAwayTeam = goals[1];
+                            prediction['goalsHomeTeam'] = goalsHomeTeam;
+                            prediction['goalsAwayTeam'] = goalsAwayTeam;
+                        };
                     }
+                };
+                var this_1 = this;
+                for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
+                    var match = _a[_i];
+                    _loop_1(match);
                 }
             };
             MatchesController.prototype.pointsClass = function (points) {
@@ -79,6 +96,12 @@ var app;
                 this.matchday = this.currentRound;
                 this.gotoMatchday();
             };
+            MatchesController.prototype.luckyDip = function () {
+                var _this = this;
+                Object.keys(this.predictions).forEach(function (key) {
+                    _this.predictions[key].predict();
+                });
+            };
             MatchesController.prototype.gotoMatchday = function () {
                 this.$state.go('app.matches', {
                     league: this.leagueSlug,
@@ -88,7 +111,8 @@ var app;
             };
             return MatchesController;
         }());
-        MatchesController.$inject = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger', 'PredictionsResource'];
+        MatchesController.$inject = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger',
+            'PredictionsResource', 'vosePredictorFactory'];
         matches.MatchesController = MatchesController;
         angular
             .module('app.matches')

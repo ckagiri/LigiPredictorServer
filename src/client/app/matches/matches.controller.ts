@@ -2,7 +2,8 @@ namespace app.matches {
 	'use strict';
 
 	export class MatchesController {
-		static $inject: string[] = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger', 'PredictionsResource'];
+		static $inject: string[] = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger', 
+			'PredictionsResource', 'vosePredictorFactory'];
 
 		constructor(private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
@@ -10,7 +11,8 @@ namespace app.matches {
 			private fixtures: any[],
 			private season: any,
       private logger: blocks.logger.Logger,
-			private Predictions: app.core.IPredictionsResource) {
+			private Predictions: app.core.IPredictionsResource,
+			private vosePredictorFactory: app.matches.VosePredictorFactory) {
 				this.currentRound = this.season.currentRound;
 			  this.leagueSlug = this.$stateParams.league || this.season.league.slug;
 				this.seasonSlug = this.$stateParams.season || this.season.slug;
@@ -36,6 +38,17 @@ namespace app.matches {
 					if(!choice.isComputerGenerated) {
 						this.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
 						this.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
+					}
+					this.predictions[match._id]['vosePredictor'] = this.vosePredictorFactory.createPredictor(match.odds)
+					this.predictions[match._id]['predict'] = () => {
+						let prediction  = this.predictions[match._id]
+						let predictor = prediction['vosePredictor']
+						let score = predictor.predict();
+						let goals = score.split('-');
+						let goalsHomeTeam = goals[0];
+						let goalsAwayTeam = goals[1];
+						prediction['goalsHomeTeam'] = goalsHomeTeam;
+						prediction['goalsAwayTeam'] = goalsAwayTeam;
 					}
 				}
 			}
@@ -85,6 +98,12 @@ namespace app.matches {
 		currMatchday() {
 			this.matchday = this.currentRound;
 			this.gotoMatchday();
+		}
+
+		luckyDip() {
+			Object.keys(this.predictions).forEach((key: any) => {
+				this.predictions[key].predict();
+			}) 
 		}
 
 		private gotoMatchday() {

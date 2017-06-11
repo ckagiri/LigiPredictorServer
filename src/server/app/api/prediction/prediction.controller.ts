@@ -26,7 +26,7 @@ export class PredictionController {
 		let predictions = req.body;
 		let user = req['user'];
 		let arr = [];
-		for(let key in predictions){
+		for(let key in predictions) {
 			let prediction: IPrediction = {
 				user: user._id,
 				choice: {
@@ -48,7 +48,7 @@ export class PredictionController {
 				}, (err: any) => {
 					res.status(500).json(err);
     		});
-		}
+	}
 
 	mine(req: Request, res: Response) {
 		fixtureRepo.findAll()
