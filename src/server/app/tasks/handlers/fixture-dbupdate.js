@@ -78,8 +78,8 @@ var FixtureDbUpdateHandler = (function () {
                 .do(function (leaderboard) {
                 var leaderboardId = leaderboard._id;
                 common_1.userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)
-                    .flatMap(function (userScores) {
-                    return Rx.Observable.from(userScores);
+                    .flatMap(function (scores) {
+                    return Rx.Observable.from(scores);
                 })
                     .flatMap(function (score, index) {
                     index += 1;

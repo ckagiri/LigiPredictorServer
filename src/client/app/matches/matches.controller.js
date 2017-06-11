@@ -45,21 +45,24 @@ var app;
                         var choice = match.prediction.choice || {};
                         this_1.predictions[match._id] = this_1.predictions[match._id] || {};
                         this_1.predictions[match._id]['_id'] = match.prediction._id;
-                        if (!choice.isComputerGenerated) {
+                        if (choice.goalsHomeTeam && choice.goalsAwayTeam) {
                             this_1.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
                             this_1.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
                         }
-                        this_1.predictions[match._id]['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(match.odds);
-                        this_1.predictions[match._id]['predict'] = function () {
-                            var prediction = _this.predictions[match._id];
-                            var predictor = prediction['vosePredictor'];
-                            var score = predictor.predict();
-                            var goals = score.split('-');
-                            var goalsHomeTeam = goals[0];
-                            var goalsAwayTeam = goals[1];
-                            prediction['goalsHomeTeam'] = goalsHomeTeam;
-                            prediction['goalsAwayTeam'] = goalsAwayTeam;
-                        };
+                        else {
+                            this_1.predictions[match._id]['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(match.odds);
+                            this_1.predictions[match._id]['predict'] = function () {
+                                var prediction = _this.predictions[match._id];
+                                var predictor = prediction['vosePredictor'];
+                                var score = predictor.predict();
+                                var goals = score.split('-');
+                                var goalsHomeTeam = goals[0];
+                                var goalsAwayTeam = goals[1];
+                                prediction['goalsHomeTeam'] = goalsHomeTeam;
+                                prediction['goalsAwayTeam'] = goalsAwayTeam;
+                            };
+                            this_1.showLuckyDip = true;
+                        }
                     }
                 };
                 var this_1 = this;
@@ -99,7 +102,9 @@ var app;
             MatchesController.prototype.luckyDip = function () {
                 var _this = this;
                 Object.keys(this.predictions).forEach(function (key) {
-                    _this.predictions[key].predict();
+                    if (_this.predictions[key].predict != null) {
+                        _this.predictions[key].predict();
+                    }
                 });
             };
             MatchesController.prototype.gotoMatchday = function () {

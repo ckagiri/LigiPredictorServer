@@ -28,6 +28,7 @@ namespace app.matches {
 		seasonSlug: string;
 		matchday: number;
 		currentRound: number;
+		showLuckyDip: true;
 
 		private init() {
 			for(let match of this.fixtures) {
@@ -35,20 +36,22 @@ namespace app.matches {
 					let choice = match.prediction.choice || {}
 					this.predictions[match._id] = this.predictions[match._id] || {};
 					this.predictions[match._id]['_id'] = match.prediction._id;
-					if(!choice.isComputerGenerated) {
+					if(choice.goalsHomeTeam && choice.goalsAwayTeam) {
 						this.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
 						this.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
-					}
-					this.predictions[match._id]['vosePredictor'] = this.vosePredictorFactory.createPredictor(match.odds)
-					this.predictions[match._id]['predict'] = () => {
-						let prediction  = this.predictions[match._id]
-						let predictor = prediction['vosePredictor']
-						let score = predictor.predict();
-						let goals = score.split('-');
-						let goalsHomeTeam = goals[0];
-						let goalsAwayTeam = goals[1];
-						prediction['goalsHomeTeam'] = goalsHomeTeam;
-						prediction['goalsAwayTeam'] = goalsAwayTeam;
+					} else {
+						this.predictions[match._id]['vosePredictor'] = this.vosePredictorFactory.createPredictor(match.odds)
+						this.predictions[match._id]['predict'] = () => {
+							let prediction  = this.predictions[match._id]
+							let predictor = prediction['vosePredictor']
+							let score = predictor.predict();
+							let goals = score.split('-');
+							let goalsHomeTeam = goals[0];
+							let goalsAwayTeam = goals[1];
+							prediction['goalsHomeTeam'] = goalsHomeTeam;
+							prediction['goalsAwayTeam'] = goalsAwayTeam;
+						}
+						this.showLuckyDip = true;
 					}
 				}
 			}
@@ -102,7 +105,9 @@ namespace app.matches {
 
 		luckyDip() {
 			Object.keys(this.predictions).forEach((key: any) => {
-				this.predictions[key].predict();
+				if(this.predictions[key].predict != null) {
+					this.predictions[key].predict();
+				}
 			}) 
 		}
 

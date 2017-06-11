@@ -81,8 +81,8 @@ class FixtureDbUpdateHandler {
 						.do((leaderboard: any) => { 
 							let leaderboardId = leaderboard._id;
 							userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)						
-								.flatMap((userScores: any[]) => {
-									return Rx.Observable.from(userScores);
+								.flatMap((scores: any[]) => {
+									return Rx.Observable.from(scores);
 								})	
 								.flatMap((score: any, index: number) => { 
 									index += 1;
