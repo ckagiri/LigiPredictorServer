@@ -2,13 +2,15 @@
   "users": {
     "_model": "User",
     "wagz": {
+      "email": "kagiri.charles@rocketmail.com",
       "displayName": "Wagz Kagiri",
       "picture": "https://graph.facebook.com/1646463362033950/picture?type=large",
       "facebook": "1646463362033950",
       "roles": ["user"]
     },
     "kagz": {
-      "displayName": "Charles Kagiri",
+      "email": "charleskagiri@gmail.com",
+      "displayName": "Charles W Kagiri",
       "picture": "https://lh4.googleusercontent.com/--XOpvH4lV5k/AAAAAAAAAAI/AAAAAAAAAHk/bDip3Sp_1P8/photo.jpg?sz=200",
       "google": "117125501101965763112",
       "roles": ["admin"]

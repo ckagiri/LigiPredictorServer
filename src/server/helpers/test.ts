@@ -95,4 +95,4 @@ let ten2 = predictionProcessor.process({
 }, {
   goalsHomeTeam: 3, goalsAwayTeam: 2
 });
-console.log(zero);
+console.log("chalo");
