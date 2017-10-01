@@ -12,7 +12,7 @@ const Promise = require('bluebird');
 var user1 = new User({
 	userName: "ckagiri",
 	displayName: "Charles Kagiri",
-	email: "charleskagiri@gmail.com",
+	email: "charleskagiri@hotmail.com",
 	password: "redwire",
 	roles: ["admin"]
 });
@@ -26,6 +26,8 @@ function seedUser() {
 		user1.save((err) => {
 			if (err) {
 				console.log(err.message)
+			} else {
+				console.log("chalo")
 			}
 		});
     mongoose.connection.close();

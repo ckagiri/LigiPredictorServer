@@ -10,7 +10,7 @@ mongoose.Promise = Promise;
 var user1 = new user_model_1.User({
     userName: "ckagiri",
     displayName: "Charles Kagiri",
-    email: "charleskagiri@gmail.com",
+    email: "charleskagiri@hotmail.com",
     password: "redwire",
     roles: ["admin"]
 });
@@ -21,6 +21,9 @@ function seedUser() {
     user1.save(function (err) {
         if (err) {
             console.log(err.message);
+        }
+        else {
+            console.log("chalo");
         }
     });
     mongoose.connection.close();
