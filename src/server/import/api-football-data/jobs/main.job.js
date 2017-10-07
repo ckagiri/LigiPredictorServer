@@ -9,12 +9,12 @@ var MainJob = (function () {
     }
     MainJob.prototype.start = function (queue) {
         console.log("Main job");
-        return exports.client.getCompetitions(2016).then(function (_a) {
+        return exports.client.getCompetitions(2017).then(function (_a) {
             var competitions = _a.data;
             for (var _i = 0, competitions_1 = competitions; _i < competitions_1.length; _i++) {
                 var competition = competitions_1[_i];
                 var compJob = new competition_job_1.default(competition);
-                if (competition.id !== 426) {
+                if (competition.id !== 445) {
                     continue;
                 }
                 queue.addJob(compJob);

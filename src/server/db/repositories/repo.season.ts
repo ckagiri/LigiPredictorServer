@@ -28,7 +28,7 @@ export class SeasonRepo extends AbstractRepo {
 	getDefault(){
 		return Rx.Observable.fromPromise(
 			new Promise((resolve: any, reject: any) => {
-				this.model.findOne({'league.slug': 'premier-league', year: '2016'})
+				this.model.findOne({'league.slug': 'premier-league', year: '2017'})
 					.lean()
 					.exec(function(err: any, season: any) {
 						if (err) reject(err);

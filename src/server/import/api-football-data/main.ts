@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test';
+process.env.NODE_ENV = 'development';
 
 import * as mongoose from 'mongoose';
 import {config} from '../../config/environment';

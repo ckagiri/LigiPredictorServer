@@ -39,7 +39,7 @@ var SeasonRepo = (function (_super) {
     SeasonRepo.prototype.getDefault = function () {
         var _this = this;
         return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
-            _this.model.findOne({ 'league.slug': 'premier-league', year: '2016' })
+            _this.model.findOne({ 'league.slug': 'premier-league', year: '2017' })
                 .lean()
                 .exec(function (err, season) {
                 if (err)

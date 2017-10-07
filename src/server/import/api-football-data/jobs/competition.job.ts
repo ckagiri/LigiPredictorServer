@@ -26,7 +26,7 @@ export default class CompetitionJob {
         .flatMap((teams: any[]) => {
           return this.seasonRepo.findByApiIdAndUpdate(this.comp);
         })
-        .subscribe(savedComp => {
+        .subscribe((savedComp:any) => {
             Object.keys(savedComp).forEach(key => savedComp[key] == null && delete savedComp[key])
             Object.keys(savedComp).forEach(key => Array.isArray(savedComp[key]) && savedComp[key].length === 0 && delete savedComp[key])
             let compFixturesJob = new CompetitionFixturesJob(savedComp);

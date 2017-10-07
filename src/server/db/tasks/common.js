@@ -7,7 +7,7 @@ var models_1 = require("../../db/models");
 var environment_1 = require("../../config/environment");
 var Promise = require('bluebird');
 mongoose.Promise = Promise;
-var seedData = require('../../config/seed-data.test');
+var seedData = require('../../config/seed-data-17');
 var seeder = require('mongoose-seeder');
 exports.connect = function (callback) {
     mongoose.connect(environment_1.config.mongo.uri);

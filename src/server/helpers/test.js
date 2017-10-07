@@ -81,5 +81,5 @@ var ten2 = prediction_processor_1.predictionProcessor.process({
 }, {
     goalsHomeTeam: 3, goalsAwayTeam: 2
 });
-console.log(zero);
+console.log("chalo");
 //# sourceMappingURL=test.js.map
