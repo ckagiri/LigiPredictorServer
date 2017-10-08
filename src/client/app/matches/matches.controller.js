@@ -16,7 +16,7 @@ var app;
                 this.vosePredictorFactory = vosePredictorFactory;
                 this.title = 'Matches';
                 this.predictions = {};
-                this.luckyDipEnabled = false;
+                this.luckySpinEnabled = false;
                 this.createPredictions = function () {
                     Object.keys(_this.predictions).forEach(function (key) {
                         if (_this.predictions[key].vosePredictor != null) {
@@ -31,11 +31,13 @@ var app;
                     });
                 };
                 this.score = function (match, side, change) {
-                    var goals = _this.predictions[match]['goals' + side + 'Team'];
+                    var matchId = match._id;
+                    var goals = _this.predictions[matchId]['goals' + side + 'Team'];
                     if (!(goals == null) && !(goals === 0 && change === -1)) {
                         goals += change;
                     }
-                    _this.predictions[match]['goals' + side + 'Team'] = goals || 0;
+                    _this.predictions[matchId]['goals' + side + 'Team'] = goals || 0;
+                    match.choice['goals' + side + 'Team'] = goals || 0;
                 };
                 this.currentRound = this.season.currentRound;
                 this.leagueSlug = this.$stateParams.league || this.season.league.slug;
@@ -47,16 +49,12 @@ var app;
             MatchesController.prototype.init = function () {
                 var _this = this;
                 var _loop_1 = function (match) {
-                    if (!match.result) {
-                        var choice = match.prediction.choice || {};
-                        this_1.predictions[match._id] = this_1.predictions[match._id] || {};
-                        this_1.predictions[match._id]['_id'] = match.prediction._id;
-                        if (isInt(choice.goalsHomeTeam) && isInt(choice.goalsAwayTeam)) {
-                            this_1.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
-                            this_1.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
-                        }
-                        else {
-                            this_1.predictions[match._id]['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(match.odds);
+                    var choice = match.prediction.choice || {};
+                    this_1.predictions[match._id] = this_1.predictions[match._id] || {};
+                    this_1.predictions[match._id]['_id'] = match.prediction._id;
+                    if (match.status == 'SCHEDULED' || match.status == 'TIMED') {
+                        if (choice.isComputerGenerated || choice.isComputerGenerated == null) {
+                            this_1.predictions[match._id]['vosePredictor'] = this_1.vosePredictorFactory.createPredictor({ homeWin: 1, awayWin: 1, draw: 1 });
                             this_1.predictions[match._id]['predict'] = function () {
                                 var prediction = _this.predictions[match._id];
                                 var predictor = prediction['vosePredictor'];
@@ -67,8 +65,18 @@ var app;
                                 prediction['goalsHomeTeam'] = goalsHomeTeam;
                                 prediction['goalsAwayTeam'] = goalsAwayTeam;
                             };
-                            this_1.luckyDipEnabled = true;
+                            match.choice = {
+                                goalsHomeTeam: null,
+                                goalsAwayTeam: null
+                            };
+                            this_1.luckySpinEnabled = true;
                         }
+                        else {
+                            match.choice = choice;
+                        }
+                    }
+                    else {
+                        match.choice = choice;
                     }
                 };
                 var this_1 = this;
@@ -105,7 +113,7 @@ var app;
                 this.matchday = this.currentRound;
                 this.gotoMatchday();
             };
-            MatchesController.prototype.luckyDip = function () {
+            MatchesController.prototype.luckySpin = function () {
                 var _this = this;
                 Object.keys(this.predictions).forEach(function (key) {
                     if (_this.predictions[key].predict != null) {
@@ -113,12 +121,12 @@ var app;
                     }
                 });
             };
-            MatchesController.prototype.showLuckyDip = function () {
+            MatchesController.prototype.showLuckySpin = function () {
                 var _this = this;
                 var res = Object.keys(this.predictions).some(function (key) {
                     return _this.predictions[key].vosePredictor != null;
                 });
-                return this.luckyDipEnabled || res;
+                return this.luckySpinEnabled || res;
             };
             MatchesController.prototype.gotoMatchday = function () {
                 this.$state.go('app.matches', {

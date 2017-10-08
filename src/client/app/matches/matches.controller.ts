@@ -28,19 +28,14 @@ namespace app.matches {
 		seasonSlug: string;
 		matchday: number;
 		currentRound: number;
-		luckyDipEnabled = false;
+		luckySpinEnabled = false;
 
 		private init() {
 			for(let match of this.fixtures) {
-				if(!match.result) {
-					let choice = match.prediction.choice || {}
-					this.predictions[match._id] = this.predictions[match._id] || {};
-					this.predictions[match._id]['_id'] = match.prediction._id;
-					if(isInt(choice.goalsHomeTeam) && isInt(choice.goalsAwayTeam)) {
-						this.predictions[match._id]['goalsHomeTeam'] = choice.goalsHomeTeam;
-						this.predictions[match._id]['goalsAwayTeam'] = choice.goalsAwayTeam;
-					} else {
-						this.predictions[match._id]['vosePredictor'] = this.vosePredictorFactory.createPredictor(match.odds)
+				let choice = match.prediction.choice || {}
+				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
+					if(choice.isComputerGenerated || choice.isComputerGenerated == null) {
+						this.predictions[match._id]['vosePredictor'] = this.vosePredictorFactory.createPredictor({homeWin: 1, awayWin: 1, draw:1})
 						this.predictions[match._id]['predict'] = () => {
 							let prediction  = this.predictions[match._id]
 							let predictor = prediction['vosePredictor']
@@ -51,8 +46,16 @@ namespace app.matches {
 							prediction['goalsHomeTeam'] = goalsHomeTeam;
 							prediction['goalsAwayTeam'] = goalsAwayTeam;
 						}
-						this.luckyDipEnabled = true;
+						match.choice = {
+							goalsHomeTeam: null,
+							goalsAwayTeam: null
+						}
+						this.luckySpinEnabled = true;
+					} else {
+						match.choice = choice;
 					}
+				} else {
+					match.choice = choice;
 				}
 			}
 		}
@@ -72,11 +75,13 @@ namespace app.matches {
 		};
 
 		score = (match: any, side: string, change: number) => {
-			var goals = this.predictions[match]['goals'+side+'Team'];
+			var matchId = match._id
+			var goals = this.predictions[matchId]['goals'+side+'Team'];
 			if (!(goals == null) && !(goals === 0 && change === -1)){
 				goals += change;
 			}
-			this.predictions[match]['goals'+side+'Team'] = goals || 0;
+			this.predictions[matchId]['goals'+side+'Team'] = goals || 0;
+			match.choice['goals'+side+'Team'] = goals || 0;
 		};
 
 		pointsClass(points: any) {
@@ -108,7 +113,7 @@ namespace app.matches {
 			this.gotoMatchday();
 		}
 
-		luckyDip() {
+		luckySpin() {
 			Object.keys(this.predictions).forEach((key: any) => {
 				if(this.predictions[key].predict != null) {
 					this.predictions[key].predict();
@@ -116,11 +121,11 @@ namespace app.matches {
 			}) 
 		}
 
-		showLuckyDip() {
+		showLuckySpin() {
 			let res = Object.keys(this.predictions).some((key: any) => {
 				return this.predictions[key].vosePredictor != null;
 			});
-			return this.luckyDipEnabled || res;
+			return this.luckySpinEnabled || res;
 		}
 
 		private gotoMatchday() {
