@@ -32,7 +32,14 @@ var app;
                 };
                 this.score = function (match, side, change) {
                     var matchId = match._id;
-                    var goals = _this.predictions[matchId]['goals' + side + 'Team'];
+                    if (_this.predictions[matchId] == null) {
+                        _this.predictions[matchId] = {
+                            _id: match.prediction._id,
+                            goalsHomeTeam: match.choice.goalsHomeTeam,
+                            goalsAwayTeam: match.choice.goalsAwayTeam
+                        };
+                    }
+                    var goals = match.choice['goals' + side + 'Team'];
                     if (!(goals == null) && !(goals === 0 && change === -1)) {
                         goals += change;
                     }
@@ -50,20 +57,29 @@ var app;
                 var _this = this;
                 var _loop_1 = function (match) {
                     var choice = match.prediction.choice || {};
-                    this_1.predictions[match._id] = this_1.predictions[match._id] || {};
-                    this_1.predictions[match._id]['_id'] = match.prediction._id;
                     if (match.status == 'SCHEDULED' || match.status == 'TIMED') {
                         if (choice.isComputerGenerated || choice.isComputerGenerated == null) {
-                            this_1.predictions[match._id]['vosePredictor'] = this_1.vosePredictorFactory.createPredictor({ homeWin: 1, awayWin: 1, draw: 1 });
-                            this_1.predictions[match._id]['predict'] = function () {
-                                var prediction = _this.predictions[match._id];
-                                var predictor = prediction['vosePredictor'];
+                            var odds = match.odds;
+                            if (odds == null) {
+                                odds = { homeWin: 1, awayWin: 1, draw: 1 };
+                            }
+                            match['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(odds);
+                            match['predict'] = function () {
+                                var predictor = match['vosePredictor'];
                                 var score = predictor.predict();
                                 var goals = score.split('-');
                                 var goalsHomeTeam = goals[0];
                                 var goalsAwayTeam = goals[1];
-                                prediction['goalsHomeTeam'] = goalsHomeTeam;
-                                prediction['goalsAwayTeam'] = goalsAwayTeam;
+                                match.choice = {
+                                    goalsHomeTeam: goalsHomeTeam, goalsAwayTeam: goalsAwayTeam
+                                };
+                                if (_this.predictions[match._id] == null) {
+                                    _this.predictions[match._id] = {
+                                        _id: match.prediction._id
+                                    };
+                                }
+                                _this.predictions[match._id]['goalsHomeTeam'] = goalsHomeTeam;
+                                _this.predictions[match._id]['goalsAwayTeam'] = goalsAwayTeam;
                             };
                             match.choice = {
                                 goalsHomeTeam: null,

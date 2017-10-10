@@ -35,16 +35,27 @@ namespace app.matches {
 				let choice = match.prediction.choice || {}
 				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
 					if(choice.isComputerGenerated || choice.isComputerGenerated == null) {
-						this.predictions[match._id]['vosePredictor'] = this.vosePredictorFactory.createPredictor({homeWin: 1, awayWin: 1, draw:1})
-						this.predictions[match._id]['predict'] = () => {
-							let prediction  = this.predictions[match._id]
-							let predictor = prediction['vosePredictor']
+						let odds = match.odds;
+						if (odds == null) {
+							odds = {homeWin: 1, awayWin: 1, draw:1}
+						}
+						match['vosePredictor'] = this.vosePredictorFactory.createPredictor(odds)
+						match['predict'] = () => {
+							let predictor = match['vosePredictor']
 							let score = predictor.predict();
 							let goals = score.split('-');
 							let goalsHomeTeam = goals[0];
 							let goalsAwayTeam = goals[1];
-							prediction['goalsHomeTeam'] = goalsHomeTeam;
-							prediction['goalsAwayTeam'] = goalsAwayTeam;
+							match.choice = {
+								goalsHomeTeam, goalsAwayTeam
+							}
+							if(this.predictions[match._id] == null) {
+								this.predictions[match._id] =  {
+									_id: match.prediction._id
+								}	
+							}
+							this.predictions[match._id]['goalsHomeTeam'] = goalsHomeTeam;
+							this.predictions[match._id]['goalsAwayTeam'] = goalsAwayTeam;	
 						}
 						match.choice = {
 							goalsHomeTeam: null,
@@ -76,7 +87,14 @@ namespace app.matches {
 
 		score = (match: any, side: string, change: number) => {
 			var matchId = match._id
-			var goals = this.predictions[matchId]['goals'+side+'Team'];
+			if(this.predictions[matchId] == null) {
+				this.predictions[matchId] =  {
+					_id: match.prediction._id,
+					goalsHomeTeam: match.choice.goalsHomeTeam,
+					goalsAwayTeam: match.choice.goalsAwayTeam
+				};	
+			}
+			var goals = match.choice['goals'+side+'Team'] 
 			if (!(goals == null) && !(goals === 0 && change === -1)){
 				goals += change;
 			}
