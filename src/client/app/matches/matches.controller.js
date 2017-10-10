@@ -17,6 +17,7 @@ var app;
                 this.title = 'Matches';
                 this.predictions = {};
                 this.luckySpinEnabled = false;
+                this.submitButtonEnabled = false;
                 this.createPredictions = function () {
                     Object.keys(_this.predictions).forEach(function (key) {
                         if (_this.predictions[key].vosePredictor != null) {
@@ -130,12 +131,12 @@ var app;
                 this.gotoMatchday();
             };
             MatchesController.prototype.luckySpin = function () {
-                var _this = this;
-                Object.keys(this.predictions).forEach(function (key) {
-                    if (_this.predictions[key].predict != null) {
-                        _this.predictions[key].predict();
+                for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
+                    var match = _a[_i];
+                    if (match.predict != null) {
+                        match.predict();
                     }
-                });
+                }
             };
             MatchesController.prototype.showLuckySpin = function () {
                 var _this = this;
@@ -143,6 +144,16 @@ var app;
                     return _this.predictions[key].vosePredictor != null;
                 });
                 return this.luckySpinEnabled || res;
+            };
+            MatchesController.prototype.showSubmitButton = function () {
+                for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
+                    var match = _a[_i];
+                    if (match.status == 'SCHEDULED' || match.status == 'TIMED') {
+                        this.submitButtonEnabled = true;
+                        break;
+                    }
+                }
+                return this.submitButtonEnabled;
             };
             MatchesController.prototype.gotoMatchday = function () {
                 this.$state.go('app.matches', {

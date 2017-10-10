@@ -54,6 +54,14 @@ export class FixtureController {
 						fixture, prediction: {fixture: fixture._id}
 					})
 				}
+				if(fixture.status != 'SCHEDULED' && fixture.status != 'TIMED') {
+					return predictionRepo.findOne(userId, fixture._id)
+					.map((prediction) => {
+							prediction = prediction || {fixture: fixture._id}
+							return {
+								fixture, prediction
+							}})
+				}
 				return predictionRepo.findOneOrCreate(userId, fixture._id, fixture.odds)
 					.map((prediction) => {
 						return {

@@ -29,6 +29,7 @@ namespace app.matches {
 		matchday: number;
 		currentRound: number;
 		luckySpinEnabled = false;
+		submitButtonEnabled = false;
 
 		private init() {
 			for(let match of this.fixtures) {
@@ -132,11 +133,11 @@ namespace app.matches {
 		}
 
 		luckySpin() {
-			Object.keys(this.predictions).forEach((key: any) => {
-				if(this.predictions[key].predict != null) {
-					this.predictions[key].predict();
+			for(let match of this.fixtures) {
+				if(match.predict != null) {
+					match.predict();
 				}
-			}) 
+			}
 		}
 
 		showLuckySpin() {
@@ -144,6 +145,16 @@ namespace app.matches {
 				return this.predictions[key].vosePredictor != null;
 			});
 			return this.luckySpinEnabled || res;
+		}
+
+		showSubmitButton(){
+			for(let match of this.fixtures) {
+				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
+					this.submitButtonEnabled = true;
+					break; 
+				}
+			}
+			return this.submitButtonEnabled;
 		}
 
 		private gotoMatchday() {

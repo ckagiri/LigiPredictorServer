@@ -1,4 +1,4 @@
-<div ng-if="!(fixture.result.goalsHomeTeam && fixture.result.goalsAwayTeam)">
+<div ng-if="fixture.result.goalsHomeTeam == undefined  || fixture.result.goalsAwayTeam == undefined">
     <div class="col-xs-6">
         <div class="score-selector">
             <a class="btn-score" ng-click="vm.score(fixture,'Home',1)"><i class="fa fa-chevron-up"></i></a>
@@ -18,7 +18,7 @@
         </div>
     </div>
 </div>
-<div ng-if="(fixture.result.goalsHomeTeam && fixture.result.goalsAwayTeam)" class="score-result text-center">
+<div ng-if="(fixture.result.goalsHomeTeam != undefined && fixture.result.goalsAwayTeam != undefined)" class="score-result text-center">
     <div class="row">
         <div class="col-xs-4">{{(fixture.prediction.choice.goalsHomeTeam !== undefined) ? fixture.prediction.choice.goalsHomeTeam : '-'}}</div>
         <div class="col-xs-4 prediction-heading">Predicted</div>
