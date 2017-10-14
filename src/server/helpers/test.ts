@@ -95,4 +95,15 @@ let ten2 = predictionProcessor.process({
 }, {
   goalsHomeTeam: 3, goalsAwayTeam: 2
 });
+
+let a = predictionProcessor.process({
+  goalsHomeTeam: 3, goalsAwayTeam: 0
+}, {
+  goalsHomeTeam: 2, goalsAwayTeam: 0
+});
+let a2 = predictionProcessor.process({
+  goalsHomeTeam: 2, goalsAwayTeam: 1
+}, {
+  goalsHomeTeam: 2, goalsAwayTeam: 0
+});
 console.log("chalo");

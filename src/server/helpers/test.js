@@ -81,5 +81,15 @@ var ten2 = prediction_processor_1.predictionProcessor.process({
 }, {
     goalsHomeTeam: 3, goalsAwayTeam: 2
 });
+var a = prediction_processor_1.predictionProcessor.process({
+    goalsHomeTeam: 3, goalsAwayTeam: 0
+}, {
+    goalsHomeTeam: 2, goalsAwayTeam: 0
+});
+var a2 = prediction_processor_1.predictionProcessor.process({
+    goalsHomeTeam: 2, goalsAwayTeam: 1
+}, {
+    goalsHomeTeam: 2, goalsAwayTeam: 0
+});
 console.log("chalo");
 //# sourceMappingURL=test.js.map

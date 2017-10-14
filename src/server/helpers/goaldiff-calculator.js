@@ -6,28 +6,67 @@ var GoalDiffCalculator = (function () {
     GoalDiffCalculator.prototype.process = function (choice, result) {
         var choiceGd = Math.abs(choice.goalsHomeTeam - choice.goalsAwayTeam);
         var resultGd = Math.abs(result.goalsHomeTeam - result.goalsAwayTeam);
+        var homeGoalsGd = null;
+        var awayGoalsGd = null;
+        var bonusEqualGd = 0;
         var minGd = Math.min(choiceGd, resultGd);
         if (minGd === 0) {
             minGd = 1;
         }
-        var homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
-        if (homeGoalsGd === 0) {
-            homeGoalsGd = result.goalsHomeTeam || 1;
+        var choiceOutcome = calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
+        var resultOutcome = calcOutcome(result.goalsHomeTeam, result.goalsAwayTeam);
+        if (choiceOutcome === resultOutcome) {
+            homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
+            awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);
+            if (homeGoalsGd > 0 && awayGoalsGd > 0 && choiceGd === resultGd) {
+                bonusEqualGd = 1;
+            }
+            if (homeGoalsGd === 1) {
+                homeGoalsGd = 0;
+            }
+            else {
+                homeGoalsGd = null;
+            }
+            if (awayGoalsGd === 1) {
+                awayGoalsGd = 0;
+            }
+            else {
+                awayGoalsGd = null;
+            }
         }
-        else {
-            homeGoalsGd = -homeGoalsGd;
+        if (homeGoalsGd === null) {
+            homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
+            if (homeGoalsGd === 0) {
+                homeGoalsGd = result.goalsHomeTeam || 1;
+            }
+            else {
+                homeGoalsGd = -homeGoalsGd;
+            }
         }
-        var awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);
-        if (awayGoalsGd === 0) {
-            awayGoalsGd = result.goalsAwayTeam || 1;
+        if (awayGoalsGd === null) {
+            awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);
+            if (awayGoalsGd === 0) {
+                awayGoalsGd = result.goalsAwayTeam || 1;
+            }
+            else {
+                awayGoalsGd = -awayGoalsGd;
+            }
         }
-        else {
-            awayGoalsGd = -awayGoalsGd;
-        }
-        var goalDiff = minGd + homeGoalsGd + awayGoalsGd;
+        var goalDiff = minGd + homeGoalsGd + awayGoalsGd + bonusEqualGd;
         return goalDiff;
     };
     return GoalDiffCalculator;
 }());
+function calcOutcome(home, away) {
+    if (home > away) {
+        return 'w';
+    }
+    if (home < away) {
+        return 'l';
+    }
+    if (home === away) {
+        return 'd';
+    }
+}
 exports.goalDiffCalculator = new GoalDiffCalculator();
 //# sourceMappingURL=goaldiff-calculator.js.map
