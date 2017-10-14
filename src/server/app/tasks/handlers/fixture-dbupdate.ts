@@ -7,6 +7,8 @@ let getFixtureName = (fixture: any) => {
 	return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
 }
 
+let leaderboardCache = {};
+
 class FixtureDbUpdateHandler {
   handle(changedFixtures: any[]) {
 		let boards: any = {};
@@ -36,14 +38,20 @@ class FixtureDbUpdateHandler {
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;
 				// getCached
-				return leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
-					.map((leaderboard: any) => {
-						let boardId = leaderboard._id.toString();
-						if (boardIds.indexOf(boardId) === -1) {
-							boardIds.push(boardId);
-						}
-						return {user, fixture, prediction, leaderboard}
-					})
+				let leaderboardKey = fixture.season;
+				let leaderboard = leaderboardCache[leaderboardKey]
+				if(leaderboard == null) {
+					leaderboard = leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
+						.map((leaderboard: any) => {
+							let boardId = leaderboard._id.toString();
+							if (boardIds.indexOf(boardId) === -1) {
+								boardIds.push(boardId);
+							}
+							return {user, fixture, prediction, leaderboard}
+						})
+					leaderboardCache[leaderboardKey] = leaderboard;
+				}
+				return leaderboard;
 			})
 			.concatMap((map: any) => {
 				let{leaderboard, user, fixture, prediction} = map;
@@ -65,7 +73,7 @@ class FixtureDbUpdateHandler {
 			.subscribe(
 				(map: any) => {
 					let {user, fixture, prediction} = map;
-					let choiceGoalsHomeTeam = prediction.choice.goalsHomeTeam;
+					let choiceGoalsHomeTeam = 	prediction.choice.goalsHomeTeam;
 					let choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
 					console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
 				},
