@@ -36,34 +36,45 @@ var FixturesUpdater = (function () {
     function FixturesUpdater() {
     }
     FixturesUpdater.prototype.update = function (callback) {
-        Rx.Observable.fromPromise(common_1.client.getFixtures())
-            .subscribe(function (changedFixtures) {
+        //Rx.Observable.fromPromise(client.getFixtures(445, null))
+        //   .subscribe((changedFixtures: any[]) => {
+        //     fixtureDbUpdateHandler.handle(changedFixtures);
+        //     callback(Moment().add(5, 'minutes')); 
+        // })
+        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p1' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n1' })), function (changeYesterday, todayAndTomorrow) {
+            changeYesterday = changeYesterday.data.fixtures;
+            todayAndTomorrow = todayAndTomorrow.data.fixtures;
+            return changeYesterday.concat(todayAndTomorrow);
+        })
+            .map(function (fixtures) {
+            return createIdToFixtureMap(fixtures);
+        })
+            .flatMap(function (idToFixtureMap) {
+            return common_1.fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
+                .map(function (dbFixtures) {
+                console.log('dbFixtures');
+                console.log(dbFixtures);
+                return {
+                    dbFixtures: dbFixtures,
+                    idToFixtureMap: idToFixtureMap
+                };
+            });
+        })
+            .subscribe(function (map) {
+            var changedFixtures = [];
+            for (var _i = 0, _a = map.dbFixtures; _i < _a.length; _i++) {
+                var dbFixture = _a[_i];
+                var newFixture = map.idToFixtureMap[dbFixture.api_detail.id];
+                if (fixtureChanged(newFixture, dbFixture)) {
+                    newFixture._id = dbFixture._id;
+                    console.log('fixtureChanged');
+                    console.log(newFixture);
+                    changedFixtures.push(newFixture);
+                }
+            }
             fixture_dbupdate_1.fixtureDbUpdateHandler.handle(changedFixtures);
-            callback(Moment().add(5, 'minutes'));
+            callback(Moment().add(15, 'minutes'));
         });
-        // .map((fixtures: any[]) => {
-        //   return createIdToFixtureMap(fixtures);
-        // })
-        // .flatMap((idToFixtureMap) => {
-        //   return fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
-        //     .map((dbFixtures: any[]) => {
-        //       return {
-        //         dbFixtures: dbFixtures,
-        //         idToFixtureMap: idToFixtureMap
-        //       }
-        //     })
-        // })
-        // .subscribe((map: any) => {
-        //   let changedFixtures = [];
-        //   for (let dbFixture of map.dbFixtures) {
-        //     let newFixture = map.idToFixtureMap[dbFixture.api_detail.id];
-        //     if (fixtureChanged(newFixture, dbFixture)) {
-        //         newFixture._id = dbFixture._id;
-        //         changedFixtures.push(newFixture);
-        //     }
-        //   }
-        //   fixtureDbUpdateHandler.handle(changedFixtures);
-        // })
     };
     return FixturesUpdater;
 }());

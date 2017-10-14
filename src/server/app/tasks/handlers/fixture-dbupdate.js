@@ -6,6 +6,7 @@ var Rx = require("rxjs");
 var getFixtureName = function (fixture) {
     return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
 };
+var leaderboardCache = {};
 var FixtureDbUpdateHandler = (function () {
     function FixtureDbUpdateHandler() {
     }
@@ -37,14 +38,20 @@ var FixtureDbUpdateHandler = (function () {
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             // getCached
-            return common_1.leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
-                .map(function (leaderboard) {
-                var boardId = leaderboard._id.toString();
-                if (boardIds.indexOf(boardId) === -1) {
-                    boardIds.push(boardId);
-                }
-                return { user: user, fixture: fixture, prediction: prediction, leaderboard: leaderboard };
-            });
+            var leaderboardKey = fixture.season;
+            var leaderboard = leaderboardCache[leaderboardKey];
+            if (leaderboard == null) {
+                leaderboard = common_1.leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
+                    .map(function (leaderboard) {
+                    var boardId = leaderboard._id.toString();
+                    if (boardIds.indexOf(boardId) === -1) {
+                        boardIds.push(boardId);
+                    }
+                    return { user: user, fixture: fixture, prediction: prediction, leaderboard: leaderboard };
+                });
+                leaderboardCache[leaderboardKey] = leaderboard;
+            }
+            return leaderboard;
         })
             .concatMap(function (map) {
             var leaderboard = map.leaderboard, user = map.user, fixture = map.fixture, prediction = map.prediction;

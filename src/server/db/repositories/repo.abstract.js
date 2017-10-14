@@ -197,11 +197,12 @@ var AbstractRepo = (function () {
                 else {
                     if (updatedObj['api_detail']) {
                         _.merge(updatedObj, { api_detail: apiDetail });
-                        updatedObj.markModified('api_detail');
                     }
                     else {
-                        _.extend(updatedObj, { apiDetail: apiDetail });
+                        var data = _.merge(updatedObj.toJSON(), { api_detail: apiDetail });
+                        _.extend(updatedObj, data);
                     }
+                    updatedObj.markModified('api_detail');
                     updatedObj.save(function (err, savedObj) {
                         if (err) {
                             return reject(err);

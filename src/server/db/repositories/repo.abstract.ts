@@ -211,10 +211,11 @@ export abstract class AbstractRepo {
           else {
             if(updatedObj['api_detail']){
               _.merge(updatedObj, {api_detail: apiDetail});
-              updatedObj.markModified('api_detail');
             } else {
-              _.extend(updatedObj, {apiDetail: apiDetail});
+              let data =  _.merge(updatedObj.toJSON(), {api_detail: apiDetail});   
+              _.extend(updatedObj, data);
             }
+            updatedObj.markModified('api_detail');
             updatedObj.save((err: any, savedObj: any) => {
               if (err) {
                 return reject(err);

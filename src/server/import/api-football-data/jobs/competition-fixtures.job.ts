@@ -2,19 +2,17 @@ import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 import {config} from '../../../config/environment';
 import {client} from './main.job';
-import {seasonRepo, teamRepo, fixtureRepo} from '../index';
+import {fixtureRepo} from '../index';
 
 export class CompetitionFixturesJob {
-  private fixturesRepo = fixtureRepo;
-  private seasonRepo = seasonRepo;
-  private teamRepo = teamRepo;
+  private fixtureRepo = fixtureRepo;
 
   constructor(private comp: any){ }
 
   start() {
     console.log("Competition fixtures job" + JSON.stringify(this.comp));
 
-    let apiDetailIdKey = teamRepo.apiDetailIdKey();
+    let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
     let competitionApiId = _.get(this.comp, apiDetailIdKey);
     Rx.Observable.fromPromise(client.getCompetitionById(competitionApiId).getFixtures())
       .map(function (res) {

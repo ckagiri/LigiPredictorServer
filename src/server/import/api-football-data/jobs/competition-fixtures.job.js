@@ -7,14 +7,12 @@ var index_1 = require("../index");
 var CompetitionFixturesJob = (function () {
     function CompetitionFixturesJob(comp) {
         this.comp = comp;
-        this.fixturesRepo = index_1.fixtureRepo;
-        this.seasonRepo = index_1.seasonRepo;
-        this.teamRepo = index_1.teamRepo;
+        this.fixtureRepo = index_1.fixtureRepo;
     }
     CompetitionFixturesJob.prototype.start = function () {
         var _this = this;
         console.log("Competition fixtures job" + JSON.stringify(this.comp));
-        var apiDetailIdKey = index_1.teamRepo.apiDetailIdKey();
+        var apiDetailIdKey = index_1.fixtureRepo.apiDetailIdKey();
         var competitionApiId = _.get(this.comp, apiDetailIdKey);
         Rx.Observable.fromPromise(main_job_1.client.getCompetitionById(competitionApiId).getFixtures())
             .map(function (res) {

@@ -17,6 +17,8 @@ export class FixtureRepo extends AbstractRepo {
 	}
 
 	getByApiIds(apiIds: string[]) {
+		console.log('apiIds')
+		console.log(apiIds)
 		return this.findAll({"api_detail.id": {$in: apiIds}});
 	}
 
