@@ -1,6 +1,8 @@
 import {IMatchScore} from './contracts'
 class GoalDiffCalculator {
   process(choice: IMatchScore, result: IMatchScore): number {
+    let choiceOutcome = calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
+    let resultOutcome = calcOutcome(result.goalsHomeTeam, result.goalsAwayTeam);
     let choiceGd = Math.abs(choice.goalsHomeTeam - choice.goalsAwayTeam);
     let resultGd = Math.abs(result.goalsHomeTeam - result.goalsAwayTeam);
     let minGd = Math.min(choiceGd, resultGd);
@@ -8,6 +10,7 @@ class GoalDiffCalculator {
       minGd = 1;
     }
     let homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
+
     if(homeGoalsGd === 0) {
       homeGoalsGd = result.goalsHomeTeam || 1;
     } else {
@@ -19,8 +22,26 @@ class GoalDiffCalculator {
     } else {
       awayGoalsGd = -awayGoalsGd;
     }
+    if(Math.abs(choiceGd - resultGd) === 1 && 
+      (choice.goalsHomeTeam === result.goalsHomeTeam || 
+        choice.goalsAwayTeam === result.goalsAwayTeam)) {
+        //scorePoints.plusOrMinusOneGoal = 1;
+    }
+
     let goalDiff = minGd + homeGoalsGd + awayGoalsGd;
     return goalDiff;
+  }
+}
+
+function calcOutcome(home: number, away: number): string {
+  if(home > away){
+    return 'w';
+  }
+  if(home < away){
+    return 'l';
+  }
+  if(home === away){
+    return 'd';
   }
 }
 
