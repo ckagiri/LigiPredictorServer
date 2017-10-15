@@ -104,9 +104,9 @@ namespace app.matches {
 		};
 
 		pointsClass(points: any) {
-			if(points === 3) {
+			if(points > 4) {
 				return 'label-success';
-			} else if (points === 2) {
+			} else if (points > 1) {
 				return 'label-warning';
 			} else {
 				return 'label-danger';

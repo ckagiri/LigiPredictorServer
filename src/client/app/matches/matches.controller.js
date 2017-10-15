@@ -103,10 +103,10 @@ var app;
                 }
             };
             MatchesController.prototype.pointsClass = function (points) {
-                if (points === 3) {
+                if (points > 4) {
                     return 'label-success';
                 }
-                else if (points === 2) {
+                else if (points > 1) {
                     return 'label-warning';
                 }
                 else {
