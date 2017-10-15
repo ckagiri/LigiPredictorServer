@@ -57,7 +57,9 @@ var SeasonRepo = (function (_super) {
         return this.findAll({ _id: { $in: ids } });
     };
     SeasonRepo.prototype.getByApiIds = function (apiIds) {
-        return this.findAll({ "api_detail.id": { $in: apiIds } });
+        var apiDetailIdKey = this.apiDetailIdKey();
+        return this.findAll((_a = {}, _a[apiDetailIdKey] = { $in: apiIds }, _a));
+        var _a;
     };
     return SeasonRepo;
 }(repo_abstract_1.AbstractRepo));

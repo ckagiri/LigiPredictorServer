@@ -53,7 +53,7 @@ var AbstractRepo = (function () {
     };
     AbstractRepo.prototype.findAll = function (query, projection, options) {
         if (query === void 0) { query = {}; }
-        return Rx.Observable.fromPromise(this.model.find(query, projection, options).lean());
+        return Rx.Observable.fromPromise(this.model.find(query, projection, options));
     };
     AbstractRepo.prototype.aggregate = function (query, group, sort) {
         return Rx.Observable.fromPromise(this.model.aggregate({ $match: query }).group(group).sort(sort));
@@ -63,9 +63,9 @@ var AbstractRepo = (function () {
         if (!objectId.match(/^[0-9a-fA-F]{24}$/)) {
             objectId = '4edd40c86762e0fb12000003'; //dummy
         }
-        var apiDetailId = "api_detail." + this.provider + ".id";
+        var apiDetailIdKey = this.apiDetailIdKey();
         return this.model.findOne()
-            .or([(_a = {}, _a[apiDetailId] = id, _a), { _id: objectId }])
+            .or([(_a = {}, _a[apiDetailIdKey] = id, _a), { _id: objectId }])
             .lean()
             .then(this.mapPartial);
         var _a;
@@ -101,8 +101,8 @@ var AbstractRepo = (function () {
         return source.flatMap(function (obj) {
             var api_detail = obj.api_detail;
             delete obj.api_detail;
-            var apiDetailId = "api_detail." + _this.provider + ".id";
-            var q = (_a = {}, _a[apiDetailId] = apiId, _a);
+            var apiDetailIdKey = _this.apiDetailIdKey();
+            var q = (_a = {}, _a[apiDetailIdKey] = apiId, _a);
             return Rx.Observable.fromPromise(_this.findOneAndUpdate(q, obj));
             var _a;
         });
@@ -154,8 +154,8 @@ var AbstractRepo = (function () {
         return "api_detail." + this.provider + ".id";
     };
     AbstractRepo.prototype.getByApiId = function (apiId) {
-        var apiDetailId = "api_detail." + this.provider + ".id";
-        var query = (_a = {}, _a[apiDetailId] = apiId, _a);
+        var apiDetailIdKey = this.apiDetailIdKey();
+        var query = (_a = {}, _a[apiDetailIdKey] = apiId, _a);
         return this.findOne(query);
         var _a;
     };
@@ -195,6 +195,9 @@ var AbstractRepo = (function () {
                     resolve(updatedObj);
                 }
                 else {
+                    var provider = _this.provider;
+                    var apiDetailIdVal = apiDetail[provider]['id'];
+                    apiDetail[provider]['id'] = apiDetailIdVal.toString();
                     if (updatedObj['api_detail']) {
                         _.merge(updatedObj, { api_detail: apiDetail });
                     }

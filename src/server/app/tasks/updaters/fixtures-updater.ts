@@ -33,11 +33,6 @@ let fixtureChanged = (updated: any, fromDb: any) => {
 }
 class FixturesUpdater {
   update(callback: Function) {
-    //Rx.Observable.fromPromise(client.getFixtures(445, null))
-    //   .subscribe((changedFixtures: any[]) => {
-    //     fixtureDbUpdateHandler.handle(changedFixtures);
-    //     callback(Moment().add(5, 'minutes')); 
-    // })
     Rx.Observable.zip(
       Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p1'})),
       Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'n1'})),
@@ -52,9 +47,8 @@ class FixturesUpdater {
     .flatMap((idToFixtureMap) => {
       return fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
         .map((dbFixtures: any[]) => {
-                console.log('dbFixtures');
+            console.log('dbFixtures');
             console.log(dbFixtures);
-
           return {
             dbFixtures: dbFixtures,
             idToFixtureMap: idToFixtureMap

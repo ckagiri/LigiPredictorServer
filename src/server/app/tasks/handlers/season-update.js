@@ -25,7 +25,8 @@ var SeasonUpdateHandler = (function () {
             return Rx.Observable.from(seasons);
         })
             .subscribe(function (season) {
-            var newCurrentRound = idToCompMap[season.api_detail.id].currentRound;
+            var apiDetailIdKey = common_1.seasonRepo.apiDetailIdKey();
+            var newCurrentRound = idToCompMap[apiDetailIdKey].currentRound;
             if (season.currentRound !== newCurrentRound) {
                 Rx.Observable.fromPromise(common_1.seasonRepo.updateCurrentRound(season._id, newCurrentRound))
                     .subscribe(function () {

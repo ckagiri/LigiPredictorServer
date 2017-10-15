@@ -21,7 +21,8 @@ class SeasonUpdateHandler {
 				return Rx.Observable.from(seasons)
 			})
 			.subscribe((season: any) => {
-				let newCurrentRound = idToCompMap[season.api_detail.id].currentRound;
+				let apiDetailIdKey = seasonRepo.apiDetailIdKey();
+				let newCurrentRound = idToCompMap[apiDetailIdKey].currentRound;
 				if (season.currentRound !== newCurrentRound) {
 					Rx.Observable.fromPromise(seasonRepo.updateCurrentRound(season._id, newCurrentRound))
 						.subscribe(() => {

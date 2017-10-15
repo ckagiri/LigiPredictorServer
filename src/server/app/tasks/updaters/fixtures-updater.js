@@ -36,11 +36,6 @@ var FixturesUpdater = (function () {
     function FixturesUpdater() {
     }
     FixturesUpdater.prototype.update = function (callback) {
-        //Rx.Observable.fromPromise(client.getFixtures(445, null))
-        //   .subscribe((changedFixtures: any[]) => {
-        //     fixtureDbUpdateHandler.handle(changedFixtures);
-        //     callback(Moment().add(5, 'minutes')); 
-        // })
         Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p1' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n1' })), function (changeYesterday, todayAndTomorrow) {
             changeYesterday = changeYesterday.data.fixtures;
             todayAndTomorrow = todayAndTomorrow.data.fixtures;

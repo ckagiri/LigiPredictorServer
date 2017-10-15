@@ -56,7 +56,7 @@ export abstract class AbstractRepo {
   }
 
   findAll(query: any = {}, projection?: any, options?: any){
-    return Rx.Observable.fromPromise(this.model.find(query, projection, options).lean());
+    return Rx.Observable.fromPromise(this.model.find(query, projection, options));
   }
 
   aggregate(query: any, group: any, sort: any){
@@ -69,9 +69,9 @@ export abstract class AbstractRepo {
     if (!objectId.match(/^[0-9a-fA-F]{24}$/)) {
       objectId = '4edd40c86762e0fb12000003' //dummy
     }
-    let apiDetailId = `api_detail.${this.provider}.id`;
+    let apiDetailIdKey = this.apiDetailIdKey();
     return this.model.findOne()
-      .or([{[apiDetailId]: id}, {_id: objectId}])
+      .or([{[apiDetailIdKey]: id}, {_id: objectId}])
       .lean()
       .then(this.mapPartial);
   }  
@@ -109,8 +109,8 @@ export abstract class AbstractRepo {
     return source.flatMap((obj: any) => { 
       let {api_detail} = obj;
       delete obj.api_detail;
-      let apiDetailId = `api_detail.${this.provider}.id`;
-      let q = {[apiDetailId]: apiId}
+      let apiDetailIdKey = this.apiDetailIdKey();
+      let q = {[apiDetailIdKey]: apiId}
       return Rx.Observable.fromPromise(this.findOneAndUpdate(q, obj))
     });
   }
@@ -166,8 +166,8 @@ export abstract class AbstractRepo {
   }
 
   getByApiId(apiId: any) {
-    let apiDetailId = `api_detail.${this.provider}.id`;
-    let query = {[apiDetailId]: apiId}
+    let apiDetailIdKey = this.apiDetailIdKey();
+    let query = {[apiDetailIdKey]: apiId}
     return this.findOne(query);
   }
 
@@ -209,6 +209,9 @@ export abstract class AbstractRepo {
             resolve(updatedObj);
           } 
           else {
+            let provider = this.provider;
+            let apiDetailIdVal = apiDetail[provider]['id']
+            apiDetail[provider]['id'] = apiDetailIdVal.toString();
             if(updatedObj['api_detail']){
               _.merge(updatedObj, {api_detail: apiDetail});
             } else {

@@ -47,7 +47,8 @@ export class SeasonRepo extends AbstractRepo {
 		return this.findAll({_id : {$in : ids}})
 	}
 
-	getByApiIds(apiIds: any[]) {
-		return this.findAll({"api_detail.id" : {$in : apiIds}});
+	getByApiIds(apiIds: string[]) {
+		let apiDetailIdKey = this.apiDetailIdKey();
+		return this.findAll({[apiDetailIdKey] : {$in : apiIds}});
 	}
 }

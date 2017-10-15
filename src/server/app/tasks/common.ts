@@ -1,10 +1,10 @@
 import {config} from '../../config/environment';
 import Client from '../../soccer-api/api-football-data';
 import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo, UserRepo, LeaderboardRepo, UserScoreRepo} from '../../db/repositories';
-import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../db/converters/ligi-predictor';
+import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../db/converters/api-football-data';
 
 export const leagueRepo = new LeagueRepo(new LeagueConverter())
-export const seasonRepo = new SeasonRepo(new SeasonConverter(leagueRepo));
+export const seasonRepo = new SeasonRepo(new SeasonConverter());
 export const teamRepo = new TeamRepo(new TeamConverter())
 export const fixtureRepo = new FixtureRepo(new FixtureConverter(seasonRepo, TeamRepo))
 export const predictionRepo = new PredictionRepo();
