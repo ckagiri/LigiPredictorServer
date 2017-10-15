@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
 var _ = require("lodash");
 var common_1 = require("../common");
-var fixture_dbupdate_1 = require("../handlers/fixture-dbupdate");
+var finishedFixture_dbupdate_1 = require("../handlers/finishedFixture-dbupdate");
 var Moment = require('moment');
 var apiDetailIdKey = common_1.fixtureRepo.apiDetailIdKey();
 var createIdToFixtureMap = function (fixtures) {
@@ -32,7 +32,7 @@ var fixtureChanged = function (updated, fromDb) {
             return true;
         }
     }
-    return false;
+    return true; //false;
 };
 var FixturesUpdater = (function () {
     function FixturesUpdater() {
@@ -69,7 +69,8 @@ var FixturesUpdater = (function () {
                     changedFixtures.push(newFixture);
                 }
             }
-            fixture_dbupdate_1.fixtureDbUpdateHandler.handle(changedFixtures);
+            var finishedFixtures = _.filter(changedFixtures, { status: 'FINISHED' });
+            finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             callback(Moment().add(15, 'minutes'));
         });
     };

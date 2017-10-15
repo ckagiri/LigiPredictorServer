@@ -1,7 +1,7 @@
 import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 import {client, fixtureRepo} from '../common'
-import {fixtureDbUpdateHandler} from '../handlers/fixture-dbupdate';
+import {finishedFixtureDbUpdateHandler} from '../handlers/finishedFixture-dbupdate';
 
 let Moment = require('moment');
 let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
@@ -31,7 +31,7 @@ let fixtureChanged = (updated: any, fromDb: any) => {
       return true;
     }
   }
-  return false;
+  return true; //false;
 }
 class FixturesUpdater {
   update(callback: Function) {
@@ -68,7 +68,8 @@ class FixturesUpdater {
             changedFixtures.push(newFixture);
         }
       }
-      fixtureDbUpdateHandler.handle(changedFixtures);
+      let finishedFixtures = _.filter(changedFixtures, {status: 'FINISHED'});
+      finishedFixtureDbUpdateHandler.handle(finishedFixtures);
       callback(Moment().add(15, 'minutes')); 
     })
   }
