@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
 var common_1 = require("../common");
 var prediction_processor_1 = require("../../../helpers/prediction-processor");
-var PredictionHandler = (function () {
-    function PredictionHandler() {
+var FixturePublishHandler = (function () {
+    function FixturePublishHandler() {
     }
-    PredictionHandler.prototype.handle = function (changedFixture) {
+    FixturePublishHandler.prototype.handle = function (changedFixture) {
         var boards = {};
         console.log("prediction handler");
         if (changedFixture.status === 'FINISHED') {
@@ -39,26 +39,7 @@ var PredictionHandler = (function () {
         }
         return Rx.Observable.throw(new Error("Oops!! fixture: " + changedFixture._id));
     };
-    return PredictionHandler;
+    return FixturePublishHandler;
 }());
-exports.predictionHandler = new PredictionHandler();
-//           oError: (err: any) => console.log(`Oops... ${err}`),
-//           onComplete: () => {
-//             leaderboardRepo.findAll({q: season})
-//               .flatMap((standings: any) => {
-//                 return Rx.Observable.from(standings);
-//               })
-//               .flatMap((standing: any) => {
-//                 let position = 1;
-//                 let previousPosition = standing.posNew;
-//                 standing.posOld = previousPosition;
-//                 standing.posNew = position;
-//                 return leaderboardRepo.insert(standing)
-//               })
-//               .subscribe((standing: any) => {
-//               });
-//         }
-//       })
-//   }
-// } 
+exports.fixturePublishHandler = new FixturePublishHandler();
 //# sourceMappingURL=fixture-publish.js.map

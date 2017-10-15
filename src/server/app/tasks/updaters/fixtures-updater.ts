@@ -61,8 +61,6 @@ class FixturesUpdater {
       for (let dbFixture of dbFixtures) {
         let dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
         let newFixture = idToFixtureMap[dbFixtureId];
-        console.log('newFixture')
-        console.log(newFixture);
         if (fixtureChanged(newFixture, dbFixture)) {
             newFixture._id = dbFixture._id;
             console.log('fixtureChanged')

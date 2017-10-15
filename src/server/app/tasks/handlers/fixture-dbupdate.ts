@@ -1,5 +1,5 @@
 import {leaderboardRepo, userScoreRepo, fixtureRepo, predictionRepo} from '../common'
-import {predictionHandler} from './fixture-publish'
+import {fixturePublishHandler} from './fixture-publish'
 import * as Rx from 'rxjs'
 import * as _ from 'lodash'
 
@@ -25,7 +25,7 @@ class FixtureDbUpdateHandler {
 				console.log("the game : " + getFixtureName(fixture) + " has been updated");
 			})
 			.flatMap((fixture: any) => {
-				return predictionHandler.handle(fixture)
+				return fixturePublishHandler.handle(fixture)
 			})
 			.onErrorResumeNext()
 			.flatMap((map: any) => {

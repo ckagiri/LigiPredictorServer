@@ -25,7 +25,7 @@ var FixtureDbUpdateHandler = (function () {
             console.log("the game : " + getFixtureName(fixture) + " has been updated");
         })
             .flatMap(function (fixture) {
-            return fixture_publish_1.predictionHandler.handle(fixture);
+            return fixture_publish_1.fixturePublishHandler.handle(fixture);
         })
             .onErrorResumeNext()
             .flatMap(function (map) {

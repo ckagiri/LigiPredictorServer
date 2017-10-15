@@ -62,8 +62,6 @@ var FixturesUpdater = (function () {
                 var dbFixture = dbFixtures_1[_i];
                 var dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
                 var newFixture = idToFixtureMap[dbFixtureId];
-                console.log('newFixture');
-                console.log(newFixture);
                 if (fixtureChanged(newFixture, dbFixture)) {
                     newFixture._id = dbFixture._id;
                     console.log('fixtureChanged');

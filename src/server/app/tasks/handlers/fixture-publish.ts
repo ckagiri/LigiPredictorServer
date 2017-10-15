@@ -2,7 +2,7 @@ import * as Rx from 'rxjs'
 import {fixtureRepo, userRepo, predictionRepo} from '../common'
 import {predictionProcessor} from '../../../helpers/prediction-processor';
 
-class PredictionHandler {
+class FixturePublishHandler {
   handle(changedFixture: any): Rx.Observable<any> {
     let boards = {};
     console.log("prediction handler");
@@ -37,35 +37,4 @@ class PredictionHandler {
     return Rx.Observable.throw(new Error(`Oops!! fixture: ${changedFixture._id}`));
   }
 }
-export const predictionHandler = new PredictionHandler();
-
-
-
-
-
-
-
-
-
-
-
-//           oError: (err: any) => console.log(`Oops... ${err}`),
-//           onComplete: () => {
-//             leaderboardRepo.findAll({q: season})
-//               .flatMap((standings: any) => {
-//                 return Rx.Observable.from(standings);
-//               })
-//               .flatMap((standing: any) => {
-//                 let position = 1;
-//                 let previousPosition = standing.posNew;
-//                 standing.posOld = previousPosition;
-//                 standing.posNew = position;
-//                 return leaderboardRepo.insert(standing)
-//               })
-//               .subscribe((standing: any) => {
-
-//               });
-//         }
-//       })
-//   }
-// }
+export const fixturePublishHandler = new FixturePublishHandler();
