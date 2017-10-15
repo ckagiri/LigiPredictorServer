@@ -9,8 +9,8 @@
 			// Type of configuration. Possible values: "node", "mono".
 			"type": "node",
 			// Workspace relative or absolute path to the program.
-			//"program": "${workspaceRoot}/src/server/app/server.ts", 
-			"program": "${workspaceRoot}/src/server/import/api-football-data/main.ts",
+			"program": "${workspaceRoot}/src/server/app/server.ts", 
+			//"program": "${workspaceRoot}/src/server/import/api-football-data/main.ts",
 			//"program": "${workspaceRoot}/src/server/helpers/test.ts",
 			// Automatically stop program after launch.
 			"stopOnEntry": true,

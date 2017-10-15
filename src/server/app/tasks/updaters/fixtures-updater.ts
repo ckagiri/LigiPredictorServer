@@ -1,8 +1,10 @@
 import * as Rx from 'rxjs';
+import * as _ from 'lodash';
 import {client, fixtureRepo} from '../common'
 import {fixtureDbUpdateHandler} from '../handlers/fixture-dbupdate';
 
 let Moment = require('moment');
+let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
 let createIdToFixtureMap = (fixtures: any[]) => {
   let map = {};
   for (let fixture of fixtures) {
@@ -47,8 +49,6 @@ class FixturesUpdater {
     .flatMap((idToFixtureMap) => {
       return fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
         .map((dbFixtures: any[]) => {
-            console.log('dbFixtures');
-            console.log(dbFixtures);
           return {
             dbFixtures: dbFixtures,
             idToFixtureMap: idToFixtureMap
@@ -57,8 +57,12 @@ class FixturesUpdater {
     })
     .subscribe((map: any) => {
       let changedFixtures = [];
-      for (let dbFixture of map.dbFixtures) {
-        let newFixture = map.idToFixtureMap[dbFixture.api_detail.id];
+      let {dbFixtures, idToFixtureMap} = map;
+      for (let dbFixture of dbFixtures) {
+        let dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
+        let newFixture = idToFixtureMap[dbFixtureId];
+        console.log('newFixture')
+        console.log(newFixture);
         if (fixtureChanged(newFixture, dbFixture)) {
             newFixture._id = dbFixture._id;
             console.log('fixtureChanged')

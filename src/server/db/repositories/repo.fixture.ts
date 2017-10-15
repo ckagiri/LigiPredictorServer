@@ -18,8 +18,7 @@ export class FixtureRepo extends AbstractRepo {
 
 	getByApiIds(apiIds: string[]) {
 		let apiDetailIdKey = this.apiDetailIdKey();
-		var query = {[apiDetailIdKey]: apiIds[0]};
-		//var query = {[apiDetailIdKey] : {$in : apiIds}};
+		let query = {[apiDetailIdKey] : {$in : apiIds}};
 		return this.findAll(query);
 	}
 

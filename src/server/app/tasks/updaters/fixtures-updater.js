@@ -1,9 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
+var _ = require("lodash");
 var common_1 = require("../common");
 var fixture_dbupdate_1 = require("../handlers/fixture-dbupdate");
 var Moment = require('moment');
+var apiDetailIdKey = common_1.fixtureRepo.apiDetailIdKey();
 var createIdToFixtureMap = function (fixtures) {
     var map = {};
     for (var _i = 0, fixtures_1 = fixtures; _i < fixtures_1.length; _i++) {
@@ -47,8 +49,6 @@ var FixturesUpdater = (function () {
             .flatMap(function (idToFixtureMap) {
             return common_1.fixtureRepo.getByApiIds(Object.keys(idToFixtureMap))
                 .map(function (dbFixtures) {
-                console.log('dbFixtures');
-                console.log(dbFixtures);
                 return {
                     dbFixtures: dbFixtures,
                     idToFixtureMap: idToFixtureMap
@@ -57,9 +57,13 @@ var FixturesUpdater = (function () {
         })
             .subscribe(function (map) {
             var changedFixtures = [];
-            for (var _i = 0, _a = map.dbFixtures; _i < _a.length; _i++) {
-                var dbFixture = _a[_i];
-                var newFixture = map.idToFixtureMap[dbFixture.api_detail.id];
+            var dbFixtures = map.dbFixtures, idToFixtureMap = map.idToFixtureMap;
+            for (var _i = 0, dbFixtures_1 = dbFixtures; _i < dbFixtures_1.length; _i++) {
+                var dbFixture = dbFixtures_1[_i];
+                var dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
+                var newFixture = idToFixtureMap[dbFixtureId];
+                console.log('newFixture');
+                console.log(newFixture);
                 if (fixtureChanged(newFixture, dbFixture)) {
                     newFixture._id = dbFixture._id;
                     console.log('fixtureChanged');

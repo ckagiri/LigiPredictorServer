@@ -26,8 +26,7 @@ var FixtureRepo = (function (_super) {
     };
     FixtureRepo.prototype.getByApiIds = function (apiIds) {
         var apiDetailIdKey = this.apiDetailIdKey();
-        var query = (_a = {}, _a[apiDetailIdKey] = apiIds[0], _a);
-        //var query = {[apiDetailIdKey] : {$in : apiIds}};
+        var query = (_a = {}, _a[apiDetailIdKey] = { $in: apiIds }, _a);
         return this.findAll(query);
         var _a;
     };
