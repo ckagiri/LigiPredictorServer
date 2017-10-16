@@ -31,6 +31,9 @@ var app;
             TopNavController.prototype.isAuthenticated = function () {
                 return this.security.isAuthenticated();
             };
+            TopNavController.prototype.isAdmin = function () {
+                return this.security.isAdmin();
+            };
             TopNavController.prototype.logout = function () {
                 var _this = this;
                 if (!this.security.isAuthenticated()) {

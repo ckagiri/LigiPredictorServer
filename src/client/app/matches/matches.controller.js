@@ -4,20 +4,23 @@ var app;
     (function (matches) {
         'use strict';
         var MatchesController = (function () {
-            function MatchesController($q, $state, $stateParams, fixtures, season, logger, Predictions, vosePredictorFactory) {
+            function MatchesController($q, $state, $stateParams, $scope, fixtures, season, logger, Predictions, vosePredictorFactory, cache) {
                 var _this = this;
                 this.$q = $q;
                 this.$state = $state;
                 this.$stateParams = $stateParams;
+                this.$scope = $scope;
                 this.fixtures = fixtures;
                 this.season = season;
                 this.logger = logger;
                 this.Predictions = Predictions;
                 this.vosePredictorFactory = vosePredictorFactory;
+                this.cache = cache;
                 this.title = 'Matches';
                 this.predictions = {};
                 this.luckySpinEnabled = false;
                 this.submitButtonEnabled = false;
+                this.stateKey = 'public.matches';
                 this.createPredictions = function () {
                     Object.keys(_this.predictions).forEach(function (key) {
                         if (_this.predictions[key].vosePredictor != null) {
@@ -52,6 +55,8 @@ var app;
                 this.seasonSlug = this.$stateParams.season || this.season.slug;
                 var matchday = parseInt(this.$stateParams.round || this.currentRound);
                 this.matchday = matchday;
+                this.onDestroy();
+                this.restoreState();
                 this.init();
             }
             MatchesController.prototype.init = function () {
@@ -162,15 +167,31 @@ var app;
                     round: this.matchday
                 });
             };
+            MatchesController.prototype.restoreState = function () {
+                var cached = this.cache.get(this.stateKey);
+                if (!cached) {
+                    return;
+                }
+                this.predictions = cached.predictions;
+                console.log(this.predictions);
+            };
+            MatchesController.prototype.onDestroy = function () {
+                var _this = this;
+                this.$scope.$on('$destroy', function () {
+                    var state = {
+                        predictions: _this.predictions,
+                        league: _this.leagueSlug,
+                        season: _this.seasonSlug,
+                        round: _this.matchday
+                    };
+                    _this.cache.put(_this.stateKey, state);
+                });
+            };
             return MatchesController;
         }());
-        MatchesController.$inject = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger',
-            'PredictionsResource', 'vosePredictorFactory'];
+        MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger',
+            'PredictionsResource', 'vosePredictorFactory', 'cache'];
         matches.MatchesController = MatchesController;
-        function isInt(value) {
-            var regex = /^-?[0-9]+$/;
-            return regex.test(value);
-        }
         angular
             .module('app.matches')
             .controller('MatchesController', MatchesController);

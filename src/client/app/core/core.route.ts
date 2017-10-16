@@ -86,11 +86,6 @@ namespace app.core {
 						'shell': {
 							templateUrl: 'app/layout/shell.in.html'
 						}
-					},
-					resolve: {
-						currentUser: ['securityService', function(security: app.auth.SecurityService) {
-							return security.requireAuthenticatedUser();
-						}]
 					}
 				}
 			},

@@ -4,7 +4,7 @@
   </div>
 	<ul class="nav navbar-nav">
 		<li ng-class="{active:isNavbarActive('matches')}"><a href="/">Home</a></li>
-		<li class="dropdown">
+		<li ng-if="vm.isAdmin()"  class="dropdown">
 			<a href="#" data-toggle="dropdown" class="dropdown-toggle">Admin
 							<b class="caret"></b></a>
 			<ul class="dropdown-menu" role="menu" >

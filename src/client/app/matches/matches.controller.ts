@@ -2,22 +2,26 @@ namespace app.matches {
 	'use strict';
 
 	export class MatchesController {
-		static $inject: string[] = ['$q', '$state', '$stateParams', 'matches', 'season', 'logger', 
-			'PredictionsResource', 'vosePredictorFactory'];
+		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger', 
+			'PredictionsResource', 'vosePredictorFactory', 'cache'];
 
 		constructor(private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
 			private $stateParams: ng.ui.IStateParamsService,
+			private $scope: ng.IScope,
 			private fixtures: any[],
 			private season: any,
       private logger: blocks.logger.Logger,
 			private Predictions: app.core.IPredictionsResource,
-			private vosePredictorFactory: app.matches.VosePredictorFactory) {
+			private vosePredictorFactory: app.matches.VosePredictorFactory,
+			private cache: app.core.ICacheService) {
 				this.currentRound = this.season.currentRound;
 			  this.leagueSlug = this.$stateParams.league || this.season.league.slug;
 				this.seasonSlug = this.$stateParams.season || this.season.slug;
 				let matchday = parseInt(this.$stateParams.round || this.currentRound)
 				this.matchday = matchday;
+				this.onDestroy();
+				this.restoreState();
 				this.init()
     }
 
@@ -30,6 +34,7 @@ namespace app.matches {
 		currentRound: number;
 		luckySpinEnabled = false;
 		submitButtonEnabled = false;
+		stateKey:string = 'public.matches';
 
 		private init() {
 			for(let match of this.fixtures) {
@@ -157,20 +162,33 @@ namespace app.matches {
 			return this.submitButtonEnabled;
 		}
 
-		private gotoMatchday() {
+		gotoMatchday() {
 			this.$state.go('app.matches', {
 				league: this.leagueSlug, 
 				season: this.seasonSlug, 
 				round: this.matchday
 			});
 		}
-	}
 
-	function isInt(value: any) {
-		var regex = /^-?[0-9]+$/;
-		return regex.test(value);
-	}
+		restoreState() {
+			let cached: any = this.cache.get(this.stateKey);
+			if (!cached) { return; }
+			this.predictions = cached.predictions;
+			console.log(this.predictions);
+		}
 
+		onDestroy() {
+			this.$scope.$on('$destroy', () => {
+				let state = {
+					predictions: this.predictions,
+					league: this.leagueSlug, 
+					season: this.seasonSlug, 
+					round: this.matchday
+				};
+				this.cache.put(this.stateKey, state);
+			});
+		}
+	}
 	angular
     .module('app.matches')
     .controller('MatchesController', MatchesController);

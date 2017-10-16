@@ -33,6 +33,10 @@ namespace app.layout {
 			return this.security.isAuthenticated();
 		}
 
+    isAdmin() {
+      return this.security.isAdmin();
+    }
+
 		logout() {
 			if (!this.security.isAuthenticated()) { return; }
 			this.security.logout()

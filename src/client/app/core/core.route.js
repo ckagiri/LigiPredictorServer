@@ -86,11 +86,6 @@ var app;
                             'shell': {
                                 templateUrl: 'app/layout/shell.in.html'
                             }
-                        },
-                        resolve: {
-                            currentUser: ['securityService', function (security) {
-                                    return security.requireAuthenticatedUser();
-                                }]
                         }
                     }
                 },
