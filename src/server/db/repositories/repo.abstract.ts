@@ -180,7 +180,7 @@ export abstract class AbstractRepo {
       _id: null as string,
       name: null as string,
       slug: null as string,
-      crestUrl: null as string
+      imageUrl: null as string
     };
     partial._id = obj._id;
     if(obj['name']){
@@ -193,7 +193,7 @@ export abstract class AbstractRepo {
       partial.slug = obj.slug
     }
     if(obj['crestUrl']){
-      partial.crestUrl = obj.crestUrl
+      partial.imageUrl = obj.crestUrl
     }
     return Promise.resolve(partial);
   }  
@@ -210,8 +210,8 @@ export abstract class AbstractRepo {
           } 
           else {
             let provider = this.provider;
-            let apiDetailIdVal = apiDetail[provider]['id']
-            apiDetail[provider]['id'] = apiDetailIdVal.toString();
+            let apiDetailId = apiDetail[provider]['id']
+            apiDetail[provider]['id'] = apiDetailId.toString();
             if(updatedObj['api_detail']){
               _.merge(updatedObj, {api_detail: apiDetail});
             } else {

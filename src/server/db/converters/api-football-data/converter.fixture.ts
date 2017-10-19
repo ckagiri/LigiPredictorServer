@@ -28,13 +28,13 @@ export class FixtureConverter {
             slug: homeTeam.slug,
 						name: homeTeam.name,
 						id: homeTeam._id,
-						crestUrl: homeTeam.crestUrl
+						crestUrl: homeTeam.imageUrl
 					},
 					awayTeam: {
             slug: awayTeam.slug,
 						name: awayTeam.name,
 						id: awayTeam._id,
-						crestUrl: awayTeam.crestUrl
+						crestUrl: awayTeam.imageUrl
 					},
           slug: `${homeTeam.slug}-${awayTeam.slug}`,
 					result: {
