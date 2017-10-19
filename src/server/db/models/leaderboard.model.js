@@ -10,10 +10,20 @@ var leaderboardSchema = new Schema({
     round: {
         type: Number
     },
+    year: {
+        type: Number
+    },
+    month: {
+        type: Number
+    },
     status: {
         type: String,
-        enum: ['Refreshed', 'UpdatingScores', 'UpdatingRankings'],
-        default: 'Refreshed'
+        enum: ['REFRESHED', 'UPDATING_SCORES', 'UPDATING_RANKINGS'],
+        default: 'REFRESHED'
+    },
+    boardType: {
+        type: String,
+        enum: ['GLOBAL_SEASON', 'GLOBAL_ROUND', 'GLOBAL_MONTH', 'MINI_LEAGUE'],
     },
     userCount: {
         type: Number

@@ -23,27 +23,53 @@ export class PredictionController {
   }
 
 	create(req: Request, res: Response) {
-		let predictions = req.body;
+		let predictionsDict = req.body;
+		let errors: string[] = [];
 		let user = req['user'];
-		let arr = [];
-		for(let key in predictions) {
-			let prediction: IPrediction = {
+		var reqPredictions = Object.keys(predictionsDict).map((key) => {
+			return {
+				_id: predictionsDict[key]._id,
+				fixture: key, 
 				user: user._id,
 				choice: {
-					goalsHomeTeam: predictions[key].goalsHomeTeam,
-					goalsAwayTeam: predictions[key].goalsAwayTeam,
+					goalsHomeTeam: predictionsDict[key].goalsHomeTeam,
+					goalsAwayTeam: predictionsDict[key].goalsAwayTeam,
 					isComputerGenerated: false 
-				},
-				fixture: key	
-			}
-			prediction['_id'] = predictions[key]['_id'];
-			let pred = new Prediction(prediction);
-			pred.isNew = false;
-			arr.push(pred); 
-		}
+				}
+			}}).filter((reqPrediction: any) => {
+				return reqPrediction.choice.goalsHomeTeam != null &&
+					reqPrediction.choice.goalsAwayTeam != null;
+			});
 		
-		predictionRepo.create(arr)
+		Rx.Observable.from(reqPredictions)
+			.flatMap((reqPrediction: any) => {
+				return fixtureRepo.findOne({_id: reqPrediction.fixture})
+					.map((fixture: any) => {
+						return {
+							fixture,
+							reqPrediction
+						}
+					});
+			})
+			.switchMap((map: any) => {
+				let {fixture, reqPrediction} = map;
+				return predictionRepo.findOneAndUpdateOrCreate(user._id, fixture, reqPrediction.choice)
+            .map(prediction => {
+                return prediction;
+            })
+            .catch(error => {
+							return Rx.Observable.of(error);
+            });
+			}).map(prediction => {
+        if (prediction instanceof Error) {
+					let message = `Error: ${prediction.message || 'damn'}`
+						errors.push(message)
+            return message;
+        }
+        return prediction;
+    	})
 			.subscribe((predictions: any[]) => {
+				//do joker
 					res.status(200).json(predictions);
 				}, (err: any) => {
 					res.status(500).json(err);

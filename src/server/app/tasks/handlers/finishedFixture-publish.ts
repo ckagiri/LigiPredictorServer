@@ -18,7 +18,7 @@ class FinishedFixturePublishHandler {
         })
         .flatMap((map: any) => {
           let {user, fixture} = map;
-          return predictionRepo.findOneOrCreate(user, fixture, fixture.odds)
+          return predictionRepo.findOneOrCreate(user, fixture)
             .map((prediction: any) => {
               return {
                 user, fixture, prediction

@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var prediction_model_1 = require("../../../db/models/prediction.model");
 var repositories_1 = require("../../../db/repositories");
 var ligi_predictor_1 = require("../../../db/converters/ligi-predictor");
+var Rx = require("rxjs");
 var leagueRepo = new repositories_1.LeagueRepo(new ligi_predictor_1.LeagueConverter());
 var seasonRepo = new repositories_1.SeasonRepo(new ligi_predictor_1.SeasonConverter(leagueRepo));
 var teamRepo = new repositories_1.TeamRepo(new ligi_predictor_1.TeamConverter());
@@ -21,26 +21,53 @@ var PredictionController = (function () {
         });
     };
     PredictionController.prototype.create = function (req, res) {
-        var predictions = req.body;
+        var predictionsDict = req.body;
+        var errors = [];
         var user = req['user'];
-        var arr = [];
-        for (var key in predictions) {
-            var prediction = {
+        var reqPredictions = Object.keys(predictionsDict).map(function (key) {
+            return {
+                _id: predictionsDict[key]._id,
+                fixture: key,
                 user: user._id,
                 choice: {
-                    goalsHomeTeam: predictions[key].goalsHomeTeam,
-                    goalsAwayTeam: predictions[key].goalsAwayTeam,
+                    goalsHomeTeam: predictionsDict[key].goalsHomeTeam,
+                    goalsAwayTeam: predictionsDict[key].goalsAwayTeam,
                     isComputerGenerated: false
-                },
-                fixture: key
+                }
             };
-            prediction['_id'] = predictions[key]['_id'];
-            var pred = new prediction_model_1.Prediction(prediction);
-            pred.isNew = false;
-            arr.push(pred);
-        }
-        predictionRepo.create(arr)
+        }).filter(function (reqPrediction) {
+            return reqPrediction.choice.goalsHomeTeam != null &&
+                reqPrediction.choice.goalsAwayTeam != null;
+        });
+        Rx.Observable.from(reqPredictions)
+            .flatMap(function (reqPrediction) {
+            return fixtureRepo.findOne({ _id: reqPrediction.fixture })
+                .map(function (fixture) {
+                return {
+                    fixture: fixture,
+                    reqPrediction: reqPrediction
+                };
+            });
+        })
+            .switchMap(function (map) {
+            var fixture = map.fixture, reqPrediction = map.reqPrediction;
+            return predictionRepo.findOneAndUpdateOrCreate(user._id, fixture, reqPrediction.choice)
+                .map(function (prediction) {
+                return prediction;
+            })
+                .catch(function (error) {
+                return Rx.Observable.of(error);
+            });
+        }).map(function (prediction) {
+            if (prediction instanceof Error) {
+                var message = "Error: " + (prediction.message || 'damn');
+                errors.push(message);
+                return message;
+            }
+            return prediction;
+        })
             .subscribe(function (predictions) {
+            //do joker
             res.status(200).json(predictions);
         }, function (err) {
             res.status(500).json(err);

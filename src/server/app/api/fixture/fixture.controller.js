@@ -63,7 +63,7 @@ var FixtureController = (function () {
                     };
                 });
             }
-            return predictionRepo.findOneOrCreate(userId, fixture._id, fixture.odds)
+            return predictionRepo.findOneOrCreate(userId, fixture)
                 .map(function (prediction) {
                 return {
                     fixture: fixture, prediction: prediction

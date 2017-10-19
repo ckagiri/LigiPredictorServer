@@ -167,7 +167,7 @@ var AbstractRepo = (function () {
             _id: null,
             name: null,
             slug: null,
-            crestUrl: null
+            imageUrl: null
         };
         partial._id = obj._id;
         if (obj['name']) {
@@ -180,7 +180,7 @@ var AbstractRepo = (function () {
             partial.slug = obj.slug;
         }
         if (obj['crestUrl']) {
-            partial.crestUrl = obj.crestUrl;
+            partial.imageUrl = obj.crestUrl;
         }
         return Promise.resolve(partial);
     };
@@ -196,8 +196,8 @@ var AbstractRepo = (function () {
                 }
                 else {
                     var provider = _this.provider;
-                    var apiDetailIdVal = apiDetail[provider]['id'];
-                    apiDetail[provider]['id'] = apiDetailIdVal.toString();
+                    var apiDetailId = apiDetail[provider]['id'];
+                    apiDetail[provider]['id'] = apiDetailId.toString();
                     if (updatedObj['api_detail']) {
                         _.merge(updatedObj, { api_detail: apiDetail });
                     }

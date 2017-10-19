@@ -5,8 +5,9 @@ var Rx = require("rxjs");
 var PredictionRepo = (function () {
     function PredictionRepo() {
         var _this = this;
-        this.findOneOrCreate = function (user, fixture, odds) {
-            var query = { user: user, fixture: fixture }, pred = { user: user, fixture: fixture, choice: {} };
+        this.findOneOrCreate = function (user, fixture) {
+            var fixtureId = fixture._id, fixtureSlug = fixture.slug, season = fixture.season, round = fixture.round, odds = fixture.odds;
+            var query = { user: user, fixture: fixtureId }, pred = { user: user, fixture: fixtureId, fixtureSlug: fixtureSlug, season: season, round: round, choice: {} };
             var matchScores = _this.getMatchScores(odds);
             pred.choice = matchScores;
             return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
@@ -23,15 +24,9 @@ var PredictionRepo = (function () {
                 });
             }));
         };
-        this.createOrfindOneAndUpdate = function (user, fixture, choice, odds) {
-            var query = { user: user, fixture: fixture }, pred = { user: user, fixture: fixture, choice: {} }, options = { upsert: true, new: true, setDefaultsOnInsert: true };
-            if (choice == null) {
-                var matchScores = _this.getMatchScores(odds);
-                pred.choice = matchScores;
-            }
-            else {
-                pred.choice = choice;
-            }
+        this.findOneAndUpdateOrCreate = function (user, fixture, choice) {
+            var fixtureId = fixture._id, fixtureSlug = fixture.slug, season = fixture.season, round = fixture.round, odds = fixture.odds;
+            var query = { user: user, fixture: fixtureId }, pred = { user: user, fixture: fixtureId, fixtureSlug: fixtureSlug, season: season, round: round, choice: choice }, options = { upsert: true, new: true, setDefaultsOnInsert: true };
             return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
                 prediction_model_1.Prediction.findOneAndUpdate(query, pred, options)
                     .lean()

@@ -15,6 +15,19 @@ var predictionSchema = new Schema({
         index: true,
         required: [true, 'Fixture required']
     },
+    fixtureSlug: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    season: {
+        type: Schema.Types.ObjectId,
+        ref: 'Season',
+        index: true,
+    },
+    round: {
+        type: Number
+    },
     choice: {
         goalsHomeTeam: {
             type: Number
@@ -56,6 +69,14 @@ var predictionSchema = new Schema({
     },
     goalDiff: {
         type: Number
+    },
+    hasJoker: {
+        type: Boolean,
+        default: false
+    },
+    status: {
+        type: String,
+        enum: ['PENDING', 'PROCESSED', 'CANCELLED'],
     }
 });
 exports.Prediction = mongoose.model('Prediction', predictionSchema);

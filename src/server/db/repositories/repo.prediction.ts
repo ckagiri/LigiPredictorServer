@@ -7,9 +7,10 @@ export class PredictionRepo {
     return Rx.Observable.fromPromise(Prediction.findOne({user, fixture}).lean());
   }
 
-	findOneOrCreate = (user: string, fixture: string, odds?: any) => {
-		let query = {user, fixture},
-    		pred = {user, fixture, choice: {}};
+	findOneOrCreate = (user: string, fixture: any) => {
+		let {_id :fixtureId, slug :fixtureSlug, season, round, odds} = fixture;
+		let query = {user, fixture: fixtureId},
+    		pred = {user, fixture: fixtureId, fixtureSlug, season, round, choice: {}};
 		let matchScores = this.getMatchScores(odds);
 		pred.choice = matchScores;
 		return Rx.Observable.fromPromise(
@@ -25,16 +26,11 @@ export class PredictionRepo {
 			}))
 	}
 
-	createOrfindOneAndUpdate = (user: string, fixture: string, choice?: any, odds?: any) => {
-		let query = {user, fixture},
-    		pred = {user, fixture, choice: {}},
+	findOneAndUpdateOrCreate = (user: string, fixture: any, choice: any) => {
+		let {_id :fixtureId, slug :fixtureSlug, season, round, odds} = fixture;
+		let query = {user, fixture: fixtureId},
+    		pred = {user, fixture: fixtureId, fixtureSlug, season, round, choice},
     		options = { upsert: true, new: true, setDefaultsOnInsert: true };
-		if(choice == null) {
-			let matchScores = this.getMatchScores(odds);
-			pred.choice = matchScores;
-		} else {
-			pred.choice = choice;
-		}
 		return Rx.Observable.fromPromise(
 			new Promise((resolve: any, reject: any) => {    
 				Prediction.findOneAndUpdate(query, pred, options)

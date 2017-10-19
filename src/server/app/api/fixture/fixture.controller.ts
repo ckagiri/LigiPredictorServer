@@ -62,7 +62,7 @@ export class FixtureController {
 								fixture, prediction
 							}})
 				}
-				return predictionRepo.findOneOrCreate(userId, fixture._id, fixture.odds)
+				return predictionRepo.findOneOrCreate(userId, fixture)
 					.map((prediction) => {
 						return {
 							fixture, prediction
