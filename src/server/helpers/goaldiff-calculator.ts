@@ -6,10 +6,7 @@ class GoalDiffCalculator {
     let homeGoalsGd = null;
     let awayGoalsGd = null;
     let bonusEqualGd = 0;
-    let minGd = Math.min(choiceGd, resultGd);
-    if (minGd === 0) {
-      minGd = 1;
-    }
+    let minGd = Math.min(choiceGd, resultGd) || 1;
 
     let choiceOutcome = calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
     let resultOutcome = calcOutcome(result.goalsHomeTeam, result.goalsAwayTeam);
