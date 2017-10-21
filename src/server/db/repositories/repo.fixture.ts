@@ -36,7 +36,7 @@ export class FixtureRepo extends AbstractRepo {
 		return this.update({_id: fixtureId}, {$set: update});
 	}
 
-	updateFixtureById(fixtureId: any, result: any, status: any, odds: any) {
+	updateFixtureById(fixtureId: any, result: any, status: any, odds?: any) {
 		let update: any = {
 			result: result,
 			status: status,

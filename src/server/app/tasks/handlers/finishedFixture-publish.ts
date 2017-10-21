@@ -6,7 +6,6 @@ class FinishedFixturePublishHandler {
   handle(changedFixture: any): Rx.Observable<any> {
     let boards = {};
     console.log("prediction handler");
-    //if (changedFixture.status === 'FINISHED') {
       return userRepo.findAll()
         .flatMap((users: any[]) => {
           return Rx.Observable.from(users);
@@ -33,8 +32,6 @@ class FinishedFixturePublishHandler {
           prediction.goalDiff = score.goalDiff;
           return Rx.Observable.of({user, fixture, prediction})
         })
-    //}
-    //return Rx.Observable.throw(new Error(`Oops!! fixture: ${changedFixture._id}`));
-  }
+s  }
 }
 export const finishedFixturePublishHandler = new FinishedFixturePublishHandler();

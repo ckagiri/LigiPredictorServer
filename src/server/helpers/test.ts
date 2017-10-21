@@ -43,6 +43,12 @@ let five2 = predictionProcessor.process({
 });
 
 let six = predictionProcessor.process({
+  goalsHomeTeam: 2, goalsAwayTeam: 0
+}, {
+  goalsHomeTeam: 1, goalsAwayTeam: 0
+});
+
+let six2 = predictionProcessor.process({
   goalsHomeTeam: 3, goalsAwayTeam: 1
 }, {
   goalsHomeTeam: 2, goalsAwayTeam: 0

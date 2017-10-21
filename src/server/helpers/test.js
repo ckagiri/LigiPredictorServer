@@ -37,6 +37,11 @@ var five2 = prediction_processor_1.predictionProcessor.process({
     goalsHomeTeam: 1, goalsAwayTeam: 1
 });
 var six = prediction_processor_1.predictionProcessor.process({
+    goalsHomeTeam: 2, goalsAwayTeam: 0
+}, {
+    goalsHomeTeam: 1, goalsAwayTeam: 0
+});
+var six2 = prediction_processor_1.predictionProcessor.process({
     goalsHomeTeam: 3, goalsAwayTeam: 1
 }, {
     goalsHomeTeam: 2, goalsAwayTeam: 0

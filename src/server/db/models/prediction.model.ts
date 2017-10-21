@@ -1,14 +1,21 @@
 import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+export interface IPrectionChoice {
+	goalsHomeTeam: number;
+	goalsAwayTeam: number;
+	isComputerGenerated: boolean;
+}
+
 export interface IPrediction {
   user: string;
   fixture: string;
-	choice: {
-		goalsHomeTeam: number,
-		goalsAwayTeam: number,
-		isComputerGenerated: boolean
-	}
+	choice: IPrectionChoice;
+	fixtureSlug: string;
+	season: string;
+  round: number;
+	hasJoker: boolean;
+	jokerAutoPicked: boolean;
 };
 
 export interface IPredictionModel extends IPrediction, mongoose.Document { }
@@ -81,6 +88,10 @@ const predictionSchema = new Schema({
 		type: Number
 	},
 	hasJoker: {
+		type: Boolean,
+		default: false
+	},
+	jokerAutoPicked: {
 		type: Boolean,
 		default: false
 	},

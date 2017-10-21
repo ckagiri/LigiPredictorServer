@@ -8,26 +8,26 @@ let getFixtureName = (fixture: any) => {
 }
 
 let leaderboardObsCache = {};
+let roundFixtures = {};
 
 class FinishedFixtureDbUpdateHandler {
-  handle(changedFixtures: any[]) {
-		let boards: any = {};
+  handle(finishedFixtures: any[]) {
 		let boardIds: any[] = [];
-		console.log("fixture db update handler");
-		Rx.Observable.from(changedFixtures)
+		console.log("Finished fixture db update handler");
+		Rx.Observable.from(finishedFixtures)
 			.flatMap((fixture: any) => {
 				return Rx.Observable.of(fixture);
 			})
 			.flatMap((fixture: any) => {
-				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status, fixture.odds)
+				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status)
 			})
 			.do((fixture: any) => {
 				console.log("the game : " + getFixtureName(fixture) + " has been updated");
 			})
+			// update roundFixturesCache
 			.flatMap((fixture: any) => {
 				return finishedFixturePublishHandler.handle(fixture)
 			})
-			//.onErrorResumeNext()
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;
 				return predictionRepo.update(prediction)
@@ -35,6 +35,7 @@ class FinishedFixtureDbUpdateHandler {
 						return {user, fixture, prediction}
 					})
 			})
+			// pick joker(fixtureIds)
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;
 				// getCached
@@ -78,6 +79,7 @@ class FinishedFixtureDbUpdateHandler {
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
 				() => {
+					// AllPredictionsProcessed
 					Rx.Observable.from(boardIds)
 						.flatMap((leaderboardIds: any[]) => {
 							return Rx.Observable.from(boardIds);

@@ -19,6 +19,11 @@ export interface IFixture {
     crestUrl: string,
     id: string
   };
+  odds?: {
+    homeWin:number,
+    awayWin: number,
+    draw: number
+  }
   api_detail?: any;
 };
 
