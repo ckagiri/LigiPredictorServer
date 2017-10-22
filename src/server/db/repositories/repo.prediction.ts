@@ -65,23 +65,25 @@ export class PredictionRepo {
 					let newJokerFixtureId: string;
 					if(pick instanceof Array) {
 						if(currentJoker) {
-							resolve(currentJoker)
+							return resolve(currentJoker)
 						} else {
 							newJokerFixtureId = pick[Math.floor(Math.random() * pick.length)];	
-							this.pickJokerFixture(currentJoker, newJokerFixtureId, true, resolve, reject)	
+							this.pickJokerFixture(user, currentJoker, newJokerFixtureId, true, resolve, reject)	
 						}
 					} else {
 						newJokerFixtureId = pick;
-						this.pickJokerFixture(currentJoker, newJokerFixtureId, false, resolve, reject)	
+						if(currentJoker && currentJoker._id == newJokerFixtureId) {
+							return resolve(currentJoker);
+						}
+						this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject)	
 					}
 				})	
 			}))
 	}
 		
-	pickJokerFixture = (currentJoker: IPrediction, newJokerFixtureId: string, autoPicked: boolean, resolve: any, reject: any) => {
+	pickJokerFixture = (user: string, currentJoker: IPrediction, newJokerFixtureId: string, autoPicked: boolean, resolve: any, reject: any) => {
 		Fixture.findById(newJokerFixtureId, (err, newJokerFixture) => {
 			if(!newJokerFixture) return reject(new Error('Bad'));
-			let user = currentJoker.user;
 			let {slug: fixtureSlug, season, round, odds} = newJokerFixture;
 			if(newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
 				Prediction.findOne({fixture: newJokerFixtureId}, (err, newJokerPrediction) => {
@@ -97,8 +99,12 @@ export class PredictionRepo {
 						newJoker = newJokerPrediction;
 						newJoker.hasJoker = true;
 					}
-					currentJoker.hasJoker = false;
-					Prediction.create([currentJoker, newJoker], (err, savedPredictions) => {
+					let predictionJokers: [IPrediction] = [newJoker];
+					if(currentJoker) {
+						currentJoker.hasJoker = false;
+						predictionJokers.unshift(currentJoker)
+					}
+					Prediction.create(predictionJokers, (err, savedPredictions) => {
         		if (err) reject(err);
 						if (!savedPredictions) {
 							return reject(new Error(`Failed to saved predictions`))

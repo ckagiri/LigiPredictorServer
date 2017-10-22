@@ -22,6 +22,8 @@ var app;
                 this.submitButtonEnabled = false;
                 this.stateKey = 'public.matches';
                 this.jokerChosen = "";
+                this.totalPoints = 0;
+                this.totalGoalDiff = 0;
                 this.makePredictions = function () {
                     var request = {};
                     request.predictions = _this.predictions;
@@ -99,9 +101,8 @@ var app;
                     else {
                         match.choice = choice;
                     }
-                    // if (match.prediction.hasJoker) {
-                    // 	this.jokerChosen = "chosen";
-                    // }
+                    this_1.totalPoints += match.prediction.points || 0;
+                    this_1.totalGoalDiff += match.prediction.goalDiff || 0;
                 };
                 var this_1 = this;
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
@@ -110,16 +111,19 @@ var app;
                 }
             };
             MatchesController.prototype.pointsClass = function (points) {
-                return 'label-success';
-            };
-            ;
-            MatchesController.prototype.diffClass = function (diff) {
-                if (diff > -1) {
+                if (points > 0) {
                     return 'label-success';
                 }
-                else {
+                return 'label-default';
+            };
+            MatchesController.prototype.diffClass = function (diff) {
+                if (diff > 0) {
+                    return 'label-success';
+                }
+                if (diff < 0) {
                     return 'label-danger';
                 }
+                return 'label-default';
             };
             ;
             MatchesController.prototype.nextMatchday = function () {
@@ -199,13 +203,14 @@ var app;
                         }
                     });
                 }).catch(function () {
+                    fixture.prediction.hasJoker = false;
                     console.log('bad');
                 });
             };
             return MatchesController;
         }());
         MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger',
-            'PredictionsResource', 'vosePredictorFactory', 'cache'];
+            'predictionService', 'vosePredictorFactory', 'cache'];
         matches.MatchesController = MatchesController;
         angular
             .module('app.matches')

@@ -74,8 +74,8 @@ var PredictionController = (function () {
         });
     };
     PredictionController.prototype.pickJoker = function (req, res) {
-        var selectedFixture = req.body.fixture;
-        var user = req['user'];
+        var selectedFixture = req.body;
+        var user = req['user']._id;
         var pick = selectedFixture._id, season = selectedFixture.season, round = selectedFixture.round;
         var options = {
             user: user, season: season, round: round, pick: pick

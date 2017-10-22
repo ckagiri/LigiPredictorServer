@@ -3,7 +3,7 @@ namespace app.matches {
 
 	export class MatchesController {
 		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger', 
-			'PredictionsResource', 'vosePredictorFactory', 'cache'];
+			'predictionService', 'vosePredictorFactory', 'cache'];
 
 		constructor(private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
@@ -36,7 +36,8 @@ namespace app.matches {
 		submitButtonEnabled = false;
 		stateKey: string = 'public.matches';
     jokerChosen: string = "";
-
+		totalPoints: number = 0;
+		totalGoalDiff: number = 0;
 		private refresh() {
 			for(let match of this.fixtures) {
 				let choice = match.prediction.choice || {}
@@ -75,9 +76,8 @@ namespace app.matches {
 				} else {
 					match.choice = choice;
 				}
-				// if (match.prediction.hasJoker) {
-				// 	this.jokerChosen = "chosen";
-				// }
+				this.totalPoints += match.prediction.points || 0;
+				this.totalGoalDiff += match.prediction.goalDiff || 0
 			}
 		}
 
@@ -110,16 +110,21 @@ namespace app.matches {
 			match.choice['goals'+side+'Team'] = goals || 0;
 		};
 
-		pointsClass(points: any) {
-			return 'label-success';
-		};
-
-		diffClass(diff: any) {
-			if(diff > -1) {
+		pointsClass(points: number) {
+			if(points > 0) {
 				return 'label-success';
-			} else {
+			}
+			return 'label-default';
+		}
+
+		diffClass(diff: number) {
+			if(diff > 0) {
+				return 'label-success';
+			} 
+			if(diff < 0) {
 				return 'label-danger';
 			}
+			return 'label-default';
 		};
 
 		nextMatchday() {
@@ -201,6 +206,7 @@ namespace app.matches {
 					}
 				})
 			}).catch(() => {
+				fixture.prediction.hasJoker = false;
 				console.log('bad')
 			})
 		}

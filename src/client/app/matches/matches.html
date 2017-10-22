@@ -47,7 +47,10 @@
             <div class="row">
                 <div class="date text-center">This Week Scores</div>
             </div>
-            <h2>Total Score {{resultValue | calcScore}}<h2>
+            <h2 class="text-center">Total Points {{vm.totalPoints}}</h2>
+            <h2 class="text-center">
+              Goal Difference <span ng-if="fixture.prediction.goalDiff > 0">+</span>{{vm.totalGoalDiff}}
+            </h2>
         </div>
     </div>
   </form>

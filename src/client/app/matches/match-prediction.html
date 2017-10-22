@@ -40,7 +40,7 @@
                 </label>
             </span>
             <span class="label" ng-class=vm.pointsClass(fixture.prediction.points)>Points {{fixture.prediction.points || 0}}</span>
-            <span class="label" ng-class=vm.diffClass(fixture.prediction.goalDiff)>Gd {{fixture.prediction.goalDiff}}</span>
+            <span class="label" ng-class=vm.diffClass(fixture.prediction.goalDiff)>Gd <span ng-if="fixture.prediction.goalDiff > 0">+</span>{{fixture.prediction.goalDiff}}</span>
         </div>
     </div> 
 </div>

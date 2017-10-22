@@ -77,8 +77,8 @@ export class PredictionController {
 	}
 
 	pickJoker(req: Request, res: Response) {
-		let selectedFixture:any = req.body.fixture;
-		let user = req['user'];
+		let selectedFixture:any = req.body;
+		let user = req['user']._id;
 		let {_id: pick, season, round} = selectedFixture;
 		let options = {
 			user, season, round, pick

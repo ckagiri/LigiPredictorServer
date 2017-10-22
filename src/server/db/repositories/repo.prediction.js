@@ -51,25 +51,27 @@ var PredictionRepo = (function () {
                     var newJokerFixtureId;
                     if (pick instanceof Array) {
                         if (currentJoker) {
-                            resolve(currentJoker);
+                            return resolve(currentJoker);
                         }
                         else {
                             newJokerFixtureId = pick[Math.floor(Math.random() * pick.length)];
-                            _this.pickJokerFixture(currentJoker, newJokerFixtureId, true, resolve, reject);
+                            _this.pickJokerFixture(user, currentJoker, newJokerFixtureId, true, resolve, reject);
                         }
                     }
                     else {
                         newJokerFixtureId = pick;
-                        _this.pickJokerFixture(currentJoker, newJokerFixtureId, false, resolve, reject);
+                        if (currentJoker && currentJoker._id == newJokerFixtureId) {
+                            return resolve(currentJoker);
+                        }
+                        _this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject);
                     }
                 });
             }));
         };
-        this.pickJokerFixture = function (currentJoker, newJokerFixtureId, autoPicked, resolve, reject) {
+        this.pickJokerFixture = function (user, currentJoker, newJokerFixtureId, autoPicked, resolve, reject) {
             fixture_model_1.Fixture.findById(newJokerFixtureId, function (err, newJokerFixture) {
                 if (!newJokerFixture)
                     return reject(new Error('Bad'));
-                var user = currentJoker.user;
                 var fixtureSlug = newJokerFixture.slug, season = newJokerFixture.season, round = newJokerFixture.round, odds = newJokerFixture.odds;
                 if (newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
                     prediction_model_1.Prediction.findOne({ fixture: newJokerFixtureId }, function (err, newJokerPrediction) {
@@ -87,8 +89,12 @@ var PredictionRepo = (function () {
                             newJoker = newJokerPrediction;
                             newJoker.hasJoker = true;
                         }
-                        currentJoker.hasJoker = false;
-                        prediction_model_1.Prediction.create([currentJoker, newJoker], function (err, savedPredictions) {
+                        var predictionJokers = [newJoker];
+                        if (currentJoker) {
+                            currentJoker.hasJoker = false;
+                            predictionJokers.unshift(currentJoker);
+                        }
+                        prediction_model_1.Prediction.create(predictionJokers, function (err, savedPredictions) {
                             if (err)
                                 reject(err);
                             if (!savedPredictions) {

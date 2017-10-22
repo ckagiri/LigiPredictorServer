@@ -20,11 +20,12 @@ namespace app.core {
         .catch(this.fail)
     }
 
-    pickJoker: (fixture: any) => ng.IPromise<any> = (fixture) =>
-      this.$http.post('/api/predictions/pick-joker', fixture)
+    pickJoker: (fixture: any) => ng.IPromise<any> = (fixture) => {
+      return this.$http.post('/api/predictions/pick-joker', fixture)
         .then(this.success)
         .catch(this.fail);
-
+    }
+    
     private success: (response: any) => {} = (response) => response.data;
 
     private fail: (error: any) => {} = (error) => {
