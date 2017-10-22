@@ -3,7 +3,7 @@ import {fixtureRepo, userRepo, predictionRepo} from '../common'
 import {predictionProcessor} from '../../../helpers/prediction-processor';
 
 class FinishedFixturePublishHandler {
-  handle(changedFixture: any): Rx.Observable<any> {
+  handle(changedFixture: any, roundFixtures: [string]): Rx.Observable<any> {
     let boards = {};
     console.log("prediction handler");
       return userRepo.findAll()
@@ -15,8 +15,9 @@ class FinishedFixturePublishHandler {
             user, fixture: changedFixture
           })
         })
+        // pickJoker newJoker
         .flatMap((map: any) => {
-          let {user, fixture} = map;
+          let {user, fixture} = map; // if newJokerFixture = fixture resolve else cont
           return predictionRepo.findOneOrCreate(user, fixture)
             .map((prediction: any) => {
               return {

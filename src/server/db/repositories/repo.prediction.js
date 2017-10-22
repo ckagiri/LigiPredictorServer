@@ -60,7 +60,7 @@ var PredictionRepo = (function () {
                     }
                     else {
                         newJokerFixtureId = pick;
-                        if (currentJoker && currentJoker._id == newJokerFixtureId) {
+                        if (currentJoker && currentJoker._id.toString() == newJokerFixtureId) {
                             return resolve(currentJoker);
                         }
                         _this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject);

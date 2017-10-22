@@ -31,7 +31,7 @@ let fixtureChanged = (updated: any, fromDb: any) => {
       return true;
     }
   }
-  return false;
+  return true;
 }
 class FixturesUpdater {
   update(callback: Function) {

@@ -206,7 +206,7 @@ export abstract class AbstractRepo {
             return reject(err);
           }
           if(apiDetail == undefined) {
-            resolve(updatedObj);
+            return resolve(updatedObj);
           } 
           else {
             let provider = this.provider;
@@ -223,7 +223,7 @@ export abstract class AbstractRepo {
               if (err) {
                 return reject(err);
               }
-              resolve(savedObj);
+              return resolve(savedObj);
             });
           } 
         });

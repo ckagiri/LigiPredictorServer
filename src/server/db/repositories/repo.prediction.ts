@@ -72,7 +72,7 @@ export class PredictionRepo {
 						}
 					} else {
 						newJokerFixtureId = pick;
-						if(currentJoker && currentJoker._id == newJokerFixtureId) {
+						if(currentJoker && currentJoker._id.toString() == newJokerFixtureId) {
 							return resolve(currentJoker);
 						}
 						this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject)	

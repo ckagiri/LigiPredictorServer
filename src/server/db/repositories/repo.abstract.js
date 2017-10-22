@@ -192,7 +192,7 @@ var AbstractRepo = (function () {
                     return reject(err);
                 }
                 if (apiDetail == undefined) {
-                    resolve(updatedObj);
+                    return resolve(updatedObj);
                 }
                 else {
                     var provider = _this.provider;
@@ -210,7 +210,7 @@ var AbstractRepo = (function () {
                         if (err) {
                             return reject(err);
                         }
-                        resolve(savedObj);
+                        return resolve(savedObj);
                     });
                 }
             });
