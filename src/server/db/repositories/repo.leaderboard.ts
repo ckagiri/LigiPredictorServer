@@ -2,7 +2,7 @@ import * as Rx from 'rxjs';
 import {Leaderboard} from '../models/leaderboard.model';
 
 export class LeaderboardRepo {
-  updateStatus(query: any, update: any) {
+  findOneAndUpdate(query: any, update: any) {
 		let options = { upsert: true, new: true };
 
 		return Rx.Observable.fromPromise(
@@ -18,15 +18,25 @@ export class LeaderboardRepo {
 			}))
 	}
 
-	findOneBySeasonAndUpdateStatus(seasonId: string, status: string) {
-		let query: any = {season: seasonId};
-		let update: any  = {season: seasonId, status}
-		return this.updateStatus(query, update)
+	findOneBySeasonAndUpdate(options: any) {
+		let {season} = options;
+		let boardType = 'GLOBAL_SEASON';
+		options.boardType = boardType;
+		let query: any = {season, boardType};
+		return this.findOneAndUpdate(query, options)
+	}
+
+	findOneByRoundAndUpdate(options: any) {
+		let {season, round} = options;
+		let boardType = 'GLOBAL_MONTH';
+		options.boardType = boardType;
+		let query: any = {season, round, boardType};
+		return this.findOneAndUpdate(query, options)
 	}
 
 	findByIdAndUpdateStatus(leaderboardId: string, status: string) {
 		let query: any = {_id: leaderboardId};
 		let update: any  = {status}
-		return this.updateStatus(query, update)
+		return this.findOneAndUpdate(query, update)
 	}
 }

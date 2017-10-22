@@ -5,7 +5,7 @@ var leaderboard_model_1 = require("../models/leaderboard.model");
 var LeaderboardRepo = (function () {
     function LeaderboardRepo() {
     }
-    LeaderboardRepo.prototype.updateStatus = function (query, update) {
+    LeaderboardRepo.prototype.findOneAndUpdate = function (query, update) {
         var options = { upsert: true, new: true };
         return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
             leaderboard_model_1.Leaderboard.findOneAndUpdate(query, update, { new: true, upsert: true }, function (err, result) {
@@ -16,15 +16,24 @@ var LeaderboardRepo = (function () {
             });
         }));
     };
-    LeaderboardRepo.prototype.findOneBySeasonAndUpdateStatus = function (seasonId, status) {
-        var query = { season: seasonId };
-        var update = { season: seasonId, status: status };
-        return this.updateStatus(query, update);
+    LeaderboardRepo.prototype.findOneBySeasonAndUpdate = function (options) {
+        var season = options.season;
+        var boardType = 'GLOBAL_SEASON';
+        options.boardType = boardType;
+        var query = { season: season, boardType: boardType };
+        return this.findOneAndUpdate(query, options);
+    };
+    LeaderboardRepo.prototype.findOneByRoundAndUpdate = function (options) {
+        var season = options.season, round = options.round;
+        var boardType = 'GLOBAL_MONTH';
+        options.boardType = boardType;
+        var query = { season: season, round: round, boardType: boardType };
+        return this.findOneAndUpdate(query, options);
     };
     LeaderboardRepo.prototype.findByIdAndUpdateStatus = function (leaderboardId, status) {
         var query = { _id: leaderboardId };
         var update = { status: status };
-        return this.updateStatus(query, update);
+        return this.findOneAndUpdate(query, update);
     };
     return LeaderboardRepo;
 }());

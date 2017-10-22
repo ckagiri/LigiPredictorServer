@@ -29,13 +29,12 @@ class FinishedFixtureDbUpdateHandler {
 				let roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
 				if(roundFixturesObs == null) {
 					roundFixturesObs = fixtureRepo.findAllBySeasonRound(season, round)
-						.map((fixtures: any[]) => {
-							let roundFixtureIds = _.map(fixtures, val => val._id.toString());
-							return {fixture, roundFixtureIds};
-						})
 					roundFixturesObsCache[roundFixturesKey] = roundFixturesObs;
 				}
-				return roundFixturesObs
+				return roundFixturesObs.map((fixtures: any[]) => {
+					let roundFixtureIds = _.map(fixtures, val => val._id.toString());
+					return {fixture, roundFixtureIds};
+				})
 			})
 			.flatMap((map: any) => {
 				let {fixture, roundFixtureIds} = map;
@@ -48,23 +47,32 @@ class FinishedFixtureDbUpdateHandler {
 						return {user, fixture, prediction}
 					})
 			})
-			// leaderBoards {user, fixture, prediction, leaderboards} forkJoin
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;
-				// getCached
-				let leaderboardKey = fixture.season;
-				let leaderboardObs = leaderboardObsCache[leaderboardKey]
-				if(leaderboardObs == null) {
-					leaderboardObs = leaderboardRepo.findOneBySeasonAndUpdateStatus(fixture.season, "UpdatingScores")
-					leaderboardObsCache[leaderboardKey] = leaderboardObs;
+				let {season, round} = fixture;
+				let seasonBoardKey = season;
+				let seasonBoardObs = leaderboardObsCache[seasonBoardKey]
+				if(seasonBoardObs == null) {
+					seasonBoardObs = leaderboardRepo.findOneBySeasonAndUpdate({season, status: "UpdatingScores"})
+					leaderboardObsCache[seasonBoardKey] = seasonBoardObs;
 				}
-				return leaderboardObs.map((leaderboard: any) => {
-					let boardId = leaderboard._id.toString();
-					if (boardIds.indexOf(boardId) === -1) {
-						boardIds.push(boardId);
-					}
-					return {user, fixture, prediction, leaderboard}
-				})
+				let roundBoardKey = `${season}-${round}`;
+				let roundBoardObs = leaderboardObsCache[roundBoardKey]
+				if(roundBoardObs == null) {
+					roundBoardObs = leaderboardRepo.findOneByRoundAndUpdate({season, round, status: "UpdatingScores"})
+					leaderboardObsCache[roundBoardKey] = roundBoardObs;
+				}
+				return Rx.Observable.forkJoin(seasonBoardObs, roundBoardObs)
+					.flatMap((leaderboards: any[]) => {
+						return Rx.Observable.from(leaderboards);
+					})
+					.map((leaderboard: any) => {
+						let boardId = leaderboard._id.toString();
+						if (boardIds.indexOf(boardId) === -1) {
+							boardIds.push(boardId);
+						}
+						return {user, fixture, prediction, leaderboard}
+        })
 			})
 			.concatMap((map: any) => {
 				let{leaderboard, user, fixture, prediction} = map;
@@ -72,17 +80,17 @@ class FinishedFixtureDbUpdateHandler {
 				let userId = user._id;
 				let predictionId = prediction._id;
 				let scorePoints = prediction.scorePoints.toObject();
-				let {points, goalDiff} = prediction
+				let {points, goalDiff, hasJoker} = prediction
 				let predictionScore = {
 					scorePoints, points, goalDiff
 				}
 				return userScoreRepo.createOrfindOneAndUpdate(
-					leaderboardId, userId, predictionId, predictionScore)
+					leaderboardId, userId, predictionId, predictionScore, hasJoker)
 					.map((status: any) => {
 						return {user, fixture, prediction}
 					})
 			})
-			//.onErrorResumeNext()
+			// handle errors??
 			.subscribe(
 				(map: any) => {
 					let {user, fixture, prediction} = map;

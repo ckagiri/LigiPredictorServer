@@ -81,7 +81,7 @@ export class PredictionRepo {
 			}))
 	}
 		
-	pickJokerFixture = (user: string, currentJoker: IPrediction, newJokerFixtureId: string, autoPicked: boolean, resolve: any, reject: any) => {
+	private pickJokerFixture = (user: string, currentJoker: IPrediction, newJokerFixtureId: string, autoPicked: boolean, resolve: any, reject: any) => {
 		Fixture.findById(newJokerFixtureId, (err, newJokerFixture) => {
 			if(!newJokerFixture) return reject(new Error('Bad'));
 			let {slug: fixtureSlug, season, round, odds} = newJokerFixture;

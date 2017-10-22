@@ -19,10 +19,16 @@ var userScoreSchema = new Schema({
     points: {
         type: Number
     },
+    pointsExcJoker: {
+        type: Number
+    },
     pointsOld: {
         type: Number
     },
     goalDiff: {
+        type: Number
+    },
+    goalDiffExcJoker: {
         type: Number
     },
     goalDiffOld: {

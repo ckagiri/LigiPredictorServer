@@ -3,7 +3,7 @@ import {AbstractRepo} from './repo.abstract';
 import {UserScore, IUserScore} from '../models/user-score.model';
 
 export class UserScoreRepo {
-  createOrfindOneAndUpdate(leaderboardId: string, userId: string, predictionId: string, predictionScore: any) {
+  createOrfindOneAndUpdate(leaderboardId: string, userId: string, predictionId: string, predictionScore: any, hasJoker: boolean) {
     let {points, goalDiff} = predictionScore,
     score: IUserScore = {
       leaderboard: leaderboardId,
@@ -18,6 +18,8 @@ export class UserScoreRepo {
         (err, standing: any) => {
           if(standing == null) {
             score.predictions = [predictionId]
+            score.pointsExcJoker = points;
+            score.goalDiffExcJoker = goalDiff;
             UserScore.create(score, (err: any, result: any) => {
 	            if (err) return reject(err);
               return resolve(result);
@@ -33,11 +35,22 @@ export class UserScoreRepo {
               return resolve(standing)
             }
             standing.points += score.points;
+            standing.pointsExcJoker += score.points
             standing.goalDiff += score.goalDiff;
+            standing.goalDiffExcJoker+= score.goalDiff
+            if(hasJoker && score.points > 0 && score.goalDiff > 0) {
+              standing.points += score.points;
+              standing.goalDiff += score.goalDiff;
+            }
             UserScore.findByIdAndUpdate(
               {_id: standing._id}, 
               {
-                $set: {points: standing.points, goalDiff: standing.goalDiff},
+                $set: {
+                  points: standing.points, 
+                  goalDiff: standing.goalDiff, 
+                  pointsExcJoker: standing.pointsExcJoker,
+                  goalDiffExcJoker: standing.goalDiffExcJoker
+                },
                 $push: {predictions: predictionId}
               },
               (err: any, result: any) => {

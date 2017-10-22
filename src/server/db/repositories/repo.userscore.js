@@ -5,7 +5,7 @@ var user_score_model_1 = require("../models/user-score.model");
 var UserScoreRepo = (function () {
     function UserScoreRepo() {
     }
-    UserScoreRepo.prototype.createOrfindOneAndUpdate = function (leaderboardId, userId, predictionId, predictionScore) {
+    UserScoreRepo.prototype.createOrfindOneAndUpdate = function (leaderboardId, userId, predictionId, predictionScore, hasJoker) {
         var points = predictionScore.points, goalDiff = predictionScore.goalDiff, score = {
             leaderboard: leaderboardId,
             user: userId,
@@ -17,6 +17,8 @@ var UserScoreRepo = (function () {
             user_score_model_1.UserScore.findOne({ leaderboard: leaderboardId, user: userId }, function (err, standing) {
                 if (standing == null) {
                     score.predictions = [predictionId];
+                    score.pointsExcJoker = points;
+                    score.goalDiffExcJoker = goalDiff;
                     user_score_model_1.UserScore.create(score, function (err, result) {
                         if (err)
                             return reject(err);
@@ -34,9 +36,20 @@ var UserScoreRepo = (function () {
                         return resolve(standing);
                     }
                     standing.points += score.points;
+                    standing.pointsExcJoker += score.points;
                     standing.goalDiff += score.goalDiff;
+                    standing.goalDiffExcJoker += score.goalDiff;
+                    if (hasJoker && score.points > 0 && score.goalDiff > 0) {
+                        standing.points += score.points;
+                        standing.goalDiff += score.goalDiff;
+                    }
                     user_score_model_1.UserScore.findByIdAndUpdate({ _id: standing._id }, {
-                        $set: { points: standing.points, goalDiff: standing.goalDiff },
+                        $set: {
+                            points: standing.points,
+                            goalDiff: standing.goalDiff,
+                            pointsExcJoker: standing.pointsExcJoker,
+                            goalDiffExcJoker: standing.goalDiffExcJoker
+                        },
                         $push: { predictions: predictionId }
                     }, function (err, result) {
                         if (err)

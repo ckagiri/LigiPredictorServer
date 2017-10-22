@@ -7,6 +7,8 @@ export interface IUserScore {
 	predictions: [string];
 	points: number;
 	goalDiff: number;
+	pointsExcJoker?: number;
+	goalDiffExcJoker?: number;
 	pointsOld?: number;
 	goalDiffOld?: number;
 	posOld?: number;
@@ -32,10 +34,16 @@ const userScoreSchema = new Schema({
 	points: {
 		type: Number
 	},
+	pointsExcJoker: {
+		type: Number
+	},
 	pointsOld: {
 		type: Number
 	},
 	goalDiff: {
+		type: Number
+	},
+	goalDiffExcJoker: {
 		type: Number
 	},
 	goalDiffOld: {

@@ -15,9 +15,23 @@ class FinishedFixturePublishHandler {
             user, fixture: changedFixture
           })
         })
-        // pickJoker newJoker
+        .flatMap((map:any) => {
+          let {user, fixture} = map; 
+          let {season, round} = fixture;
+          return predictionRepo.pickJoker({user, season, round, pick: roundFixtures})
+            .map((jokerPrediction: any) => {
+              return {
+                user, fixture, jokerPrediction
+              }
+            });
+        })
         .flatMap((map: any) => {
-          let {user, fixture} = map; // if newJokerFixture = fixture resolve else cont
+          let {user, fixture, jokerPrediction} = map; 
+          if (jokerPrediction.fixture.toString() == fixture._id.toString()) {
+            return Rx.Observable.of({
+              user, fixture, prediction:jokerPrediction
+            })
+          }
           return predictionRepo.findOneOrCreate(user, fixture)
             .map((prediction: any) => {
               return {
