@@ -25,12 +25,12 @@ namespace app.core {
         .then(this.success)
         .catch(this.fail);
     }
-    
+
     private success: (response: any) => {} = (response) => response.data;
 
     private fail: (error: any) => {} = (error) => {
-      var msg = error.data.description;
-      var reason = 'query for predictions failed.';
+      var msg = (error.data && error.data.description) || 'Something bad happened' ;
+      var reason = 'request failed.';
       this.exception.catcher(msg)(reason);
       return this.$q.reject(msg);
     }
