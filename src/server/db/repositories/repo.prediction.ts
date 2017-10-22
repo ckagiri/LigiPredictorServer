@@ -18,15 +18,16 @@ export class PredictionRepo {
   }
 
 	findOneOrCreate = (user: string, fixture: any) => {
-		let {_id: fixtureId, slug: fixtureSlug, season, round, odds} = fixture;
-		let query = {user, fixture: fixtureId},
-    		pred = {user, fixture: fixtureId, fixtureSlug, season, round, choice: {}};
-		let matchScores = this.getMatchScores(odds);
-		pred.choice = matchScores;
+		let query = {user, fixture: fixture._id};
 		return Rx.Observable.fromPromise(
 			new Promise((resolve: any, reject: any) => {    
 				Prediction.findOne(query, (err, result) => {
 					if (err) return reject(err);
+					if (result) return resolve(result);
+					let {_id: fixtureId, slug: fixtureSlug, season, round, odds} = fixture;
+					let	pred = {user, fixture: fixtureId, fixtureSlug, season, round, choice: {}};
+					let matchScores = this.getMatchScores(odds);
+					pred.choice = matchScores;
 					Prediction.create(pred, (err: any, result: any) => {
 	          if (err) return reject(err);
 						return resolve(result);

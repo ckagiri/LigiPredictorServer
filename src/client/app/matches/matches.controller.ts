@@ -12,7 +12,7 @@ namespace app.matches {
 			private fixtures: any[],
 			private season: any,
       private logger: blocks.logger.Logger,
-			private Predictions: app.core.IPredictionsResource,
+			private predictionService: app.core.IPredictionService,
 			private vosePredictorFactory: app.matches.VosePredictorFactory,
 			private cache: app.core.ICacheService) {
 				this.currentRound = this.season.currentRound;
@@ -77,18 +77,21 @@ namespace app.matches {
 			}
 		}
 
-		createPredictions = () => {
-			Object.keys(this.predictions).forEach((key: any) => {
-				if(this.predictions[key].vosePredictor != null) {
-					delete this.predictions[key].vosePredictor;
-				}
-			}) 
-			var predictions = this.Predictions.newInstance(this.predictions);
-			predictions.save((response: any) => {
-				this.logger.success('Successfully Saved!');
-			}, (errorResponse: any) => {
-				this.error = errorResponse.data.message;
-			});
+		makePredictions = () => {
+			// Object.keys(this.predictions).forEach((key: any) => {
+			// 	if(this.predictions[key].vosePredictor != null) {
+			// 		delete this.predictions[key].vosePredictor;
+			// 	}
+			// }) 
+			let request:any = {};
+			request.predictions = this.predictions;
+			request.joker = this.predictions
+			this.predictionService.submitPredictions(request)
+				.then((data: any) => {
+					this.logger.success('Successfully Saved!');
+				}, (errorResponse: any) => {
+					this.error = errorResponse.data.message;
+				});
 		};
 
 		score = (match: any, side: string, change: number) => {
@@ -109,10 +112,12 @@ namespace app.matches {
 		};
 
 		pointsClass(points: any) {
-			if(points > 4) {
+			return 'label-success';
+		};
+
+		diffClass(diff: any) {
+			if(diff > -1) {
 				return 'label-success';
-			} else if (points > 1) {
-				return 'label-warning';
 			} else {
 				return 'label-danger';
 			}

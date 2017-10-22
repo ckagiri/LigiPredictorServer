@@ -32,13 +32,13 @@ var fixtureChanged = function (updated, fromDb) {
             return true;
         }
     }
-    return false;
+    return true;
 };
 var FixturesUpdater = (function () {
     function FixturesUpdater() {
     }
     FixturesUpdater.prototype.update = function (callback) {
-        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p1' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n1' })), function (changeYesterday, todayAndTomorrow) {
+        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p2' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n2' })), function (changeYesterday, todayAndTomorrow) {
             changeYesterday = changeYesterday.data.fixtures;
             todayAndTomorrow = todayAndTomorrow.data.fixtures;
             return changeYesterday.concat(todayAndTomorrow);

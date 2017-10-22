@@ -9,7 +9,7 @@
     "tsc:cs": "npm run tsc:client && npm run tsc:server",
     "mongodb": "mongod --dbpath=C:/data/db --port 27017",
     "start": "node src/server/app/server.js",
-    "tsc:cs:start": "npm run tsc:cs && npm run start",
+    "tsc:start": "npm run tsc:cs && npm run start",
     "tsc:c:start": "npm run tsc:client && npm run start",
     "tsc:s:start": "npm run tsc:server && npm run start",
     "start:test": "concurrently \"tsc -p src/server\" \"tsc -p src/client\" && node src/server/app/server.js",

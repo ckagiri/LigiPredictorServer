@@ -74,6 +74,10 @@ var predictionSchema = new Schema({
         type: Boolean,
         default: false
     },
+    jokerAutoPicked: {
+        type: Boolean,
+        default: false
+    },
     status: {
         type: String,
         enum: ['PENDING', 'PROCESSED', 'CANCELLED'],

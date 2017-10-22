@@ -32,6 +32,6 @@ class FinishedFixturePublishHandler {
           prediction.goalDiff = score.goalDiff;
           return Rx.Observable.of({user, fixture, prediction})
         })
-s  }
+    }
 }
 export const finishedFixturePublishHandler = new FinishedFixturePublishHandler();

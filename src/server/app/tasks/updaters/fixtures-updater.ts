@@ -36,8 +36,8 @@ let fixtureChanged = (updated: any, fromDb: any) => {
 class FixturesUpdater {
   update(callback: Function) {
     Rx.Observable.zip(
-      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p1'})),
-      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'n1'})),
+      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p2'})),
+      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'n2'})),
       function (changeYesterday:any, todayAndTomorrow:any) {
         changeYesterday = changeYesterday.data.fixtures;
         todayAndTomorrow = todayAndTomorrow.data.fixtures;

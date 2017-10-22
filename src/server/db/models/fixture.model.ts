@@ -114,6 +114,10 @@ const fixtureSchema = new Schema({
   },
   api_detail: {
     type: Schema.Types.Mixed
+  },
+  allPredictionsProcessed: {
+    type: Boolean,
+    default: false
   }
 });
 

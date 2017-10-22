@@ -4,7 +4,7 @@ var app;
     (function (matches) {
         'use strict';
         var MatchesController = (function () {
-            function MatchesController($q, $state, $stateParams, $scope, fixtures, season, logger, Predictions, vosePredictorFactory, cache) {
+            function MatchesController($q, $state, $stateParams, $scope, fixtures, season, logger, predictionService, vosePredictorFactory, cache) {
                 var _this = this;
                 this.$q = $q;
                 this.$state = $state;
@@ -13,7 +13,7 @@ var app;
                 this.fixtures = fixtures;
                 this.season = season;
                 this.logger = logger;
-                this.Predictions = Predictions;
+                this.predictionService = predictionService;
                 this.vosePredictorFactory = vosePredictorFactory;
                 this.cache = cache;
                 this.title = 'Matches';
@@ -21,14 +21,17 @@ var app;
                 this.luckySpinEnabled = false;
                 this.submitButtonEnabled = false;
                 this.stateKey = 'public.matches';
-                this.createPredictions = function () {
-                    Object.keys(_this.predictions).forEach(function (key) {
-                        if (_this.predictions[key].vosePredictor != null) {
-                            delete _this.predictions[key].vosePredictor;
-                        }
-                    });
-                    var predictions = _this.Predictions.newInstance(_this.predictions);
-                    predictions.save(function (response) {
+                this.makePredictions = function () {
+                    // Object.keys(this.predictions).forEach((key: any) => {
+                    // 	if(this.predictions[key].vosePredictor != null) {
+                    // 		delete this.predictions[key].vosePredictor;
+                    // 	}
+                    // }) 
+                    var request = {};
+                    request.predictions = _this.predictions;
+                    request.joker = _this.predictions;
+                    _this.predictionService.submitPredictions(request)
+                        .then(function (data) {
                         _this.logger.success('Successfully Saved!');
                     }, function (errorResponse) {
                         _this.error = errorResponse.data.message;
@@ -108,11 +111,12 @@ var app;
                 }
             };
             MatchesController.prototype.pointsClass = function (points) {
-                if (points > 4) {
+                return 'label-success';
+            };
+            ;
+            MatchesController.prototype.diffClass = function (diff) {
+                if (diff > -1) {
                     return 'label-success';
-                }
-                else if (points > 1) {
-                    return 'label-warning';
                 }
                 else {
                     return 'label-danger';
