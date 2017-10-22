@@ -32,7 +32,7 @@ var fixtureChanged = function (updated, fromDb) {
             return true;
         }
     }
-    return true;
+    return false;
 };
 var FixturesUpdater = (function () {
     function FixturesUpdater() {

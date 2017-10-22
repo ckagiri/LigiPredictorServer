@@ -21,7 +21,7 @@ var PredictionController = (function () {
         });
     };
     PredictionController.prototype.create = function (req, res) {
-        var predictionsDict = req.body;
+        var predictionsDict = req.body.predictions;
         var errors = [];
         var user = req['user'];
         var reqPredictions = Object.keys(predictionsDict).map(function (key) {
@@ -73,10 +73,24 @@ var PredictionController = (function () {
             res.status(500).json(err);
         });
     };
+    PredictionController.prototype.pickJoker = function (req, res) {
+        var selectedFixture = req.body.fixture;
+        var user = req['user'];
+        var pick = selectedFixture._id, season = selectedFixture.season, round = selectedFixture.round;
+        var options = {
+            user: user, season: season, round: round, pick: pick
+        };
+        predictionRepo.pickJoker(options)
+            .subscribe(function (joker) {
+            res.status(200).json(joker);
+        }, function (err) {
+            res.status(500).json(err);
+        });
+    };
     PredictionController.prototype.mine = function (req, res) {
         fixtureRepo.findAll()
-            .subscribe(function (leagues) {
-            res.status(200).json(leagues);
+            .subscribe(function (fixtures) {
+            res.status(200).json(fixtures);
         }, function (err) {
             res.status(500).json(err);
         });

@@ -23,7 +23,7 @@ export class PredictionController {
   }
 
 	create(req: Request, res: Response) {
-		let predictionsDict = req.body;
+		let predictionsDict = req.body.predictions;
 		let errors: string[] = [];
 		let user = req['user'];
 		var reqPredictions = Object.keys(predictionsDict).map((key) => {
@@ -76,10 +76,25 @@ export class PredictionController {
     		});
 	}
 
+	pickJoker(req: Request, res: Response) {
+		let selectedFixture:any = req.body.fixture;
+		let user = req['user'];
+		let {_id: pick, season, round} = selectedFixture;
+		let options = {
+			user, season, round, pick
+		}
+		predictionRepo.pickJoker(options)
+				.subscribe((joker: any) => {
+					res.status(200).json(joker);
+				}, (err: any) => {
+					res.status(500).json(err);
+    		});
+	}
+
 	mine(req: Request, res: Response) {
 		fixtureRepo.findAll()
-			.subscribe((leagues: any[]) => {
-					res.status(200).json(leagues);
+			.subscribe((fixtures: any[]) => {
+					res.status(200).json(fixtures);
 				}, (err: any) => {
 					res.status(500).json(err);
     		});

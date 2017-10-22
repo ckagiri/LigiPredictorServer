@@ -2,7 +2,7 @@ namespace app.core {
   'use strict';
 
   export interface IPredictionService {
-    getPredictions: () => ng.IPromise<number>;
+    pickJoker: (fixture: any) => ng.IPromise<any>;
     submitPredictions: (req:any) => ng.IPromise<any>;
   }
 
@@ -20,8 +20,8 @@ namespace app.core {
         .catch(this.fail)
     }
 
-    getPredictions: () => ng.IPromise<any> = () =>
-      this.$http.get('/api/predictions')
+    pickJoker: (fixture: any) => ng.IPromise<any> = (fixture) =>
+      this.$http.post('/api/predictions/pick-joker', fixture)
         .then(this.success)
         .catch(this.fail);
 

@@ -22,7 +22,7 @@ namespace app.matches {
 				this.matchday = matchday;
 				this.onDestroy();
 				this.restoreState();
-				this.init()
+				this.refresh()
     }
 
 		title: string = 'Matches';
@@ -34,9 +34,10 @@ namespace app.matches {
 		currentRound: number;
 		luckySpinEnabled = false;
 		submitButtonEnabled = false;
-		stateKey:string = 'public.matches';
+		stateKey: string = 'public.matches';
+    jokerChosen: string = "";
 
-		private init() {
+		private refresh() {
 			for(let match of this.fixtures) {
 				let choice = match.prediction.choice || {}
 				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
@@ -74,15 +75,13 @@ namespace app.matches {
 				} else {
 					match.choice = choice;
 				}
+				// if (match.prediction.hasJoker) {
+				// 	this.jokerChosen = "chosen";
+				// }
 			}
 		}
 
 		makePredictions = () => {
-			// Object.keys(this.predictions).forEach((key: any) => {
-			// 	if(this.predictions[key].vosePredictor != null) {
-			// 		delete this.predictions[key].vosePredictor;
-			// 	}
-			// }) 
 			let request:any = {};
 			request.predictions = this.predictions;
 			request.joker = this.predictions
@@ -193,7 +192,20 @@ namespace app.matches {
 				this.cache.put(this.stateKey, state);
 			});
 		}
+
+		jokerChange(fixture: any) {
+			this.predictionService.pickJoker(fixture).then(data => {
+				angular.forEach(this.fixtures, (value, key) => {
+					if (fixture != value) {
+						value.prediction.hasJoker = false;
+					}
+				})
+			}).catch(() => {
+				console.log('bad')
+			})
+		}
 	}
+
 	angular
     .module('app.matches')
     .controller('MatchesController', MatchesController);

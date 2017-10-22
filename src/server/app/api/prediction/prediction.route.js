@@ -10,6 +10,7 @@ var PredictionRouter = (function () {
     Object.defineProperty(PredictionRouter.prototype, "routes", {
         get: function () {
             router.get('/mine', this.controller.list);
+            router.post('/pick-joker', this.controller.pickJoker);
             router.get('/:id', this.controller.show);
             router.post('/', this.controller.create);
             return router;

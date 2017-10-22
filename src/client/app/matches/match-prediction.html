@@ -31,6 +31,14 @@
     </div>   
     <div class="row" ng-if="fixture.result">
         <div class="col-xs-12">
+            <span class="joker-container {{vm.jokerChosen}}">
+                <label>
+                    <input type="radio" name="joker" ng-model="fixture.prediction.hasJoker" ng-if="fixture.prediction.hasJoker == true" ng-change="vm.jokerChange(fixture)" ng-value="true" checked>
+                    <input type="radio" name="joker" ng-model="fixture.prediction.hasJoker" ng-if="!fixture.prediction.hasJoker == true" ng-change="vm.jokerChange(fixture)" ng-value="true">
+                    <img ng-if="!fixture.prediction.hasJoker == true" src="../../images/joker13.svg" alt="JOKER" />
+                    <img ng-if="fixture.prediction.hasJoker == true" src="../../images/joker14.svg" alt="JOKER PICK" />
+                </label>
+            </span>
             <span class="label" ng-class=vm.pointsClass(fixture.prediction.points)>Points {{fixture.prediction.points || 0}}</span>
             <span class="label" ng-class=vm.diffClass(fixture.prediction.goalDiff)>Gd {{fixture.prediction.goalDiff}}</span>
         </div>

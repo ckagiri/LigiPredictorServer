@@ -21,12 +21,8 @@ var app;
                 this.luckySpinEnabled = false;
                 this.submitButtonEnabled = false;
                 this.stateKey = 'public.matches';
+                this.jokerChosen = "";
                 this.makePredictions = function () {
-                    // Object.keys(this.predictions).forEach((key: any) => {
-                    // 	if(this.predictions[key].vosePredictor != null) {
-                    // 		delete this.predictions[key].vosePredictor;
-                    // 	}
-                    // }) 
                     var request = {};
                     request.predictions = _this.predictions;
                     request.joker = _this.predictions;
@@ -60,9 +56,9 @@ var app;
                 this.matchday = matchday;
                 this.onDestroy();
                 this.restoreState();
-                this.init();
+                this.refresh();
             }
-            MatchesController.prototype.init = function () {
+            MatchesController.prototype.refresh = function () {
                 var _this = this;
                 var _loop_1 = function (match) {
                     var choice = match.prediction.choice || {};
@@ -103,6 +99,9 @@ var app;
                     else {
                         match.choice = choice;
                     }
+                    // if (match.prediction.hasJoker) {
+                    // 	this.jokerChosen = "chosen";
+                    // }
                 };
                 var this_1 = this;
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
@@ -189,6 +188,18 @@ var app;
                         round: _this.matchday
                     };
                     _this.cache.put(_this.stateKey, state);
+                });
+            };
+            MatchesController.prototype.jokerChange = function (fixture) {
+                var _this = this;
+                this.predictionService.pickJoker(fixture).then(function (data) {
+                    angular.forEach(_this.fixtures, function (value, key) {
+                        if (fixture != value) {
+                            value.prediction.hasJoker = false;
+                        }
+                    });
+                }).catch(function () {
+                    console.log('bad');
                 });
             };
             return MatchesController;

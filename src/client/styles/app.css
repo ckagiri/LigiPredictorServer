@@ -207,3 +207,29 @@ input[type=number]::-webkit-outer-spin-button {
 .grey {
 	background-color: #666666;
 }
+
+.joker-container {
+  width: 15.25424%;
+  float: right;
+  margin-right: 0;
+  padding: 5px 0;
+  height: 66px;
+}
+.joker-container.chosen {
+  pointer-events: none;
+}
+.joker-container img {.......................................... ....T..O.0......... I.[..........K.L. .
+...7...]
+  margin: 15px 0;
+  height: 50px;
+  opacity: 0.3;
+  cursor: pointer;
+  transform: rotate(10deg);
+}
+.joker-container input[type=radio] {
+  display: none;
+}
+.joker-container input[type=radio]:checked ~ img {
+  opacity: 1;
+}
+
