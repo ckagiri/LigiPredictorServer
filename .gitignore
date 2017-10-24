@@ -48,8 +48,8 @@ testem.log
 
 # compiled output
 .tmp
-src/**/*.map
-src/**/*.js
+#src/**/*.map
+#src/**/*.js
 #build
 
 # testing
