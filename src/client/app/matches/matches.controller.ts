@@ -35,13 +35,17 @@ namespace app.matches {
 		luckySpinEnabled = false;
 		submitButtonEnabled = false;
 		stateKey: string = 'public.matches';
-    jokerChosen: string = "";
+    jokerChosen: string = "chosen";
+		hasJoker: boolean = false;
 		totalPoints: number = 0;
 		totalGoalDiff: number = 0;
 		private refresh() {
 			for(let match of this.fixtures) {
 				let choice = match.prediction.choice || {}
 				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
+					if (this.jokerChosen === "chosen" && !this.hasJoker) {
+						this.jokerChosen = "";
+					}
 					if(choice.isComputerGenerated || choice.isComputerGenerated == null) {
 						let odds = match.odds;
 						if (odds == null) {
@@ -80,6 +84,7 @@ namespace app.matches {
 				this.totalGoalDiff += match.prediction.goalDiff || 0;
 				if(match.prediction.hasJoker) {
 					this.jokerChosen = "chosen";
+					this.hasJoker = true;
 					if(match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
 						this.totalPoints += match.prediction.points || 0;
 						this.totalGoalDiff += match.prediction.goalDiff || 0;

@@ -22,9 +22,12 @@ var PredictionController = (function () {
         });
     };
     PredictionController.prototype.create = function (req, res) {
+        if (req['user'] == null) {
+            res.status(500).json({ error: 'Unauthenticated' });
+        }
         var predictionsDict = req.body.predictions;
-        var errors = [];
         var user = req['user'];
+        var errors = [];
         var reqPredictions = Object.keys(predictionsDict).map(function (key) {
             return {
                 _id: predictionsDict[key]._id,
@@ -76,6 +79,9 @@ var PredictionController = (function () {
         });
     };
     PredictionController.prototype.pickJoker = function (req, res) {
+        if (req['user'] == null) {
+            res.status(500).json({ error: 'Unauthenticated' });
+        }
         var selectedFixture = req.body;
         var user = req['user']._id;
         var pick = selectedFixture._id, season = selectedFixture.season, round = selectedFixture.round;

@@ -21,7 +21,8 @@ var app;
                 this.luckySpinEnabled = false;
                 this.submitButtonEnabled = false;
                 this.stateKey = 'public.matches';
-                this.jokerChosen = "";
+                this.jokerChosen = "chosen";
+                this.hasJoker = false;
                 this.totalPoints = 0;
                 this.totalGoalDiff = 0;
                 this.makePredictions = function () {
@@ -77,6 +78,9 @@ var app;
                 var _loop_1 = function (match) {
                     var choice = match.prediction.choice || {};
                     if (match.status == 'SCHEDULED' || match.status == 'TIMED') {
+                        if (this_1.jokerChosen === "chosen" && !this_1.hasJoker) {
+                            this_1.jokerChosen = "";
+                        }
                         if (choice.isComputerGenerated || choice.isComputerGenerated == null) {
                             var odds = match.odds;
                             if (odds == null) {
@@ -117,6 +121,7 @@ var app;
                     this_1.totalGoalDiff += match.prediction.goalDiff || 0;
                     if (match.prediction.hasJoker) {
                         this_1.jokerChosen = "chosen";
+                        this_1.hasJoker = true;
                         if (match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
                             this_1.totalPoints += match.prediction.points || 0;
                             this_1.totalGoalDiff += match.prediction.goalDiff || 0;

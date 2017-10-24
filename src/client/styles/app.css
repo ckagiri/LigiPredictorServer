@@ -209,8 +209,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .joker-container {
-  width: 15.25424%;
-  float: right;
   margin-right: 0;
   padding: 5px 0;
   height: 66px;

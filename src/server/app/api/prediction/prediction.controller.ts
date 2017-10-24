@@ -23,10 +23,13 @@ export class PredictionController {
   }
 
 	create(req: Request, res: Response) {
+		if(req['user'] == null) {
+			res.status(500).json({error: 'Unauthenticated'})
+		}
 		let predictionsDict = req.body.predictions;
-		let errors: string[] = [];
 		let user = req['user'];
-		var reqPredictions = Object.keys(predictionsDict).map((key) => {
+		let errors: string[] = [];
+		let reqPredictions = Object.keys(predictionsDict).map((key) => {
 			return {
 				_id: predictionsDict[key]._id,
 				fixture: key, 
@@ -77,6 +80,9 @@ export class PredictionController {
 	}
 
 	pickJoker(req: Request, res: Response) {
+		if(req['user'] == null) {
+			res.status(500).json({error: 'Unauthenticated'})
+		}
 		let selectedFixture:any = req.body;
 		let user = req['user']._id;
 		let {_id: pick, season, round} = selectedFixture;
