@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = require("lodash");
 var repositories_1 = require("../../../db/repositories");
 var ligi_predictor_1 = require("../../../db/converters/ligi-predictor");
 var Rx = require("rxjs");
@@ -49,25 +50,26 @@ var PredictionController = (function () {
                 };
             });
         })
-            .switchMap(function (map) {
+            .flatMap(function (map) {
             var fixture = map.fixture, reqPrediction = map.reqPrediction;
-            return predictionRepo.findOneAndUpdateOrCreate(user._id, fixture, reqPrediction.choice)
-                .map(function (prediction) {
-                return prediction;
-            })
-                .catch(function (error) {
-                return Rx.Observable.of(error);
-            });
-        }).map(function (prediction) {
-            if (prediction instanceof Error) {
-                var message = "Error: " + (prediction.message || 'damn');
-                errors.push(message);
-                return message;
+            var observable;
+            if (fixture.status != 'SCHEDULED' && fixture.status != 'TIMED') {
+                observable = Rx.Observable.throw(new Error(fixture.slug + ": is not scheduled"));
             }
-            return prediction;
+            else {
+                observable = predictionRepo.findOneAndUpdateOrCreate(user._id, fixture, reqPrediction.choice);
+            }
+            return observable.map(function (prediction) { return prediction; })
+                .catch(function (error) {
+                var message = "Error: " + (error.message || 'damn');
+                errors.push(message);
+                console.log("Caught Error, continuing");
+                return Rx.Observable.empty();
+            });
         })
-            .subscribe(function (predictions) {
-            //do joker
+            .toArray()
+            .subscribe(function (preds) {
+            var predictions = _.filter(preds, function (p) { return p !== null; });
             res.status(200).json(predictions);
         }, function (err) {
             res.status(500).json(err);

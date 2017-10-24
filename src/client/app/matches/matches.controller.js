@@ -25,11 +25,23 @@ var app;
                 this.totalPoints = 0;
                 this.totalGoalDiff = 0;
                 this.makePredictions = function () {
-                    var request = {};
-                    request.predictions = _this.predictions;
-                    request.joker = _this.predictions;
+                    if (Object.keys(_this.predictions).length == 0)
+                        return;
+                    var request = {
+                        predictions: _this.predictions
+                    };
                     _this.predictionService.submitPredictions(request)
-                        .then(function (data) {
+                        .then(function (predictions) {
+                        for (var _i = 0, predictions_1 = predictions; _i < predictions_1.length; _i++) {
+                            var p = predictions_1[_i];
+                            for (var _a = 0, _b = _this.fixtures; _a < _b.length; _a++) {
+                                var f = _b[_a];
+                                if (p.fixture == f._id) {
+                                    delete f['vosePredictor'];
+                                    delete f['predict'];
+                                }
+                            }
+                        }
                         _this.logger.success('Successfully Saved!');
                     }, function (errorResponse) {
                         _this.error = errorResponse.data.message;
@@ -160,7 +172,7 @@ var app;
             MatchesController.prototype.luckySpin = function () {
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
                     var match = _a[_i];
-                    if (match.predict != null) {
+                    if (match.vosePredictor != null) {
                         match.predict();
                     }
                 }

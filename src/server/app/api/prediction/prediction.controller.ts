@@ -51,26 +51,26 @@ export class PredictionController {
 						}
 					});
 			})
-			.switchMap((map: any) => {
+			.flatMap((map: any) => {
 				let {fixture, reqPrediction} = map;
-				return predictionRepo.findOneAndUpdateOrCreate(user._id, fixture, reqPrediction.choice)
-            .map(prediction => {
-                return prediction;
-            })
-            .catch(error => {
-							return Rx.Observable.of(error);
-            });
-			}).map(prediction => {
-        if (prediction instanceof Error) {
-					let message = `Error: ${prediction.message || 'damn'}`
+				let observable: any;
+				if(fixture.status != 'SCHEDULED' && fixture.status != 'TIMED') {
+					observable = Rx.Observable.throw(new Error(`${fixture.slug}: is not scheduled`))
+				} else {
+					observable =  predictionRepo.findOneAndUpdateOrCreate(user._id, fixture, reqPrediction.choice)
+				}
+        return observable.map((prediction:any) => prediction)
+					.catch((error:any) => {
+						let message = `Error: ${error.message || 'damn'}`
 						errors.push(message)
-            return message;
-        }
-        return prediction;
-    	})
-			.subscribe((predictions: any[]) => {
-				//do joker
-					res.status(200).json(predictions);
+						console.log("Caught Error, continuing")
+						return  Rx.Observable.empty();
+					});
+			})
+			.toArray()
+			.subscribe((preds: any[]) => {
+				let predictions = _.filter(preds, p => p !== null);
+				res.status(200).json(predictions);
 				}, (err: any) => {
 					res.status(500).json(err);
     		});

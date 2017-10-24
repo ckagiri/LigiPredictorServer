@@ -89,11 +89,20 @@ namespace app.matches {
 		}
 
 		makePredictions = () => {
-			let request:any = {};
-			request.predictions = this.predictions;
-			request.joker = this.predictions
-			this.predictionService.submitPredictions(request)
-				.then((data: any) => {
+ 			if(Object.keys(this.predictions).length == 0) return;
+			let request = {
+				predictions: this.predictions
+			}
+ 			this.predictionService.submitPredictions(request)
+				.then((predictions: any) => {
+					for(let p of predictions) {
+						for(let f of this.fixtures){
+							if(p.fixture == f._id) {
+								delete f['vosePredictor'];
+								delete f['predict'];
+							}
+						}
+					}
 					this.logger.success('Successfully Saved!');
 				}, (errorResponse: any) => {
 					this.error = errorResponse.data.message;
@@ -163,7 +172,7 @@ namespace app.matches {
 
 		luckySpin() {
 			for(let match of this.fixtures) {
-				if(match.predict != null) {
+				if(match.vosePredictor != null) {
 					match.predict();
 				}
 			}
