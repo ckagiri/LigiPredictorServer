@@ -50,7 +50,7 @@ testem.log
 .tmp
 src/**/*.map
 src/**/*.js
-build
+#build
 
 # testing
 **/test/coverage
