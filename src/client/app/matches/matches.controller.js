@@ -45,7 +45,7 @@ var app;
                         }
                         _this.logger.success('Successfully Saved!');
                     }, function (errorResponse) {
-                        _this.error = errorResponse.data.message;
+                        console.log(errorResponse);
                     });
                 };
                 this.score = function (match, side, change) {

@@ -110,7 +110,7 @@ namespace app.matches {
 					}
 					this.logger.success('Successfully Saved!');
 				}, (errorResponse: any) => {
-					this.error = errorResponse.data.message;
+						console.log(errorResponse)
 				});
 		};
 
