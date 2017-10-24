@@ -21,8 +21,7 @@ var app;
                 this.luckySpinEnabled = false;
                 this.submitButtonEnabled = false;
                 this.stateKey = 'public.matches';
-                this.jokerChosen = "chosen";
-                this.hasJoker = false;
+                this.jokerChosen = "";
                 this.totalPoints = 0;
                 this.totalGoalDiff = 0;
                 this.makePredictions = function () {
@@ -75,12 +74,11 @@ var app;
             }
             MatchesController.prototype.refresh = function () {
                 var _this = this;
+                var hasOneAvailableFixture = false;
                 var _loop_1 = function (match) {
                     var choice = match.prediction.choice || {};
                     if (match.status == 'SCHEDULED' || match.status == 'TIMED') {
-                        if (this_1.jokerChosen === "chosen" && !this_1.hasJoker) {
-                            this_1.jokerChosen = "";
-                        }
+                        hasOneAvailableFixture = true;
                         if (choice.isComputerGenerated || choice.isComputerGenerated == null) {
                             var odds = match.odds;
                             if (odds == null) {
@@ -116,22 +114,24 @@ var app;
                     }
                     else {
                         match.choice = choice;
+                        if (match.prediction.hasJoker) {
+                            this_1.jokerChosen = "chosen";
+                        }
                     }
                     this_1.totalPoints += match.prediction.points || 0;
                     this_1.totalGoalDiff += match.prediction.goalDiff || 0;
-                    if (match.prediction.hasJoker) {
-                        this_1.jokerChosen = "chosen";
-                        this_1.hasJoker = true;
-                        if (match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
-                            this_1.totalPoints += match.prediction.points || 0;
-                            this_1.totalGoalDiff += match.prediction.goalDiff || 0;
-                        }
+                    if (match.prediction.hasJoker && match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
+                        this_1.totalPoints += match.prediction.points || 0;
+                        this_1.totalGoalDiff += match.prediction.goalDiff || 0;
                     }
                 };
                 var this_1 = this;
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
                     var match = _a[_i];
                     _loop_1(match);
+                }
+                if (!hasOneAvailableFixture) {
+                    this.jokerChosen = "chosen";
                 }
             };
             MatchesController.prototype.pointsClass = function (fixture) {
