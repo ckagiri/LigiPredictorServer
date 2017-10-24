@@ -77,7 +77,14 @@ namespace app.matches {
 					match.choice = choice;
 				}
 				this.totalPoints += match.prediction.points || 0;
-				this.totalGoalDiff += match.prediction.goalDiff || 0
+				this.totalGoalDiff += match.prediction.goalDiff || 0;
+				if(match.prediction.hasJoker) {
+					this.jokerChosen = "chosen";
+					if(match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
+						this.totalPoints += match.prediction.points || 0;
+						this.totalGoalDiff += match.prediction.goalDiff || 0;
+					}
+				}
 			}
 		}
 
@@ -110,14 +117,22 @@ namespace app.matches {
 			match.choice['goals'+side+'Team'] = goals || 0;
 		};
 
-		pointsClass(points: number) {
+		pointsClass(fixture: any) {
+			if(fixture.status === 'IN_PLAY') {
+				return 'label-warning';
+			}
+			let points = fixture.prediction.points;
 			if(points > 0) {
 				return 'label-success';
 			}
 			return 'label-default';
 		}
 
-		diffClass(diff: number) {
+		diffClass(fixture: any) {
+			if(fixture.status === 'IN_PLAY') {
+				return 'label-warning';
+			}
+			let diff = fixture.prediction.goalDiff;
 			if(diff > 0) {
 				return 'label-success';
 			} 

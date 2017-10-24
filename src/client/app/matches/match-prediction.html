@@ -51,8 +51,8 @@
                     <img ng-if="fixture.prediction.hasJoker == true" src="../../images/joker14.svg" alt="JOKER PICK" />
                 </label>
             </span>
-            <span class="label" ng-class=vm.pointsClass(fixture.prediction.points)>Points {{fixture.prediction.points || 0}}</span>
-            <span class="label" ng-class=vm.diffClass(fixture.prediction.goalDiff)>Gd <span ng-if="fixture.prediction.goalDiff > 0">+</span>{{fixture.prediction.goalDiff || 0}}</span>
+            <span class="label" ng-class=vm.pointsClass(fixture)>Points {{fixture.prediction.points || 0}}</span>
+            <span class="label" ng-class=vm.diffClass(fixture)>Gd <span ng-if="fixture.prediction.goalDiff > 0">+</span>{{fixture.prediction.goalDiff || 0}}</span>
         </div>
     </div> 
 </div>

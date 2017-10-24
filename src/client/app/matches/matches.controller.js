@@ -103,6 +103,13 @@ var app;
                     }
                     this_1.totalPoints += match.prediction.points || 0;
                     this_1.totalGoalDiff += match.prediction.goalDiff || 0;
+                    if (match.prediction.hasJoker) {
+                        this_1.jokerChosen = "chosen";
+                        if (match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
+                            this_1.totalPoints += match.prediction.points || 0;
+                            this_1.totalGoalDiff += match.prediction.goalDiff || 0;
+                        }
+                    }
                 };
                 var this_1 = this;
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
@@ -110,13 +117,21 @@ var app;
                     _loop_1(match);
                 }
             };
-            MatchesController.prototype.pointsClass = function (points) {
+            MatchesController.prototype.pointsClass = function (fixture) {
+                if (fixture.status === 'IN_PLAY') {
+                    return 'label-warning';
+                }
+                var points = fixture.prediction.points;
                 if (points > 0) {
                     return 'label-success';
                 }
                 return 'label-default';
             };
-            MatchesController.prototype.diffClass = function (diff) {
+            MatchesController.prototype.diffClass = function (fixture) {
+                if (fixture.status === 'IN_PLAY') {
+                    return 'label-warning';
+                }
+                var diff = fixture.prediction.goalDiff;
                 if (diff > 0) {
                     return 'label-success';
                 }

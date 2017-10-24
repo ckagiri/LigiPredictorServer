@@ -4,6 +4,7 @@ var Rx = require("rxjs");
 var _ = require("lodash");
 var common_1 = require("../common");
 var finishedFixture_dbupdate_1 = require("../handlers/finishedFixture-dbupdate");
+var unfinishedFixture_dbupdate_1 = require("../handlers/unfinishedFixture-dbupdate");
 var Moment = require('moment');
 var apiDetailIdKey = common_1.fixtureRepo.apiDetailIdKey();
 var createIdToFixtureMap = function (fixtures) {
@@ -32,7 +33,34 @@ var fixtureChanged = function (updated, fromDb) {
             return true;
         }
     }
-    return true;
+    return false;
+};
+var calculateNextFixtureUpdateTime = function (fixtures, callback) {
+    var fixtureLive = false;
+    var now = Moment();
+    var next = Moment().add(1, 'year');
+    for (var _i = 0, fixtures_2 = fixtures; _i < fixtures_2.length; _i++) {
+        var fixture = fixtures_2[_i];
+        if (fixture || fixture.status == "IN_PLAY") {
+            fixtureLive = true;
+        }
+        else if (fixture.status == "TIMED") {
+            // Parse fixture start date/time
+            var fixtureStart = Moment(fixture.date);
+            if (fixtureStart > now && fixtureStart < next) {
+                next = fixtureStart;
+            }
+        }
+    }
+    var tomorrow = Moment().add(1, 'day');
+    var update = next;
+    if (fixtureLive) {
+        update = Moment().add(5, 'minutes');
+    }
+    else if (next > tomorrow) {
+        update = Moment().add(12, 'hours');
+    }
+    callback(update);
 };
 var FixturesUpdater = (function () {
     function FixturesUpdater() {
@@ -64,14 +92,14 @@ var FixturesUpdater = (function () {
                 var newFixture = idToFixtureMap[dbFixtureId];
                 if (fixtureChanged(newFixture, dbFixture)) {
                     newFixture._id = dbFixture._id;
-                    console.log('fixtureChanged');
-                    console.log(newFixture);
                     changedFixtures.push(newFixture);
                 }
             }
             var finishedFixtures = _.filter(changedFixtures, { status: 'FINISHED' });
+            var unfishedFixtures = _.filter(changedFixtures, function (f) { return f.status !== 'FINISHED'; });
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
-            callback(Moment().add(15, 'minutes'));
+            unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
+            calculateNextFixtureUpdateTime(changedFixtures, callback);
         });
     };
     return FixturesUpdater;

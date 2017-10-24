@@ -1,5 +1,6 @@
 import {seasonRepo} from '../common'
 import * as Rx from 'rxjs'
+import * as _ from 'lodash';
 
 let createIdToSeasonMap = (seasons: any[]) => {
 	let map = {};
@@ -14,6 +15,9 @@ class SeasonUpdateHandler {
 		let idToCompMap = createIdToSeasonMap(seasons);
 		let apiIds = [];
 		for (let season of seasons) {
+			if (season.id !== 445) {
+				continue;
+			}  
 			apiIds.push(season.id);
 		}
 		seasonRepo.getByApiIds(apiIds)
@@ -22,7 +26,8 @@ class SeasonUpdateHandler {
 			})
 			.subscribe((season: any) => {
 				let apiDetailIdKey = seasonRepo.apiDetailIdKey();
-				let newCurrentRound = idToCompMap[apiDetailIdKey].currentRound;
+				let compId = _.get(season, apiDetailIdKey, '');
+				let newCurrentRound = idToCompMap[compId].currentMatchday;
 				if (season.currentRound !== newCurrentRound) {
 					Rx.Observable.fromPromise(seasonRepo.updateCurrentRound(season._id, newCurrentRound))
 						.subscribe(() => {
@@ -34,3 +39,5 @@ class SeasonUpdateHandler {
 			})
 	}
 }
+
+export const seasonUpdateHandler = new SeasonUpdateHandler()

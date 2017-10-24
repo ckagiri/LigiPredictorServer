@@ -1,5 +1,5 @@
 <section>
-  <form data-ng-submit="vm.createPredictions()" novalidate>
+  <form data-ng-submit="vm.makePredictions()" novalidate>
     <div class="row">
       <div class="col-md-8 col-md-offset-1 score-container date-picker">
         <div class="btn-group">
@@ -9,7 +9,7 @@
         </div>
       </div>
     </div>
-    <div class="row" class="" ng-repeat="fixture in vm.fixtures">
+    <div class="row" class="" ng-repeat="fixture in vm.fixtures | orderBy:'date'">
       <div class="col-md-8 col-md-offset-1 score-container">
         <div class="row text-center">
           <div class="col-xs-12 date">{{fixture.date | date:'EEEE MMMM d y, h:mma'}}</div>

@@ -22,7 +22,7 @@ var FixtureRepo = (function (_super) {
     };
     FixtureRepo.prototype.findAllBySeasonRound = function (seasonId, round) {
         var query = { $and: [{ 'season': seasonId }, { round: round }] };
-        return this.findAll(query);
+        return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.getByApiIds = function (apiIds) {
         var apiDetailIdKey = this.apiDetailIdKey();

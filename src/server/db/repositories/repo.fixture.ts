@@ -13,7 +13,7 @@ export class FixtureRepo extends AbstractRepo {
 
 	findAllBySeasonRound(seasonId: string, round: number) {
 		let query = {$and: [{'season': seasonId}, {round}]}
-		return this.findAll(query)
+		return this.findAll(query, null, {sort: 'date'})
 	}
 
 	getByApiIds(apiIds: string[]) {

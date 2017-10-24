@@ -2,6 +2,7 @@ import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 import {client, fixtureRepo} from '../common'
 import {finishedFixtureDbUpdateHandler} from '../handlers/finishedFixture-dbupdate';
+import {unfinishedFixtureDbUpdateHandler} from '../handlers/unfinishedFixture-dbupdate';
 
 let Moment = require('moment');
 let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
@@ -33,6 +34,32 @@ let fixtureChanged = (updated: any, fromDb: any) => {
   }
   return false;
 }
+
+let calculateNextFixtureUpdateTime = (fixtures: any, callback: Function) => {
+  let fixtureLive = false;
+  let now = Moment();
+  let next = Moment().add(1, 'year');
+  for(let fixture of fixtures) {
+    if (fixture || fixture.status == "IN_PLAY") {
+      fixtureLive = true;
+    } else if (fixture.status == "TIMED") {
+      // Parse fixture start date/time
+      let fixtureStart = Moment(fixture.date);
+      if (fixtureStart > now && fixtureStart < next) {
+        next = fixtureStart;
+      }
+    }
+  }
+  let tomorrow = Moment().add(1, 'day');
+  let update = next;
+  if (fixtureLive) {
+    update = Moment().add(5, 'minutes');
+  } else if (next > tomorrow) {
+    update = Moment().add(12, 'hours');
+  }
+  callback(update);
+}
+
 class FixturesUpdater {
   update(callback: Function) {
     Rx.Observable.zip(
@@ -63,14 +90,14 @@ class FixturesUpdater {
         let newFixture = idToFixtureMap[dbFixtureId];
         if (fixtureChanged(newFixture, dbFixture)) {
             newFixture._id = dbFixture._id;
-            console.log('fixtureChanged')
-            console.log(newFixture);
             changedFixtures.push(newFixture);
         }
       }
       let finishedFixtures = _.filter(changedFixtures, {status: 'FINISHED'});
+      let unfishedFixtures = _.filter(changedFixtures, f => f.status !== 'FINISHED' );
       finishedFixtureDbUpdateHandler.handle(finishedFixtures);
-      callback(Moment().add(15, 'minutes')); 
+      unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
+      calculateNextFixtureUpdateTime(changedFixtures, callback)
     })
   }
 }

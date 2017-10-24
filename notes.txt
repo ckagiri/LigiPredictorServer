@@ -1,0 +1,14 @@
+* 202 --- it's all good
+* 400 --- bad request
+* 404 --- prediction fixture doesn't exist
+* 408 --- sending prediction after time lock
+* 409 --- trying to "change" a prediction
+
+ 408 if (moment().add(1, 'minutes').isAfter(moment(result.rows[0].fixture_time)) 
+ joi validation
+ INSERT INTO predictions; status(error === null ? 202 : 409)
+
+after res.send
+ process.nextTick(function () {
+			updateFormsTasks(finishedFixtures);
+		});

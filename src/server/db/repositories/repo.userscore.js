@@ -39,7 +39,7 @@ var UserScoreRepo = (function () {
                     standing.pointsExcJoker += score.points;
                     standing.goalDiff += score.goalDiff;
                     standing.goalDiffExcJoker += score.goalDiff;
-                    if (hasJoker && score.points > 0 && score.goalDiff > 0) {
+                    if (hasJoker && score.goalDiff >= 0 && score.points > 0) {
                         standing.points += score.points;
                         standing.goalDiff += score.goalDiff;
                     }
