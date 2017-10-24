@@ -63,6 +63,7 @@ var PredictionRepo = (function () {
                         if (currentJoker && currentJoker._id.toString() == newJokerFixtureId) {
                             return resolve(currentJoker);
                         }
+                        // todo: if(currentJoker && currentJoker.status === 'PROCESSED') return reject(currentJoker)
                         _this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject);
                     }
                 });

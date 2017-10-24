@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-process.env.NODE_ENV = 'development';
+process.env.NODE_ENV = 'production';
 var mongoose = require("mongoose");
 var environment_1 = require("../../config/environment");
 var db = require("../../db");

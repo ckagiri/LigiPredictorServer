@@ -218,8 +218,7 @@ input[type=number]::-webkit-outer-spin-button {
 .joker-container.chosen {
   pointer-events: none;
 }
-.joker-container img {.......................................... ....T..O.0......... I.[..........K.L. .
-...7...]
+.joker-container img {
   margin: 15px 0;
   height: 50px;
   opacity: 0.3;

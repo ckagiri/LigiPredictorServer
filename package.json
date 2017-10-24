@@ -17,7 +17,7 @@
     "start:dev": "SET NODE_ENV=development && gulp dev && concurrently \"gulp tsc-watcher\" \"nodemon src/server/app/server.js\"",
     "test": "gulp test",
     "tsd:reinstall": "tsd reinstall -so",
-    "db:seeduser": "cross-env NODE_ENV=development ts-node src/server/db/tasks/seed-user.ts",
+    "db:seeduser": "cross-env NODE_ENV=production ts-node src/server/db/tasks/seed-user.ts",
     "db:seed": "cross-env NODE_ENV=development node src/server/db/tasks/seed.js",
     "db:dropseed": "cross-env NODE_ENV=development node src/server/db/tasks/drop-seed.js",
     "db:test:dropseed": "cross-env NODE_ENV=test ts-node src/server/db/tasks/drop-seed.ts",
