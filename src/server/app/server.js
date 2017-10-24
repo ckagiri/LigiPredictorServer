@@ -17,6 +17,7 @@ mongoose.Promise = Promise;
 var app = express();
 globalMiddleware(app);
 app.use(favicon(__dirname + '/favicon.ico'));
+app.use("/images", express.static(__dirname + '/images'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
