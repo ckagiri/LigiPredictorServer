@@ -23,7 +23,7 @@ var PredictionController = (function () {
     };
     PredictionController.prototype.create = function (req, res) {
         if (req['user'] == null) {
-            res.status(500).json({ error: 'Unauthenticated' });
+            return res.status(500).json({ error: 'Unauthenticated' });
         }
         var predictionsDict = req.body.predictions;
         var user = req['user'];
@@ -80,7 +80,7 @@ var PredictionController = (function () {
     };
     PredictionController.prototype.pickJoker = function (req, res) {
         if (req['user'] == null) {
-            res.status(500).json({ error: 'Unauthenticated' });
+            return res.status(500).json({ error: 'Unauthenticated' });
         }
         var selectedFixture = req.body;
         var user = req['user']._id;
