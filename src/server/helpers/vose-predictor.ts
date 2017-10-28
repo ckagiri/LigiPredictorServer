@@ -1,11 +1,11 @@
 import {Vose} from './vose';
 
 class VosePredictor{
-  constructor(odds: any) {
+  constructor(odds: any = {}) {
     let {homeWin, awayWin, draw} = odds;
-    this.homeWinOdds = homeWin;
-    this.awayWinOdds = awayWin;
-    this.drawOdds = draw;
+    this.homeWinOdds = homeWin || 1;
+    this.awayWinOdds = awayWin || 1;
+    this.drawOdds = draw || 1;
   }
 
   homeWinOdds: number;

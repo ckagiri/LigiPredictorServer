@@ -3,13 +3,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var vose_1 = require("./vose");
 var VosePredictor = (function () {
     function VosePredictor(odds) {
+        if (odds === void 0) { odds = {}; }
         this.underdogVose = null;
         this.drawVose = null;
         this.favoriteVose = null;
         var homeWin = odds.homeWin, awayWin = odds.awayWin, draw = odds.draw;
-        this.homeWinOdds = homeWin;
-        this.awayWinOdds = awayWin;
-        this.drawOdds = draw;
+        this.homeWinOdds = homeWin || 1;
+        this.awayWinOdds = awayWin || 1;
+        this.drawOdds = draw || 1;
     }
     VosePredictor.prototype.predict = function () {
         var underdogWeight;

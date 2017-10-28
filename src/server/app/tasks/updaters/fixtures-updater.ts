@@ -97,7 +97,7 @@ class FixturesUpdater {
       let unfishedFixtures = _.filter(changedFixtures, f => f.status !== 'FINISHED' );
       finishedFixtureDbUpdateHandler.handle(finishedFixtures);
       unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-      calculateNextFixtureUpdateTime(changedFixtures, callback)
+      calculateNextFixtureUpdateTime(dbFixtures, callback)
     })
   }
 }

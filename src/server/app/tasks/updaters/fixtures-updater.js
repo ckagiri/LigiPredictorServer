@@ -99,7 +99,7 @@ var FixturesUpdater = (function () {
             var unfishedFixtures = _.filter(changedFixtures, function (f) { return f.status !== 'FINISHED'; });
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-            calculateNextFixtureUpdateTime(changedFixtures, callback);
+            calculateNextFixtureUpdateTime(dbFixtures, callback);
         });
     };
     return FixturesUpdater;
