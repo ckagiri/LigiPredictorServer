@@ -3,7 +3,7 @@ import {AbstractRepo} from './repo.abstract';
 import {UserScore, IUserScore} from '../models/user-score.model';
 
 export class UserScoreRepo {
-  createOrfindOneAndUpdate(leaderboardId: string, userId: string, predictionId: string, predictionScore: any, hasJoker: boolean) {
+  findOneAndUpdateOrCreate(leaderboardId: string, userId: string, predictionId: string, predictionScore: any, hasJoker: boolean) {
     let {points, goalDiff} = predictionScore,
     score: IUserScore = {
       leaderboard: leaderboardId,

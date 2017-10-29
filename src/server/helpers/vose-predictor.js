@@ -41,6 +41,7 @@ var VosePredictor = (function () {
         if (outcome === 'DRAW') {
             score = this.getDrawScore();
         }
+        return score;
     };
     VosePredictor.prototype.getFavouriteScore = function (isHomeTeam) {
         var scores;
@@ -84,4 +85,5 @@ var VosePredictor = (function () {
     };
     return VosePredictor;
 }());
+exports.VosePredictor = VosePredictor;
 //# sourceMappingURL=vose-predictor.js.map

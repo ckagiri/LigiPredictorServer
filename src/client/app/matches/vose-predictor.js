@@ -52,6 +52,7 @@ var app;
                 if (outcome === 'DRAW') {
                     score = this.getDrawScore();
                 }
+                return score;
             };
             VosePredictor.prototype.getFavouriteScore = function (isHomeTeam) {
                 var scores;

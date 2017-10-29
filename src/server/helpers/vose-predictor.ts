@@ -1,6 +1,6 @@
 import {Vose} from './vose';
 
-class VosePredictor{
+export class VosePredictor{
   constructor(odds: any = {}) {
     let {homeWin, awayWin, draw} = odds;
     this.homeWinOdds = homeWin || 1;
@@ -42,6 +42,7 @@ class VosePredictor{
     if (outcome === 'DRAW') {
       score = this.getDrawScore();
     }
+    return score;
   } 
 
   getFavouriteScore(isHomeTeam: boolean) {

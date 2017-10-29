@@ -49,6 +49,7 @@ namespace app.matches {
       if (outcome === 'DRAW') {
         score = this.getDrawScore();
       }
+      return score;
     } 
 
     getFavouriteScore(isHomeTeam: boolean) {

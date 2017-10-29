@@ -86,7 +86,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var predictionScore = {
                 scorePoints: scorePoints, points: points, goalDiff: goalDiff
             };
-            return common_1.userScoreRepo.createOrfindOneAndUpdate(leaderboardId, userId, predictionId, predictionScore, hasJoker)
+            return common_1.userScoreRepo.findOneAndUpdateOrCreate(leaderboardId, userId, predictionId, predictionScore, hasJoker)
                 .map(function (status) {
                 return { user: user, fixture: fixture, prediction: prediction };
             });

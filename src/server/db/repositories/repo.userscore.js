@@ -5,7 +5,7 @@ var user_score_model_1 = require("../models/user-score.model");
 var UserScoreRepo = (function () {
     function UserScoreRepo() {
     }
-    UserScoreRepo.prototype.createOrfindOneAndUpdate = function (leaderboardId, userId, predictionId, predictionScore, hasJoker) {
+    UserScoreRepo.prototype.findOneAndUpdateOrCreate = function (leaderboardId, userId, predictionId, predictionScore, hasJoker) {
         var points = predictionScore.points, goalDiff = predictionScore.goalDiff, score = {
             leaderboard: leaderboardId,
             user: userId,

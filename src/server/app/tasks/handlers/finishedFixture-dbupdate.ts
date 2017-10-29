@@ -84,7 +84,7 @@ class FinishedFixtureDbUpdateHandler {
 				let predictionScore = {
 					scorePoints, points, goalDiff
 				}
-				return userScoreRepo.createOrfindOneAndUpdate(
+				return userScoreRepo.findOneAndUpdateOrCreate(
 					leaderboardId, userId, predictionId, predictionScore, hasJoker)
 					.map((status: any) => {
 						return {user, fixture, prediction}

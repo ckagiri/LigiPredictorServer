@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var prediction_model_1 = require("../models/prediction.model");
+var vose_predictor_1 = require("../../helpers/vose-predictor");
 var fixture_model_1 = require("../models/fixture.model");
 var Rx = require("rxjs");
 var PredictionRepo = (function () {
@@ -136,9 +137,13 @@ var PredictionRepo = (function () {
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.create(prediction));
     };
     PredictionRepo.prototype.getMatchScores = function (fixture) {
+        var predictor = new vose_predictor_1.VosePredictor(fixture.odds);
+        var score = predictor.predict();
+        var goals = score.split('-');
+        var goalsHomeTeam = Number(goals[0]);
+        var goalsAwayTeam = Number(goals[1]);
         return {
-            goalsHomeTeam: Math.floor(Math.random() * 3),
-            goalsAwayTeam: Math.floor(Math.random() * 3),
+            goalsHomeTeam: goalsHomeTeam, goalsAwayTeam: goalsAwayTeam,
             isComputerGenerated: true
         };
     };

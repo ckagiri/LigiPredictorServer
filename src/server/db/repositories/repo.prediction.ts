@@ -1,6 +1,7 @@
 import {AbstractRepo} from './repo.abstract';
 import {FixtureRepo} from './repo.fixture';
 import {Prediction, IPredictionModel, IPrediction, IPrectionChoice} from '../models/prediction.model';
+import {VosePredictor} from '../../helpers/vose-predictor';
 import {Fixture} from '../models/fixture.model';
 import * as Rx from 'rxjs';
 
@@ -142,9 +143,13 @@ export class PredictionRepo {
   }
 
 	private getMatchScores(fixture: any) {
+		let predictor = new VosePredictor(fixture.odds);
+		let score = predictor.predict();
+		let goals = score.split('-');
+		let goalsHomeTeam = Number(goals[0]);
+		let goalsAwayTeam = Number(goals[1]);
 		return {
-			goalsHomeTeam: Math.floor(Math.random() * 3),
-			goalsAwayTeam: Math.floor(Math.random() * 3),
+			goalsHomeTeam, goalsAwayTeam,
 			isComputerGenerated: true
 		}
 	}
