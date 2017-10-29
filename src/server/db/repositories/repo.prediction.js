@@ -61,7 +61,7 @@ var PredictionRepo = (function () {
                     }
                     else {
                         newJokerFixtureId = pick;
-                        if (currentJoker && currentJoker._id.toString() == newJokerFixtureId) {
+                        if (currentJoker && currentJoker.fixture.toString() == newJokerFixtureId) {
                             return resolve(currentJoker);
                         }
                         // todo: if(currentJoker && currentJoker.status === 'PROCESSED') return reject(currentJoker)
@@ -76,7 +76,7 @@ var PredictionRepo = (function () {
                     return reject(new Error('Bad'));
                 var fixtureSlug = newJokerFixture.slug, season = newJokerFixture.season, round = newJokerFixture.round, odds = newJokerFixture.odds;
                 if (newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
-                    prediction_model_1.Prediction.findOne({ fixture: newJokerFixtureId }, function (err, newJokerPrediction) {
+                    prediction_model_1.Prediction.findOne({ user: user, fixture: newJokerFixtureId }, function (err, newJokerPrediction) {
                         if (err)
                             return reject(err);
                         var newJoker;

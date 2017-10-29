@@ -73,7 +73,7 @@ export class PredictionRepo {
 						}
 					} else {
 						newJokerFixtureId = pick;
-						if(currentJoker && currentJoker._id.toString() == newJokerFixtureId) {
+						if(currentJoker && currentJoker.fixture.toString() == newJokerFixtureId) {
 							return resolve(currentJoker);
 						}
 						// todo: if(currentJoker && currentJoker.status === 'PROCESSED') return reject(currentJoker)
@@ -88,7 +88,7 @@ export class PredictionRepo {
 			if(!newJokerFixture) return reject(new Error('Bad'));
 			let {slug: fixtureSlug, season, round, odds} = newJokerFixture;
 			if(newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
-				Prediction.findOne({fixture: newJokerFixtureId}, (err, newJokerPrediction) => {
+				Prediction.findOne({user, fixture: newJokerFixtureId}, (err, newJokerPrediction) => {
 					if (err) return reject(err);
 					let newJoker: IPrediction;
 					if(!newJokerPrediction) {
