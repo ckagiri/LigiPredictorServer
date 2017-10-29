@@ -35,10 +35,11 @@ let fixtureChanged = (updated: any, fromDb: any) => {
   return false;
 }
 
-let calculateNextFixtureUpdateTime = (fixtures: any, callback: Function) => {
+let calculateNextFixtureUpdateTime = (dbFixtures: any, callback: Function) => {
   let fixtureLive = false;
   let now = Moment();
   let next = Moment().add(1, 'year');
+  let fixtures = _.filter(dbFixtures, f => f.status !== 'FINISHED' );
   for(let fixture of fixtures) {
     if (fixture || fixture.status == "IN_PLAY") {
       fixtureLive = true;

@@ -59,7 +59,7 @@ export class PredictionRepo {
 		return Rx.Observable.fromPromise(
 			new Promise((resolve: any, reject: any) => {    
 				let query = {
-					season, round, hasJoker: true
+					user, season, round, hasJoker: true
 				}
 				Prediction.findOne(query, (err, currentJoker) => {
 					let newJokerFixtureId: string;

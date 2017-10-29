@@ -35,10 +35,11 @@ var fixtureChanged = function (updated, fromDb) {
     }
     return false;
 };
-var calculateNextFixtureUpdateTime = function (fixtures, callback) {
+var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {
     var fixtureLive = false;
     var now = Moment();
     var next = Moment().add(1, 'year');
+    var fixtures = _.filter(dbFixtures, function (f) { return f.status !== 'FINISHED'; });
     for (var _i = 0, fixtures_2 = fixtures; _i < fixtures_2.length; _i++) {
         var fixture = fixtures_2[_i];
         if (fixture || fixture.status == "IN_PLAY") {

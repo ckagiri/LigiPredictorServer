@@ -45,7 +45,7 @@ var PredictionRepo = (function () {
             var user = opts.user, season = opts.season, round = opts.round, pick = opts.pick;
             return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
                 var query = {
-                    season: season, round: round, hasJoker: true
+                    user: user, season: season, round: round, hasJoker: true
                 };
                 prediction_model_1.Prediction.findOne(query, function (err, currentJoker) {
                     var newJokerFixtureId;

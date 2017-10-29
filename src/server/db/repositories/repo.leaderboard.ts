@@ -28,7 +28,7 @@ export class LeaderboardRepo {
 
 	findOneByRoundAndUpdate(options: any) {
 		let {season, round} = options;
-		let boardType = 'GLOBAL_MONTH';
+		let boardType = 'GLOBAL_ROUND';
 		options.boardType = boardType;
 		let query: any = {season, round, boardType};
 		return this.findOneAndUpdate(query, options)

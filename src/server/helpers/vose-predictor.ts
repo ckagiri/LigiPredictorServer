@@ -45,13 +45,15 @@ class VosePredictor{
   } 
 
   getFavouriteScore(isHomeTeam: boolean) {
-    let scores: string[] = [];
+    let scores: string[];
+    let weights: number[];
     if(isHomeTeam) {
-      scores = ['1-0', '2-0', '3-0', '4-0', '2-1', '3-1', '4-1', '3-2', '4-2'] 
+      scores = ['1-0', '2-1', '2-0', '3-1', '3-0', '3-2'] 
+      weights = [ 98,    89,    81,    52,    48,    28]
     } else {
-      scores = ['0-1', '0-2', '0-3', '0-4', '1-2', '1-3', '1-4', '2-3', '2-4'] 
+      scores = ['0-1', '1-2', '0-2', '1-3', '0-3', '2-3'] 
+      weights = [ 63,    56,    34,    23,    18,    14]
     }
-    let weights = [98,    81,    48,    23,    89,    52,    25,    28,   14]
 
     if(this.favoriteVose == null) {
       this.favoriteVose = new Vose(weights);
@@ -60,13 +62,15 @@ class VosePredictor{
   }
   
   getUnderdogScore(isHomeTeam: boolean) {
-    let scores: string[] = [];
+    let scores: string[];
+    let weights: number[];
     if(isHomeTeam) {
-      scores = ['1-0', '2-0', '2-1', '3-1', '3-2'] 
+      scores = ['1-0', '2-1', '2-0'] 
+      weights = [ 98,    89,    81]
     } else {
-      scores = ['0-1', '0-2', '1-2', '1-3', '2-3'] 
+      scores = ['0-1', '1-2', '0-2'] 
+      weights = [ 63,    56,    34]
     }
-    let weights = [63,    34,    56,    23,   18]
     if(this.underdogVose == null) {
       this.underdogVose = new Vose(weights);
     }
@@ -74,8 +78,8 @@ class VosePredictor{
   }
 
   getDrawScore() {
-    var scores = ['0-0', '1-1', '2-2', '3-3'] 
-    var weights = [  72,   116,    52,   11]
+    var scores = ['1-1', '0-0', '2-2'] 
+    var weights = [116,    72,    52]
     if(this.drawVose == null) {
       this.drawVose = new Vose(weights);
     }

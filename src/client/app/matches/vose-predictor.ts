@@ -7,12 +7,12 @@ namespace app.matches {
     }
   }
 
-  class VosePredictor {
-    constructor(odds: any) {
+  class VosePredictor{
+    constructor(odds: any = {}) {
       let {homeWin, awayWin, draw} = odds;
-      this.homeWinOdds = homeWin;
-      this.awayWinOdds = awayWin;
-      this.drawOdds = draw;
+      this.homeWinOdds = homeWin || 1;
+      this.awayWinOdds = awayWin || 1;
+      this.drawOdds = draw || 1;
     }
 
     homeWinOdds: number;
@@ -49,18 +49,17 @@ namespace app.matches {
       if (outcome === 'DRAW') {
         score = this.getDrawScore();
       }
-      return score;
     } 
 
     getFavouriteScore(isHomeTeam: boolean) {
-      let scores: string[] = [];
-      let weights: number[] = [];
+      let scores: string[];
+      let weights: number[];
       if(isHomeTeam) {
-        scores = ['1-0', '2-0', '2-1', '3-0', '3-1', '3-2'] 
-        weights = [98,    81,    89,      48,   52,   28]
+        scores = ['1-0', '2-1', '2-0', '3-1', '3-0', '3-2'] 
+        weights = [ 98,    89,    81,    52,    48,    28]
       } else {
-        scores = ['0-1', '0-2', '1-2', '0-3', '1-3', '2-3'] 
-        weights = [63,    34,    56,    14,     23,  18 ]
+        scores = ['0-1', '1-2', '0-2', '1-3', '0-3', '2-3'] 
+        weights = [ 63,    56,    34,    23,    18,    14]
       }
 
       if(this.favoriteVose == null) {
@@ -70,14 +69,14 @@ namespace app.matches {
     }
     
     getUnderdogScore(isHomeTeam: boolean) {
-      let scores: string[] = [];
-      let weights: number[] = [];
+      let scores: string[];
+      let weights: number[];
       if(isHomeTeam) {
-        scores = ['1-0', '2-0', '2-1'] 
-        weights = [98,    81,  89]
+        scores = ['1-0', '2-1', '2-0'] 
+        weights = [ 98,    89,    81]
       } else {
-        scores = ['0-1', '0-2', '1-2'] 
-        weights = [63,    34,    56]
+        scores = ['0-1', '1-2', '0-2'] 
+        weights = [ 63,    56,    34]
       }
       if(this.underdogVose == null) {
         this.underdogVose = new Vose(weights);
@@ -86,15 +85,14 @@ namespace app.matches {
     }
 
     getDrawScore() {
-      var scores = ['0-0', '1-1', '2-2'] 
-      var weights = [  72,   116,    52]
+      var scores = ['1-1', '0-0', '2-2'] 
+      var weights = [116,    72,    52]
       if(this.drawVose == null) {
         this.drawVose = new Vose(weights);
       }
       return scores[this.drawVose.next()]
     }
   }  
-
   class Vose {
     constructor(weights: number[]) {
       this.init(weights)

@@ -14,13 +14,14 @@ var app;
         matches.VosePredictorFactory = VosePredictorFactory;
         var VosePredictor = (function () {
             function VosePredictor(odds) {
+                if (odds === void 0) { odds = {}; }
                 this.underdogVose = null;
                 this.drawVose = null;
                 this.favoriteVose = null;
                 var homeWin = odds.homeWin, awayWin = odds.awayWin, draw = odds.draw;
-                this.homeWinOdds = homeWin;
-                this.awayWinOdds = awayWin;
-                this.drawOdds = draw;
+                this.homeWinOdds = homeWin || 1;
+                this.awayWinOdds = awayWin || 1;
+                this.drawOdds = draw || 1;
             }
             VosePredictor.prototype.predict = function () {
                 var underdogWeight;
@@ -51,18 +52,17 @@ var app;
                 if (outcome === 'DRAW') {
                     score = this.getDrawScore();
                 }
-                return score;
             };
             VosePredictor.prototype.getFavouriteScore = function (isHomeTeam) {
-                var scores = [];
-                var weights = [];
+                var scores;
+                var weights;
                 if (isHomeTeam) {
-                    scores = ['1-0', '2-0', '2-1', '3-0', '3-1', '3-2'];
-                    weights = [98, 81, 89, 48, 52, 28];
+                    scores = ['1-0', '2-1', '2-0', '3-1', '3-0', '3-2'];
+                    weights = [98, 89, 81, 52, 48, 28];
                 }
                 else {
-                    scores = ['0-1', '0-2', '1-2', '0-3', '1-3', '2-3'];
-                    weights = [63, 34, 56, 14, 23, 18];
+                    scores = ['0-1', '1-2', '0-2', '1-3', '0-3', '2-3'];
+                    weights = [63, 56, 34, 23, 18, 14];
                 }
                 if (this.favoriteVose == null) {
                     this.favoriteVose = new Vose(weights);
@@ -70,15 +70,15 @@ var app;
                 return scores[this.favoriteVose.next()];
             };
             VosePredictor.prototype.getUnderdogScore = function (isHomeTeam) {
-                var scores = [];
-                var weights = [];
+                var scores;
+                var weights;
                 if (isHomeTeam) {
-                    scores = ['1-0', '2-0', '2-1'];
-                    weights = [98, 81, 89];
+                    scores = ['1-0', '2-1', '2-0'];
+                    weights = [98, 89, 81];
                 }
                 else {
-                    scores = ['0-1', '0-2', '1-2'];
-                    weights = [63, 34, 56];
+                    scores = ['0-1', '1-2', '0-2'];
+                    weights = [63, 56, 34];
                 }
                 if (this.underdogVose == null) {
                     this.underdogVose = new Vose(weights);
@@ -86,8 +86,8 @@ var app;
                 return scores[this.underdogVose.next()];
             };
             VosePredictor.prototype.getDrawScore = function () {
-                var scores = ['0-0', '1-1', '2-2'];
-                var weights = [72, 116, 52];
+                var scores = ['1-1', '0-0', '2-2'];
+                var weights = [116, 72, 52];
                 if (this.drawVose == null) {
                     this.drawVose = new Vose(weights);
                 }

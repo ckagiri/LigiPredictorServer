@@ -25,7 +25,7 @@ var LeaderboardRepo = (function () {
     };
     LeaderboardRepo.prototype.findOneByRoundAndUpdate = function (options) {
         var season = options.season, round = options.round;
-        var boardType = 'GLOBAL_MONTH';
+        var boardType = 'GLOBAL_ROUND';
         options.boardType = boardType;
         var query = { season: season, round: round, boardType: boardType };
         return this.findOneAndUpdate(query, options);
