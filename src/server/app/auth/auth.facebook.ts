@@ -63,6 +63,7 @@ export function facebookAuth(req: Request, res: Response) {
           user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.displayName = profile.name;
           user.email = profile.email;
+          user.userName = profile.email;
           user.save(function(err, savedUser) {
             if (err) {
               res.status(500).send({ message: err.message });
