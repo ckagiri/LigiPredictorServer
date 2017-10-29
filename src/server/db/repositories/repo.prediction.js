@@ -136,8 +136,8 @@ var PredictionRepo = (function () {
     PredictionRepo.prototype.insert = function (prediction) {
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.create(prediction));
     };
-    PredictionRepo.prototype.getMatchScores = function (fixture) {
-        var predictor = new vose_predictor_1.VosePredictor(fixture.odds);
+    PredictionRepo.prototype.getMatchScores = function (odds) {
+        var predictor = new vose_predictor_1.VosePredictor(odds);
         var score = predictor.predict();
         var goals = score.split('-');
         var goalsHomeTeam = Number(goals[0]);

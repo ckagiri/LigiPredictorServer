@@ -142,8 +142,8 @@ export class PredictionRepo {
 		return Rx.Observable.fromPromise(Prediction.create(prediction));
   }
 
-	private getMatchScores(fixture: any) {
-		let predictor = new VosePredictor(fixture.odds);
+	private getMatchScores(odds: any) {
+		let predictor = new VosePredictor(odds);
 		let score = predictor.predict();
 		let goals = score.split('-');
 		let goalsHomeTeam = Number(goals[0]);
