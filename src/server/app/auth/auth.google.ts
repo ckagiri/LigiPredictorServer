@@ -41,9 +41,13 @@ export function googleAuth(req: Request, res: Response) {
             user.google = profile.sub;
             user.picture = user.picture || profile.picture.replace('sz=50', 'sz=200');
 						user.displayName = user.displayName || profile.name;
-            user.save(function() {
-              var token = createJWT(user);
-              res.send({ token: token, user: user });
+            user.email = user.email || profile.email;
+            user.save(function(err, savedUser) {
+              if (err) {
+                res.status(500).send({ message: err.message });
+              }
+              var token = createJWT(savedUser);
+              res.send({ token: token, user: savedUser });
             });
           });
         });
@@ -58,9 +62,14 @@ export function googleAuth(req: Request, res: Response) {
           user.google = profile.sub;
           user.picture = profile.picture.replace('sz=50', 'sz=200');
           user.displayName = profile.name;
-          user.save(function(err) {
-            var token = createJWT(user);						
-            res.send({ token: token, user: user });
+          user.email = profile.email;
+          user.userName = profile.email;
+          user.save(function(err, savedUser) {
+            if (err) {
+              res.status(500).send({ message: err.message });
+            }
+            var token = createJWT(savedUser);
+            res.send({ token: token, user: savedUser });
           });
         });
       }

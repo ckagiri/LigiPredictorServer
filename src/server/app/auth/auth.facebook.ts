@@ -41,9 +41,13 @@ export function facebookAuth(req: Request, res: Response) {
             user.facebook = profile.id;
             user.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
 						user.displayName = user.displayName || profile.name;
-            user.save(function() {
-              var token = createJWT(user);
-              res.send({ token: token, user: user });
+            user.email = user.email || profile.email;
+            user.save(function(err, savedUser) {
+              if (err) {
+                res.status(500).send({ message: err.message });
+              }
+              var token = createJWT(savedUser);
+              res.send({ token: token, user: savedUser });
             });
           });
         });
@@ -58,9 +62,13 @@ export function facebookAuth(req: Request, res: Response) {
           user.facebook = profile.id;
           user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.displayName = profile.name;
-          user.save(function() {
-            var token = createJWT(user);
-            res.send({ token: token, user: user });
+          user.email = profile.email;
+          user.save(function(err, savedUser) {
+            if (err) {
+              res.status(500).send({ message: err.message });
+            }
+            var token = createJWT(savedUser);
+            res.send({ token: token, user: savedUser });
           });
         });
       }

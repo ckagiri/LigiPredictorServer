@@ -39,9 +39,13 @@ function facebookAuth(req, res) {
                         user.facebook = profile.id;
                         user.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
                         user.displayName = user.displayName || profile.name;
-                        user.save(function () {
-                            var token = helpers_1.createJWT(user);
-                            res.send({ token: token, user: user });
+                        user.email = user.email || profile.email;
+                        user.save(function (err, savedUser) {
+                            if (err) {
+                                res.status(500).send({ message: err.message });
+                            }
+                            var token = helpers_1.createJWT(savedUser);
+                            res.send({ token: token, user: savedUser });
                         });
                     });
                 });
@@ -57,9 +61,13 @@ function facebookAuth(req, res) {
                     user.facebook = profile.id;
                     user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
                     user.displayName = profile.name;
-                    user.save(function () {
-                        var token = helpers_1.createJWT(user);
-                        res.send({ token: token, user: user });
+                    user.email = profile.email;
+                    user.save(function (err, savedUser) {
+                        if (err) {
+                            res.status(500).send({ message: err.message });
+                        }
+                        var token = helpers_1.createJWT(savedUser);
+                        res.send({ token: token, user: savedUser });
                     });
                 });
             }

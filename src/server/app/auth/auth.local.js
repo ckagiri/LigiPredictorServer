@@ -27,12 +27,12 @@ function signup(req, res) {
             email: req.body.email,
             password: req.body.password
         });
-        user.save(function (err, result) {
+        user.save(function (err, savedUser) {
             if (err) {
                 res.status(500).send({ message: err.message });
             }
-            var token = helpers_1.createJWT(user);
-            res.send({ token: token, user: user });
+            var token = helpers_1.createJWT(savedUser);
+            res.send({ token: token, user: savedUser });
         });
     });
 }
