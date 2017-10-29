@@ -2,6 +2,7 @@ import {Vose} from './vose';
 
 export class VosePredictor{
   constructor(odds: any = {}) {
+    if (odds == null) { odds = {}; }
     let {homeWin, awayWin, draw} = odds;
     this.homeWinOdds = homeWin || 1;
     this.awayWinOdds = awayWin || 1;

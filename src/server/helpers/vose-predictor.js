@@ -7,6 +7,9 @@ var VosePredictor = (function () {
         this.underdogVose = null;
         this.drawVose = null;
         this.favoriteVose = null;
+        if (odds == null) {
+            odds = {};
+        }
         var homeWin = odds.homeWin, awayWin = odds.awayWin, draw = odds.draw;
         this.homeWinOdds = homeWin || 1;
         this.awayWinOdds = awayWin || 1;
