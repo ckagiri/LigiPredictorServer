@@ -101,7 +101,7 @@ var FixturesUpdater = (function () {
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
             calculateNextFixtureUpdateTime(dbFixtures, callback);
-        });
+        }, function (err) { console.log("Oops... " + err); });
     };
     return FixturesUpdater;
 }());

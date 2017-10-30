@@ -24,12 +24,14 @@ var FixtureConverter = (function () {
                 homeTeam: {
                     slug: homeTeam.slug,
                     name: homeTeam.name,
-                    id: homeTeam._id
+                    id: homeTeam._id,
+                    crestUrl: homeTeam.crestUrl
                 },
                 awayTeam: {
                     slug: awayTeam.slug,
                     name: awayTeam.name,
-                    id: awayTeam._id
+                    id: awayTeam._id,
+                    crestUrl: awayTeam.crestUrl
                 },
                 slug: homeTeam.slug + "-" + awayTeam.slug,
                 result: {

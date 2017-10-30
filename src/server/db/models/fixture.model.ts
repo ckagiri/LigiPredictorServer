@@ -23,7 +23,8 @@ export interface IFixture {
     homeWin:number,
     awayWin: number,
     draw: number
-  }
+  };
+  venue?: string;
   api_detail?: any;
 };
 
@@ -111,6 +112,10 @@ const fixtureSchema = new Schema({
       type: Number,
       default: 1
     }
+  },
+  venue: {
+    type: String, 
+    trim: true
   },
   api_detail: {
     type: Schema.Types.Mixed

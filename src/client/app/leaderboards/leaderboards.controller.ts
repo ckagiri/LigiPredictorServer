@@ -9,6 +9,7 @@ namespace app.leaderboards {
     }
 
 		title: string = 'Leaderboards';
+		
 	}
 
 	angular

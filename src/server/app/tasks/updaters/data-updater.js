@@ -11,7 +11,7 @@ var DataUpdater = (function () {
         Rx.Observable.fromPromise(common_1.client.getCompetitions(2017))
             .subscribe(function (competitions) {
             season_dbupdate_1.seasonUpdateHandler.handle(competitions.data);
-        });
+        }, function (err) { console.log("Oops... " + err); });
         callback(Moment().add(1, 'days'));
     };
     return DataUpdater;

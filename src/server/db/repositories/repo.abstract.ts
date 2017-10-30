@@ -180,7 +180,7 @@ export abstract class AbstractRepo {
       _id: null as string,
       name: null as string,
       slug: null as string,
-      imageUrl: null as string
+      crestUrl: null as string
     };
     partial._id = obj._id;
     if(obj['name']){
@@ -193,7 +193,7 @@ export abstract class AbstractRepo {
       partial.slug = obj.slug
     }
     if(obj['crestUrl']){
-      partial.imageUrl = obj.crestUrl
+      partial.crestUrl = obj.crestUrl
     }
     return Promise.resolve(partial);
   }  

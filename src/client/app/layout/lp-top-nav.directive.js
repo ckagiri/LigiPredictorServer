@@ -44,6 +44,10 @@ var app;
                     _this.logger.info('You have been logged out');
                 });
             };
+            TopNavController.prototype.userName = function () {
+                var currentUser = this.security.currentUser || { displayName: 'User' };
+                return currentUser.displayName;
+            };
             TopNavController.prototype.isCurrent = function (route) {
                 var currentState = this.$state.current;
                 if (!route.title || !currentState || !currentState.title) {

@@ -86,6 +86,10 @@ var fixtureSchema = new Schema({
             default: 1
         }
     },
+    venue: {
+        type: String,
+        trim: true
+    },
     api_detail: {
         type: Schema.Types.Mixed
     },

@@ -45,6 +45,11 @@ namespace app.layout {
 				});
 		}
 
+    userName() {
+      let currentUser = this.security.currentUser || { displayName: 'User'};
+      return currentUser.displayName;
+    }
+
 		isCurrent(route: { title: string }) {
       var currentState: any = this.$state.current;
       if (!route.title || !currentState || !currentState.title) {

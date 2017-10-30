@@ -53,8 +53,8 @@ export class VosePredictor{
       scores = ['1-0', '2-1', '2-0', '3-1', '3-0', '3-2'] 
       weights = [ 98,    89,    81,    52,    48,    28]
     } else {
-      scores = ['0-1', '1-2', '0-2', '1-3', '0-3', '2-3'] 
-      weights = [ 63,    56,    34,    23,    18,    14]
+      scores = ['0-1', '1-2', '0-2', '1-3', '2-3', '0-3'] 
+      weights = [ 63,    56,    34,    23,    14,    18]
     }
 
     if(this.favoriteVose == null) {

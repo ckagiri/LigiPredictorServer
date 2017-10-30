@@ -83,23 +83,25 @@ class FixturesUpdater {
           }
         })
     })
-    .subscribe((map: any) => {
-      let changedFixtures = [];
-      let {dbFixtures, idToFixtureMap} = map;
-      for (let dbFixture of dbFixtures) {
-        let dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
-        let newFixture = idToFixtureMap[dbFixtureId];
-        if (fixtureChanged(newFixture, dbFixture)) {
-            newFixture._id = dbFixture._id;
-            changedFixtures.push(newFixture);
+    .subscribe(
+      (map: any) => {
+        let changedFixtures = [];
+        let {dbFixtures, idToFixtureMap} = map;
+        for (let dbFixture of dbFixtures) {
+          let dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
+          let newFixture = idToFixtureMap[dbFixtureId];
+          if (fixtureChanged(newFixture, dbFixture)) {
+              newFixture._id = dbFixture._id;
+              changedFixtures.push(newFixture);
+          }
         }
-      }
-      let finishedFixtures = _.filter(changedFixtures, {status: 'FINISHED'});
-      let unfishedFixtures = _.filter(changedFixtures, f => f.status !== 'FINISHED' );
-      finishedFixtureDbUpdateHandler.handle(finishedFixtures);
-      unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-      calculateNextFixtureUpdateTime(dbFixtures, callback)
-    })
+        let finishedFixtures = _.filter(changedFixtures, {status: 'FINISHED'});
+        let unfishedFixtures = _.filter(changedFixtures, f => f.status !== 'FINISHED' );
+        finishedFixtureDbUpdateHandler.handle(finishedFixtures);
+        unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
+        calculateNextFixtureUpdateTime(dbFixtures, callback)
+      }, 
+      (err: any) => { console.log(`Oops... ${err}`) })
   }
 }
 

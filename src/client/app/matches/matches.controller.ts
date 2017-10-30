@@ -45,11 +45,7 @@ namespace app.matches {
 				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
 					hasOneAvailableFixture = true;
 					if(choice.isComputerGenerated || choice.isComputerGenerated == null) {
-						let odds = match.odds;
-						if (odds == null) {
-							odds = {homeWin: 1, awayWin: 1, draw:1}
-						}
-						match['vosePredictor'] = this.vosePredictorFactory.createPredictor(odds)
+						match['vosePredictor'] = this.vosePredictorFactory.createPredictor(match.odds)
 						match['predict'] = () => {
 							let predictor = match['vosePredictor']
 							let score = predictor.predict();

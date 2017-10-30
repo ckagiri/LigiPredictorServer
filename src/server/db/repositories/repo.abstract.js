@@ -167,7 +167,7 @@ var AbstractRepo = (function () {
             _id: null,
             name: null,
             slug: null,
-            imageUrl: null
+            crestUrl: null
         };
         partial._id = obj._id;
         if (obj['name']) {
@@ -180,7 +180,7 @@ var AbstractRepo = (function () {
             partial.slug = obj.slug;
         }
         if (obj['crestUrl']) {
-            partial.imageUrl = obj.crestUrl;
+            partial.crestUrl = obj.crestUrl;
         }
         return Promise.resolve(partial);
     };

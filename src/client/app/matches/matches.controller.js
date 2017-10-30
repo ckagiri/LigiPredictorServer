@@ -80,11 +80,7 @@ var app;
                     if (match.status == 'SCHEDULED' || match.status == 'TIMED') {
                         hasOneAvailableFixture = true;
                         if (choice.isComputerGenerated || choice.isComputerGenerated == null) {
-                            var odds = match.odds;
-                            if (odds == null) {
-                                odds = { homeWin: 1, awayWin: 1, draw: 1 };
-                            }
-                            match['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(odds);
+                            match['vosePredictor'] = this_1.vosePredictorFactory.createPredictor(match.odds);
                             match['predict'] = function () {
                                 var predictor = match['vosePredictor'];
                                 var score = predictor.predict();

@@ -7,9 +7,11 @@ let Moment = require('moment');
 class DataUpdater {
   update(callback: Function) {
     Rx.Observable.fromPromise(client.getCompetitions(2017))
-		.subscribe(competitions => {
-			seasonUpdateHandler.handle(competitions.data);
-		})
+		.subscribe(
+      (competitions: any) => {
+        seasonUpdateHandler.handle(competitions.data);
+		  },
+      (err: any) => { console.log(`Oops... ${err}`) })
     callback(Moment().add(1, 'days')); 
   }
 }
