@@ -18,17 +18,14 @@ var FixtureRepo = (function (_super) {
         return _super.call(this, fixture_model_1.Fixture, converter) || this;
     }
     FixtureRepo.prototype.findAllBySeason = function (seasonId) {
-        return this.findAll({ 'season': seasonId });
+        return this.findAll({ season: seasonId });
     };
     FixtureRepo.prototype.findAllBySeasonRound = function (seasonId, round) {
-        var query = { $and: [{ 'season': seasonId }, { round: round }] };
+        var query = { $and: [{ season: seasonId }, { round: round }] };
         return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.findAllScheduledBySeasonRound = function (seasonId, round) {
-        var query = { $and: [{ 'season': seasonId }, { round: round }] };
-        if (status != null) {
-            query = { $and: [{ 'season': seasonId }, { round: round }, { status: { $in: ['SCHEDULED', 'TIMED'] } }] };
-        }
+        var query = { $and: [{ season: seasonId }, { round: round }, { status: { $in: ['SCHEDULED', 'TIMED'] } }] };
         return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.getByApiIds = function (apiIds) {

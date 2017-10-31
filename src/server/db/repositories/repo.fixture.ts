@@ -8,19 +8,16 @@ export class FixtureRepo extends AbstractRepo {
   }  
 
 	findAllBySeason(seasonId: string) {
-		return this.findAll({'season': seasonId})
+		return this.findAll({season: seasonId})
 	}
 
 	findAllBySeasonRound(seasonId: string, round: number) {
-		let query: any = {$and: [{'season': seasonId}, {round}]}
+		let query = {$and: [{season: seasonId}, {round}]}
 		return this.findAll(query, null, {sort: 'date'})
 	}
 
 	findAllScheduledBySeasonRound(seasonId: string, round: number) {
-		let query: any = {$and: [{'season': seasonId}, {round}]}
-		if(status != null) {
-			query = {$and: [{'season': seasonId}, {round}, {status: {$in: ['SCHEDULED', 'TIMED']}}]}
-		}
+		let query = {$and: [{season: seasonId}, {round}, {status: {$in: ['SCHEDULED', 'TIMED']}}]}
 		return this.findAll(query, null, {sort: 'date'})
 	}
 
