@@ -87,7 +87,7 @@ export class PredictionRepo {
 		Fixture.findById(newJokerFixtureId, (err, newJokerFixture) => {
 			if(!newJokerFixture) return reject(new Error('Bad'));
 			let {slug: fixtureSlug, season, round, odds} = newJokerFixture;
-			if(newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
+			if(autoPicked || newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
 				Prediction.findOne({user, fixture: newJokerFixtureId}, (err, newJokerPrediction) => {
 					if (err) return reject(err);
 					let newJoker: IPrediction;

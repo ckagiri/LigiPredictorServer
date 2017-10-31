@@ -75,7 +75,7 @@ var PredictionRepo = (function () {
                 if (!newJokerFixture)
                     return reject(new Error('Bad'));
                 var fixtureSlug = newJokerFixture.slug, season = newJokerFixture.season, round = newJokerFixture.round, odds = newJokerFixture.odds;
-                if (newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
+                if (autoPicked || newJokerFixture.status === 'SCHEDULED' || newJokerFixture.status === 'TIMED') {
                     prediction_model_1.Prediction.findOne({ user: user, fixture: newJokerFixtureId }, function (err, newJokerPrediction) {
                         if (err)
                             return reject(err);
