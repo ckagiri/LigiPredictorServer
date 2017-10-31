@@ -100,6 +100,7 @@ export class PredictionRepo {
 					} else {
 						newJoker = newJokerPrediction;
 						newJoker.hasJoker = true;
+						newJoker.jokerAutoPicked = autoPicked;
 					}
 					let predictionJokers: [IPrediction] = [newJoker];
 					if(currentJoker) {
@@ -114,7 +115,6 @@ export class PredictionRepo {
 						let currentNewJoker = savedPredictions.filter(n => {
 							return n.fixture === newJoker.fixture
 						})[0];
-						console.log('currentNewJoker', currentNewJoker)
 						return resolve(currentNewJoker);
 					})
 				})

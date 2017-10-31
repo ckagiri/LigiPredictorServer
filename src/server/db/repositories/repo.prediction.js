@@ -90,6 +90,7 @@ var PredictionRepo = (function () {
                         else {
                             newJoker = newJokerPrediction;
                             newJoker.hasJoker = true;
+                            newJoker.jokerAutoPicked = autoPicked;
                         }
                         var predictionJokers = [newJoker];
                         if (currentJoker) {
@@ -105,7 +106,6 @@ var PredictionRepo = (function () {
                             var currentNewJoker = savedPredictions.filter(function (n) {
                                 return n.fixture === newJoker.fixture;
                             })[0];
-                            console.log('currentNewJoker', currentNewJoker);
                             return resolve(currentNewJoker);
                         });
                     });
