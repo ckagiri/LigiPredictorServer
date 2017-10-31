@@ -98,7 +98,7 @@ class FixturesUpdater {
         let finishedFixtures = _.filter(changedFixtures, f => 
           f.status === 'CANCELED' || f.status === 'POSTPONED'|| f.status === 'FINISHED');
         let unfishedFixtures = _.filter(changedFixtures, f => 
-          f.status !== 'CANCELED' || f.status !== 'POSTPONED'|| f.status !== 'FINISHED');
+          f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED');
         finishedFixtureDbUpdateHandler.handle(finishedFixtures);
         unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
         calculateNextFixtureUpdateTime(dbFixtures, callback)

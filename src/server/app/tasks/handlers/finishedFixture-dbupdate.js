@@ -20,6 +20,12 @@ var FinishedFixtureDbUpdateHandler = (function () {
             return Rx.Observable.of(fixture);
         })
             .flatMap(function (fixture) {
+            return common_1.fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status);
+        })
+            .do(function (fixture) {
+            console.log("the game : " + getFixtureName(fixture) + " has been updated");
+        })
+            .flatMap(function (fixture) {
             var season = fixture.season, round = fixture.round;
             var roundFixturesKey = season + "-" + round;
             var roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
@@ -29,20 +35,9 @@ var FinishedFixtureDbUpdateHandler = (function () {
             }
             return roundFixturesObs.map(function (fixtures) {
                 var roundFixtureIds = _.map(fixtures, function (val) { return val._id.toString(); });
+                roundFixtureIds.push(fixture._id.toString());
                 return { fixture: fixture, roundFixtureIds: roundFixtureIds };
             });
-        })
-            .flatMap(function (map) {
-            var fixture = map.fixture, roundFixtureIds = map.roundFixtureIds;
-            return common_1.fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status)
-                .map(function (_) {
-                return {
-                    fixture: fixture, roundFixtureIds: roundFixtureIds
-                };
-            });
-        })
-            .do(function (map) {
-            console.log("the game : " + getFixtureName(map.fixture) + " has been updated");
         })
             .flatMap(function (map) {
             var fixture = map.fixture, roundFixtureIds = map.roundFixtureIds;

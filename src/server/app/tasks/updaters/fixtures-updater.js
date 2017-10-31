@@ -100,7 +100,7 @@ var FixturesUpdater = (function () {
                 return f.status === 'CANCELED' || f.status === 'POSTPONED' || f.status === 'FINISHED';
             });
             var unfishedFixtures = _.filter(changedFixtures, function (f) {
-                return f.status !== 'CANCELED' || f.status !== 'POSTPONED' || f.status !== 'FINISHED';
+                return f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED';
             });
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);

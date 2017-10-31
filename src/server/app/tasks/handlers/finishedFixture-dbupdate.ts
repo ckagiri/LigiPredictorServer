@@ -18,6 +18,12 @@ class FinishedFixtureDbUpdateHandler {
 				return Rx.Observable.of(fixture);
 			})
 			.flatMap((fixture: any) => {
+				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status)
+			})
+			.do((fixture: any) => {
+				console.log("the game : " + getFixtureName(fixture) + " has been updated");
+			})
+			.flatMap((fixture: any) => {
 				let {season, round} = fixture;
 				let roundFixturesKey = `${season}-${round}`;
 				let roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
@@ -27,20 +33,9 @@ class FinishedFixtureDbUpdateHandler {
 				}
 				return roundFixturesObs.map((fixtures: any[]) => {
 					let roundFixtureIds = _.map(fixtures, val => val._id.toString());
+					roundFixtureIds.push(fixture._id.toString())
 					return {fixture, roundFixtureIds};
 				})
-			})
-			.flatMap((map: any) => {
-				let {fixture, roundFixtureIds} = map;
-				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status)
-					.map((_:any) => {
-						return {
-							fixture, roundFixtureIds
-						}
-					});
-			})
-			.do((map: any) => {
-				console.log("the game : " + getFixtureName(map.fixture) + " has been updated");
 			})
 			.flatMap((map: any) => {
 				let {fixture, roundFixtureIds} = map;
