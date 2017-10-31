@@ -30,7 +30,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var roundFixturesKey = season + "-" + round;
             var roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
             if (roundFixturesObs == null) {
-                roundFixturesObs = common_1.fixtureRepo.findAllBySeasonRound(season, round, 'FINISHED');
+                roundFixturesObs = common_1.fixtureRepo.findAllScheduledBySeasonRound(season, round);
                 roundFixturesObsCache[roundFixturesKey] = roundFixturesObs;
             }
             return roundFixturesObs.map(function (fixtures) {
