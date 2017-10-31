@@ -28,7 +28,7 @@ class FinishedFixtureDbUpdateHandler {
 				let roundFixturesKey = `${season}-${round}`;
 				let roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
 				if(roundFixturesObs == null) {
-					roundFixturesObs = fixtureRepo.findAllBySeasonRound(season, round)
+					roundFixturesObs = fixtureRepo.findAllBySeasonRound(season, round, 'FINISHED')
 					roundFixturesObsCache[roundFixturesKey] = roundFixturesObs;
 				}
 				return roundFixturesObs.map((fixtures: any[]) => {

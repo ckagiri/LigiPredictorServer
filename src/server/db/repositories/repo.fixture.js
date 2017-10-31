@@ -20,8 +20,11 @@ var FixtureRepo = (function (_super) {
     FixtureRepo.prototype.findAllBySeason = function (seasonId) {
         return this.findAll({ 'season': seasonId });
     };
-    FixtureRepo.prototype.findAllBySeasonRound = function (seasonId, round) {
+    FixtureRepo.prototype.findAllBySeasonRound = function (seasonId, round, status) {
         var query = { $and: [{ 'season': seasonId }, { round: round }] };
+        if (status != null) {
+            query = { $and: [{ 'season': seasonId }, { round: round }, { status: status }] };
+        }
         return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.getByApiIds = function (apiIds) {
