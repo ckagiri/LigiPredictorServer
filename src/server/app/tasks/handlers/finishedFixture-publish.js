@@ -21,11 +21,6 @@ var FinishedFixturePublishHandler = (function () {
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture;
             var season = fixture.season, round = fixture.round;
-            if (roundFixtures.length === 0) {
-                return Rx.Observable.of({
-                    user: user, fixture: fixture
-                });
-            }
             return common_1.predictionRepo.pickJoker({ user: user, season: season, round: round, pick: roundFixtures })
                 .map(function (jokerPrediction) {
                 return {
@@ -35,7 +30,7 @@ var FinishedFixturePublishHandler = (function () {
         })
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, jokerPrediction = map.jokerPrediction;
-            if (jokerPrediction && jokerPrediction.fixture.toString() == fixture._id.toString()) {
+            if (jokerPrediction.fixture.toString() == fixture._id.toString()) {
                 return Rx.Observable.of({
                     user: user, fixture: fixture, prediction: jokerPrediction
                 });

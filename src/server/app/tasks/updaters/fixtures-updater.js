@@ -96,8 +96,12 @@ var FixturesUpdater = (function () {
                     changedFixtures.push(newFixture);
                 }
             }
-            var finishedFixtures = _.filter(changedFixtures, { status: 'FINISHED' });
-            var unfishedFixtures = _.filter(changedFixtures, function (f) { return f.status !== 'FINISHED'; });
+            var finishedFixtures = _.filter(changedFixtures, function (f) {
+                return f.status === 'CANCELED' || f.status === 'POSTPONED' || f.status === 'FINISHED';
+            });
+            var unfishedFixtures = _.filter(changedFixtures, function (f) {
+                return f.status !== 'CANCELED' || f.status !== 'POSTPONED' || f.status !== 'FINISHED';
+            });
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
             calculateNextFixtureUpdateTime(dbFixtures, callback);

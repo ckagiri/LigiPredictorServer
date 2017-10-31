@@ -24,8 +24,8 @@ var FixtureRepo = (function (_super) {
         var query = { $and: [{ season: seasonId }, { round: round }] };
         return this.findAll(query, null, { sort: 'date' });
     };
-    FixtureRepo.prototype.findAllScheduledBySeasonRound = function (seasonId, round) {
-        var query = { $and: [{ season: seasonId }, { round: round }, { status: { $in: ['SCHEDULED', 'TIMED'] } }] };
+    FixtureRepo.prototype.findAvailableBySeasonRound = function (seasonId, round) {
+        var query = { $and: [{ season: seasonId }, { round: round }, { status: { $in: ['SCHEDULED', 'TIMED', 'IN_PLAY'] } }] };
         return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.getByApiIds = function (apiIds) {
