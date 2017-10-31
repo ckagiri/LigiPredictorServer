@@ -117,8 +117,10 @@ var app;
                     this_1.totalPoints += match.prediction.points || 0;
                     this_1.totalGoalDiff += match.prediction.goalDiff || 0;
                     if (match.prediction.hasJoker && match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
-                        this_1.totalPoints += match.prediction.points || 0;
-                        this_1.totalGoalDiff += match.prediction.goalDiff || 0;
+                        this_1.totalPoints += match.prediction.points;
+                        this_1.totalGoalDiff += match.prediction.goalDiff;
+                        match.prediction.points *= 2;
+                        match.prediction.goalDiff *= 2;
                     }
                 };
                 var this_1 = this;

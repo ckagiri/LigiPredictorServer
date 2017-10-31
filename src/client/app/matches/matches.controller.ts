@@ -80,8 +80,10 @@ namespace app.matches {
 				this.totalPoints += match.prediction.points || 0;
 				this.totalGoalDiff += match.prediction.goalDiff || 0;
 				if(match.prediction.hasJoker && match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
-					this.totalPoints += match.prediction.points || 0;
-					this.totalGoalDiff += match.prediction.goalDiff || 0;
+					this.totalPoints += match.prediction.points;
+					this.totalGoalDiff += match.prediction.goalDiff;
+					match.prediction.points *= 2;
+					match.prediction.goalDiff *= 2;
 				}
 			}
 			if(!hasOneAvailableFixture) {
