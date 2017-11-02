@@ -1,8 +1,8 @@
-namespace app.leaderboards {
+namespace app.stats {
   'use strict';
 
   angular
-    .module('app.leaderboards')
+    .module('app.stats')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -14,13 +14,13 @@ namespace app.leaderboards {
   function getStates() {
     return [
       {
-        state: 'app.leaderboards',
+        state: 'app.stats',
         config: {
-          url: '/leaderboard',
-          templateUrl: 'app/leaderboards/leaderboards.html',
-          controller: 'LeaderboardsController',
+          url: '/stats',
+          templateUrl: 'app/stats/stats.html',
+          controller: 'StatsController',
           controllerAs: 'vm',
-          title: 'leaderboards'
+          title: 'stats'
         }
       }
     ];

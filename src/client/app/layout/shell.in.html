@@ -5,7 +5,7 @@
   <section id="content" class="content">
 		<div class="container">
 			<div>
-				<ol class="breadcrumb">
+				<ol class="breadcrumb" ng-if="vm.isAdmin()">
 					<li ng-repeat="crumb in vm.breadcrumbs.getAll()" ng-class="{ active: $last }">
 						<a href="{{crumb.path}}" ng-if="!$last">{{crumb.name}}</a>
 						<span ng-show="$last">{{crumb.name }}</span>&nbsp;</li>

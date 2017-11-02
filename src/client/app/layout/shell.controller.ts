@@ -10,6 +10,10 @@ namespace app.layout {
       private logger: blocks.logger.Logger) {
       this.logger.success(config.appTitle + ' loaded!', null);
     }
+
+    isAdmin() {
+      return false;
+    }
   }
 
   angular

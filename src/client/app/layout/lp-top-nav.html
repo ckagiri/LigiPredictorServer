@@ -16,10 +16,10 @@
 					</li>
 			</ul>
 		</li>
-		<li ng-class="{active:isNavbarActive('predictions')}"><a href="/predictions">Predictions</a></li>
 		<li ng-class="{active:isNavbarActive('leaderboard')}"><a href="/leaderboard">Leaderboard</a></li>
+		<li ng-class="{active:isNavbarActive('predictions')}"><a href="/predictions">Predictions</a></li>
 		<li ng-class="{active:isNavbarActive('what-if')}"><a href="/what-if">What If?</a></li>
-		<li ng-class="{active:isNavbarActive('stats')}"><a href="/what-if">Stats</a></li>
+		<li ng-class="{active:isNavbarActive('stats')}"><a href="/stats">Stats</a></li>
 		<li ng-class="{active:isNavbarActive('rules')}"><a href="/rules">Rules</a></li>
 	</ul>
   <ul ng-if="!vm.isAuthenticated()" class="nav navbar-nav pull-right">

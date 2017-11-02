@@ -13,7 +13,10 @@ var app;
         'admin.users',
         'app.matches',
         'app.predictions',
-        'app.leaderboards'
+        'app.leaderboards',
+        'app.rules',
+        'app.whatif',
+        'app.stats'
     ]);
 })(app || (app = {}));
 //# sourceMappingURL=app.module.js.map

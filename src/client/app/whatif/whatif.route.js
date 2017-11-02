@@ -1,10 +1,10 @@
 var app;
 (function (app) {
-    var leaderboards;
-    (function (leaderboards) {
+    var whatif;
+    (function (whatif) {
         'use strict';
         angular
-            .module('app.leaderboards')
+            .module('app.whatif')
             .run(appRun);
         appRun.$inject = ['routerHelper'];
         function appRun(routerHelper) {
@@ -14,17 +14,17 @@ var app;
         function getStates() {
             return [
                 {
-                    state: 'app.leaderboards',
+                    state: 'app.whatif',
                     config: {
-                        url: '/leaderboard',
-                        templateUrl: 'app/leaderboards/leaderboards.html',
-                        controller: 'LeaderboardsController',
+                        url: '/what-if',
+                        templateUrl: 'app/whatif/whatif.html',
+                        controller: 'WhatIfController',
                         controllerAs: 'vm',
-                        title: 'leaderboards'
+                        title: 'whatif'
                     }
                 }
             ];
         }
-    })(leaderboards = app.leaderboards || (app.leaderboards = {}));
+    })(whatif = app.whatif || (app.whatif = {}));
 })(app || (app = {}));
-//# sourceMappingURL=leaderboards.route.js.map
+//# sourceMappingURL=whatif.route.js.map

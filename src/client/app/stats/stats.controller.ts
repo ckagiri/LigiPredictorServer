@@ -1,17 +1,17 @@
-namespace app.rules {
+namespace app.stats {
 	'use strict';
 
-	export class RulesController {
+	export class StatsController {
 		static $inject: string[] = ['$q', 'logger'];
 
 		constructor(private $q: ng.IQService,
       private logger: blocks.logger.Logger) {
     }
 
-		title: string = 'Rules';
+		title: string = 'Stats';
 	}
 
 	angular
-    .module('app.rules')
-    .controller('RulesController', RulesController);
+    .module('app.stats')
+    .controller('StatsController', StatsController);
 }

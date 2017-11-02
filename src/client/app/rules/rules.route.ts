@@ -1,8 +1,8 @@
-namespace app.leaderboards {
+namespace app.rules {
   'use strict';
 
   angular
-    .module('app.leaderboards')
+    .module('app.rules')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -14,13 +14,13 @@ namespace app.leaderboards {
   function getStates() {
     return [
       {
-        state: 'app.leaderboards',
+        state: 'app.rules',
         config: {
-          url: '/leaderboard',
-          templateUrl: 'app/leaderboards/leaderboards.html',
-          controller: 'LeaderboardsController',
+          url: '/rules',
+          templateUrl: 'app/rules/rules.html',
+          controller: 'RulesController',
           controllerAs: 'vm',
-          title: 'leaderboards'
+          title: 'rules'
         }
       }
     ];

@@ -12,6 +12,9 @@ var app;
                 this.logger = logger;
                 this.logger.success(config.appTitle + ' loaded!', null);
             }
+            ShellController.prototype.isAdmin = function () {
+                return false;
+            };
             return ShellController;
         }());
         ShellController.$inject = ['$rootScope', '$timeout', 'breadcrumbs', 'config', 'logger'];

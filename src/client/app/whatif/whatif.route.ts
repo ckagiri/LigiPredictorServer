@@ -1,8 +1,8 @@
-namespace app.leaderboards {
+namespace app.whatif {
   'use strict';
 
   angular
-    .module('app.leaderboards')
+    .module('app.whatif')
     .run(appRun);
 
   appRun.$inject = ['routerHelper'];
@@ -14,13 +14,13 @@ namespace app.leaderboards {
   function getStates() {
     return [
       {
-        state: 'app.leaderboards',
+        state: 'app.whatif',
         config: {
-          url: '/leaderboard',
-          templateUrl: 'app/leaderboards/leaderboards.html',
-          controller: 'LeaderboardsController',
+          url: '/what-if',
+          templateUrl: 'app/whatif/whatif.html',
+          controller: 'WhatIfController',
           controllerAs: 'vm',
-          title: 'leaderboards'
+          title: 'whatif'
         }
       }
     ];

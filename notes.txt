@@ -12,3 +12,39 @@ after res.send
  process.nextTick(function () {
 			updateFormsTasks(finishedFixtures);
 		});
+
+	w1 leaderboard, month, pagination, how-to-test page, json comprsd preds
+w2 whatIf league table,filter preds,refresh,oninit
+w3 auth nav disable email,bindIfEmpty,fixture matchOdds&status,socketio  
+w4 socketio, inplaycolor, computer-genrtd? 
+w5 stats d3 barchart directive
+w6 task-simplification, cached browserify
+w7 afterauth profile info - email, name, country
+w8 emails- sent tables - missing + res, profile settings
+
+match postponed cancelled
+
+Practical MongoDB: Architecting, Developing, and Administering MongoDB
+Node.js Design Patterns By Mario Casciaro, Luciano Mammino
+Deploying Node.js By Sandro Pasquali
+
+Predictions->joker --/included/excluded; round --/1 to current; 
+team: --/steams; venue: --/@home/@away; autopicked --/yes/no
+prediction: --;correct outcome/incorrect outcome/exact score
+paged:
+summary points, matches (/) page sort size
+
+WhatIf
+based on actual/pred scores, pred fixed
+Match                   Result    Predicted
+HomeTeam v Away Team [1] v [2]x       1-2
+x[clear all ifs]
+League Table based on Match Result
+team p w d l gf ga gd pts
+League Table based on your predicted scores
+
+Leaderboard:
+Everyone is ranked in order of the highest points. Anyone with tied points is then ranked by the Goal Difference.
+
+Prediction Deadlines:
+You can make/change your prediction any time prior to a match kicking off. As soon as a game as started your prediction is locked.

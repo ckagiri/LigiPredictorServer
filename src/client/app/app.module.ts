@@ -13,6 +13,9 @@ namespace app {
 		'admin.users',
 		'app.matches',
 		'app.predictions',
-		'app.leaderboards'
+		'app.leaderboards',
+		'app.rules',
+		'app.whatif',
+		'app.stats'
   ]);
 }

@@ -1,10 +1,10 @@
 var app;
 (function (app) {
-    var leaderboards;
-    (function (leaderboards) {
+    var rules;
+    (function (rules) {
         'use strict';
         angular
-            .module('app.leaderboards')
+            .module('app.rules')
             .run(appRun);
         appRun.$inject = ['routerHelper'];
         function appRun(routerHelper) {
@@ -14,17 +14,17 @@ var app;
         function getStates() {
             return [
                 {
-                    state: 'app.leaderboards',
+                    state: 'app.rules',
                     config: {
-                        url: '/leaderboard',
-                        templateUrl: 'app/leaderboards/leaderboards.html',
-                        controller: 'LeaderboardsController',
+                        url: '/rules',
+                        templateUrl: 'app/rules/rules.html',
+                        controller: 'RulesController',
                         controllerAs: 'vm',
-                        title: 'leaderboards'
+                        title: 'rules'
                     }
                 }
             ];
         }
-    })(leaderboards = app.leaderboards || (app.leaderboards = {}));
+    })(rules = app.rules || (app.rules = {}));
 })(app || (app = {}));
-//# sourceMappingURL=leaderboards.route.js.map
+//# sourceMappingURL=rules.route.js.map
