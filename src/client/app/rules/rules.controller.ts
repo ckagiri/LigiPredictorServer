@@ -129,6 +129,8 @@ namespace app.rules {
 
 		processGoalDiff(predictionOutcome: string, resultOutcome: string, 
 			predictionGd: number, resultGd: number) {
+			predictionGd = Math.abs(predictionGd);
+			resultGd = Math.abs(resultGd);
 			let homeGoalsGd = null;
 			let awayGoalsGd = null;
 			let minGd = Math.abs(Math.min(predictionGd, resultGd)) || 1;

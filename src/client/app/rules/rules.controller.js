@@ -107,6 +107,8 @@ var app;
                 }
             };
             RulesController.prototype.processGoalDiff = function (predictionOutcome, resultOutcome, predictionGd, resultGd) {
+                predictionGd = Math.abs(predictionGd);
+                resultGd = Math.abs(resultGd);
                 var homeGoalsGd = null;
                 var awayGoalsGd = null;
                 var minGd = Math.abs(Math.min(predictionGd, resultGd)) || 1;
