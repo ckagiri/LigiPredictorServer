@@ -9,7 +9,7 @@ var GoalDiffCalculator = (function () {
         var homeGoalsGd = null;
         var awayGoalsGd = null;
         var bonusEqualGd = 0;
-        var minGd = Math.min(choiceGd, resultGd) || 1;
+        var minGd = Math.abs(Math.min(choiceGd, resultGd)) || 1;
         var choiceOutcome = calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
         var resultOutcome = calcOutcome(result.goalsHomeTeam, result.goalsAwayTeam);
         if (choiceOutcome === resultOutcome) {

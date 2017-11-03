@@ -38,7 +38,7 @@ export class UserScoreRepo {
             standing.pointsExcJoker += score.points
             standing.goalDiff += score.goalDiff;
             standing.goalDiffExcJoker+= score.goalDiff
-            if(hasJoker && score.goalDiff >= 0 && score.points > 0) {
+            if(hasJoker && score.goalDiff >= 0) {
               standing.points += score.points;
               standing.goalDiff += score.goalDiff;
             }
