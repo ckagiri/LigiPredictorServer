@@ -42,10 +42,10 @@ var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {
     var fixtures = _.filter(dbFixtures, function (f) { return f.status !== 'FINISHED'; });
     for (var _i = 0, fixtures_2 = fixtures; _i < fixtures_2.length; _i++) {
         var fixture = fixtures_2[_i];
-        if (fixture || fixture.status == "IN_PLAY") {
+        if (fixture.status == "IN_PLAY") {
             fixtureLive = true;
         }
-        else if (fixture.status == "TIMED") {
+        else if (fixture.status == "SCHEDULED" || fixture.status == "TIMED") {
             // Parse fixture start date/time
             var fixtureStart = Moment(fixture.date);
             if (fixtureStart > now && fixtureStart < next) {
