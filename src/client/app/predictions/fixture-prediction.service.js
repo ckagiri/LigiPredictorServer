@@ -11,7 +11,7 @@ var app;
                 this.exception = exception;
                 this.logger = logger;
                 this.getFixturesWithPredictions = function () {
-                    return _this.$http.get('/api/predictions')
+                    return _this.$http.get('/api/predictions/mine')
                         .then(_this.success)
                         .catch(_this.fail);
                 };
@@ -29,7 +29,7 @@ var app;
         core.FixturePredictionService = FixturePredictionService;
         angular
             .module('app.core')
-            .service('predictionsService', FixturePredictionService);
+            .service('fixturePredictionService', FixturePredictionService);
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=fixture-prediction.service.js.map
