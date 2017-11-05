@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("../utils");
 var competition_1 = require("./competition");
-var FootballApiClient = /** @class */ (function () {
+var FootballApiClient = (function () {
     function FootballApiClient(apiKey) {
         this.apiKey = apiKey;
     }

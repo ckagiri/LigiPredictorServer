@@ -3,7 +3,7 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        var FixturePredictionService = /** @class */ (function () {
+        var FixturePredictionService = (function () {
             function FixturePredictionService($http, $q, exception, logger) {
                 var _this = this;
                 this.$http = $http;
@@ -23,9 +23,9 @@ var app;
                     return _this.$q.reject(msg);
                 };
             }
-            FixturePredictionService.$inject = ['$http', '$q', 'exception', 'logger'];
             return FixturePredictionService;
         }());
+        FixturePredictionService.$inject = ['$http', '$q', 'exception', 'logger'];
         core.FixturePredictionService = FixturePredictionService;
         angular
             .module('app.core')

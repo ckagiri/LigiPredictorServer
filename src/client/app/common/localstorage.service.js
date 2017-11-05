@@ -3,7 +3,7 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        var LocalStorageService = /** @class */ (function () {
+        var LocalStorageService = (function () {
             function LocalStorageService($window) {
                 this.localStorage = $window.localStorage;
             }
@@ -16,9 +16,9 @@ var app;
                 this.localStorage.removeItem(key);
                 return true;
             };
-            LocalStorageService.$inject = ['$window'];
             return LocalStorageService;
         }());
+        LocalStorageService.$inject = ['$window'];
         core.LocalStorageService = LocalStorageService;
         angular
             .module('app.core')

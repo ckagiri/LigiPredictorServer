@@ -9,7 +9,7 @@ var app;
                 var url = config.baseUrl + '/api/' + resourceName;
                 var defaultParams = {};
                 var Resource;
-                Resource = /** @class */ (function () {
+                Resource = (function () {
                     function Resource(data) {
                         angular.extend(this, data);
                     }

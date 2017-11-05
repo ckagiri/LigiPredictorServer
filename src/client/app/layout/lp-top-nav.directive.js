@@ -3,7 +3,7 @@ var app;
     var layout;
     (function (layout) {
         'use strict';
-        var LpTopNav = /** @class */ (function () {
+        var LpTopNav = (function () {
             function LpTopNav() {
                 this.bindToController = true;
                 this.controller = TopNavController;
@@ -19,10 +19,10 @@ var app;
             };
             LpTopNav.prototype.link = function (scope, element, attrs) { };
             ;
-            LpTopNav.$inject = [''];
             return LpTopNav;
         }());
-        var TopNavController = /** @class */ (function () {
+        LpTopNav.$inject = [''];
+        var TopNavController = (function () {
             function TopNavController($state, logger, security) {
                 this.$state = $state;
                 this.logger = logger;
@@ -60,9 +60,9 @@ var app;
                 return true;
                 //return navBarPath === breadcrumbs.getFirst().name;
             };
-            TopNavController.$inject = ['$state', 'logger', 'securityService'];
             return TopNavController;
         }());
+        TopNavController.$inject = ['$state', 'logger', 'securityService'];
         angular
             .module('app.layout')
             .directive('lpTopNav', LpTopNav.instance);

@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var user_controller_1 = require("./user.controller");
 var router = express_1.Router();
-var UserRouter = /** @class */ (function () {
+var UserRouter = (function () {
     function UserRouter() {
         this.controller = new user_controller_1.UserController();
     }

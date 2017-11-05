@@ -3,15 +3,15 @@ var app;
     var stats;
     (function (stats) {
         'use strict';
-        var StatsController = /** @class */ (function () {
+        var StatsController = (function () {
             function StatsController($q, logger) {
                 this.$q = $q;
                 this.logger = logger;
                 this.title = 'Stats';
             }
-            StatsController.$inject = ['$q', 'logger'];
             return StatsController;
         }());
+        StatsController.$inject = ['$q', 'logger'];
         stats.StatsController = StatsController;
         angular
             .module('app.stats')

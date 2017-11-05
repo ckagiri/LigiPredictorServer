@@ -4,7 +4,7 @@ var express_1 = require("express");
 var helpers_1 = require("../../auth/helpers");
 var user_model_1 = require("../../../db/models/user.model");
 var router = express_1.Router();
-var ProfileRouter = /** @class */ (function () {
+var ProfileRouter = (function () {
     function ProfileRouter() {
     }
     Object.defineProperty(ProfileRouter.prototype, "routes", {

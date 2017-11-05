@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var PointsCalculator = /** @class */ (function () {
+var PointsCalculator = (function () {
     function PointsCalculator() {
     }
     PointsCalculator.prototype.process = function (choice, result) {

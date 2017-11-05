@@ -5,7 +5,7 @@ var Rx = require("rxjs");
 var getFixtureName = function (fixture) {
     return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
 };
-var UnfinishedFixtureDbUpdateHandler = /** @class */ (function () {
+var UnfinishedFixtureDbUpdateHandler = (function () {
     function UnfinishedFixtureDbUpdateHandler() {
     }
     UnfinishedFixtureDbUpdateHandler.prototype.handle = function (unfinishedFixtures) {

@@ -3,15 +3,15 @@ var app;
     var leaderboards;
     (function (leaderboards) {
         'use strict';
-        var LeaderboardsController = /** @class */ (function () {
+        var LeaderboardsController = (function () {
             function LeaderboardsController($q, logger) {
                 this.$q = $q;
                 this.logger = logger;
                 this.title = 'Leaderboards';
             }
-            LeaderboardsController.$inject = ['$q', 'logger'];
             return LeaderboardsController;
         }());
+        LeaderboardsController.$inject = ['$q', 'logger'];
         leaderboards.LeaderboardsController = LeaderboardsController;
         angular
             .module('app.leaderboards')

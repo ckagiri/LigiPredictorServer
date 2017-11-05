@@ -3,7 +3,7 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        var CacheService = /** @class */ (function () {
+        var CacheService = (function () {
             function CacheService($cacheFactory) {
                 this.$cacheFactory = $cacheFactory;
                 this.expires = undefined; //config.storeExpirationMs
@@ -22,9 +22,9 @@ var app;
             CacheService.prototype.info = function () {
                 return this.store.info();
             };
-            CacheService.$inject = ['$cacheFactory'];
             return CacheService;
         }());
+        CacheService.$inject = ['$cacheFactory'];
         core.CacheService = CacheService;
         angular
             .module('app.core')

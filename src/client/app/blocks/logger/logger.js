@@ -3,7 +3,7 @@ var blocks;
     var logger;
     (function (logger) {
         'use strict';
-        var Logger = /** @class */ (function () {
+        var Logger = (function () {
             function Logger($log, toastr) {
                 this.$log = $log;
                 this.toastr = toastr;
@@ -32,9 +32,9 @@ var blocks;
                 this.toastr.warning(message, title);
                 this.$log.warn('Warning: ' + message, '\nSummary:', title, '\nDetails:', data);
             };
-            Logger.$inject = ['$log', 'toastr'];
             return Logger;
         }());
+        Logger.$inject = ['$log', 'toastr'];
         logger.Logger = Logger;
         angular
             .module('blocks.logger')

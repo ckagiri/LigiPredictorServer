@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Queue = /** @class */ (function () {
+var Queue = (function () {
     function Queue(limit, timeInterval) {
         this.tokensInInterval = limit;
         this.tokensLeftInInterval = limit;

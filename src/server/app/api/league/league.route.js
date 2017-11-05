@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var league_controller_1 = require("./league.controller");
 var router = express_1.Router();
-var LeagueRouter = /** @class */ (function () {
+var LeagueRouter = (function () {
     function LeagueRouter() {
         this.controller = new league_controller_1.LeagueController();
     }

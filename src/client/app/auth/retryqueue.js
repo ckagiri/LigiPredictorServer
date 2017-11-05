@@ -3,7 +3,7 @@ var app;
     var auth;
     (function (auth) {
         'use strict';
-        var RetryQueue = /** @class */ (function () {
+        var RetryQueue = (function () {
             function RetryQueue($log, $q) {
                 this.$log = $log;
                 this.$q = $q;
@@ -69,9 +69,9 @@ var app;
             RetryQueue.prototype.clear = function () {
                 this.retryQueue = [];
             };
-            RetryQueue.$inject = ['$log', '$q'];
             return RetryQueue;
         }());
+        RetryQueue.$inject = ['$log', '$q'];
         angular
             .module('app.auth')
             .service('retryQueue', RetryQueue);

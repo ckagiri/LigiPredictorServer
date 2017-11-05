@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var fixture_controller_1 = require("./fixture.controller");
 var router = express_1.Router();
-var FixtureRouter = /** @class */ (function () {
+var FixtureRouter = (function () {
     function FixtureRouter() {
         this.controller = new fixture_controller_1.FixtureController();
     }

@@ -14,7 +14,7 @@ namespace app.core {
       private logger: blocks.logger.Logger) {
     }
 
-    submitPredictions: (req: any) => ng.IPromise<number> = (req) => {
+    submitPredictions: (req: any) => ng.IPromise<any> = (req) => {
       return this.$http.post('/api/predictions', req)
         .then(this.success)
         .catch(this.fail)

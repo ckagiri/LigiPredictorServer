@@ -5,7 +5,7 @@ var ligi_predictor_1 = require("../../../db/converters/ligi-predictor");
 var isMongoId_1 = require("../../utils/isMongoId");
 var leagueRepo = new repositories_1.LeagueRepo(new ligi_predictor_1.LeagueConverter());
 var seasonRepo = new repositories_1.SeasonRepo(new ligi_predictor_1.SeasonConverter(leagueRepo));
-var SeasonController = /** @class */ (function () {
+var SeasonController = (function () {
     function SeasonController() {
     }
     SeasonController.prototype.show = function (req, res) {

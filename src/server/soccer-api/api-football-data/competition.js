@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var utils_1 = require("../utils");
-var CompetitionApi = /** @class */ (function () {
+var CompetitionApi = (function () {
     function CompetitionApi(apiKey, id) {
         this.apiKey = apiKey;
         this.id = id;

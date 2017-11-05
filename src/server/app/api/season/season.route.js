@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var season_controller_1 = require("../season/season.controller");
 var router = express_1.Router();
-var SeasonRouter = /** @class */ (function () {
+var SeasonRouter = (function () {
     function SeasonRouter() {
         this.controller = new season_controller_1.SeasonController();
     }

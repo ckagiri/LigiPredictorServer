@@ -3,7 +3,7 @@ var app;
     var auth;
     (function (auth) {
         'use strict';
-        var SignupController = /** @class */ (function () {
+        var SignupController = (function () {
             function SignupController(security, $q, $state, logger) {
                 this.security = security;
                 this.$q = $q;
@@ -22,9 +22,9 @@ var app;
                 });
             };
             ;
-            SignupController.$inject = ['securityService', '$q', '$state', 'logger'];
             return SignupController;
         }());
+        SignupController.$inject = ['securityService', '$q', '$state', 'logger'];
         auth.SignupController = SignupController;
         angular
             .module('app.auth')

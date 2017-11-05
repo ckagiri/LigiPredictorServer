@@ -63,7 +63,7 @@ var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {
     }
     callback(update);
 };
-var FixturesUpdater = /** @class */ (function () {
+var FixturesUpdater = (function () {
     function FixturesUpdater() {
     }
     FixturesUpdater.prototype.update = function (callback) {

@@ -3,7 +3,7 @@ var app;
     var rules;
     (function (rules_1) {
         'use strict';
-        var RulesController = /** @class */ (function () {
+        var RulesController = (function () {
             function RulesController($q, logger) {
                 this.$q = $q;
                 this.logger = logger;
@@ -186,9 +186,9 @@ var app;
                     return 'd';
                 }
             };
-            RulesController.$inject = ['$q', 'logger'];
             return RulesController;
         }());
+        RulesController.$inject = ['$q', 'logger'];
         rules_1.RulesController = RulesController;
         angular
             .module('app.rules')

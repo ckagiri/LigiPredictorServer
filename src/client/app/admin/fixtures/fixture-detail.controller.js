@@ -3,16 +3,16 @@ var admin;
     var fixtures;
     (function (fixtures) {
         'use strict';
-        var FixtureDetailController = /** @class */ (function () {
+        var FixtureDetailController = (function () {
             function FixtureDetailController($q, fixture, logger) {
                 this.$q = $q;
                 this.fixture = fixture;
                 this.logger = logger;
                 this.title = 'Fixture';
             }
-            FixtureDetailController.$inject = ['$q', 'fixture', 'logger'];
             return FixtureDetailController;
         }());
+        FixtureDetailController.$inject = ['$q', 'fixture', 'logger'];
         fixtures.FixtureDetailController = FixtureDetailController;
         angular
             .module('admin.fixtures')

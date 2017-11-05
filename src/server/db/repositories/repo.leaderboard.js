@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
 var leaderboard_model_1 = require("../models/leaderboard.model");
-var LeaderboardRepo = /** @class */ (function () {
+var LeaderboardRepo = (function () {
     function LeaderboardRepo() {
     }
     LeaderboardRepo.prototype.findOneAndUpdate = function (query, update) {

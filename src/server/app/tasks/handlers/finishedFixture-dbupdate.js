@@ -7,7 +7,7 @@ var _ = require("lodash");
 var getFixtureName = function (fixture) {
     return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
 };
-var FinishedFixtureDbUpdateHandler = /** @class */ (function () {
+var FinishedFixtureDbUpdateHandler = (function () {
     function FinishedFixtureDbUpdateHandler() {
     }
     FinishedFixtureDbUpdateHandler.prototype.handle = function (finishedFixtures) {

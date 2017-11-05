@@ -3,16 +3,16 @@ var admin;
     var teams;
     (function (teams_1) {
         'use strict';
-        var TeamsController = /** @class */ (function () {
+        var TeamsController = (function () {
             function TeamsController($q, teams, logger) {
                 this.$q = $q;
                 this.teams = teams;
                 this.logger = logger;
                 this.title = 'Teans';
             }
-            TeamsController.$inject = ['$q', 'teams', 'logger'];
             return TeamsController;
         }());
+        TeamsController.$inject = ['$q', 'teams', 'logger'];
         teams_1.TeamsController = TeamsController;
         angular
             .module('admin.teams')

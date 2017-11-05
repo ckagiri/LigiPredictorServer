@@ -3,7 +3,7 @@ var app;
     var predictions;
     (function (predictions) {
         'use strict';
-        var PredictionsController = /** @class */ (function () {
+        var PredictionsController = (function () {
             function PredictionsController($q, logger, fixturePredictionService) {
                 this.$q = $q;
                 this.logger = logger;
@@ -18,9 +18,9 @@ var app;
                     _this.fixtures = data;
                 });
             };
-            PredictionsController.$inject = ['$q', 'logger', 'fixturePredictionService'];
             return PredictionsController;
         }());
+        PredictionsController.$inject = ['$q', 'logger', 'fixturePredictionService'];
         predictions.PredictionsController = PredictionsController;
         angular
             .module('app.predictions')

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var _ = require("lodash");
 var Rx = require("rxjs");
-var AbstractRepo = /** @class */ (function () {
+var AbstractRepo = (function () {
     function AbstractRepo(model, converter) {
         this.model = model;
         this.converter = converter;

@@ -9,7 +9,7 @@ var seasonRepo = new repositories_1.SeasonRepo(new ligi_predictor_1.SeasonConver
 var teamRepo = new repositories_1.TeamRepo(new ligi_predictor_1.TeamConverter());
 var fixtureRepo = new repositories_1.FixtureRepo(new ligi_predictor_1.FixtureConverter(seasonRepo, repositories_1.TeamRepo));
 var predictionRepo = new repositories_1.PredictionRepo();
-var PredictionController = /** @class */ (function () {
+var PredictionController = (function () {
     function PredictionController() {
     }
     PredictionController.prototype.list = function (req, res) {

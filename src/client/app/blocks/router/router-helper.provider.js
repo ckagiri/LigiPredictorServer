@@ -3,7 +3,7 @@ var blocks;
     var router;
     (function (router) {
         'use strict';
-        var RouterHelperProvider = /** @class */ (function () {
+        var RouterHelperProvider = (function () {
             function RouterHelperProvider($locationProvider, $stateProvider, $urlRouterProvider) {
                 this.$locationProvider = $locationProvider;
                 this.$stateProvider = $stateProvider;
@@ -124,9 +124,9 @@ var blocks;
                     });
                 }
             };
-            RouterHelperProvider.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider'];
             return RouterHelperProvider;
         }());
+        RouterHelperProvider.$inject = ['$locationProvider', '$stateProvider', '$urlRouterProvider'];
         router.RouterHelperProvider = RouterHelperProvider;
         angular
             .module('blocks.router')

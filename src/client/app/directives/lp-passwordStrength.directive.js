@@ -3,7 +3,7 @@ var app;
     var directives;
     (function (directives) {
         'use strict';
-        var LpPasswordStrength = /** @class */ (function () {
+        var LpPasswordStrength = (function () {
             function LpPasswordStrength() {
                 this.restrict = 'A';
                 this.require = 'ngModel';
@@ -101,9 +101,9 @@ var app;
                     }
                 });
             };
-            LpPasswordStrength.$inject = [''];
             return LpPasswordStrength;
         }());
+        LpPasswordStrength.$inject = [''];
         angular
             .module('app.directives')
             .directive('lpPasswordStrength', LpPasswordStrength.instance);

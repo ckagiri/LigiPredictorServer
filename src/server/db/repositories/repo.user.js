@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
 var user_model_1 = require("../models/user.model");
-var UserRepo = /** @class */ (function () {
+var UserRepo = (function () {
     function UserRepo() {
     }
     UserRepo.prototype.findOne = function (query, projection) {

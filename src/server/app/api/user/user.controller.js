@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var repositories_1 = require("../../../db/repositories");
 var userRepo = new repositories_1.UserRepo();
-var UserController = /** @class */ (function () {
+var UserController = (function () {
     function UserController() {
     }
     UserController.prototype.show = function (req, res) {

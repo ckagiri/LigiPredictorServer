@@ -4,7 +4,7 @@ var prediction_model_1 = require("../models/prediction.model");
 var vose_predictor_1 = require("../../helpers/vose-predictor");
 var fixture_model_1 = require("../models/fixture.model");
 var Rx = require("rxjs");
-var PredictionRepo = /** @class */ (function () {
+var PredictionRepo = (function () {
     function PredictionRepo() {
         var _this = this;
         this.findOneOrCreate = function (user, fixture) {

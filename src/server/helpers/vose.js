@@ -5,7 +5,7 @@
  * Fantastic explanation here: http://www.keithschwarz.com/darts-dice-coins/
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-var Vose = /** @class */ (function () {
+var Vose = (function () {
     function Vose(weights) {
         var _this = this;
         this.init = function (weights) {

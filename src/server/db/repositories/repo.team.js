@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
 var team_model_1 = require("../models/team.model");
 var Promise = require('bluebird');
-var TeamRepo = /** @class */ (function (_super) {
+var TeamRepo = (function (_super) {
     __extends(TeamRepo, _super);
     function TeamRepo(converter) {
         return _super.call(this, team_model_1.Team, converter) || this;

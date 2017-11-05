@@ -3,7 +3,7 @@ var app;
     var directives;
     (function (directives) {
         'use strict';
-        var LpPasswordMatch = /** @class */ (function () {
+        var LpPasswordMatch = (function () {
             function LpPasswordMatch() {
                 this.require = 'ngModel';
                 this.scope = {
@@ -21,9 +21,9 @@ var app;
                     ngModel.$validate();
                 });
             };
-            LpPasswordMatch.$inject = [''];
             return LpPasswordMatch;
         }());
+        LpPasswordMatch.$inject = [''];
         angular
             .module('app.directives')
             .directive('lpPasswordMatch', LpPasswordMatch.instance);
