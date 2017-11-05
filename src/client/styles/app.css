@@ -229,4 +229,10 @@ input[type=number]::-webkit-outer-spin-button {
 .joker-container input[type=radio]:checked ~ img {
   opacity: 1;
 }
+.joker-container input[type=checkbox] {
+  display: none;
+}
+.joker-container input[type=checkbox]:checked ~ img {
+  opacity: 1;
+}
 
