@@ -4,7 +4,7 @@ var environment_1 = require("../../../config/environment");
 var api_football_data_1 = require("../../../soccer-api/api-football-data");
 var competition_job_1 = require("./competition.job");
 exports.client = new api_football_data_1.default(environment_1.config.api_providers.api_football_data.apiKey);
-var MainJob = (function () {
+var MainJob = /** @class */ (function () {
     function MainJob() {
     }
     MainJob.prototype.start = function (queue) {

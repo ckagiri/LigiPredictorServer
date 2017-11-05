@@ -4,7 +4,7 @@ var Rx = require("rxjs");
 var common_1 = require("../common");
 var season_dbupdate_1 = require("../handlers/season-dbupdate");
 var Moment = require('moment');
-var DataUpdater = (function () {
+var DataUpdater = /** @class */ (function () {
     function DataUpdater() {
     }
     DataUpdater.prototype.update = function (callback) {

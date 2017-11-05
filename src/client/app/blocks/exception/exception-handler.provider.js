@@ -4,7 +4,7 @@ var blocks;
     var exception;
     (function (exception_1) {
         'use strict';
-        var ExceptionHandlerProvider = (function () {
+        var ExceptionHandlerProvider = /** @class */ (function () {
             function ExceptionHandlerProvider() {
                 var _this = this;
                 this.config = {
@@ -15,9 +15,9 @@ var blocks;
             ExceptionHandlerProvider.prototype.configure = function (appErrorPrefix) {
                 this.config.appErrorPrefix = appErrorPrefix;
             };
+            ExceptionHandlerProvider.$inject = [];
             return ExceptionHandlerProvider;
         }());
-        ExceptionHandlerProvider.$inject = [];
         exception_1.ExceptionHandlerProvider = ExceptionHandlerProvider;
         config.$inject = ['$provide'];
         function config($provide) {

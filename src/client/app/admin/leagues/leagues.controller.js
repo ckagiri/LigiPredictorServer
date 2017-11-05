@@ -3,16 +3,16 @@ var admin;
     var leagues;
     (function (leagues_1) {
         'use strict';
-        var LeaguesController = (function () {
+        var LeaguesController = /** @class */ (function () {
             function LeaguesController($q, leagues, logger) {
                 this.$q = $q;
                 this.leagues = leagues;
                 this.logger = logger;
                 this.title = 'Leagues';
             }
+            LeaguesController.$inject = ['$q', 'leagues', 'logger'];
             return LeaguesController;
         }());
-        LeaguesController.$inject = ['$q', 'leagues', 'logger'];
         leagues_1.LeaguesController = LeaguesController;
         angular
             .module('admin.leagues')

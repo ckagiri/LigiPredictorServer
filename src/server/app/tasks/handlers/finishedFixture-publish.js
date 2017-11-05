@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
 var common_1 = require("../common");
 var prediction_processor_1 = require("../../../helpers/prediction-processor");
-var FinishedFixturePublishHandler = (function () {
+var FinishedFixturePublishHandler = /** @class */ (function () {
     function FinishedFixturePublishHandler() {
     }
     FinishedFixturePublishHandler.prototype.handle = function (changedFixture, roundFixtures) {

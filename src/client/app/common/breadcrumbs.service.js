@@ -3,7 +3,7 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        var BreadcrumbsService = (function () {
+        var BreadcrumbsService = /** @class */ (function () {
             function BreadcrumbsService() {
                 this.breadcrumbs = [];
             }

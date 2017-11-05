@@ -3,7 +3,7 @@ var app;
     var auth;
     (function (auth) {
         'use strict';
-        var LoginController = (function () {
+        var LoginController = /** @class */ (function () {
             function LoginController(security, $location, $q, $state, logger) {
                 this.security = security;
                 this.$location = $location;
@@ -39,9 +39,9 @@ var app;
                     }
                 });
             };
+            LoginController.$inject = ['securityService', '$location', '$q', '$state', 'logger'];
             return LoginController;
         }());
-        LoginController.$inject = ['securityService', '$location', '$q', '$state', 'logger'];
         auth.LoginController = LoginController;
         angular
             .module('app.auth')

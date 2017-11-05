@@ -3,16 +3,16 @@ var admin;
     var users;
     (function (users_1) {
         'use strict';
-        var UsersController = (function () {
+        var UsersController = /** @class */ (function () {
             function UsersController($q, users, logger) {
                 this.$q = $q;
                 this.users = users;
                 this.logger = logger;
                 this.title = 'Users';
             }
+            UsersController.$inject = ['$q', 'users', 'logger'];
             return UsersController;
         }());
-        UsersController.$inject = ['$q', 'users', 'logger'];
         users_1.UsersController = UsersController;
         angular
             .module('admin.users')

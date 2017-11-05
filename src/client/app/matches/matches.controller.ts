@@ -38,6 +38,7 @@ namespace app.matches {
     jokerChosen: string = "";
 		totalPoints: number = 0;
 		totalGoalDiff: number = 0;
+		
 		private refresh() {
 			let hasOneAvailableFixture:boolean = false;
 			for(let match of this.fixtures) {

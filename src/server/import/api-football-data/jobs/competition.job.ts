@@ -17,7 +17,7 @@ export default class CompetitionJob {
     console.log("Competition job: " + this.comp.caption);
 
     Rx.Observable.fromPromise(client.getCompetitionById(this.comp.id).getTeams())
-        .map(res => {
+        .map((res:any) => {
           return res.data.teams;
         })
         .flatMap(teams => {

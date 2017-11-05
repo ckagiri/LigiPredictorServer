@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var vose_1 = require("./vose");
-var VosePredictor = (function () {
+var VosePredictor = /** @class */ (function () {
     function VosePredictor(odds) {
         if (odds === void 0) { odds = {}; }
         this.underdogVose = null;

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var GoalDiffCalculator = (function () {
+var GoalDiffCalculator = /** @class */ (function () {
     function GoalDiffCalculator() {
     }
     GoalDiffCalculator.prototype.process = function (choice, result) {

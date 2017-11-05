@@ -3,15 +3,15 @@ var app;
     var whatif;
     (function (whatif) {
         'use strict';
-        var WhatIfController = (function () {
+        var WhatIfController = /** @class */ (function () {
             function WhatIfController($q, logger) {
                 this.$q = $q;
                 this.logger = logger;
                 this.title = 'WhatIf';
             }
+            WhatIfController.$inject = ['$q', 'logger'];
             return WhatIfController;
         }());
-        WhatIfController.$inject = ['$q', 'logger'];
         whatif.WhatIfController = WhatIfController;
         angular
             .module('app.whatif')

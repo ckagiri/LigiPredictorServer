@@ -3,7 +3,7 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        var LeaderboardService = (function () {
+        var LeaderboardService = /** @class */ (function () {
             function LeaderboardService() {
             }
             return LeaderboardService;

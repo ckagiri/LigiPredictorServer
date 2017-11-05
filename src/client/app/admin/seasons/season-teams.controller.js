@@ -3,16 +3,16 @@ var admin;
     var seasons;
     (function (seasons) {
         'use strict';
-        var SeasonTeamsController = (function () {
+        var SeasonTeamsController = /** @class */ (function () {
             function SeasonTeamsController($q, teams, logger) {
                 this.$q = $q;
                 this.teams = teams;
                 this.logger = logger;
                 this.title = 'Teans';
             }
+            SeasonTeamsController.$inject = ['$q', 'teams', 'logger'];
             return SeasonTeamsController;
         }());
-        SeasonTeamsController.$inject = ['$q', 'teams', 'logger'];
         seasons.SeasonTeamsController = SeasonTeamsController;
         angular
             .module('admin.seasons')

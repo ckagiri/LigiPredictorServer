@@ -11,7 +11,7 @@ var createIdToSeasonMap = function (seasons) {
     }
     return map;
 };
-var SeasonUpdateHandler = (function () {
+var SeasonUpdateHandler = /** @class */ (function () {
     function SeasonUpdateHandler() {
     }
     SeasonUpdateHandler.prototype.handle = function (seasons) {

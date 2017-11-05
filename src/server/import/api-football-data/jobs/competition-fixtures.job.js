@@ -4,7 +4,7 @@ var Rx = require("rxjs");
 var _ = require("lodash");
 var main_job_1 = require("./main.job");
 var index_1 = require("../index");
-var CompetitionFixturesJob = (function () {
+var CompetitionFixturesJob = /** @class */ (function () {
     function CompetitionFixturesJob(comp) {
         this.comp = comp;
         this.fixtureRepo = index_1.fixtureRepo;

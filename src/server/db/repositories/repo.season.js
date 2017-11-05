@@ -13,7 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
 var season_model_1 = require("../models/season.model");
 var Rx = require("rxjs");
-var SeasonRepo = (function (_super) {
+var SeasonRepo = /** @class */ (function (_super) {
     __extends(SeasonRepo, _super);
     function SeasonRepo(converter) {
         return _super.call(this, season_model_1.Season, converter) || this;

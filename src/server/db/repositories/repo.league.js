@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
 var league_model_1 = require("../models/league.model");
-var LeagueRepo = (function (_super) {
+var LeagueRepo = /** @class */ (function (_super) {
     __extends(LeagueRepo, _super);
     function LeagueRepo(converter) {
         return _super.call(this, league_model_1.League, converter) || this;

@@ -3,7 +3,7 @@ var app;
     var matches;
     (function (matches) {
         'use strict';
-        var VosePredictorFactory = (function () {
+        var VosePredictorFactory = /** @class */ (function () {
             function VosePredictorFactory() {
             }
             VosePredictorFactory.prototype.createPredictor = function (odds) {
@@ -12,7 +12,7 @@ var app;
             return VosePredictorFactory;
         }());
         matches.VosePredictorFactory = VosePredictorFactory;
-        var VosePredictor = (function () {
+        var VosePredictor = /** @class */ (function () {
             function VosePredictor(odds) {
                 if (odds === void 0) { odds = {}; }
                 this.underdogVose = null;
@@ -99,7 +99,7 @@ var app;
             };
             return VosePredictor;
         }());
-        var Vose = (function () {
+        var Vose = /** @class */ (function () {
             function Vose(weights) {
                 var _this = this;
                 this.init = function (weights) {

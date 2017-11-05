@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
 var user_score_model_1 = require("../models/user-score.model");
-var UserScoreRepo = (function () {
+var UserScoreRepo = /** @class */ (function () {
     function UserScoreRepo() {
     }
     UserScoreRepo.prototype.findOneAndUpdateOrCreate = function (leaderboardId, userId, predictionId, predictionScore, hasJoker) {

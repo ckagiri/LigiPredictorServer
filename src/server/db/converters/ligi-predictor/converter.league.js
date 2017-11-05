@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Rx = require("rxjs");
-var LeagueConverter = (function () {
+var LeagueConverter = /** @class */ (function () {
     function LeagueConverter() {
         this.provider = 'LIGI';
     }

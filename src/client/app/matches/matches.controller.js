@@ -3,7 +3,7 @@ var app;
     var matches;
     (function (matches) {
         'use strict';
-        var MatchesController = (function () {
+        var MatchesController = /** @class */ (function () {
             function MatchesController($q, $state, $stateParams, $scope, fixtures, season, logger, predictionService, vosePredictorFactory, cache) {
                 var _this = this;
                 this.$q = $q;
@@ -237,10 +237,10 @@ var app;
                     console.log('bad');
                 });
             };
+            MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger',
+                'predictionService', 'vosePredictorFactory', 'cache'];
             return MatchesController;
         }());
-        MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger',
-            'predictionService', 'vosePredictorFactory', 'cache'];
         matches.MatchesController = MatchesController;
         angular
             .module('app.matches')

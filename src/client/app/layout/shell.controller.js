@@ -3,7 +3,7 @@ var app;
     var layout;
     (function (layout) {
         'use strict';
-        var ShellController = (function () {
+        var ShellController = /** @class */ (function () {
             function ShellController($rootScope, $timeout, breadcrumbs, config, logger) {
                 this.$rootScope = $rootScope;
                 this.$timeout = $timeout;
@@ -15,9 +15,9 @@ var app;
             ShellController.prototype.isAdmin = function () {
                 return false;
             };
+            ShellController.$inject = ['$rootScope', '$timeout', 'breadcrumbs', 'config', 'logger'];
             return ShellController;
         }());
-        ShellController.$inject = ['$rootScope', '$timeout', 'breadcrumbs', 'config', 'logger'];
         layout.ShellController = ShellController;
         angular
             .module('app.layout')

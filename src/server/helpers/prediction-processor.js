@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var goaldiff_calculator_1 = require("./goaldiff-calculator");
 var points_calculator_1 = require("./points-calculator");
-var PredictionProcessor = (function () {
+var PredictionProcessor = /** @class */ (function () {
     function PredictionProcessor() {
     }
     PredictionProcessor.prototype.process = function (choice, result) {

@@ -3,7 +3,7 @@ var app;
     var auth;
     (function (auth) {
         'use strict';
-        var SecurityService = (function () {
+        var SecurityService = /** @class */ (function () {
             function SecurityService($auth, $http, $location, $q, $state, storage, redirectToUrlAfterLogin, queue) {
                 var _this = this;
                 this.$auth = $auth;
@@ -115,10 +115,10 @@ var app;
                 url = url || '/';
                 this.$location.path(url);
             };
+            SecurityService.$inject = ['$auth', '$http', '$location', '$q', '$state', 'localstorage',
+                'redirectToUrlAfterLogin', 'retryQueue'];
             return SecurityService;
         }());
-        SecurityService.$inject = ['$auth', '$http', '$location', '$q', '$state', 'localstorage',
-            'redirectToUrlAfterLogin', 'retryQueue'];
         auth.SecurityService = SecurityService;
         angular
             .module('app.auth')

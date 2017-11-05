@@ -3,7 +3,7 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        var PredictionService = (function () {
+        var PredictionService = /** @class */ (function () {
             function PredictionService($http, $q, exception, logger) {
                 var _this = this;
                 this.$http = $http;
@@ -28,9 +28,9 @@ var app;
                     return _this.$q.reject(msg);
                 };
             }
+            PredictionService.$inject = ['$http', '$q', 'exception', 'logger'];
             return PredictionService;
         }());
-        PredictionService.$inject = ['$http', '$q', 'exception', 'logger'];
         core.PredictionService = PredictionService;
         angular
             .module('app.core')

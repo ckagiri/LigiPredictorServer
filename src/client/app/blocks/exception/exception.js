@@ -3,15 +3,15 @@ var blocks;
     var exception;
     (function (exception) {
         'use strict';
-        var Exception = (function () {
+        var Exception = /** @class */ (function () {
             function Exception(logger) {
                 var _this = this;
                 this.logger = logger;
                 this.catcher = function (message) { return function (reason) { return _this.logger.error(message, reason); }; };
             }
+            Exception.$inject = ['logger'];
             return Exception;
         }());
-        Exception.$inject = ['logger'];
         exception.Exception = Exception;
         angular
             .module('blocks.exception')

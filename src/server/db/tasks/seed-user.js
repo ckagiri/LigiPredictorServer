@@ -1,5 +1,5 @@
-//process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 "use strict";
+//process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose = require("mongoose");
 var user_model_1 = require("../../db/models/user.model");

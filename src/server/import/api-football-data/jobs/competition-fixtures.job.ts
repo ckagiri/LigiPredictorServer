@@ -15,7 +15,7 @@ export class CompetitionFixturesJob {
     let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
     let competitionApiId = _.get(this.comp, apiDetailIdKey);
     Rx.Observable.fromPromise(client.getCompetitionById(competitionApiId).getFixtures())
-      .map(function (res) {
+      .map(function (res:any) {
         let fixtures = res.data.fixtures;
         for (let fixture of fixtures) {
           fixture.seasonId = competitionApiId

@@ -1,11 +1,11 @@
+"use strict";
 /**
  * Vose alias method for efficient sampling of weighted distribution
  * Borrowed almost entirely from https://github.com/jdiscar/vose-alias-method.js
  * Fantastic explanation here: http://www.keithschwarz.com/darts-dice-coins/
  */
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Vose = (function () {
+var Vose = /** @class */ (function () {
     function Vose(weights) {
         var _this = this;
         this.init = function (weights) {
