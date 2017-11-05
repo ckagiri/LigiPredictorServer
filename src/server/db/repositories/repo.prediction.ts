@@ -13,6 +13,9 @@ export interface JokerPick {
 }
 
 export class PredictionRepo {
+	findAll() {
+		return Rx.Observable.fromPromise(Prediction.find({}).lean());
+	}
 
 	findOne(user: string, fixture: string){
     return Rx.Observable.fromPromise(Prediction.findOne({user, fixture}).lean());

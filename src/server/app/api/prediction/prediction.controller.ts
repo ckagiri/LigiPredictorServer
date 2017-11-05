@@ -13,11 +13,10 @@ let predictionRepo = new PredictionRepo();
 
 export class PredictionController {
 	list(req: Request, res: Response) {
-		fixtureRepo.findAll()
-			.subscribe((leagues: any[]) => {
-					res.status(200).json(leagues);
+		predictionRepo.findAll()
+			.subscribe((fixtures: any[]) => {
+					res.status(200).json(fixtures);
 				}, (err: any) => {
-					console.error(err);
 					res.status(500).json(err);
     		});
   }
@@ -98,12 +97,53 @@ export class PredictionController {
 	}
 
 	mine(req: Request, res: Response) {
-		fixtureRepo.findAll()
+				let {league: leagueSlug, season: seasonSlug}= req.query;
+		let user = req['user'];
+		let userId = user && user._id;
+		let source: Rx.Observable<any>;
+		if(leagueSlug == null && seasonSlug == null) {
+			source = seasonRepo.getDefault();
+		} else {
+			source = singleSeason(leagueSlug, seasonSlug)
+		}
+		source
+			.flatMap((season: any) => {
+				if(!season) {
+					res.sendStatus(404);
+					return Rx.Observable.throw(Error("bad"));
+				}
+				return Rx.Observable.of(season)
+			})
+			.flatMap((season: any) => {
+				return fixtureRepo.findAllBySeason(season._id);
+			})
+			.flatMap((fixtures: any[]) => {
+				return Rx.Observable.from(fixtures);
+			})	
+			.flatMap((fixture: any) => {
+				if(userId == null) {
+					return Rx.Observable.of({
+						fixture, prediction: null
+					})
+				}
+				return predictionRepo.findOne(userId, fixture._id)
+					.map((prediction) => {
+							return {
+								fixture, prediction
+							}})
+				})
+			.flatMap((map: any) => {
+				let {fixture, prediction} = map;
+				fixture.prediction = prediction;
+				return Rx.Observable.of(fixture)
+			})
+			.toArray()
 			.subscribe((fixtures: any[]) => {
 					res.status(200).json(fixtures);
 				}, (err: any) => {
+					console.error(err);
 					res.status(500).json(err);
-    		});
+				});	
   }
 
 	show(req: Request, res: Response) {
@@ -116,4 +156,11 @@ export class PredictionController {
 					res.status(500).json(err);
 			});
   }
+}
+
+function singleSeason(leagueId: string, seasonId: string) {
+	let query: any;
+	query = {$and: [{'league.slug': leagueId}, {slug: seasonId}]}
+	let season = seasonRepo.findOne(query);
+	return season;
 }

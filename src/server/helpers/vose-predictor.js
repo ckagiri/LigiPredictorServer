@@ -54,8 +54,8 @@ var VosePredictor = (function () {
             weights = [98, 89, 81, 52, 48, 28];
         }
         else {
-            scores = ['0-1', '1-2', '0-2', '1-3', '2-3', '0-3'];
-            weights = [63, 56, 34, 23, 14, 18];
+            scores = ['0-1', '1-2', '0-2', '1-3', '0-3', '2-3'];
+            weights = [63, 56, 34, 23, 18, 14];
         }
         if (this.favoriteVose == null) {
             this.favoriteVose = new vose_1.Vose(weights);
