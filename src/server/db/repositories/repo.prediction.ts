@@ -21,6 +21,11 @@ export class PredictionRepo {
     return Rx.Observable.fromPromise(Prediction.findOne({user, fixture}).lean());
   }
 
+	findAllBySeasonRound(seasonId: string, round: number, userId?:string) {
+		let query = {$and: [{season: seasonId}, {round}, {user: userId}]}
+		return Rx.Observable.fromPromise(Prediction.find(query).lean());
+	}
+
 	findOneOrCreate = (user: string, fixture: any) => {
 		let query = {user, fixture: fixture._id};
 		return Rx.Observable.fromPromise(
@@ -126,23 +131,18 @@ export class PredictionRepo {
 			}
 		})
 	}
-
-  update(prediction: any, options: any = {overwrite: false}){
+	
+	update(prediction: any, options: any = {overwrite: false}){
     let {_id} = prediction;
     return Rx.Observable.fromPromise(Prediction.update({_id}, prediction, options));
   }
 
-  create(predictions: any[]) {
-    return Rx.Observable.fromPromise(	new Promise((resolve: any, reject: any) => {    
-      Prediction.create(predictions, function(err: any, savedPredictions: any) {
-        if (err) reject(err);
-        return resolve(savedPredictions);
-      })
-    }));
-  }
+	updateStatus(prediction: any, status: string) {
+		return this.updateById({_id: prediction._id}, {$set: {status}});
+	}
 
-	insert(prediction: any){
-		return Rx.Observable.fromPromise(Prediction.create(prediction));
+  updateById(conditions: any, doc: any, options: any = {overwrite: false, new: true}){
+    return Rx.Observable.fromPromise(Prediction.findByIdAndUpdate(conditions, doc, options));
   }
 
 	private getMatchScores(odds: any) {

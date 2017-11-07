@@ -81,6 +81,7 @@ var predictionSchema = new Schema({
     status: {
         type: String,
         enum: ['PENDING', 'PROCESSED', 'CANCELLED'],
+        default: 'PENDING'
     }
 });
 exports.Prediction = mongoose.model('Prediction', predictionSchema);

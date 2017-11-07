@@ -83,6 +83,92 @@ var FixtureController = (function () {
             res.status(500).json(err);
         });
     };
+    FixtureController.prototype.predictions = function (req, res) {
+        var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season;
+        var user = req['user'];
+        var userId = user && user._id;
+        var source;
+        if (leagueSlug == null && seasonSlug == null) {
+            source = seasonRepo.getDefault();
+        }
+        else {
+            source = singleSeason(leagueSlug, seasonSlug);
+        }
+        source
+            .flatMap(function (season) {
+            if (!season) {
+                res.sendStatus(404);
+                return Rx.Observable.throw(Error("bad"));
+            }
+            return Rx.Observable.of(season);
+        })
+            .flatMap(function (season) {
+            return fixtureRepo.findAllBySeason(season._id);
+        })
+            .flatMap(function (fixtures) {
+            return Rx.Observable.from(fixtures);
+        })
+            .flatMap(function (fixture) {
+            if (userId == null) {
+                return Rx.Observable.of({
+                    fixture: fixture, prediction: null
+                });
+            }
+            return predictionRepo.findOne(userId, fixture._id)
+                .map(function (prediction) {
+                return {
+                    fixture: fixture, prediction: prediction
+                };
+            });
+        })
+            .flatMap(function (map) {
+            var fixture = map.fixture, prediction = map.prediction;
+            fixture.prediction = prediction;
+            return Rx.Observable.of(fixture);
+        })
+            .toArray()
+            .subscribe(function (fixtures) {
+            res.status(200).json(fixtures);
+        }, function (err) {
+            console.error(err);
+            res.status(500).json(err);
+        });
+    };
+    FixtureController.prototype.live = function (req, res) {
+        var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season, matchday = _a.round;
+        matchday = matchday && matchday.split('-').pop();
+        var source;
+        if (leagueSlug == null && seasonSlug == null) {
+            source = seasonRepo.getDefault();
+        }
+        else {
+            source = singleSeason(leagueSlug, seasonSlug);
+        }
+        source
+            .flatMap(function (season) {
+            if (!season) {
+                res.sendStatus(404);
+                return Rx.Observable.throw(Error("bad"));
+            }
+            return Rx.Observable.of(season);
+        })
+            .flatMap(function (season) {
+            return fixtureRepo.findAllBySeasonRound(season._id, matchday || season.currentRound);
+        })
+            .flatMap(function (fixtures) {
+            return Rx.Observable.from(fixtures);
+        })
+            .filter(function (fixture) {
+            return fixture.status != 'SCHEDULED' && fixture.status != 'TIMED';
+        })
+            .toArray()
+            .subscribe(function (fixtures) {
+            res.status(200).json(fixtures);
+        }, function (err) {
+            console.error(err);
+            res.status(500).json(err);
+        });
+    };
     return FixtureController;
 }());
 exports.FixtureController = FixtureController;

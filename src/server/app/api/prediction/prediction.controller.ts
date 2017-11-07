@@ -97,7 +97,7 @@ export class PredictionController {
 	}
 
 	mine(req: Request, res: Response) {
-				let {league: leagueSlug, season: seasonSlug}= req.query;
+		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
 		let user = req['user'];
 		let userId = user && user._id;
 		let source: Rx.Observable<any>;
@@ -115,31 +115,12 @@ export class PredictionController {
 				return Rx.Observable.of(season)
 			})
 			.flatMap((season: any) => {
-				return fixtureRepo.findAllBySeason(season._id);
-			})
-			.flatMap((fixtures: any[]) => {
-				return Rx.Observable.from(fixtures);
-			})	
-			.flatMap((fixture: any) => {
-				if(userId == null) {
-					return Rx.Observable.of({
-						fixture, prediction: null
-					})
-				}
-				return predictionRepo.findOne(userId, fixture._id)
-					.map((prediction) => {
-							return {
-								fixture, prediction
-							}})
-				})
-			.flatMap((map: any) => {
-				let {fixture, prediction} = map;
-				fixture.prediction = prediction;
-				return Rx.Observable.of(fixture)
+				let round = matchday || season.currentRound
+				return predictionRepo.findAllBySeasonRound(userId, season._id, round);
 			})
 			.toArray()
-			.subscribe((fixtures: any[]) => {
-					res.status(200).json(fixtures);
+			.subscribe((predictions: any[]) => {
+					res.status(200).json(predictions);
 				}, (err: any) => {
 					console.error(err);
 					res.status(500).json(err);

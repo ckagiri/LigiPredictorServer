@@ -122,22 +122,21 @@ var PredictionRepo = (function () {
     PredictionRepo.prototype.findOne = function (user, fixture) {
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.findOne({ user: user, fixture: fixture }).lean());
     };
+    PredictionRepo.prototype.findAllBySeasonRound = function (seasonId, round, userId) {
+        var query = { $and: [{ season: seasonId }, { round: round }, { user: userId }] };
+        return Rx.Observable.fromPromise(prediction_model_1.Prediction.find(query).lean());
+    };
     PredictionRepo.prototype.update = function (prediction, options) {
         if (options === void 0) { options = { overwrite: false }; }
         var _id = prediction._id;
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.update({ _id: _id }, prediction, options));
     };
-    PredictionRepo.prototype.create = function (predictions) {
-        return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
-            prediction_model_1.Prediction.create(predictions, function (err, savedPredictions) {
-                if (err)
-                    reject(err);
-                return resolve(savedPredictions);
-            });
-        }));
+    PredictionRepo.prototype.updateStatus = function (prediction, status) {
+        return this.updateById({ _id: prediction._id }, { $set: { status: status } });
     };
-    PredictionRepo.prototype.insert = function (prediction) {
-        return Rx.Observable.fromPromise(prediction_model_1.Prediction.create(prediction));
+    PredictionRepo.prototype.updateById = function (conditions, doc, options) {
+        if (options === void 0) { options = { overwrite: false, new: true }; }
+        return Rx.Observable.fromPromise(prediction_model_1.Prediction.findByIdAndUpdate(conditions, doc, options));
     };
     PredictionRepo.prototype.getMatchScores = function (odds) {
         var predictor = new vose_predictor_1.VosePredictor(odds);

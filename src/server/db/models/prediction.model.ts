@@ -16,6 +16,7 @@ export interface IPrediction {
   round: number;
 	hasJoker: boolean;
 	jokerAutoPicked: boolean;
+	status?: boolean;
 };
 
 export interface IPredictionModel extends IPrediction, mongoose.Document { }
@@ -98,6 +99,7 @@ const predictionSchema = new Schema({
   status: {
     type: String,
     enum: ['PENDING', 'PROCESSED', 'CANCELLED'],
+		default: 'PENDING'
   }
 });
 

@@ -31,16 +31,6 @@ export class FixtureRepo extends AbstractRepo {
 		return this.findOne({_id: fixtureId});
 	}
 
-	updateFixture(fixtureId: any, result: any, status: any, odds: any) {
-		let update: any = {
-			result: result,
-			status: status,
-			odds: odds
-		}
-		Object.keys(update).forEach(key => update[key] == null && delete update[key])
-		return this.update({_id: fixtureId}, {$set: update});
-	}
-
 	updateFixtureById(fixtureId: any, result: any, status: any, odds?: any) {
 		let update: any = {
 			result: result,
@@ -49,5 +39,9 @@ export class FixtureRepo extends AbstractRepo {
 		}
 		Object.keys(update).forEach((key) => (update[key] == null) && delete update[key])
 		return this.updateById({_id: fixtureId}, {$set: update});
+	}
+
+	allPredictionsProcessed(fixtureId: any) {
+		return this.updateById({_id: fixtureId._id}, {$set: {allPredictionsProcessed: true}});
 	}
 }

@@ -81,6 +81,91 @@ export class FixtureController {
 					res.status(500).json(err);
 				});		
 	}
+
+	predictions(req: Request, res: Response) {
+		let {league: leagueSlug, season: seasonSlug}= req.query;
+		let user = req['user'];
+		let userId = user && user._id;
+		let source: Rx.Observable<any>;
+		if(leagueSlug == null && seasonSlug == null) {
+			source = seasonRepo.getDefault();
+		} else {
+			source = singleSeason(leagueSlug, seasonSlug)
+		}
+		source
+			.flatMap((season: any) => {
+				if(!season) {
+					res.sendStatus(404);
+					return Rx.Observable.throw(Error("bad"));
+				}
+				return Rx.Observable.of(season)
+			})
+			.flatMap((season: any) => {
+				return fixtureRepo.findAllBySeason(season._id);
+			})
+			.flatMap((fixtures: any[]) => {
+				return Rx.Observable.from(fixtures);
+			})	
+			.flatMap((fixture: any) => {
+				if(userId == null) {
+					return Rx.Observable.of({
+						fixture, prediction: null
+					})
+				}
+				return predictionRepo.findOne(userId, fixture._id)
+					.map((prediction) => {
+							return {
+								fixture, prediction
+							}})
+				})
+			.flatMap((map: any) => {
+				let {fixture, prediction} = map;
+				fixture.prediction = prediction;
+				return Rx.Observable.of(fixture)
+			})
+			.toArray()
+			.subscribe((fixtures: any[]) => {
+					res.status(200).json(fixtures);
+				}, (err: any) => {
+					console.error(err);
+					res.status(500).json(err);
+				});
+		}
+
+	live(req: Request, res: Response) {
+		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
+		matchday = matchday && matchday.split('-').pop();
+		let source: Rx.Observable<any>;
+		if(leagueSlug == null && seasonSlug == null) {
+			source = seasonRepo.getDefault();
+		} else {
+			source = singleSeason(leagueSlug, seasonSlug)
+		}
+		source
+			.flatMap((season: any) => {
+				if(!season) {
+					res.sendStatus(404);
+					return Rx.Observable.throw(Error("bad"));
+				}
+				return Rx.Observable.of(season)
+			})
+			.flatMap((season: any) => {
+				return fixtureRepo.findAllBySeasonRound(season._id, matchday || season.currentRound);
+			})
+			.flatMap((fixtures: any[]) => {
+				return Rx.Observable.from(fixtures);
+			})	
+			.filter((fixture: any) => {
+				return fixture.status != 'SCHEDULED' && fixture.status != 'TIMED'; 
+			})
+			.toArray()
+			.subscribe((fixtures: any[]) => {
+					res.status(200).json(fixtures);
+				}, (err: any) => {
+					console.error(err);
+					res.status(500).json(err);
+				});		
+	}
 }
 
 function singleFixture(id: string) {
