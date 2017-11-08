@@ -32,9 +32,6 @@ let fixtureChanged = (updated: any, fromDb: any) => {
       return true;
     }
   }
-  if (fromDb.status === 'FINISHED' && !fromDb.allPredictionsProcessed) {
-      return true;
-    } 
   return false;
 }
 

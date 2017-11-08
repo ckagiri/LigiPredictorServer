@@ -51,7 +51,7 @@ export class FixtureRepo extends AbstractRepo {
 		Object.keys(update).forEach((key) => (update[key] == null) && delete update[key])
 		return this.updateById({_id: fixtureId}, {$set: update});
 	}
-	
+
 	private findFixtureAndUpdate(query: any, update: any) {
 		let options = { upsert: true, new: true };
 		return Rx.Observable.fromPromise(
@@ -66,6 +66,7 @@ export class FixtureRepo extends AbstractRepo {
 					})
 			}))
 	}
+	
 	allPredictionsProcessed(fixtureId:any) {
     return this.findFixtureAndUpdate({_id: fixtureId}, {allPredictionsProcessed: true});
   }

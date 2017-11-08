@@ -13,7 +13,7 @@ export const run = () => {
 
 const heartbeatCheck = () => {
   console.log("heartbeat")
-  updateFixtures();
+  //updateFixtures(); //update only finished not procesed
 }
 
 const updateFixtures = () => {
