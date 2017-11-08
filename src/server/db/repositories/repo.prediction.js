@@ -131,9 +131,6 @@ var PredictionRepo = (function () {
         var _id = prediction._id;
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.update({ _id: _id }, prediction, options));
     };
-    PredictionRepo.prototype.updateStatus = function (prediction, status) {
-        return this.updateById({ _id: prediction._id }, { $set: { status: status } });
-    };
     PredictionRepo.prototype.updateById = function (conditions, doc, options) {
         if (options === void 0) { options = { overwrite: false, new: true }; }
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.findByIdAndUpdate(conditions, doc, options));

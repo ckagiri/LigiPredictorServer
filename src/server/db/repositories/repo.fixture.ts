@@ -17,7 +17,18 @@ export class FixtureRepo extends AbstractRepo {
 	}
 
 	findAvailableBySeasonRound(seasonId: string, round: number) {
-		let query = {$and: [{season: seasonId}, {round}, {status: {$in: ['SCHEDULED', 'TIMED', 'IN_PLAY']}}]}
+		let query = {$or: [
+          {$and: [
+						{season: seasonId}, {round}, 
+						{status: {$in: ['SCHEDULED', 'TIMED', 'IN_PLAY']}}
+					]},
+          {$and: [
+						{season: seasonId}, {round}, 
+						{status: {$in: ['CANCELED', 'POSTPONED', 'FINISHED']}},
+						{allPredictionsProcessed: false}
+					]}
+				]}
+
 		return this.findAll(query, null, {sort: 'date'})
 	}
 
@@ -40,8 +51,22 @@ export class FixtureRepo extends AbstractRepo {
 		Object.keys(update).forEach((key) => (update[key] == null) && delete update[key])
 		return this.updateById({_id: fixtureId}, {$set: update});
 	}
-
-	allPredictionsProcessed(fixtureId: any) {
-		return this.updateById({_id: fixtureId._id}, {$set: {allPredictionsProcessed: true}});
+	
+	private findFixtureAndUpdate(query: any, update: any) {
+		let options = { upsert: true, new: true };
+		return Rx.Observable.fromPromise(
+			new Promise((resolve: any, reject: any) => {    
+				Fixture.findOneAndUpdate(query, update, 
+					{new: true, upsert: true}, 
+					(err:any, result:any) => {
+						if(err){
+							return reject(err);
+						}
+						resolve(result);
+					})
+			}))
 	}
+	allPredictionsProcessed(fixtureId:any) {
+    return this.findFixtureAndUpdate({_id: fixtureId}, {allPredictionsProcessed: true});
+  }
 }

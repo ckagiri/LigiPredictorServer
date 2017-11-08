@@ -12,6 +12,7 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var repo_abstract_1 = require("./repo.abstract");
 var fixture_model_1 = require("../models/fixture.model");
+var Rx = require("rxjs");
 var FixtureRepo = (function (_super) {
     __extends(FixtureRepo, _super);
     function FixtureRepo(converter) {
@@ -25,7 +26,17 @@ var FixtureRepo = (function (_super) {
         return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.findAvailableBySeasonRound = function (seasonId, round) {
-        var query = { $and: [{ season: seasonId }, { round: round }, { status: { $in: ['SCHEDULED', 'TIMED', 'IN_PLAY'] } }] };
+        var query = { $or: [
+                { $and: [
+                        { season: seasonId }, { round: round },
+                        { status: { $in: ['SCHEDULED', 'TIMED', 'IN_PLAY'] } }
+                    ] },
+                { $and: [
+                        { season: seasonId }, { round: round },
+                        { status: { $in: ['CANCELED', 'POSTPONED', 'FINISHED'] } },
+                        { allPredictionsProcessed: false }
+                    ] }
+            ] };
         return this.findAll(query, null, { sort: 'date' });
     };
     FixtureRepo.prototype.getByApiIds = function (apiIds) {
@@ -46,8 +57,19 @@ var FixtureRepo = (function (_super) {
         Object.keys(update).forEach(function (key) { return (update[key] == null) && delete update[key]; });
         return this.updateById({ _id: fixtureId }, { $set: update });
     };
+    FixtureRepo.prototype.findFixtureAndUpdate = function (query, update) {
+        var options = { upsert: true, new: true };
+        return Rx.Observable.fromPromise(new Promise(function (resolve, reject) {
+            fixture_model_1.Fixture.findOneAndUpdate(query, update, { new: true, upsert: true }, function (err, result) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve(result);
+            });
+        }));
+    };
     FixtureRepo.prototype.allPredictionsProcessed = function (fixtureId) {
-        return this.updateById({ _id: fixtureId._id }, { $set: { allPredictionsProcessed: true } });
+        return this.findFixtureAndUpdate({ _id: fixtureId }, { allPredictionsProcessed: true });
     };
     return FixtureRepo;
 }(repo_abstract_1.AbstractRepo));

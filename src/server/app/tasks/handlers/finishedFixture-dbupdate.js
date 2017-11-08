@@ -96,21 +96,20 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             var choiceGoalsHomeTeam = prediction.choice.goalsHomeTeam;
             var choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
-            var predictionStatus = 'PROCESSED';
-            if (fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
-                predictionStatus = 'CANCELLED';
-            }
-            common_1.predictionRepo.updateStatus(prediction, predictionStatus);
             console.log(user.displayName + ", " + getFixtureName(fixture) + ", " + choiceGoalsHomeTeam + " " + choiceGoalsAwayTeam);
         }, function (err) { console.log("Oops... " + err); }, function () {
-            for (var _i = 0, finishedFixtures_1 = finishedFixtures; _i < finishedFixtures_1.length; _i++) {
-                var fixture = finishedFixtures_1[_i];
-                common_1.fixtureRepo.allPredictionsProcessed(fixture._id);
-            }
-            Rx.Observable.from(boardIds)
-                .flatMap(function (leaderboardIds) {
-                return Rx.Observable.from(boardIds);
+            Rx.Observable.from(finishedFixtures)
+                .flatMap(function (fixture) {
+                return Rx.Observable.of(fixture);
             })
+                .flatMap(function (fixture) {
+                return common_1.fixtureRepo.allPredictionsProcessed(fixture._id);
+            }).subscribe(function (fixture) {
+                console.log(fixture.slug + " all predictions processed");
+            }, function (err) { }, function () {
+                console.log('done');
+            });
+            Rx.Observable.from(boardIds)
                 .flatMap(function (leaderboardId) {
                 return common_1.leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "UpdatingRankings");
             })

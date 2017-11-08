@@ -32,6 +32,9 @@ let fixtureChanged = (updated: any, fromDb: any) => {
       return true;
     }
   }
+  if (fromDb.status === 'FINISHED' && !fromDb.allPredictionsProcessed) {
+      return true;
+    } 
   return false;
 }
 
@@ -64,7 +67,7 @@ let calculateNextFixtureUpdateTime = (dbFixtures: [any], callback: Function) => 
 class FixturesUpdater {
   update(callback: Function) {
     Rx.Observable.zip(
-      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p2'})),
+      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p7'})),
       Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'n2'})),
       function (changeYesterday:any, todayAndTomorrow:any) {
         changeYesterday = changeYesterday.data.fixtures;

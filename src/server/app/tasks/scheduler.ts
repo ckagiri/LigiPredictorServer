@@ -13,6 +13,7 @@ export const run = () => {
 
 const heartbeatCheck = () => {
   console.log("heartbeat")
+  updateFixtures();
 }
 
 const updateFixtures = () => {

@@ -44,6 +44,13 @@ var FinishedFixturePublishHandler = (function () {
         })
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
+            var predictionStatus = 'PROCESSED';
+            if (fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
+                predictionStatus = 'CANCELLED';
+                prediction.status = predictionStatus;
+                return Rx.Observable.of({ user: user, fixture: fixture, prediction: prediction });
+            }
+            prediction.status = predictionStatus;
             var score = prediction_processor_1.predictionProcessor.process(prediction.choice, fixture.result);
             prediction.scorePoints = score.scorePoints;
             prediction.points = score.points;

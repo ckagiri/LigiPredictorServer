@@ -33,6 +33,9 @@ var fixtureChanged = function (updated, fromDb) {
             return true;
         }
     }
+    if (fromDb.status === 'FINISHED' && !fromDb.allPredictionsProcessed) {
+        return true;
+    }
     return false;
 };
 var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {
@@ -67,7 +70,7 @@ var FixturesUpdater = (function () {
     function FixturesUpdater() {
     }
     FixturesUpdater.prototype.update = function (callback) {
-        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p2' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n2' })), function (changeYesterday, todayAndTomorrow) {
+        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p7' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n2' })), function (changeYesterday, todayAndTomorrow) {
             changeYesterday = changeYesterday.data.fixtures;
             todayAndTomorrow = todayAndTomorrow.data.fixtures;
             return changeYesterday.concat(todayAndTomorrow);

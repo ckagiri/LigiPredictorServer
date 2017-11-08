@@ -41,6 +41,13 @@ class FinishedFixturePublishHandler {
         })
         .flatMap((map: any) => {
           let {user, fixture, prediction} = map;
+          let predictionStatus = 'PROCESSED';
+          if(fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
+            predictionStatus = 'CANCELLED';
+            prediction.status = predictionStatus;
+            return Rx.Observable.of({user, fixture, prediction})
+          }
+          prediction.status = predictionStatus;
           let score = predictionProcessor.process(prediction.choice, fixture.result);
           prediction.scorePoints = score.scorePoints;
           prediction.points = score.points;

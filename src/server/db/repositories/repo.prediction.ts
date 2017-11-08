@@ -131,15 +131,11 @@ export class PredictionRepo {
 			}
 		})
 	}
-	
+
 	update(prediction: any, options: any = {overwrite: false}){
     let {_id} = prediction;
     return Rx.Observable.fromPromise(Prediction.update({_id}, prediction, options));
   }
-
-	updateStatus(prediction: any, status: string) {
-		return this.updateById({_id: prediction._id}, {$set: {status}});
-	}
 
   updateById(conditions: any, doc: any, options: any = {overwrite: false, new: true}){
     return Rx.Observable.fromPromise(Prediction.findByIdAndUpdate(conditions, doc, options));

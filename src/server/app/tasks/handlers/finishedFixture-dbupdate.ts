@@ -97,22 +97,25 @@ class FinishedFixtureDbUpdateHandler {
 					let {user, fixture, prediction} = map;
 					let choiceGoalsHomeTeam = 	prediction.choice.goalsHomeTeam;
 					let choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
-					let predictionStatus = 'PROCESSED';
-					if(fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
-						predictionStatus = 'CANCELLED';
-					}
-					predictionRepo.updateStatus(prediction, predictionStatus);
 					console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
-				() => {
-					for (let fixture of finishedFixtures) {
-						fixtureRepo.allPredictionsProcessed(fixture._id);
-					}
-					Rx.Observable.from(boardIds)
-						.flatMap((leaderboardIds: any[]) => {
-							return Rx.Observable.from(boardIds);
+				() => {		
+					Rx.Observable.from(finishedFixtures)
+						.flatMap((fixture: any) => {
+							return Rx.Observable.of(fixture);
 						})
+						.flatMap((fixture: any) => { 
+							return fixtureRepo.allPredictionsProcessed(fixture._id)
+						}).subscribe(
+							(fixture: any) => {
+								console.log(`${fixture.slug} all predictions processed`)
+							},
+							(err: any) => {},
+							() => {
+								console.log('done')
+							})			
+					Rx.Observable.from(boardIds)
 						.flatMap((leaderboardId: any) => { 
 							return leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "UpdatingRankings")
 						})	

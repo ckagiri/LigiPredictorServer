@@ -12,6 +12,7 @@ exports.run = function () {
 };
 var heartbeatCheck = function () {
     console.log("heartbeat");
+    updateFixtures();
 };
 var updateFixtures = function () {
     console.log("Fixtures update initiated");
