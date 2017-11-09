@@ -4,7 +4,7 @@ var Rx = require("rxjs");
 var repositories_1 = require("../../../db/repositories");
 var ligi_predictor_1 = require("../../../db/converters/ligi-predictor");
 var isMongoId_1 = require("../../utils/isMongoId");
-var lzw = require("json-lzw");
+var lzwCompress = require('lzwcompress');
 var leagueRepo = new repositories_1.LeagueRepo(new ligi_predictor_1.LeagueConverter());
 var seasonRepo = new repositories_1.SeasonRepo(new ligi_predictor_1.SeasonConverter(leagueRepo));
 var teamRepo = new repositories_1.TeamRepo(new ligi_predictor_1.TeamConverter());
@@ -129,8 +129,8 @@ var FixtureController = (function () {
         })
             .toArray()
             .subscribe(function (fixtures) {
-            var encoded = lzw.encode(JSON.stringify(fixtures));
-            res.status(200).json({ encoded: encoded });
+            var compressed = lzwCompress.pack(fixtures);
+            res.status(200).json({ compressed: compressed });
         }, function (err) {
             console.error(err);
             res.status(500).json(err);

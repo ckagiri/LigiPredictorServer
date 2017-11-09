@@ -41,8 +41,11 @@ class FinishedFixtureDbUpdateHandler {
 				let {fixture, roundFixtureIds} = map;
 				return finishedFixturePublishHandler.handle(fixture, roundFixtureIds)
 			})
+			.filter((map: any) => {
+				return map.prediction.status !== 'ALREADY_PROCESSED';
+			})
 			.flatMap((map: any) => {
-				let {user, fixture, prediction} = map;
+				let {user, fixture, prediction} = map;				
 				return predictionRepo.update(prediction)
 					.map((status: any) => {
 						return {user, fixture, prediction}

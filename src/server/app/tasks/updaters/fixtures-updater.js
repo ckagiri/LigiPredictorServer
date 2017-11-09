@@ -33,9 +33,6 @@ var fixtureChanged = function (updated, fromDb) {
             return true;
         }
     }
-    if (fromDb.status === 'FINISHED' && !fromDb.allPredictionsProcessed) {
-        return true;
-    }
     return false;
 };
 var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {

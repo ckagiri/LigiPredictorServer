@@ -44,10 +44,14 @@ class FinishedFixturePublishHandler {
           let predictionStatus = 'PROCESSED';
           if(fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
             predictionStatus = 'CANCELLED';
-            prediction.status = predictionStatus;
-            return Rx.Observable.of({user, fixture, prediction})
+          }
+          if(prediction.status === 'PROCESSED') {
+            predictionStatus = 'ALREADY_PROCESSED';
           }
           prediction.status = predictionStatus;
+          if(predictionStatus === 'CANCELLED' || predictionStatus === 'ALREADY_PROCESSED') {
+            return Rx.Observable.of({user, fixture, prediction})
+          }
           let score = predictionProcessor.process(prediction.choice, fixture.result);
           prediction.scorePoints = score.scorePoints;
           prediction.points = score.points;

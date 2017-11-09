@@ -70,4 +70,14 @@ export class FixtureRepo extends AbstractRepo {
 	allPredictionsProcessed(fixtureId:any) {
     return this.findFixtureAndUpdate({_id: fixtureId}, {allPredictionsProcessed: true});
   }
+
+	findAllFinishedWithPendingPredictions() {
+		let query = {
+			$and: [
+					{allPredictionsProcessed: false}, 
+					{status: {$in: ['CANCELED', 'POSTPONED', 'FINISHED']}}
+				]
+			}
+		return this.findAll(query)
+	}
 }

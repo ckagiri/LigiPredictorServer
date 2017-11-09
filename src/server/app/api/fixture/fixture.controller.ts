@@ -4,7 +4,7 @@ import * as Rx from 'rxjs';
 import {LeagueRepo, SeasonRepo, TeamRepo, FixtureRepo, PredictionRepo} from '../../../db/repositories';
 import {LeagueConverter, SeasonConverter, TeamConverter, FixtureConverter} from '../../../db/converters/ligi-predictor';
 import isMongoId from '../../utils/isMongoId'
-const lzw = require("json-lzw");
+const lzwCompress = require('lzwcompress');
 
 let leagueRepo = new LeagueRepo(new LeagueConverter())
 let seasonRepo = new SeasonRepo(new SeasonConverter(leagueRepo));
@@ -126,8 +126,8 @@ export class FixtureController {
 			})
 			.toArray()
 			.subscribe((fixtures: any[]) => {
-					let encoded = lzw.encode(JSON.stringify(fixtures));
-					res.status(200).json({encoded});
+					let compressed = lzwCompress.pack(fixtures);
+					res.status(200).json({compressed});
 				}, (err: any) => {
 					console.error(err);
 					res.status(500).json(err);

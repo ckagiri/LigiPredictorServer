@@ -11,7 +11,7 @@ var app;
                 this.exception = exception;
                 this.logger = logger;
                 this.getFixturesWithPredictions = function () {
-                    return _this.$http.get('/api/fixtures/predictions')
+                    return _this.$http.get('/api/matches/predictions')
                         .then(_this.success)
                         .catch(_this.fail);
                 };

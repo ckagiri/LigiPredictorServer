@@ -17,9 +17,9 @@ var FinishedFixtureDbUpdateHandler = (function () {
         console.log("Finished fixture db update handler");
         Rx.Observable.from(finishedFixtures)
             .flatMap(function (fixture) {
-            return Rx.Observable.of(fixture);
-        })
-            .flatMap(function (fixture) {
+            if (fixture.status === 'FINISHED' && fixture.allPredictionsProcessed === false) {
+                return Rx.Observable.of(fixture);
+            }
             return common_1.fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status);
         })
             .do(function (fixture) {
@@ -42,6 +42,9 @@ var FinishedFixtureDbUpdateHandler = (function () {
             .flatMap(function (map) {
             var fixture = map.fixture, roundFixtureIds = map.roundFixtureIds;
             return finishedFixture_publish_1.finishedFixturePublishHandler.handle(fixture, roundFixtureIds);
+        })
+            .filter(function (map) {
+            return map.prediction.status !== 'ALREADY_PROCESSED';
         })
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
@@ -99,9 +102,6 @@ var FinishedFixtureDbUpdateHandler = (function () {
             console.log(user.displayName + ", " + getFixtureName(fixture) + ", " + choiceGoalsHomeTeam + " " + choiceGoalsAwayTeam);
         }, function (err) { console.log("Oops... " + err); }, function () {
             Rx.Observable.from(finishedFixtures)
-                .flatMap(function (fixture) {
-                return Rx.Observable.of(fixture);
-            })
                 .flatMap(function (fixture) {
                 return common_1.fixtureRepo.allPredictionsProcessed(fixture._id);
             }).subscribe(function (fixture) {

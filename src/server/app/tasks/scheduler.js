@@ -2,17 +2,30 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var data_updater_1 = require("./updaters/data-updater");
 var fixtures_updater_1 = require("./updaters/fixtures-updater");
+var finishedFixture_dbupdate_1 = require("./handlers/finishedFixture-dbupdate");
+var common_1 = require("./common");
 var schedule = require('node-schedule');
 var Moment = require('moment');
 var dataTimeout;
 var fixturesTimeout;
 exports.run = function () {
     updateData();
-    schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
+    //schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
+    heartbeatCheck();
 };
 var heartbeatCheck = function () {
     console.log("heartbeat");
-    updateFixtures();
+    common_1.fixtureRepo.findAllFinishedWithPendingPredictions()
+        .map(function (fixtures) {
+        finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(fixtures);
+    })
+        .subscribe(function (x) {
+        console.log(x);
+    }, function (err) {
+        console.log(err);
+    }, function () {
+        console.log('finished with pending preds done');
+    });
 };
 var updateFixtures = function () {
     console.log("Fixtures update initiated");

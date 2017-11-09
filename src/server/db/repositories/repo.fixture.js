@@ -71,6 +71,15 @@ var FixtureRepo = (function (_super) {
     FixtureRepo.prototype.allPredictionsProcessed = function (fixtureId) {
         return this.findFixtureAndUpdate({ _id: fixtureId }, { allPredictionsProcessed: true });
     };
+    FixtureRepo.prototype.findAllFinishedWithPendingPredictions = function () {
+        var query = {
+            $and: [
+                { allPredictionsProcessed: false },
+                { status: { $in: ['CANCELED', 'POSTPONED', 'FINISHED'] } }
+            ]
+        };
+        return this.findAll(query);
+    };
     return FixtureRepo;
 }(repo_abstract_1.AbstractRepo));
 exports.FixtureRepo = FixtureRepo;

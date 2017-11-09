@@ -4,8 +4,10 @@ var app;
     (function (predictions) {
         'use strict';
         var PredictionsController = (function () {
-            function PredictionsController($q, logger, fixturePredictionService) {
+            function PredictionsController($q, $window, storage, logger, fixturePredictionService) {
                 this.$q = $q;
+                this.$window = $window;
+                this.storage = storage;
                 this.logger = logger;
                 this.fixturePredictionService = fixturePredictionService;
                 this.title = 'Predictions';
@@ -15,12 +17,14 @@ var app;
                 var _this = this;
                 this.fixturePredictionService.getFixturesWithPredictions()
                     .then(function (data) {
-                    _this.fixtures = data;
+                    _this.compressed = data;
+                    _this.storage.setItem('compressed-fixtures', data.compressed);
+                    _this.fixtures = _this.$window.lzwCompress.unpack(data.compressed);
                 });
             };
             return PredictionsController;
         }());
-        PredictionsController.$inject = ['$q', 'logger', 'fixturePredictionService'];
+        PredictionsController.$inject = ['$q', '$window', 'localstorage', 'logger', 'fixturePredictionService'];
         predictions.PredictionsController = PredictionsController;
         angular
             .module('app.predictions')

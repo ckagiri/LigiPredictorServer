@@ -14,7 +14,7 @@ namespace app.core {
     }
 
     getFixturesWithPredictions: () => ng.IPromise<any> = () =>
-      this.$http.get('/api/fixtures/predictions')
+      this.$http.get('/api/matches/predictions')
         .then(this.success)
         .catch(this.fail);
 
