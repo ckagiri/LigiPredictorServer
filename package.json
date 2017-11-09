@@ -114,16 +114,18 @@
     "yargs": "~7.0.2"
   },
   "dependencies": {
+    "angular-lzwcompress": "^1.0.0",
     "async": "~2.3.0",
     "bcryptjs": "~2.4.3",
     "bluebird": "~3.5.0",
     "body-parser": "~1.17.1",
     "concurrently": "~3.4.0",
-    "d3-collection": "~1.0.4",
     "express": "~4.15.2",
     "json-lzw": "~0.3.2",
+    "jsonpack": "^1.1.5",
     "jwt-simple": "~0.5.1",
     "lodash": "~4.17.4",
+    "lzwcompress": "^0.2.4",
     "mongoose": "~4.9.4",
     "mongoose-seeder": "~1.2.1",
     "morgan": "~1.8.1",
@@ -140,5 +142,8 @@
     "supertest": "~3.0.0",
     "ts-node": "~3.0.2",
     "typescript": "^2.3.4"
+  },
+  "browser": {
+    "lzwcompress": "./node_modules/angular-lzwcompress/index.js"
   }
 }
