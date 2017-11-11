@@ -121,8 +121,6 @@
     "body-parser": "~1.17.1",
     "concurrently": "~3.4.0",
     "express": "~4.15.2",
-    "json-lzw": "~0.3.2",
-    "jsonpack": "^1.1.5",
     "jwt-simple": "~0.5.1",
     "lodash": "~4.17.4",
     "lzwcompress": "^0.2.4",
