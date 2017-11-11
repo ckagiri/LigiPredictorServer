@@ -17,10 +17,10 @@ var heartbeatCheck = function () {
     console.log("heartbeat");
     common_1.fixtureRepo.findAllFinishedWithPendingPredictions()
         .map(function (fixtures) {
-        finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(fixtures);
+        finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(fixtures, true);
     })
-        .subscribe(function (x) {
-        console.log(x);
+        .subscribe(function (_) {
+        console.log("finished with preds");
     }, function (err) {
         console.log(err);
     }, function () {

@@ -81,10 +81,9 @@ export class PredictionRepo {
 						}
 					} else {
 						newJokerFixtureId = pick;
-						if(currentJoker && currentJoker.fixture.toString() == newJokerFixtureId) {
-							return resolve(currentJoker);
+						if(currentJoker && currentJoker.status.toString() === 'PROCESSED') {
+							return reject(new Error('Joker prediction already processed'))
 						}
-						// todo: if(currentJoker && currentJoker.status === 'PROCESSED') return reject(new Error('Joker prediction already processed'))
 						this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject)	
 					}
 				})	
@@ -116,18 +115,18 @@ export class PredictionRepo {
 						predictionJokers.unshift(currentJoker)
 					}
 					Prediction.create(predictionJokers, (err, savedPredictions) => {
-        		if (err) reject(err);
+        		if (err) return reject(err);
 						if (!savedPredictions) {
 							return reject(new Error(`Failed to saved predictions`))
 						}
 						let currentNewJoker = savedPredictions.filter(n => {
-							return n.fixture === newJoker.fixture
+							return n.fixture.toString() === newJoker.fixture
 						})[0];
 						return resolve(currentNewJoker);
 					})
 				})
 			} else {
-				reject(new Error('Fixture not scheduled'))
+				return reject(new Error('Fixture not scheduled'))
 			}
 		})
 	}

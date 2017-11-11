@@ -16,7 +16,7 @@ class FinishedFixturePublishHandler {
           })
         })
         .flatMap((map:any) => {
-          let {user, fixture} = map; 
+          let {user, fixture} = map;      
           let {season, round} = fixture;
           return predictionRepo.pickJoker({user, season, round, pick: roundFixtures})
             .map((jokerPrediction: any) => {

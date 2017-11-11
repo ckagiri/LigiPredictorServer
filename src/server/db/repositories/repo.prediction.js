@@ -61,10 +61,9 @@ var PredictionRepo = (function () {
                     }
                     else {
                         newJokerFixtureId = pick;
-                        if (currentJoker && currentJoker.fixture.toString() == newJokerFixtureId) {
-                            return resolve(currentJoker);
+                        if (currentJoker && currentJoker.status.toString() === 'PROCESSED') {
+                            return reject(new Error('Joker prediction already processed'));
                         }
-                        // todo: if(currentJoker && currentJoker.status === 'PROCESSED') return reject(new Error('Joker prediction already processed'))
                         _this.pickJokerFixture(user, currentJoker, newJokerFixtureId, false, resolve, reject);
                     }
                 });
@@ -99,19 +98,19 @@ var PredictionRepo = (function () {
                         }
                         prediction_model_1.Prediction.create(predictionJokers, function (err, savedPredictions) {
                             if (err)
-                                reject(err);
+                                return reject(err);
                             if (!savedPredictions) {
                                 return reject(new Error("Failed to saved predictions"));
                             }
                             var currentNewJoker = savedPredictions.filter(function (n) {
-                                return n.fixture === newJoker.fixture;
+                                return n.fixture.toString() === newJoker.fixture;
                             })[0];
                             return resolve(currentNewJoker);
                         });
                     });
                 }
                 else {
-                    reject(new Error('Fixture not scheduled'));
+                    return reject(new Error('Fixture not scheduled'));
                 }
             });
         };

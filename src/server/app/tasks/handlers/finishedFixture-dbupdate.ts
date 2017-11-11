@@ -8,7 +8,7 @@ let getFixtureName = (fixture: any) => {
 }
 
 class FinishedFixtureDbUpdateHandler {
-  handle(finishedFixtures: any[]) {
+  handle(finishedFixtures: any[], fromDb?: boolean) {
 		let leaderboardObsCache = {};
 		let roundFixturesObsCache = {};
 		let boardIds: any[] = [];
@@ -21,7 +21,9 @@ class FinishedFixtureDbUpdateHandler {
 				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status)
 			})
 			.do((fixture: any) => {
-				console.log("the game : " + getFixtureName(fixture) + " has been updated");
+				if(!fromDb) {
+					console.log("the game : " + getFixtureName(fixture) + " has been updated");
+				}
 			})
 			.flatMap((fixture: any) => {
 				let {season, round} = fixture;
@@ -37,7 +39,7 @@ class FinishedFixtureDbUpdateHandler {
 					return {fixture, roundFixtureIds};
 				})
 			})
-			.flatMap((map: any) => {
+			.concatMap((map: any) => {
 				let {fixture, roundFixtureIds} = map;
 				return finishedFixturePublishHandler.handle(fixture, roundFixtureIds)
 			})
@@ -45,7 +47,7 @@ class FinishedFixtureDbUpdateHandler {
 				return map.prediction.status !== 'ALREADY_PROCESSED';
 			})
 			.flatMap((map: any) => {
-				let {user, fixture, prediction} = map;				
+				let {user, fixture, prediction} = map;			
 				return predictionRepo.update(prediction)
 					.map((status: any) => {
 						return {user, fixture, prediction}
@@ -100,7 +102,7 @@ class FinishedFixtureDbUpdateHandler {
 					let {user, fixture, prediction} = map;
 					let choiceGoalsHomeTeam = 	prediction.choice.goalsHomeTeam;
 					let choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
-					console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
+					//console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
 				() => {		

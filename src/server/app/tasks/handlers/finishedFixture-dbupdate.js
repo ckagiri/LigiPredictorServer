@@ -10,7 +10,7 @@ var getFixtureName = function (fixture) {
 var FinishedFixtureDbUpdateHandler = (function () {
     function FinishedFixtureDbUpdateHandler() {
     }
-    FinishedFixtureDbUpdateHandler.prototype.handle = function (finishedFixtures) {
+    FinishedFixtureDbUpdateHandler.prototype.handle = function (finishedFixtures, fromDb) {
         var leaderboardObsCache = {};
         var roundFixturesObsCache = {};
         var boardIds = [];
@@ -23,7 +23,9 @@ var FinishedFixtureDbUpdateHandler = (function () {
             return common_1.fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status);
         })
             .do(function (fixture) {
-            console.log("the game : " + getFixtureName(fixture) + " has been updated");
+            if (!fromDb) {
+                console.log("the game : " + getFixtureName(fixture) + " has been updated");
+            }
         })
             .flatMap(function (fixture) {
             var season = fixture.season, round = fixture.round;
@@ -39,7 +41,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
                 return { fixture: fixture, roundFixtureIds: roundFixtureIds };
             });
         })
-            .flatMap(function (map) {
+            .concatMap(function (map) {
             var fixture = map.fixture, roundFixtureIds = map.roundFixtureIds;
             return finishedFixture_publish_1.finishedFixturePublishHandler.handle(fixture, roundFixtureIds);
         })
@@ -99,7 +101,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             var choiceGoalsHomeTeam = prediction.choice.goalsHomeTeam;
             var choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
-            console.log(user.displayName + ", " + getFixtureName(fixture) + ", " + choiceGoalsHomeTeam + " " + choiceGoalsAwayTeam);
+            //console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
         }, function (err) { console.log("Oops... " + err); }, function () {
             Rx.Observable.from(finishedFixtures)
                 .flatMap(function (fixture) {

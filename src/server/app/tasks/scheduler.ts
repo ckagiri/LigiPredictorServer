@@ -18,11 +18,11 @@ const heartbeatCheck = () => {
   console.log("heartbeat");
   fixtureRepo.findAllFinishedWithPendingPredictions()
     .map((fixtures: any[]) => {
-      finishedFixtureDbUpdateHandler.handle(fixtures)
+      finishedFixtureDbUpdateHandler.handle(fixtures, true)
     })
     .subscribe(
-      (x: any) => {
-        console.log(x);
+      (_: any) => {
+        console.log("finished with preds");
       }, (err: any) => {
         console.log(err)
       }, () => {
