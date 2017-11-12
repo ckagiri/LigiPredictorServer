@@ -18,7 +18,7 @@ var app;
                 this.success = function (response) { return response.data; };
                 this.fail = function (error) {
                     var msg = error.data.description;
-                    var reason = 'query for people failed.';
+                    var reason = 'query for fixture-with-predictions failed.';
                     _this.exception.catcher(msg)(reason);
                     return _this.$q.reject(msg);
                 };

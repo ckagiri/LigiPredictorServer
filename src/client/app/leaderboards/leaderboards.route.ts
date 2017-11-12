@@ -20,7 +20,18 @@ namespace app.leaderboards {
           templateUrl: 'app/leaderboards/leaderboards.html',
           controller: 'LeaderboardsController',
           controllerAs: 'vm',
-          title: 'leaderboards'
+          title: 'leaderboards',
+          resolve:{
+            season: ['$stateParams', 'SeasonsResource', 
+							function ($stateParams: ng.ui.IStateParamsService, 
+								Seasons: app.core.ISeasonsResource) {
+                let {league, season} = $stateParams;
+                if(league != null && season != null) {
+                  return Seasons.getOne(league, season);
+                }
+                return Seasons.default();
+            }]
+          }
         }
       }
     ];

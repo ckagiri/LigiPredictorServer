@@ -35,6 +35,24 @@ var LeaderboardRepo = (function () {
         var update = { status: status };
         return this.findOneAndUpdate(query, update);
     };
+    LeaderboardRepo.prototype.findAll = function (query, projection, options) {
+        if (query === void 0) { query = {}; }
+        return Rx.Observable.fromPromise(leaderboard_model_1.Leaderboard.find(query, projection, options).lean());
+    };
+    LeaderboardRepo.prototype.findOne = function (query, projection) {
+        return Rx.Observable.fromPromise(leaderboard_model_1.Leaderboard.findOne(query, projection));
+    };
+    LeaderboardRepo.prototype.findAllBySeason = function (seasonId) {
+        return this.findAll({ season: seasonId });
+    };
+    LeaderboardRepo.prototype.findAllBySeasonRound = function (seasonId, round) {
+        var query = { $and: [{ season: seasonId }, { round: round }] };
+        return this.findAll(query, null, { sort: 'date' });
+    };
+    LeaderboardRepo.prototype.findAllBySeasonMonth = function (seasonId, year, month) {
+        var query = { $and: [{ season: seasonId }, { year: year }, { month: month }] };
+        return this.findAll(query, null, { sort: 'date' });
+    };
     return LeaderboardRepo;
 }());
 exports.LeaderboardRepo = LeaderboardRepo;

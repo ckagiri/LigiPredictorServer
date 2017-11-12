@@ -20,7 +20,17 @@ var app;
                         templateUrl: 'app/leaderboards/leaderboards.html',
                         controller: 'LeaderboardsController',
                         controllerAs: 'vm',
-                        title: 'leaderboards'
+                        title: 'leaderboards',
+                        resolve: {
+                            season: ['$stateParams', 'SeasonsResource',
+                                function ($stateParams, Seasons) {
+                                    var league = $stateParams.league, season = $stateParams.season;
+                                    if (league != null && season != null) {
+                                        return Seasons.getOne(league, season);
+                                    }
+                                    return Seasons.default();
+                                }]
+                        }
                     }
                 }
             ];

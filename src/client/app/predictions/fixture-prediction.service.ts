@@ -22,7 +22,7 @@ namespace app.core {
 
     private fail: (error: any) => {} = (error) => {
       var msg = error.data.description;
-      var reason = 'query for people failed.';
+      var reason = 'query for fixture-with-predictions failed.';
       this.exception.catcher(msg)(reason);
       return this.$q.reject(msg);
     }
