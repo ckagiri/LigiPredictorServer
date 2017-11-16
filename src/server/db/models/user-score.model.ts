@@ -5,6 +5,7 @@ export interface IUserScore {
 	leaderboard: string;
 	user: string;
 	predictions: [string];
+	fixtures: [string];
 	points: number;
 	goalDiff: number;
 	pointsExcJoker?: number;
@@ -27,6 +28,10 @@ const userScoreSchema = new Schema({
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'Leaderboard'
 	},
+	fixtures: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Fixture"
+	}],
 	predictions: [{
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Prediction"

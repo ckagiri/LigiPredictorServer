@@ -2,7 +2,7 @@ namespace app.leaderboards {
 	'use strict';
 
 	export class LeaderboardsController {
-		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', 'logger', 'season', 'leaderboarService']
+		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', 'logger', 'season', 'leaderboardService']
 
 		constructor(private $q: ng.IQService,
 			private $state: ng.ui.IStateService,

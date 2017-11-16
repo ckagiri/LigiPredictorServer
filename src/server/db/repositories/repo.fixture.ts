@@ -71,13 +71,17 @@ export class FixtureRepo extends AbstractRepo {
     return this.findFixtureAndUpdate({_id: fixtureId}, {allPredictionsProcessed: true});
   }
 
-	findAllFinishedWithPendingPredictions() {
-		let query = {
+	findAllFinishedWithPendingPredictions(seasonId: any, round?: any) {
+		let query:any = {
 			$and: [
+					{season: seasonId},
 					{allPredictionsProcessed: false}, 
 					{status: {$in: ['CANCELED', 'POSTPONED', 'FINISHED']}}
 				]
 			}
+		if(round) {
+			query.$and.push({round});
+		}
 		return this.findAll(query)
 	}
 }

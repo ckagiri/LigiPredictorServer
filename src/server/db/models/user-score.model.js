@@ -12,6 +12,10 @@ var userScoreSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Leaderboard'
     },
+    fixtures: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Fixture"
+        }],
     predictions: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: "Prediction"

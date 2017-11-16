@@ -30,6 +30,13 @@ var LeaderboardRepo = (function () {
         var query = { season: season, round: round, boardType: boardType };
         return this.findOneAndUpdate(query, options);
     };
+    LeaderboardRepo.prototype.findOneByMonthAndUpdate = function (options) {
+        var season = options.season, year = options.year, month = options.month;
+        var boardType = 'GLOBAL_MONTH';
+        options.boardType = boardType;
+        var query = { season: season, year: year, month: month, boardType: boardType };
+        return this.findOneAndUpdate(query, options);
+    };
     LeaderboardRepo.prototype.findByIdAndUpdateStatus = function (leaderboardId, status) {
         var query = { _id: leaderboardId };
         var update = { status: status };
@@ -42,16 +49,16 @@ var LeaderboardRepo = (function () {
     LeaderboardRepo.prototype.findOne = function (query, projection) {
         return Rx.Observable.fromPromise(leaderboard_model_1.Leaderboard.findOne(query, projection));
     };
-    LeaderboardRepo.prototype.findAllBySeason = function (seasonId) {
-        return this.findAll({ season: seasonId });
+    LeaderboardRepo.prototype.findSeasonBoard = function (seasonId) {
+        return this.findOne({ season: seasonId, boardType: 'GLOBAL_SEASON' });
     };
-    LeaderboardRepo.prototype.findAllBySeasonRound = function (seasonId, round) {
-        var query = { $and: [{ season: seasonId }, { round: round }] };
-        return this.findAll(query, null, { sort: 'date' });
+    LeaderboardRepo.prototype.findRoundBoard = function (seasonId, round) {
+        var query = { $and: [{ season: seasonId }, { round: round }, { boardType: 'GLOBAL_ROUND' }] };
+        return this.findOne(query);
     };
-    LeaderboardRepo.prototype.findAllBySeasonMonth = function (seasonId, year, month) {
-        var query = { $and: [{ season: seasonId }, { year: year }, { month: month }] };
-        return this.findAll(query, null, { sort: 'date' });
+    LeaderboardRepo.prototype.findMonthBoard = function (seasonId, year, month) {
+        var query = { $and: [{ season: seasonId }, { year: year }, { month: month }, { boardType: 'GLOBAL_MONTH' }] };
+        return this.findOne(query);
     };
     return LeaderboardRepo;
 }());

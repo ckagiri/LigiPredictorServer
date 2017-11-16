@@ -3,13 +3,15 @@ import {AbstractRepo} from './repo.abstract';
 import {UserScore, IUserScore} from '../models/user-score.model';
 
 export class UserScoreRepo {
-  findOneAndUpdateOrCreate(leaderboardId: string, userId: string, predictionId: string, predictionScore: any, hasJoker: boolean) {
+  findOneAndUpdateOrCreate(leaderboardId: string, userId: string, fixtureId: string, 
+    predictionId: string, predictionScore: any, hasJoker: boolean) {
     let {points, goalDiff} = predictionScore,
     score: IUserScore = {
       leaderboard: leaderboardId,
       user: userId, 
       points: points,
       goalDiff: goalDiff,
+      fixtures: [''],
       predictions: ['']
     }
     return Rx.Observable.fromPromise(
@@ -17,7 +19,8 @@ export class UserScoreRepo {
         UserScore.findOne({leaderboard: leaderboardId, user: userId}, 
         (err, standing: any) => {
           if(standing == null) {
-            score.predictions = [predictionId]
+            score.fixtures = [fixtureId];
+            score.predictions = [predictionId];
             score.pointsExcJoker = points;
             score.goalDiffExcJoker = goalDiff;
             UserScore.create(score, (err: any, result: any) => {
@@ -25,13 +28,13 @@ export class UserScoreRepo {
               return resolve(result);
         	  });
           } else {
-            let predExists = false;
-            standing.predictions.forEach(function(predId: any){
-              if(predId.toString() == predictionId) {
-                predExists = true;
+            let fixtureExists = false;
+            standing.fixtures.forEach(function(fixture: any){
+              if(fixture.toString() == fixtureId) {
+                fixtureExists = true;
               }
             })
-            if(predExists) {
+            if(fixtureExists) {
               return resolve(standing)
             }
             standing.points += score.points;
@@ -51,7 +54,7 @@ export class UserScoreRepo {
                   pointsExcJoker: standing.pointsExcJoker,
                   goalDiffExcJoker: standing.goalDiffExcJoker
                 },
-                $push: {predictions: predictionId}
+                $push: {fixtures: fixtureId, predictions: predictionId}
               },
               (err: any, result: any) => {
                 if (err) return reject(err);
@@ -65,6 +68,11 @@ export class UserScoreRepo {
   getByLeaderboardOrderByPoints(leaderboardId: string) {
     return Rx.Observable.fromPromise(
       UserScore.find({leaderboard: leaderboardId}, null, {sort: {points: -1, goalDiff: -1}}));
+  }
+
+  getOneByLeaderboardOrderByPoints(leaderboardId: string) {
+    return Rx.Observable.fromPromise(
+      UserScore.find({leaderboard: leaderboardId}, null, {sort: {points: -1, goalDiff: -1}}).populate('user').lean());
   }
 
   update(scoreId: string, positions: any) {

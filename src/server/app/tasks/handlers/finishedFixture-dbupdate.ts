@@ -43,9 +43,6 @@ class FinishedFixtureDbUpdateHandler {
 				let {fixture, roundFixtureIds} = map;
 				return finishedFixturePublishHandler.handle(fixture, roundFixtureIds)
 			})
-			.filter((map: any) => {
-				return map.prediction.status !== 'ALREADY_PROCESSED';
-			})
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;			
 				return predictionRepo.update(prediction)
@@ -56,6 +53,8 @@ class FinishedFixtureDbUpdateHandler {
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;
 				let {season, round} = fixture;
+				let month = fixture.date.getUTCMonth() + 1;
+				let year = fixture.date.getFullYear();
 				let seasonBoardKey = season;
 				let seasonBoardObs = leaderboardObsCache[seasonBoardKey]
 				if(seasonBoardObs == null) {
@@ -68,7 +67,13 @@ class FinishedFixtureDbUpdateHandler {
 					roundBoardObs = leaderboardRepo.findOneByRoundAndUpdate({season, round, status: "UpdatingScores"})
 					leaderboardObsCache[roundBoardKey] = roundBoardObs;
 				}
-				return Rx.Observable.forkJoin(seasonBoardObs, roundBoardObs)
+				let monthBoardKey = `${season}-${year}-${month}`;
+				let monthBoardObs = leaderboardObsCache[monthBoardKey]
+				if(monthBoardObs == null) {
+					monthBoardObs = leaderboardRepo.findOneByMonthAndUpdate({season, round, year, month, status: "UpdatingScores"})
+					leaderboardObsCache[monthBoardKey] = monthBoardObs;
+				}
+				return Rx.Observable.forkJoin(seasonBoardObs, roundBoardObs, monthBoardObs)
 					.flatMap((leaderboards: any[]) => {
 						return Rx.Observable.from(leaderboards);
 					})
@@ -84,6 +89,7 @@ class FinishedFixtureDbUpdateHandler {
 				let{leaderboard, user, fixture, prediction} = map;
 				let leaderboardId = leaderboard._id;
 				let userId = user._id;
+				let fixtureId = fixture._id;
 				let predictionId = prediction._id;
 				let scorePoints = prediction.scorePoints.toObject();
 				let {points, goalDiff, hasJoker} = prediction
@@ -91,7 +97,7 @@ class FinishedFixtureDbUpdateHandler {
 					scorePoints, points, goalDiff
 				}
 				return userScoreRepo.findOneAndUpdateOrCreate(
-					leaderboardId, userId, predictionId, predictionScore, hasJoker)
+					leaderboardId, userId, fixtureId, predictionId, predictionScore, hasJoker)
 					.map((status: any) => {
 						return {user, fixture, prediction}
 					})

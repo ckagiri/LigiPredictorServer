@@ -71,13 +71,17 @@ var FixtureRepo = (function (_super) {
     FixtureRepo.prototype.allPredictionsProcessed = function (fixtureId) {
         return this.findFixtureAndUpdate({ _id: fixtureId }, { allPredictionsProcessed: true });
     };
-    FixtureRepo.prototype.findAllFinishedWithPendingPredictions = function () {
+    FixtureRepo.prototype.findAllFinishedWithPendingPredictions = function (seasonId, round) {
         var query = {
             $and: [
+                { season: seasonId },
                 { allPredictionsProcessed: false },
                 { status: { $in: ['CANCELED', 'POSTPONED', 'FINISHED'] } }
             ]
         };
+        if (round) {
+            query.$and.push({ round: round });
+        }
         return this.findAll(query);
     };
     return FixtureRepo;

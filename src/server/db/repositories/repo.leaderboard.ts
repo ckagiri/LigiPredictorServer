@@ -34,6 +34,14 @@ export class LeaderboardRepo {
 		return this.findOneAndUpdate(query, options)
 	}
 
+	findOneByMonthAndUpdate(options: any) {
+		let {season, year, month} = options;
+		let boardType = 'GLOBAL_MONTH';
+		options.boardType = boardType;
+		let query: any = {season, year, month, boardType};
+		return this.findOneAndUpdate(query, options)
+	}
+
 	findByIdAndUpdateStatus(leaderboardId: string, status: string) {
 		let query: any = {_id: leaderboardId};
 		let update: any  = {status}
@@ -48,17 +56,17 @@ export class LeaderboardRepo {
     return Rx.Observable.fromPromise(Leaderboard.findOne(query, projection));
   }
 
-	findAllBySeason(seasonId: string) {
-		return this.findAll({season: seasonId})
+	findSeasonBoard(seasonId: string) {
+		return this.findOne({season: seasonId, boardType: 'GLOBAL_SEASON'})
 	}
 
-	findAllBySeasonRound(seasonId: string, round: number) {
-		let query = {$and: [{season: seasonId}, {round}]}
-		return this.findAll(query, null, {sort: 'date'})
+	findRoundBoard(seasonId: string, round: number) {
+		let query = {$and: [{season: seasonId}, {round}, {boardType: 'GLOBAL_ROUND'}]};
+		return this.findOne(query)
 	}
 
-	findAllBySeasonMonth(seasonId: string, year: number, month: number) {
-		let query = {$and: [{season: seasonId}, {year}, {month}]}
-		return this.findAll(query, null, {sort: 'date'})
+	findMonthBoard(seasonId: string, year: number, month: number) {
+		let query = {$and: [{season: seasonId}, {year}, {month}, {boardType: 'GLOBAL_MONTH'}]}
+		return this.findOne(query)
 	}
 }

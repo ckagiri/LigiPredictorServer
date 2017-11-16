@@ -1,7 +1,7 @@
 import {Request, Response} from 'express';
 import * as _ from 'lodash';
 import {Leaderboard, ILeaderboard, ILeaderboardModel} from '../../../db/models/leaderboard.model';
-import {LeagueRepo, SeasonRepo, LeaderboardRepo} from '../../../db/repositories';
+import {LeagueRepo, SeasonRepo, LeaderboardRepo, UserScoreRepo} from '../../../db/repositories';
 import {LeagueConverter, SeasonConverter} from '../../../db/converters/ligi-predictor';
 import isMongoId from '../../utils/isMongoId'
 
@@ -9,6 +9,7 @@ import * as Rx from 'rxjs';
 let leagueRepo = new LeagueRepo(new LeagueConverter())
 let seasonRepo = new SeasonRepo(new SeasonConverter(leagueRepo));
 let leaderboardRepo = new LeaderboardRepo();
+let userScoreRepo = new UserScoreRepo();
 
 export class LeaderboardController {
 	show(req: Request, res: Response) {
@@ -46,10 +47,17 @@ export class LeaderboardController {
         return Rx.Observable.of(season)
       })
       .flatMap((season: any) => {
-        return leaderboardRepo.findAllBySeason(season._id);
+        return leaderboardRepo.findSeasonBoard(season._id);
       })
-      .subscribe((leaderboards: any[]) => {
-          res.status(200).json(leaderboards);
+      .flatMap((board: any) => {
+        return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
+      })
+      .map((userScore: any) => {
+        return userScore;
+      })
+      .toArray()
+      .subscribe((userScores: any[]) => {
+          res.status(200).json(userScores);
         }, (err: any) => {
           console.error(err);
           res.status(500).json(err);
@@ -73,14 +81,17 @@ export class LeaderboardController {
 				return Rx.Observable.of(season)
 			})
       .flatMap((season: any) => {
-				return leaderboardRepo.findAllBySeasonRound(season._id, round || season.currentRound);
+				return leaderboardRepo.findRoundBoard(season._id, round || season.currentRound);
 			})
-			.subscribe((leaderboards: any[]) => {
-					res.status(200).json(leaderboards);
-				}, (err: any) => {
-					console.error(err);
-					res.status(500).json(err);
-    		});
+      .flatMap((board: any) => {
+        return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
+      })
+      .subscribe((userScores: any[]) => {
+          res.status(200).json(userScores);
+        }, (err: any) => {
+          console.error(err);
+          res.status(500).json(err);
+        });
   }
   
   seasonMonthList(req: Request, res: Response) {
@@ -100,10 +111,13 @@ export class LeaderboardController {
         return Rx.Observable.of(season)
       })
       .flatMap((season: any) => {
-        return leaderboardRepo.findAllBySeasonMonth(season._id, year, month);
+        return leaderboardRepo.findMonthBoard(season._id, year, month);
       })
-      .subscribe((leaderboards: any[]) => {
-          res.status(200).json(leaderboards);
+      .flatMap((board: any) => {
+        return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
+      })
+      .subscribe((userScores: any[]) => {
+          res.status(200).json(userScores);
         }, (err: any) => {
           console.error(err);
           res.status(500).json(err);

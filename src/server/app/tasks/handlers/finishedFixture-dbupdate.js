@@ -45,9 +45,6 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var fixture = map.fixture, roundFixtureIds = map.roundFixtureIds;
             return finishedFixture_publish_1.finishedFixturePublishHandler.handle(fixture, roundFixtureIds);
         })
-            .filter(function (map) {
-            return map.prediction.status !== 'ALREADY_PROCESSED';
-        })
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             return common_1.predictionRepo.update(prediction)
@@ -58,6 +55,8 @@ var FinishedFixtureDbUpdateHandler = (function () {
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             var season = fixture.season, round = fixture.round;
+            var month = fixture.date.getUTCMonth() + 1;
+            var year = fixture.date.getFullYear();
             var seasonBoardKey = season;
             var seasonBoardObs = leaderboardObsCache[seasonBoardKey];
             if (seasonBoardObs == null) {
@@ -70,7 +69,13 @@ var FinishedFixtureDbUpdateHandler = (function () {
                 roundBoardObs = common_1.leaderboardRepo.findOneByRoundAndUpdate({ season: season, round: round, status: "UpdatingScores" });
                 leaderboardObsCache[roundBoardKey] = roundBoardObs;
             }
-            return Rx.Observable.forkJoin(seasonBoardObs, roundBoardObs)
+            var monthBoardKey = season + "-" + year + "-" + month;
+            var monthBoardObs = leaderboardObsCache[monthBoardKey];
+            if (monthBoardObs == null) {
+                monthBoardObs = common_1.leaderboardRepo.findOneByMonthAndUpdate({ season: season, round: round, year: year, month: month, status: "UpdatingScores" });
+                leaderboardObsCache[monthBoardKey] = monthBoardObs;
+            }
+            return Rx.Observable.forkJoin(seasonBoardObs, roundBoardObs, monthBoardObs)
                 .flatMap(function (leaderboards) {
                 return Rx.Observable.from(leaderboards);
             })
@@ -86,13 +91,14 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var leaderboard = map.leaderboard, user = map.user, fixture = map.fixture, prediction = map.prediction;
             var leaderboardId = leaderboard._id;
             var userId = user._id;
+            var fixtureId = fixture._id;
             var predictionId = prediction._id;
             var scorePoints = prediction.scorePoints.toObject();
             var points = prediction.points, goalDiff = prediction.goalDiff, hasJoker = prediction.hasJoker;
             var predictionScore = {
                 scorePoints: scorePoints, points: points, goalDiff: goalDiff
             };
-            return common_1.userScoreRepo.findOneAndUpdateOrCreate(leaderboardId, userId, predictionId, predictionScore, hasJoker)
+            return common_1.userScoreRepo.findOneAndUpdateOrCreate(leaderboardId, userId, fixtureId, predictionId, predictionScore, hasJoker)
                 .map(function (status) {
                 return { user: user, fixture: fixture, prediction: prediction };
             });

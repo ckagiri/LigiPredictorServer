@@ -7,6 +7,7 @@ var Rx = require("rxjs");
 var leagueRepo = new repositories_1.LeagueRepo(new ligi_predictor_1.LeagueConverter());
 var seasonRepo = new repositories_1.SeasonRepo(new ligi_predictor_1.SeasonConverter(leagueRepo));
 var leaderboardRepo = new repositories_1.LeaderboardRepo();
+var userScoreRepo = new repositories_1.UserScoreRepo();
 var LeaderboardController = (function () {
     function LeaderboardController() {
     }
@@ -44,10 +45,17 @@ var LeaderboardController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
-            return leaderboardRepo.findAllBySeason(season._id);
+            return leaderboardRepo.findSeasonBoard(season._id);
         })
-            .subscribe(function (leaderboards) {
-            res.status(200).json(leaderboards);
+            .flatMap(function (board) {
+            return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
+        })
+            .map(function (userScore) {
+            return userScore;
+        })
+            .toArray()
+            .subscribe(function (userScores) {
+            res.status(200).json(userScores);
         }, function (err) {
             console.error(err);
             res.status(500).json(err);
@@ -71,10 +79,13 @@ var LeaderboardController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
-            return leaderboardRepo.findAllBySeasonRound(season._id, round || season.currentRound);
+            return leaderboardRepo.findRoundBoard(season._id, round || season.currentRound);
         })
-            .subscribe(function (leaderboards) {
-            res.status(200).json(leaderboards);
+            .flatMap(function (board) {
+            return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
+        })
+            .subscribe(function (userScores) {
+            res.status(200).json(userScores);
         }, function (err) {
             console.error(err);
             res.status(500).json(err);
@@ -98,10 +109,13 @@ var LeaderboardController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
-            return leaderboardRepo.findAllBySeasonMonth(season._id, year, month);
+            return leaderboardRepo.findMonthBoard(season._id, year, month);
         })
-            .subscribe(function (leaderboards) {
-            res.status(200).json(leaderboards);
+            .flatMap(function (board) {
+            return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
+        })
+            .subscribe(function (userScores) {
+            res.status(200).json(userScores);
         }, function (err) {
             console.error(err);
             res.status(500).json(err);

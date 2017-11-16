@@ -35,7 +35,7 @@ var app;
             };
             return LeaderboardsController;
         }());
-        LeaderboardsController.$inject = ['$q', '$state', '$stateParams', '$scope', 'logger', 'season', 'leaderboarService'];
+        LeaderboardsController.$inject = ['$q', '$state', '$stateParams', '$scope', 'logger', 'season', 'leaderboardService'];
         leaderboards.LeaderboardsController = LeaderboardsController;
         angular
             .module('app.leaderboards')

@@ -1,7 +1,7 @@
 import {dataUpdater} from './updaters/data-updater'
 import {fixturesUpdater} from './updaters/fixtures-updater'
 import {finishedFixtureDbUpdateHandler} from './handlers/finishedFixture-dbupdate';
-import {fixtureRepo} from './common'
+import {seasonRepo, fixtureRepo} from './common'
 
 let schedule =	require('node-schedule');
 let Moment = require('moment');
@@ -10,24 +10,27 @@ let fixturesTimeout: any;
 
 export const run = () => {
   updateData();
-  //schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
-  heartbeatCheck();
+  schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
+  //heartbeatCheck();
 }
 
 const heartbeatCheck = () => {
   console.log("heartbeat");
-  fixtureRepo.findAllFinishedWithPendingPredictions()
-    .map((fixtures: any[]) => {
-      finishedFixtureDbUpdateHandler.handle(fixtures, true)
-    })
-    .subscribe(
-      (_: any) => {
-        console.log("finished with preds");
-      }, (err: any) => {
-        console.log(err)
-      }, () => {
-        console.log('finished with pending preds done')
-      });
+  seasonRepo.getDefault()
+    .flatMap((season: any) => {
+      return fixtureRepo.findAllFinishedWithPendingPredictions(season._id, season.currentRound)
+        .map((fixtures: any[]) => {
+          finishedFixtureDbUpdateHandler.handle(fixtures, true)
+        })
+      })
+      .subscribe(
+        (_: any) => {
+          console.log("finished with preds");
+        }, (err: any) => {
+          console.log(err)
+        }, () => {
+          console.log('finished with pending preds done')
+        });
 }
 
 const updateFixtures = () => {
