@@ -65,7 +65,7 @@ var app;
                 return !!this.currentUser;
             };
             SecurityService.prototype.isAdmin = function () {
-                return !!(this.currentUser && this.currentUser.admin);
+                return !!this.currentUser && !!~this.currentUser.indexOf('admin');
             };
             SecurityService.prototype.requireAdminUser = function () {
                 var _this = this;
@@ -96,7 +96,7 @@ var app;
             SecurityService.prototype.prepareUser = function (user) {
                 var currentUser = user || this.storage.getItem('user');
                 if (currentUser) {
-                    this.currentUser = this.currentUser = currentUser;
+                    this.currentUser = currentUser;
                     if (this.isAuthenticated()) {
                         this.queue.clear();
                     }

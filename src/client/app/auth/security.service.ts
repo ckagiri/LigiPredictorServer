@@ -85,7 +85,7 @@ namespace app.auth {
 		}
 
 		isAdmin() {
-			return !!(this.currentUser && this.currentUser.admin);
+			return !!this.currentUser && !!~this.currentUser.indexOf('admin');
 		}
 
 		requireAdminUser() {
@@ -119,7 +119,7 @@ namespace app.auth {
 		prepareUser(user?: any) {
 			let currentUser = user || this.storage.getItem('user');
 			if(currentUser) {
-				this.currentUser = this.currentUser = currentUser;
+				this.currentUser = currentUser;
 				if (this.isAuthenticated()) {
 					this.queue.clear();
 				}
