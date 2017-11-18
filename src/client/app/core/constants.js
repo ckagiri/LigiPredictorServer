@@ -8,6 +8,10 @@ var app;
             .module('app.core')
             .constant('toastr', toastr)
             .constant('moment', moment);
+        angular.module('app.core')
+            .factory('_', ['$window', function ($window) {
+                return $window._;
+            }]);
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));
 //# sourceMappingURL=constants.js.map

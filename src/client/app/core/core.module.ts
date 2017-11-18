@@ -5,6 +5,6 @@ namespace app.core {
     .module('app.core', [
       'ngAnimate', 'ngSanitize', 'ui.router', 
       'blocks.exception', 'blocks.logger', 'blocks.router',
-      'ngplus', 'ngMessages', 'satellizer'
+      'ngplus', 'ngMessages', 'satellizer', 'nvd3'
     ]);
 }
