@@ -31,7 +31,7 @@ export class LeaderboardController {
   }
 
   seasonList(req: Request, res: Response) {
-    let {league: leagueSlug, season: seasonSlug}= req.query;
+    let {league: leagueSlug, season: seasonSlug}= req.params;
     let source: Rx.Observable<any>;
     if(leagueSlug == null && seasonSlug == null) {
       source = seasonRepo.getDefault();
@@ -52,8 +52,11 @@ export class LeaderboardController {
       .flatMap((board: any) => {
         return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
       })
+			.flatMap((userScores: any[]) => {
+				return Rx.Observable.from(userScores);
+			})	
       .map((userScore: any) => {
-        return userScore;
+        return mapScore(userScore);
       })
       .toArray()
       .subscribe((userScores: any[]) => {
@@ -65,7 +68,7 @@ export class LeaderboardController {
   }
 
   seasonRoundList(req: Request, res: Response) {
-    let {league: leagueSlug, season: seasonSlug, round}= req.query;
+    let {league: leagueSlug, season: seasonSlug, round}= req.params;
     let source: Rx.Observable<any>;
     if(leagueSlug == null && seasonSlug == null) {
 			source = seasonRepo.getDefault();
@@ -81,11 +84,19 @@ export class LeaderboardController {
 				return Rx.Observable.of(season)
 			})
       .flatMap((season: any) => {
+        round = parseInt(round) - 1;
 				return leaderboardRepo.findRoundBoard(season._id, round || season.currentRound);
 			})
       .flatMap((board: any) => {
         return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
       })
+			.flatMap((userScores: any[]) => {
+				return Rx.Observable.from(userScores);
+			})	
+      .map((userScore: any) => {
+        return mapScore(userScore);
+      })
+      .toArray()
       .subscribe((userScores: any[]) => {
           res.status(200).json(userScores);
         }, (err: any) => {
@@ -95,7 +106,7 @@ export class LeaderboardController {
   }
   
   seasonMonthList(req: Request, res: Response) {
-    let {league: leagueSlug, season: seasonSlug, round, year, month}= req.query;
+    let {league: leagueSlug, season: seasonSlug, round, year, month}= req.params;
     let source: Rx.Observable<any>;
     if(leagueSlug == null && seasonSlug == null) {
       source = seasonRepo.getDefault();
@@ -116,6 +127,13 @@ export class LeaderboardController {
       .flatMap((board: any) => {
         return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
       })
+			.flatMap((userScores: any[]) => {
+				return Rx.Observable.from(userScores);
+			})	
+      .map((userScore: any) => {
+        return mapScore(userScore);
+      })
+      .toArray()
       .subscribe((userScores: any[]) => {
           res.status(200).json(userScores);
         }, (err: any) => {
@@ -130,4 +148,16 @@ function singleSeason(leagueId: string, seasonId: string) {
 	query = {$and: [{'league.slug': leagueId}, {slug: seasonId}]}
 	let season = seasonRepo.findOne(query);
 	return season;
+}
+
+function mapScore(userScore: any) {
+  let score: any = {};
+  score.user = userScore.user;
+  score.points = userScore.points;
+  score.goalDiff = userScore.goalDiff;
+  score.rank = userScore.posNew;
+  score.posNew = userScore.posNew;
+  score.posOld = userScore.posOld;
+  score.change = score.posNew - score.posOld;
+  return score;
 }

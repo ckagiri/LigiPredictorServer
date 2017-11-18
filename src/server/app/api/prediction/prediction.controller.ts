@@ -97,7 +97,7 @@ export class PredictionController {
 	}
 
 	mine(req: Request, res: Response) {
-		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
+		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.params;
 		let user = req['user'];
 		let userId = user && user._id;
 		let source: Rx.Observable<any>;

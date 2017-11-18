@@ -10,7 +10,7 @@ namespace app.leaderboards {
 			private $scope: ng.IScope,
       private logger: blocks.logger.Logger,
 			private season: any,
-			private leaderboarService: app.core.ILeaderboardService,) {
+			private leaderboardService: app.core.ILeaderboardService,) {
         this.leagueSlug = this.$stateParams.league || this.season.league.slug;
 				this.seasonSlug = this.$stateParams.season || this.season.slug;
 				this.round = this.$stateParams.round || this.season.currentRound;
@@ -27,17 +27,21 @@ namespace app.leaderboards {
     seasonMonthLeaderboard: any;
 
     private activate() {
-      this.leaderboarService.getSeasonLeaderboard(this.leagueSlug, this.seasonSlug)
+			let d = new Date();
+			let month = d.getUTCMonth() + 1;
+			let year = d.getFullYear();
+
+      this.leaderboardService.getSeasonLeaderboard(this.leagueSlug, this.seasonSlug)
       	.then((data) => {
 					this.seasonLeaderboard = data;
 				})
 
-      this.leaderboarService.getSeasonRoundLeaderboard(this.leagueSlug, this.seasonSlug, this.round)
+      this.leaderboardService.getSeasonRoundLeaderboard(this.leagueSlug, this.seasonSlug, this.round)
       	.then((data) => {
 					this.seasonRoundLeaderboard = data;
 				})
 
-      this.leaderboarService.getSeasonLeaderboard(this.leagueSlug, this.seasonSlug)
+      this.leaderboardService.getSeasonMonthLeaderboard(this.leagueSlug, this.seasonSlug, year, month)
       	.then((data) => {
 					this.seasonMonthLeaderboard = data;
 				})

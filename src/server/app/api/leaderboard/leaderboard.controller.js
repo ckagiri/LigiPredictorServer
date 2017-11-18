@@ -28,7 +28,7 @@ var LeaderboardController = (function () {
         });
     };
     LeaderboardController.prototype.seasonList = function (req, res) {
-        var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season;
+        var _a = req.params, leagueSlug = _a.league, seasonSlug = _a.season;
         var source;
         if (leagueSlug == null && seasonSlug == null) {
             source = seasonRepo.getDefault();
@@ -50,8 +50,11 @@ var LeaderboardController = (function () {
             .flatMap(function (board) {
             return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
         })
+            .flatMap(function (userScores) {
+            return Rx.Observable.from(userScores);
+        })
             .map(function (userScore) {
-            return userScore;
+            return mapScore(userScore);
         })
             .toArray()
             .subscribe(function (userScores) {
@@ -62,7 +65,7 @@ var LeaderboardController = (function () {
         });
     };
     LeaderboardController.prototype.seasonRoundList = function (req, res) {
-        var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season, round = _a.round;
+        var _a = req.params, leagueSlug = _a.league, seasonSlug = _a.season, round = _a.round;
         var source;
         if (leagueSlug == null && seasonSlug == null) {
             source = seasonRepo.getDefault();
@@ -79,11 +82,19 @@ var LeaderboardController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
+            round = parseInt(round) - 1;
             return leaderboardRepo.findRoundBoard(season._id, round || season.currentRound);
         })
             .flatMap(function (board) {
             return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
         })
+            .flatMap(function (userScores) {
+            return Rx.Observable.from(userScores);
+        })
+            .map(function (userScore) {
+            return mapScore(userScore);
+        })
+            .toArray()
             .subscribe(function (userScores) {
             res.status(200).json(userScores);
         }, function (err) {
@@ -92,7 +103,7 @@ var LeaderboardController = (function () {
         });
     };
     LeaderboardController.prototype.seasonMonthList = function (req, res) {
-        var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season, round = _a.round, year = _a.year, month = _a.month;
+        var _a = req.params, leagueSlug = _a.league, seasonSlug = _a.season, round = _a.round, year = _a.year, month = _a.month;
         var source;
         if (leagueSlug == null && seasonSlug == null) {
             source = seasonRepo.getDefault();
@@ -114,6 +125,13 @@ var LeaderboardController = (function () {
             .flatMap(function (board) {
             return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
         })
+            .flatMap(function (userScores) {
+            return Rx.Observable.from(userScores);
+        })
+            .map(function (userScore) {
+            return mapScore(userScore);
+        })
+            .toArray()
             .subscribe(function (userScores) {
             res.status(200).json(userScores);
         }, function (err) {
@@ -129,5 +147,16 @@ function singleSeason(leagueId, seasonId) {
     query = { $and: [{ 'league.slug': leagueId }, { slug: seasonId }] };
     var season = seasonRepo.findOne(query);
     return season;
+}
+function mapScore(userScore) {
+    var score = {};
+    score.user = userScore.user;
+    score.points = userScore.points;
+    score.goalDiff = userScore.goalDiff;
+    score.rank = userScore.posNew;
+    score.posNew = userScore.posNew;
+    score.posOld = userScore.posOld;
+    score.change = score.posNew - score.posOld;
+    return score;
 }
 //# sourceMappingURL=leaderboard.controller.js.map

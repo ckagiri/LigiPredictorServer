@@ -10,14 +10,14 @@ var dataTimeout;
 var fixturesTimeout;
 exports.run = function () {
     updateData();
-    //schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
-    heartbeatCheck();
+    schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
+    //heartbeatCheck();
 };
 var heartbeatCheck = function () {
     console.log("heartbeat");
     common_1.seasonRepo.getDefault()
         .flatMap(function (season) {
-        return common_1.fixtureRepo.findAllFinishedWithPendingPredictions(season._id)
+        return common_1.fixtureRepo.findAllFinishedWithPendingPredictions(season._id, season.currentRound)
             .map(function (fixtures) {
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(fixtures, true);
         });
