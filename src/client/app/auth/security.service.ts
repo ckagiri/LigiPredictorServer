@@ -85,7 +85,7 @@ namespace app.auth {
 		}
 
 		isAdmin() {
-			return !!this.currentUser && !!~this.currentUser.indexOf('admin');
+			return !!this.currentUser && !!~this.currentUser.roles.indexOf("admin");
 		}
 
 		requireAdminUser() {

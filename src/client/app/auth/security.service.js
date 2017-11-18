@@ -65,7 +65,7 @@ var app;
                 return !!this.currentUser;
             };
             SecurityService.prototype.isAdmin = function () {
-                return !!this.currentUser && !!~this.currentUser.indexOf('admin');
+                return !!this.currentUser && !!~this.currentUser.roles.indexOf("admin");
             };
             SecurityService.prototype.requireAdminUser = function () {
                 var _this = this;
