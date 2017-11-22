@@ -29,6 +29,7 @@ namespace app.predictions {
     fixtureCount: number;
 
     activate() {
+      this.init();
       this.fixturePredictionService.getFixturesWithPredictions()
         .then((data) => {
           this.compressed = data;

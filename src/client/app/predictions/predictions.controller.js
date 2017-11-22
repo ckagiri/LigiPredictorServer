@@ -23,6 +23,7 @@ var app;
             }
             PredictionsController.prototype.activate = function () {
                 var _this = this;
+                this.init();
                 this.fixturePredictionService.getFixturesWithPredictions()
                     .then(function (data) {
                     _this.compressed = data;

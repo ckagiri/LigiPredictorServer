@@ -15,6 +15,15 @@
   last-text="Last"
 >
 </pagination>
+
+<h6><code>boundary-link-numbers</code> set to <code>true</code> and <code>rotate</code> defaulted to <code>true</code>:</h6>
+    <ul uib-pagination total-items="vm.fixtureFilteredCount" 
+      ng-model="vm.paging.currentPage" 
+      max-size="vm.paging.maxPagesToShow" 
+      class="pagination-sm" 
+      boundary-link-numbers="true"
+      previous-text="Prev"
+      next-text="Next"></ul>
 <div class="btn-group">
       <button type="button" class="btn btn-info dropdown-toggle">
           <i class="fa fa-arrow-up"></i>
