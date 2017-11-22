@@ -1,7 +1,6 @@
 namespace app.core {
   'use strict';
 
-  factory.$inject = [];
   function factory() {
     class Season { 
       constructor(rounds: any[]) {

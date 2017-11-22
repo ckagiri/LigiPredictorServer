@@ -3,8 +3,8 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        factory.$inject = ['Team', 'League', 'Season', 'Fixture', 'Round'];
-        function factory(Team, League, Season, Fixture, Round) {
+        factory.$inject = ['Team', 'League', 'Season', 'Match', 'Round'];
+        function factory(Team, League, Season, Match, Round) {
             var LeagueSeasonFactory = (function () {
                 function LeagueSeasonFactory() {
                 }
@@ -16,16 +16,17 @@ var app;
                     var roundsDict = this.createRoundsDictionary(data);
                     var rounds = [];
                     for (var round in roundsDict) {
-                        var fixtures = [];
+                        var matches_1 = [];
                         for (var _i = 0, _a = roundsDict[round]; _i < _a.length; _i++) {
-                            var match = _a[_i];
-                            var homeTeam = teamsDict[match.homeTeam.name];
-                            var awayTeam = teamsDict[match.awayTeam.name];
-                            match.homeTeam = homeTeam;
-                            match.awayTeam = awayTeam;
-                            fixtures.push(new Fixture(match));
+                            var fixture = _a[_i];
+                            var homeTeam = teamsDict[fixture.homeTeam.name];
+                            var awayTeam = teamsDict[fixture.awayTeam.name];
+                            fixture.homeTeam = homeTeam;
+                            fixture.awayTeam = awayTeam;
+                            var match = new Match(fixture);
+                            matches_1.push(fixture);
                         }
-                        rounds.push(new Round(fixtures));
+                        rounds.push(new Round(matches_1));
                     }
                     var season = new Season(rounds);
                     season.setTeams(this.getTeamsAsArray(teamsDict));

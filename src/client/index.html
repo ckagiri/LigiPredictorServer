@@ -67,6 +67,7 @@
   <script src="/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
   <script src="/bower_components/select2/dist/js/select2.js"></script>
   <script src="/bower_components/lodash/lodash.js"></script>
+  <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 
@@ -120,6 +121,7 @@
   <script src="/src/client/app/common/breadcrumbs.service.js"></script>
   <script src="/src/client/app/common/cache.service.js"></script>
   <script src="/src/client/app/common/localstorage.service.js"></script>
+  <script src="/src/client/app/common/util.js"></script>
   <script src="/src/client/app/core/config.js"></script>
   <script src="/src/client/app/core/constants.js"></script>
   <script src="/src/client/app/core/core.route.js"></script>
@@ -137,7 +139,16 @@
   <script src="/src/client/app/matches/matches.route.js"></script>
   <script src="/src/client/app/matches/prediction-service.js"></script>
   <script src="/src/client/app/matches/vose-predictor.js"></script>
+  <script src="/src/client/app/predictions/entityset.js"></script>
   <script src="/src/client/app/predictions/fixture-prediction.service.js"></script>
+  <script src="/src/client/app/predictions/model/fixture.model.js"></script>
+  <script src="/src/client/app/predictions/model/league.model.js"></script>
+  <script src="/src/client/app/predictions/model/match.model.js"></script>
+  <script src="/src/client/app/predictions/model/round.model.js"></script>
+  <script src="/src/client/app/predictions/model/season-factory.js"></script>
+  <script src="/src/client/app/predictions/model/season.model.js"></script>
+  <script src="/src/client/app/predictions/model/team.model.js"></script>
+  <script src="/src/client/app/predictions/predictions-filter.js"></script>
   <script src="/src/client/app/predictions/predictions.controller.js"></script>
   <script src="/src/client/app/predictions/predictions.route.js"></script>
   <script src="/src/client/app/resource/fixtures.service.js"></script>
@@ -156,16 +167,6 @@
   <script src="/src/client/app/stats/stats.route.js"></script>
   <script src="/src/client/app/whatif/whatif.controller.js"></script>
   <script src="/src/client/app/whatif/whatif.route.js"></script>
-
-  <script src="/src/client/app/predictions/model/fixture.model.js"></script>  
-  <script src="/src/client/app/predictions/model/league.model.js"></script>
-  <script src="/src/client/app/predictions/model/round.model.js"></script>
-  <script src="/src/client/app/predictions/model/season.model.js"></script>
-  <script src="/src/client/app/predictions/model/team.model.js"></script>
-  <script src="/src/client/app/predictions/model/season-factory.js"></script>
-  <script src="/src/client/app/predictions/filter/fixture.filter.js"></script>
-  <script src="/src/client/app/predictions/filter/prediction.filter.js"></script>
-
   <!-- endinject -->
 
   <!-- inject:templates:js -->

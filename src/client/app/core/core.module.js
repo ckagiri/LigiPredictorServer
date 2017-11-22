@@ -7,7 +7,7 @@ var app;
             .module('app.core', [
             'ngAnimate', 'ngSanitize', 'ui.router',
             'blocks.exception', 'blocks.logger', 'blocks.router',
-            'ngplus', 'ngMessages', 'satellizer', 'nvd3'
+            'ngplus', 'ngMessages', 'satellizer', 'nvd3', 'ui.bootstrap'
         ]);
     })(core = app.core || (app.core = {}));
 })(app || (app = {}));

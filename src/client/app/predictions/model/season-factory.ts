@@ -1,8 +1,8 @@
 namespace app.core {
   'use strict';
 
-  factory.$inject = ['Team', 'League', 'Season', 'Fixture', 'Round']
-  function factory(Team: any, League: any, Season: any, Fixture: any, Round: any) {
+  factory.$inject = ['Team', 'League', 'Season', 'Match', 'Round']
+  function factory(Team: any, League: any, Season: any, Match: any, Round: any) {
     class LeagueSeasonFactory {
       createLeagueSeason(data:any) {
         return this.createSeason(data)
@@ -13,15 +13,16 @@ namespace app.core {
         let roundsDict: any = this.createRoundsDictionary(data);
         let rounds = [];
         for (let round in roundsDict) {
-          let fixtures = [];
-          for (let match of roundsDict[round]) {
-            let homeTeam = teamsDict[match.homeTeam.name];
-            let awayTeam = teamsDict[match.awayTeam.name];
-            match.homeTeam = homeTeam;
-            match.awayTeam = awayTeam;
-            fixtures.push(new Fixture(match));
+          let matches = [];
+          for (let fixture of roundsDict[round]) {
+            let homeTeam = teamsDict[fixture.homeTeam.name];
+            let awayTeam = teamsDict[fixture.awayTeam.name];
+            fixture.homeTeam = homeTeam;
+            fixture.awayTeam = awayTeam;
+            let match = new Match(fixture);
+            matches.push(fixture);
           }
-          rounds.push(new Round(fixtures));
+          rounds.push(new Round(matches));
         }
         let season = new Season(rounds);
         season.setTeams(this.getTeamsAsArray(teamsDict));

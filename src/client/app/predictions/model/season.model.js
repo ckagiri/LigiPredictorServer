@@ -3,12 +3,19 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        factory.$inject = [];
         function factory() {
             var Season = (function () {
                 function Season(rounds) {
                     angular.extend(this, rounds);
                 }
+                Season.prototype.getTeams = function () {
+                };
+                Season.prototype.setTeams = function () {
+                };
+                Season.prototype.sortStandings = function () {
+                };
+                Season.prototype.assign = function () {
+                };
                 return Season;
             }());
             return Season;

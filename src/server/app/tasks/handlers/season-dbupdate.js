@@ -35,6 +35,7 @@ var SeasonUpdateHandler = (function () {
             if (season.currentRound !== newCurrentRound) {
                 Rx.Observable.fromPromise(common_1.seasonRepo.updateCurrentRound(season._id, newCurrentRound))
                     .subscribe(function () {
+                    // create new leaderboard -> currentRound??
                     console.log("current round of " + season.name + " has updated");
                 });
             }

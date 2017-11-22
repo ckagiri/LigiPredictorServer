@@ -3,7 +3,6 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        factory.$inject = [];
         function factory() {
             var Round = (function () {
                 function Round(fixtures) {
