@@ -3,15 +3,16 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        factory.$inject = ['Team', 'League', 'Season', 'Match', 'Round'];
-        function factory(Team, League, Season, Match, Round) {
+        factory.$inject = ['Team', 'Season', 'Match', 'Round'];
+        function factory(Team, Season, Match, Round) {
             var LeagueSeasonFactory = (function () {
                 function LeagueSeasonFactory() {
                 }
-                LeagueSeasonFactory.prototype.createLeagueSeason = function (data) {
-                    return this.createSeason(data);
+                LeagueSeasonFactory.prototype.createLeagueSeason = function (data, usePredictions) {
+                    if (usePredictions === void 0) { usePredictions = false; }
+                    return this.createSeason(data, usePredictions);
                 };
-                LeagueSeasonFactory.prototype.createSeason = function (data) {
+                LeagueSeasonFactory.prototype.createSeason = function (data, usePredictions) {
                     var teamsDict = this.createTeamsDictionary(data);
                     var roundsDict = this.createRoundsDictionary(data);
                     var rounds = [];
@@ -24,13 +25,20 @@ var app;
                             fixture.homeTeam = homeTeam;
                             fixture.awayTeam = awayTeam;
                             var match = new Match(fixture);
-                            matches_1.push(fixture);
+                            if (usePredictions) {
+                                match.initScore1();
+                            }
+                            matches_1.push(match);
                         }
-                        rounds.push(new Round(matches_1));
+                        var matchRound = new Round();
+                        matchRound.setMatches(matches_1);
+                        rounds.push(matchRound);
                     }
-                    var season = new Season(rounds);
+                    var season = new Season();
                     season.setTeams(this.getTeamsAsArray(teamsDict));
-                    return new League(season);
+                    season.setRounds(rounds);
+                    season.setRoundsPlayed(12);
+                    return season;
                 };
                 LeagueSeasonFactory.prototype.createTeamsDictionary = function (data) {
                     var teamsDict = {};

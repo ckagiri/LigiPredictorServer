@@ -1,14 +1,14 @@
 namespace app.core {
   'use strict';
 
-  factory.$inject = ['Team', 'League', 'Season', 'Match', 'Round']
-  function factory(Team: any, League: any, Season: any, Match: any, Round: any) {
+  factory.$inject = ['Team', 'Season', 'Match', 'Round']
+  function factory(Team: any, Season: any, Match: any, Round: any) {
     class LeagueSeasonFactory {
-      createLeagueSeason(data:any) {
-        return this.createSeason(data)
+      createLeagueSeason(data: any, usePredictions = false) {
+        return this.createSeason(data, usePredictions)
       }
 
-      createSeason(data: any) {
+      createSeason(data: any, usePredictions: boolean) {
         let teamsDict: any = this.createTeamsDictionary(data);
         let roundsDict: any = this.createRoundsDictionary(data);
         let rounds = [];
@@ -20,13 +20,21 @@ namespace app.core {
             fixture.homeTeam = homeTeam;
             fixture.awayTeam = awayTeam;
             let match = new Match(fixture);
-            matches.push(fixture);
+            if(usePredictions) {
+              match.initScore1();
+            }
+            matches.push(match);
           }
-          rounds.push(new Round(matches));
+          let matchRound = new Round();
+          matchRound.setMatches(matches);
+          rounds.push(matchRound);
         }
-        let season = new Season(rounds);
+        let season = new Season();
         season.setTeams(this.getTeamsAsArray(teamsDict));
-        return new League(season);
+        season.setRounds(rounds);
+        season.setRoundsPlayed(12);
+
+        return season;
       }
 
       createTeamsDictionary(data: any) {

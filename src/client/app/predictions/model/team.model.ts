@@ -11,6 +11,23 @@ namespace app.core {
       name: string;
       slug: string;
       crestUrl: string;
+      points: number = 0;
+
+      getPoints() {
+        return this.points;
+      }
+
+      resetPoints() {
+        this.points = 0;
+      }
+
+	    addPoints(p: number) {
+		    this.points += p;
+	    }
+      
+      getName() {
+		    return this.name;
+      }
     }
     return Team;
   }

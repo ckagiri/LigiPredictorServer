@@ -3,11 +3,26 @@ namespace app.core {
 
   function factory() {
     class Round { 
-      constructor(fixtures: any[]) {
-        angular.extend(this, fixtures);
+      constructor(data: any) {
+        angular.extend(this, data);
       }
 
-      fixtures: any[]
+      matches: any[];
+
+      setMatches(matches: any[]) {
+        this.matches = matches;
+      }
+
+      getMatches() {
+        return this.matches;
+      }
+
+      assign() {
+        for (let i = 0; i < this.matches.length; i++) {
+			    let match = this.matches[i];
+			    match.assign();
+		    }
+      }
     }
     return Round;
   }

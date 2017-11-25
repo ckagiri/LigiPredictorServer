@@ -1,20 +1,8 @@
 <h4>Predictions (Coming Soon!)</h4>
 <br><br><br>
 <p><span>{{vm.fixtureFilteredCount}} / {{vm.fixtureCount}} </span>
+<p><span>{{vm.paging.showing}} </span>
 <span class="pull-right">Page {{vm.paging.currentPage}} of {{vm.paging.pageCount}}</span></p>
-<pagination boundary-links="true"
-  on-select-page="vm.pageChanged(page)"
-  total-items="vm.fixtureFilteredCount"
-  items-per-page="vm.paging.pageSize"
-  page="vm.paging.currentPage"
-  max-size="vm.paging.maxPagesToShow"
-  class="pagination-small"
-  previous-text="Prev"
-  next-text="Next"
-  first-text="First"
-  last-text="Last"
->
-</pagination>
 
 <h6><code>boundary-link-numbers</code> set to <code>true</code> and <code>rotate</code> defaulted to <code>true</code>:</h6>
     <ul uib-pagination total-items="vm.fixtureFilteredCount" 
