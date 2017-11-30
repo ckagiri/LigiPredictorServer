@@ -14,36 +14,31 @@ var FinishedFixturePublishHandler = (function () {
             return Rx.Observable.from(users);
         })
             .flatMap(function (user) {
-            return Rx.Observable.of({
-                user: user, fixture: changedFixture
-            });
-        })
-            .flatMap(function (map) {
-            var user = map.user, fixture = map.fixture;
-            var season = fixture.season, round = fixture.round;
+            var season = changedFixture.season, round = changedFixture.round;
             return common_1.predictionRepo.pickJoker({ user: user, season: season, round: round, pick: roundFixtures })
                 .map(function (jokerPrediction) {
                 return {
-                    user: user, fixture: fixture, jokerPrediction: jokerPrediction
+                    user: user, jokerPrediction: jokerPrediction
                 };
             });
         })
             .flatMap(function (map) {
-            var user = map.user, fixture = map.fixture, jokerPrediction = map.jokerPrediction;
-            if (jokerPrediction.fixture.toString() == fixture._id.toString()) {
+            var user = map.user, jokerPrediction = map.jokerPrediction;
+            if (jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
                 return Rx.Observable.of({
-                    user: user, fixture: fixture, prediction: jokerPrediction
+                    user: user, prediction: jokerPrediction
                 });
             }
-            return common_1.predictionRepo.findOneOrCreate(user, fixture)
+            return common_1.predictionRepo.findOneOrCreate(user, changedFixture)
                 .map(function (prediction) {
                 return {
-                    user: user, fixture: fixture, prediction: prediction
+                    user: user, prediction: prediction
                 };
             });
         })
             .flatMap(function (map) {
-            var user = map.user, fixture = map.fixture, prediction = map.prediction;
+            var user = map.user, prediction = map.prediction;
+            var fixture = changedFixture;
             var predictionStatus = 'PROCESSED';
             if (fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
                 predictionStatus = 'CANCELLED';

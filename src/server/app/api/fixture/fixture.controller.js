@@ -49,7 +49,7 @@ var FixtureController = (function () {
             .flatMap(function (fixtures) {
             return Rx.Observable.from(fixtures);
         })
-            .flatMap(function (fixture) {
+            .concatMap(function (fixture) {
             if (userId == null) {
                 return Rx.Observable.of({
                     fixture: fixture, prediction: { fixture: fixture._id }

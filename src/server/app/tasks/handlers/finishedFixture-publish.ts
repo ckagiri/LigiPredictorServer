@@ -10,37 +10,32 @@ class FinishedFixturePublishHandler {
         .flatMap((users: any[]) => {
           return Rx.Observable.from(users);
         })
-        .flatMap((user: any) => {
-          return Rx.Observable.of({
-            user, fixture: changedFixture
-          })
-        })
-        .flatMap((map:any) => {
-          let {user, fixture} = map;      
-          let {season, round} = fixture;
+        .flatMap((user:any) => {
+          let {season, round} = changedFixture;
           return predictionRepo.pickJoker({user, season, round, pick: roundFixtures})
             .map((jokerPrediction: any) => {
               return {
-                user, fixture, jokerPrediction
+                user, jokerPrediction
               }
             });
         })
         .flatMap((map: any) => {
-          let {user, fixture, jokerPrediction} = map; 
-          if (jokerPrediction.fixture.toString() == fixture._id.toString()) {
+          let {user, jokerPrediction} = map; 
+          if (jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
             return Rx.Observable.of({
-              user, fixture, prediction:jokerPrediction
+              user, prediction:jokerPrediction
             })
           }
-          return predictionRepo.findOneOrCreate(user, fixture)
+          return predictionRepo.findOneOrCreate(user, changedFixture)
             .map((prediction: any) => {
               return {
-                user, fixture, prediction
+                user, prediction
               }
             })
         })
         .flatMap((map: any) => {
-          let {user, fixture, prediction} = map;
+          let {user, prediction} = map;
+          let fixture = changedFixture;
           let predictionStatus = 'PROCESSED';
           if(fixture.status === 'CANCELED' || fixture.status === 'POSTPONED') {
             predictionStatus = 'CANCELLED';

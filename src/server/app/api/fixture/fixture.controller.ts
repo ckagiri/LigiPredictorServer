@@ -49,7 +49,7 @@ export class FixtureController {
 			.flatMap((fixtures: any[]) => {
 				return Rx.Observable.from(fixtures);
 			})	
-			.flatMap((fixture: any) => {
+			.concatMap((fixture: any) => {
 				if(userId == null) {
 					return Rx.Observable.of({
 						fixture, prediction: {fixture: fixture._id}

@@ -43,13 +43,13 @@ class FinishedFixtureDbUpdateHandler {
 				let {fixture, roundFixtureIds} = map;
 				return finishedFixturePublishHandler.handle(fixture, roundFixtureIds)
 			})
-      .filter((map: any) => {
-        return map.prediction !== 'ALREADY_PROCESSED';
-      })
 			.flatMap((map: any) => {
-				let {user, fixture, prediction} = map;			
+				let {user, fixture, prediction} = map;	
+        if(map.prediction === 'ALREADY_PROCESSED') {
+          return Rx.Observable.of({user, fixture, prediction});
+        }
 				return predictionRepo.update(prediction)
-					.map((status: any) => {
+					.map((_: any) => {
 						return {user, fixture, prediction}
 					})
 			})
@@ -115,46 +115,50 @@ class FinishedFixtureDbUpdateHandler {
 				},
 				(err: any) => {console.log(`Oops... ${err}`)},
 				() => {		
-					Rx.Observable.from(finishedFixtures)
-						.flatMap((fixture: any) => { 
-							return fixtureRepo.allPredictionsProcessed(fixture._id)
-						}).subscribe(
-							(fixture: any) => {
-								console.log(`${fixture.slug} all predictions processed`)
-							},
-							(err: any) => {},
-							() => {
-								console.log('done')
-							})			
 					Rx.Observable.from(boardIds)
 						.flatMap((leaderboardId: any) => { 
 							return leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "UpdatingRankings")
 						})	
-						.do((leaderboard: any) => { 
+						.flatMap((leaderboard: any) => { 
 							let leaderboardId = leaderboard._id;
-							userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)						
-								.flatMap((scores: any[]) => {
-									return Rx.Observable.from(scores);
-								})	
-								.flatMap((score: any, index: number) => { 
-									index += 1;
-									let previousPosition = score.posNew || 0;
-									let posOld = previousPosition;
-									let posNew = index;
-									return userScoreRepo.update(score._id, {posOld, posNew});
-								})
-								.subscribe(
-									() => {},
-									(err: any) => {},
-									() => {
-										leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "Refreshed")
-									})
-						})
+							return userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)
+                .flatMap((scores: any[]) => {
+                  return Rx.Observable.from(scores)
+                })	
+                .flatMap((score: any, index: number) => { 
+                  index += 1;
+                  let previousPosition = score.posNew || 0;
+                  let posOld = previousPosition;
+                  let posNew = index;
+                  return userScoreRepo.update(score._id, {posOld, posNew})
+                    .map((_: any) => {
+                      return leaderboardId.toString()
+                    })
+                })
+            })
+            .distinct()
+            .toArray()
+            .flatMap((leaderboardIds: any[]) => {
+              return Rx.Observable.from(leaderboardIds)
+            })
 						.subscribe(
-							() => {},
+							(leaderboardId) => {
+                leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "Refreshed");
+              },
 							(err: any) => {},
 							() => {
-								console.log('rankings updated')
+                console.log('rankings updated')
+                Rx.Observable.from(finishedFixtures)
+                  .flatMap((fixture: any) => { 
+                    return fixtureRepo.allPredictionsProcessed(fixture._id)
+                  }).subscribe(
+                    (fixture: any) => {
+                      console.log(`${fixture.slug} all predictions processed`)
+                    },
+                    (err: any) => {},
+                    () => {
+                      console.log('all fixture predictions processed')
+                    })			
 							})
 					})
 	}

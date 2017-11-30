@@ -47,8 +47,11 @@ var FinishedFixtureDbUpdateHandler = (function () {
         })
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
+            if (map.prediction === 'ALREADY_PROCESSED') {
+                return Rx.Observable.of({ user: user, fixture: fixture, prediction: prediction });
+            }
             return common_1.predictionRepo.update(prediction)
-                .map(function (status) {
+                .map(function (_) {
                 return { user: user, fixture: fixture, prediction: prediction };
             });
         })
@@ -109,21 +112,13 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var choiceGoalsAwayTeam = prediction.choice.goalsAwayTeam;
             //console.log(`${user.displayName}, ${getFixtureName(fixture)}, ${choiceGoalsHomeTeam} ${choiceGoalsAwayTeam}`)
         }, function (err) { console.log("Oops... " + err); }, function () {
-            Rx.Observable.from(finishedFixtures)
-                .flatMap(function (fixture) {
-                return common_1.fixtureRepo.allPredictionsProcessed(fixture._id);
-            }).subscribe(function (fixture) {
-                console.log(fixture.slug + " all predictions processed");
-            }, function (err) { }, function () {
-                console.log('done');
-            });
             Rx.Observable.from(boardIds)
                 .flatMap(function (leaderboardId) {
                 return common_1.leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "UpdatingRankings");
             })
-                .do(function (leaderboard) {
+                .flatMap(function (leaderboard) {
                 var leaderboardId = leaderboard._id;
-                common_1.userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)
+                return common_1.userScoreRepo.getByLeaderboardOrderByPoints(leaderboardId)
                     .flatMap(function (scores) {
                     return Rx.Observable.from(scores);
                 })
@@ -132,14 +127,29 @@ var FinishedFixtureDbUpdateHandler = (function () {
                     var previousPosition = score.posNew || 0;
                     var posOld = previousPosition;
                     var posNew = index;
-                    return common_1.userScoreRepo.update(score._id, { posOld: posOld, posNew: posNew });
-                })
-                    .subscribe(function () { }, function (err) { }, function () {
-                    common_1.leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "Refreshed");
+                    return common_1.userScoreRepo.update(score._id, { posOld: posOld, posNew: posNew })
+                        .map(function (_) {
+                        return leaderboardId.toString();
+                    });
                 });
             })
-                .subscribe(function () { }, function (err) { }, function () {
+                .distinct()
+                .toArray()
+                .flatMap(function (leaderboardIds) {
+                return Rx.Observable.from(leaderboardIds);
+            })
+                .subscribe(function (leaderboardId) {
+                common_1.leaderboardRepo.findByIdAndUpdateStatus(leaderboardId, "Refreshed");
+            }, function (err) { }, function () {
                 console.log('rankings updated');
+                Rx.Observable.from(finishedFixtures)
+                    .flatMap(function (fixture) {
+                    return common_1.fixtureRepo.allPredictionsProcessed(fixture._id);
+                }).subscribe(function (fixture) {
+                    console.log(fixture.slug + " all predictions processed");
+                }, function (err) { }, function () {
+                    console.log('all fixture predictions processed');
+                });
             });
         });
     };
