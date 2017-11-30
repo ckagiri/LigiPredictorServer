@@ -84,10 +84,13 @@ export class LeaderboardController {
 				return Rx.Observable.of(season)
 			})
       .flatMap((season: any) => {
-        round = parseInt(round) - 1;
+        round = parseInt(round);
 				return leaderboardRepo.findRoundBoard(season._id, round || season.currentRound);
 			})
       .flatMap((board: any) => {
+        if(board == null) {
+          return Rx.Observable.empty();
+        }
         return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
       })
 			.flatMap((userScores: any[]) => {

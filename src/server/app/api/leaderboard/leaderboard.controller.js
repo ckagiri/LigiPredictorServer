@@ -82,10 +82,13 @@ var LeaderboardController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
-            round = parseInt(round) - 1;
+            round = parseInt(round);
             return leaderboardRepo.findRoundBoard(season._id, round || season.currentRound);
         })
             .flatMap(function (board) {
+            if (board == null) {
+                return Rx.Observable.empty();
+            }
             return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
         })
             .flatMap(function (userScores) {
