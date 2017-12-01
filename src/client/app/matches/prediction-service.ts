@@ -4,6 +4,8 @@ namespace app.core {
   export interface IPredictionService {
     pickJoker: (fixture: any) => ng.IPromise<any>;
     submitPredictions: (req:any) => ng.IPromise<any>;
+    fetchLiveFixtures: (league: any, season:any, round: any) => ng.IPromise<any>;
+    fetchPendingPredictions: (league: any, season: any, round: any) => ng.IPromise<any>;
   }
 
   export class PredictionService implements IPredictionService {
@@ -24,6 +26,14 @@ namespace app.core {
       return this.$http.post('/api/predictions/pick-joker', fixture)
         .then(this.success)
         .catch(this.fail);
+    }
+
+    fetchLiveFixtures(league: any, season:any, round: any) {
+      return this.$http.get('/api/fixtures/live');
+    }
+
+    fetchPendingPredictions(league: any, season: any, round: any) {
+      return this.$http.get('/api/predictions/mine');
     }
 
     private success: (response: any) => {} = (response) => response.data;

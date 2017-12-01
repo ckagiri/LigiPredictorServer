@@ -53,7 +53,7 @@ export class PredictionController {
 						}
 					});
 			})
-			.flatMap((map: any) => {
+			.concatMap((map: any) => {
 				let {fixture, reqPrediction} = map;
 				let observable: any;
 				if(fixture.status != 'SCHEDULED' && fixture.status != 'TIMED') {
@@ -97,7 +97,7 @@ export class PredictionController {
 	}
 
 	mine(req: Request, res: Response) {
-		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.params;
+		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
 		let user = req['user'];
 		let userId = user && user._id;
 		let source: Rx.Observable<any>;

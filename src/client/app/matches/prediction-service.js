@@ -28,6 +28,12 @@ var app;
                     return _this.$q.reject(msg);
                 };
             }
+            PredictionService.prototype.fetchLiveFixtures = function (league, season, round) {
+                return this.$http.get('/api/fixtures/live');
+            };
+            PredictionService.prototype.fetchPendingPredictions = function (league, season, round) {
+                return this.$http.get('/api/predictions/mine');
+            };
             return PredictionService;
         }());
         PredictionService.$inject = ['$http', '$q', 'exception', 'logger'];

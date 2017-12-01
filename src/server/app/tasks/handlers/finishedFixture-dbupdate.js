@@ -47,7 +47,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
         })
             .flatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
-            if (map.prediction === 'ALREADY_PROCESSED') {
+            if (prediction === 'ALREADY_PROCESSED') {
                 return Rx.Observable.of({ user: user, fixture: fixture, prediction: prediction });
             }
             return common_1.predictionRepo.update(prediction)

@@ -2,13 +2,14 @@ namespace app.matches {
 	'use strict';
 
 	export class MatchesController {
-		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', 'matches', 'season', 'logger', 
+		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', '$window', 'matches', 'season', 'logger', 
 			'predictionService', 'vosePredictorFactory', 'cache'];
 
 		constructor(private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
 			private $stateParams: ng.ui.IStateParamsService,
 			private $scope: ng.IScope,
+      private $window: ng.IWindowService,
 			private fixtures: any[],
 			private season: any,
       private logger: blocks.logger.Logger,
@@ -20,9 +21,9 @@ namespace app.matches {
 				this.seasonSlug = this.$stateParams.season || this.season.slug;
 				let matchday = parseInt(this.$stateParams.round || this.currentRound)
 				this.matchday = matchday;
-				this.onDestroy();
 				this.restoreState();
-				this.refresh()
+				this.refresh();
+        this.onDestroy();
     }
 
 		title: string = 'Matches';
@@ -38,7 +39,8 @@ namespace app.matches {
     jokerChosen: string = "";
 		totalPoints: number = 0;
 		totalGoalDiff: number = 0;
-		
+		updateTimeout: any = null;
+
 		private refresh() {
 			let hasOneAvailableFixture:boolean = false;
 			for(let match of this.fixtures) {
@@ -114,7 +116,7 @@ namespace app.matches {
 		};
 
 		score = (match: any, side: string, change: number) => {
-			var matchId = match._id
+			let matchId = match._id
 			if(this.predictions[matchId] == null) {
 				this.predictions[matchId] =  {
 					_id: match.prediction._id,
@@ -122,7 +124,7 @@ namespace app.matches {
 					goalsAwayTeam: match.choice.goalsAwayTeam
 				};	
 			}
-			var goals = match.choice['goals'+side+'Team'] 
+			let goals = match.choice['goals'+side+'Team'] 
 			if (!(goals == null) && !(goals === 0 && change === -1)){
 				goals += change;
 			}
@@ -238,7 +240,110 @@ namespace app.matches {
 				console.log('bad')
 			})
 		}
-	}
+   
+    live() {
+      let league = this.leagueSlug;
+      let season = this.seasonSlug;
+      let round = this.matchday;
+      if(this.updateTimeout == null) {
+        return this.scheduleNextUpdate()
+      }
+      if(this.hasLiveFixtures()) {
+        this.predictionService.fetchLiveFixtures(league, season, round)
+          .then((fixtures: any[]) => {
+            this.updateFixtures(fixtures);
+            if(this.hasPendingPredictions()) {
+              this.predictionService.fetchPendingPredictions(league, season, round)
+                .then((predictions: any[]) => {
+                  this.updatePredictions(predictions);
+                  return this.scheduleNextUpdate();
+                })
+            } else {
+              return this.scheduleNextUpdate();
+            }
+          })
+      } else if(this.hasPendingPredictions()) {
+        this.predictionService.fetchPendingPredictions(league, season, round)
+          .then((predictions: any[]) => {
+            this.updatePredictions(predictions);
+            return this.scheduleNextUpdate();
+          })
+      } else {
+        clearTimeout(this.updateTimeout);
+      }
+    } 
+
+    hasLiveFixtures() {
+      return this.$window._.some(this.fixtures, 'status', 'IN_PLAY');
+    }
+
+    hasPendingPredictions() {
+      return this.$window._.some(this.fixtures, (fixture: any) => {
+        return fixture.status = 'FINISHED' && fixture.prediction.status == 'PENDING';
+      });
+    }
+
+    updateFixtures(fixtures: any[]) {
+      	for(let fixture of fixtures) {
+          for(let match of this.fixtures) {
+            if(fixture._id == match._id) {
+              angular.extend(match, fixture);
+              break;
+            }
+          }
+        }
+    }
+
+    updatePredictions(predictions: any[]) {
+      for(let prediction of predictions) {
+          for(let match of this.fixtures) {
+            if(prediction._id == match.prediction_id) {
+              angular.extend(match.prediction, prediction)
+              break;
+            }
+          }
+        }
+    }
+
+    
+    scheduleNextUpdate() {
+      clearTimeout(this.updateTimeout);
+      let date = this.calculateNextUpdate();
+      let now = this.$window.Moment();
+      let ms = date - now;
+	    this.updateTimeout = setTimeout(() => this.live(), ms);
+      console.log("Live Update scheduled for " + date.format() + " - that's in " + ms + "ms");
+    }
+
+    calculateNextUpdate() {
+      let fixtureLive = false;
+      let hasPendingPrediction = false;
+      let Moment = this.$window.Moment;
+      let now = Moment();
+      let next = Moment().add(1, 'year');
+      for(let fixture of this.fixtures) {
+        if(fixture.status == 'FINISHED') {
+          hasPendingPrediction = true;
+        } else if (fixture.status == "IN_PLAY") {
+          fixtureLive = true;
+        } else if (fixture.status == "SCHEDULED" || fixture.status == "TIMED") {
+          // Parse fixture start date/time
+          let fixtureStart = Moment(fixture.date);
+          if (fixtureStart > now && fixtureStart < next) {
+            next = fixtureStart;
+          }
+        }
+      }
+      let tomorrow = Moment().add(1, 'day');
+      let update = next;
+      if (fixtureLive || hasPendingPrediction) {
+        update = Moment().add(5, 'minutes');
+      } else if (next > tomorrow) {
+        update = Moment().add(12, 'hours');
+      }
+      return update;
+    }
+  }
 
 	angular
     .module('app.matches')

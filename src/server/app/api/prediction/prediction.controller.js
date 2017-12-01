@@ -52,7 +52,7 @@ var PredictionController = (function () {
                 };
             });
         })
-            .flatMap(function (map) {
+            .concatMap(function (map) {
             var fixture = map.fixture, reqPrediction = map.reqPrediction;
             var observable;
             if (fixture.status != 'SCHEDULED' && fixture.status != 'TIMED') {
@@ -95,7 +95,7 @@ var PredictionController = (function () {
         });
     };
     PredictionController.prototype.mine = function (req, res) {
-        var _a = req.params, leagueSlug = _a.league, seasonSlug = _a.season, matchday = _a.round;
+        var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season, matchday = _a.round;
         var user = req['user'];
         var userId = user && user._id;
         var source;
