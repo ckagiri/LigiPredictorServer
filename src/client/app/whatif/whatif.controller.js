@@ -28,6 +28,20 @@ var app;
                 this.season.assign();
                 this.season1 = angular.copy(this.season);
             };
+            WhatIfController.prototype.isFirstRound = function () {
+                return this.season && this.season.isFirstRound();
+            };
+            WhatIfController.prototype.isLastRound = function () {
+                return this.season && this.season.isLastRound();
+            };
+            WhatIfController.prototype.prevRound = function () {
+                this.season.prevRound();
+                this.season1.prevRound();
+            };
+            WhatIfController.prototype.nextRound = function () {
+                this.season.nextRound();
+                this.season1.nextRound();
+            };
             WhatIfController.prototype.addHomeScore = function (match) {
                 match.setScore(match.getHomeScore() + 1, match.getAwayScore());
                 this.season.assign();

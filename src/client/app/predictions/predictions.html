@@ -1,30 +1,42 @@
-<h4>Predictions (Coming Soon!)</h4>
-<br><br><br>
-<p><span>{{vm.fixtureFilteredCount}} / {{vm.fixtureCount}} </span>
+<h4>Predictions</h4>
 <p><span>{{vm.paging.showing}} </span>
-<span class="pull-right">Page {{vm.paging.currentPage}} of {{vm.paging.pageCount}}</span></p>
-
-<h6><code>boundary-link-numbers</code> set to <code>true</code> and <code>rotate</code> defaulted to <code>true</code>:</h6>
-    <ul uib-pagination total-items="vm.fixtureFilteredCount" 
-      ng-model="vm.paging.currentPage" 
-      max-size="vm.paging.maxPagesToShow" 
-      class="pagination-sm" 
-      boundary-link-numbers="true"
-      previous-text="Prev"
-      next-text="Next"></ul>
-<div class="btn-group">
-      <button type="button" class="btn btn-info dropdown-toggle">
-          <i class="fa fa-arrow-up"></i>
-          <span>Submit </span><span class="hidden-xs">Predictions </span>
-          <b></b>
-      </button>
-      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-          <span class="caret"></span>
-          <span class="sr-only">Split button!</span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-          <li><a href="#"><i class="fa fa-eye"></i>&nbsp;View Predictions</a></li>
-      </ul>
-</div>
+<span class="pull-right">Page {{vm.paging.currentPage}} of {{vm.paging.pageCount || 1}}</span></p>
+<table class="table table-condensed table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Kick-Off</th>
+      <th>Match</th>
+      <th>Result</th>
+      <th>Prediction</th>
+      <th>Points</th>
+      <th>Goal-Diff</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="match in vm.fixtures">
+      <td>{{((vm.paging.currentPage - 1) * vm.paging.pageSize) + $index + 1}}</td>
+      <td>{{match.date | date:'d MMM yyyy'}}</td>
+      <td class="text-left">{{match.homeTeam.name}} - {{match.awayTeam.name}}</td>
+      <td class="text-left">{{match.result.goalsHomeTeam}} - {{match.result.goalsAwayTeam}}</td>
+      <td class="text-left">
+        <span ng-show="!!match.prediction.choice">
+          {{match.prediction.choice.goalsHomeTeam}} - {{match.prediction.choice.goalsAwayTeam}}
+        </span>
+      </td>
+      <td class="text-left">{{match.prediction.points}}</td>
+      <td class="text-left">{{match.prediction.goalDiff}}</td>
+    </tr>
+  </tbody>
+</table>
+<ul uib-pagination total-items="vm.fixtureFilteredCount" 
+  ng-model="vm.paging.currentPage" 
+  max-size="vm.paging.maxPagesToShow" 
+  ng-change="vm.pageChanged()"
+  class="pagination-sm" 
+  boundary-link-numbers="true"
+  previous-text="Prev"
+  next-text="Next">
+</ul>
 
 

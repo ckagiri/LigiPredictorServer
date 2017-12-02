@@ -1,5 +1,6 @@
 <div class="col-xs-12"
 <div class="row">
+  <div class="col-xs-6">
   <h2>Fixtures</h2>
   Round: {{vm.season.currentRoundNumber}}
   <ul>
@@ -11,10 +12,9 @@
       <span>{{match.getAwayTeam().getName()}}</span>
     </li>
   </ul>
-  <button ng-show="!vm.season.isFirstRound()" ng-click="vm.season.prevRound()">prev</button>
-  <button ng-show="!vm.season.isLastRound()" ng-click="vm.season.nextRound()">next</button>
+  <button ng-show="!vm.isFirstRound()" ng-click="vm.prevRound()">prev</button>
+  <button ng-show="!vm.isLastRound()" ng-click="vm.nextRound()">next</button>
 </div>
-<div class="row">
   <div class="col-xs-6">
     <h2>Standings</h2>
     <p>(based on match result)</p>
@@ -25,10 +25,13 @@
         <span>{{team.getName()}}</span>
       </li>
     </ul>
-    <button ng-show="!vm.season1.isFirstRound()" ng-click="vm.season1.prevRound()">prev</button>
-    <button ng-show="!vm.season1.isLastRound()" ng-click="vm.season1.nextRound()">next</button>
+    <button ng-show="!vm.isFirstRound()" ng-click="vm.prevRound()">prev</button>
+    <button ng-show="!vm.isLastRound()" ng-click="vm.nextRound()">next</button>
   </div>
 
+
+</div>
+<div class="row">
   <div class="col-xs-6">
     <h2>Standings</h2>
     <p>(based on your predictions)</p>

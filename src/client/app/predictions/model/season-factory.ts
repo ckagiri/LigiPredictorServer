@@ -1,8 +1,8 @@
 namespace app.core {
   'use strict';
 
-  factory.$inject = ['Team', 'Season', 'Match', 'Round']
-  function factory(Team: any, Season: any, Match: any, Round: any) {
+  factory.$inject = ['$window', 'Team', 'Season', 'Match', 'Round']
+  function factory($window: ng.IWindowService, Team: any, Season: any, Match: any, Round: any) {
     class LeagueSeasonFactory {
       createLeagueSeason(data: any, usePredictions = false) {
         return this.createSeason(data, usePredictions)
@@ -11,6 +11,7 @@ namespace app.core {
       createSeason(data: any, usePredictions: boolean) {
         let teamsDict: any = this.createTeamsDictionary(data);
         let roundsDict: any = this.createRoundsDictionary(data);
+        let roundsPlayed: number = this.getRoundsPlayed(data);
         let rounds = [];
         for (let round in roundsDict) {
           let matches = [];
@@ -32,7 +33,7 @@ namespace app.core {
         let season = new Season();
         season.setTeams(this.getTeamsAsArray(teamsDict));
         season.setRounds(rounds);
-        season.setRoundsPlayed(12);
+        season.setRoundsPlayed(roundsPlayed);
 
         return season;
       }
@@ -63,6 +64,15 @@ namespace app.core {
           teams.push(teamsDict[teamKey]);
         }
         return teams;
+      }
+
+      getRoundsPlayed(data: any) {
+        let roundsPlayed = $window._.chain(data)
+          .filter((n: any) => n.result.goalsHomeTeam != null)
+          .map((n: any) => n.round)
+          .max()
+          .value();
+        return roundsPlayed;
       }
     }
 

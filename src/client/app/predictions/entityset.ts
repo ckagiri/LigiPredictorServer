@@ -69,8 +69,8 @@ namespace app.core {
       }
 
       getAll(options: any = {}) {
-        let {filter, sortFn, page, size} = options;
-        return this.itemsToArray(filter, sortFn, page, size);
+        let {filter, sort, page, size} = options;
+        return this.itemsToArray(filter, sort, page, size);
       }
 
       clear() {
@@ -98,7 +98,7 @@ namespace app.core {
         return this.itemsToArray(filter).length;
       }
 
-      private itemsToArray(filter?: any, sortFn?: any, page?: number, size?: number) {
+      private itemsToArray(filter?: any, sort?: any, page?: number, size?: number) {
         let result = this.mapMemoToArray();
         if (filter) {
           result = result.filter(function (o: any) {
@@ -106,8 +106,8 @@ namespace app.core {
             return match;
           });
         }
-        if (sortFn) {
-          result.sort(sortFn);
+        if (sort) {
+          result.sort(sort);
         }
         if (page && size) {
           let start = (page - 1) * size;

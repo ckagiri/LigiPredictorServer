@@ -3,7 +3,7 @@ namespace app.predictions {
 
   export class PredictionsController {
     static $inject: string[] = ['$q', '$window', 'localstorage', 'logger', 'leagueSeasonFactory',
-      'fixturePredictionService', 'EntitySet', 'Fixture'];
+      'fixturePredictionService', 'EntitySet', 'Fixture', 'sort'];
 
     constructor(private $q: ng.IQService,
       private $window: ng.IWindowService,
@@ -12,7 +12,8 @@ namespace app.predictions {
       private leagueSeasonFactory: any,
       private fixturePredictionService: app.core.IFixturePredictionService,
       private EntitySet: any,
-      private Fixture: any) {
+      private Fixture: any,
+      private sort: app.core.ISortService) {
       this.activate();
     }
 
@@ -37,10 +38,9 @@ namespace app.predictions {
           let fixtures = this.$window.lzwCompress.unpack(data.compressed);
           this.fixtureSet = new this.EntitySet(this.Fixture);
           this.fixtureSet.mapDtoListToContext(fixtures);
-          this.fixtures = this.fixtureSet.getAll();
+          this.pageChanged();
           this.fixtureCount = this.fixtureSet.getCount();
           this.fixtureFilteredCount = this.fixtureSet.getFilteredCount();
-          this.leagueSeasonFactory.createLeagueSeason(this.fixtures);
         })
     }
 
@@ -57,7 +57,7 @@ namespace app.predictions {
           if (resultEnd > itemCount) {
             resultEnd = itemCount;
           }
-          return "showing " + resultStart + " - " + resultEnd + " of " + itemCount;
+          return "showing " + resultStart + " - " + resultEnd + " of " + (itemCount || 0);
         }
       });
 
@@ -74,7 +74,11 @@ namespace app.predictions {
     }
 
     pageChanged() {
-
+      this.fixtures = this.fixtureSet.getAll({
+        sort: this.sort.sort_by('date'),
+        page: this.paging.currentPage,
+        size: this.paging.pageSize
+      });
     }
   }
 

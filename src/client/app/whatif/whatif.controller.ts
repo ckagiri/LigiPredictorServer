@@ -35,6 +35,24 @@ namespace app.whatif {
       this.season1 = angular.copy(this.season);
     }
 
+    isFirstRound() {
+      return this.season && this.season.isFirstRound();
+    }
+
+    isLastRound() {
+      return this.season && this.season.isLastRound();
+    }
+
+    prevRound() {
+      this.season.prevRound();
+      this.season1.prevRound();
+    }
+
+    nextRound() {
+      this.season.nextRound();
+      this.season1.nextRound();
+    }
+
     addHomeScore(match: any) {
 			match.setScore(match.getHomeScore() + 1, match.getAwayScore());
       this.season.assign();

@@ -82,8 +82,8 @@ var app;
                 };
                 EntitySet.prototype.getAll = function (options) {
                     if (options === void 0) { options = {}; }
-                    var filter = options.filter, sortFn = options.sortFn, page = options.page, size = options.size;
-                    return this.itemsToArray(filter, sortFn, page, size);
+                    var filter = options.filter, sort = options.sort, page = options.page, size = options.size;
+                    return this.itemsToArray(filter, sort, page, size);
                 };
                 EntitySet.prototype.clear = function () {
                     for (var prop in this.items) {
@@ -92,7 +92,7 @@ var app;
                         }
                     }
                 };
-                EntitySet.prototype.itemsToArray = function (filter, sortFn, page, size) {
+                EntitySet.prototype.itemsToArray = function (filter, sort, page, size) {
                     var result = this.mapMemoToArray();
                     if (filter) {
                         result = result.filter(function (o) {
@@ -100,8 +100,8 @@ var app;
                             return match;
                         });
                     }
-                    if (sortFn) {
-                        result.sort(sortFn);
+                    if (sort) {
+                        result.sort(sort);
                     }
                     if (page && size) {
                         var start = (page - 1) * size;

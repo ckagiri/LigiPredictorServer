@@ -4,7 +4,7 @@ var app;
     (function (predictions) {
         'use strict';
         var PredictionsController = (function () {
-            function PredictionsController($q, $window, storage, logger, leagueSeasonFactory, fixturePredictionService, EntitySet, Fixture) {
+            function PredictionsController($q, $window, storage, logger, leagueSeasonFactory, fixturePredictionService, EntitySet, Fixture, sort) {
                 this.$q = $q;
                 this.$window = $window;
                 this.storage = storage;
@@ -13,6 +13,7 @@ var app;
                 this.fixturePredictionService = fixturePredictionService;
                 this.EntitySet = EntitySet;
                 this.Fixture = Fixture;
+                this.sort = sort;
                 this.title = 'Predictions';
                 this.paging = {
                     currentPage: 1,
@@ -31,10 +32,9 @@ var app;
                     var fixtures = _this.$window.lzwCompress.unpack(data.compressed);
                     _this.fixtureSet = new _this.EntitySet(_this.Fixture);
                     _this.fixtureSet.mapDtoListToContext(fixtures);
-                    _this.fixtures = _this.fixtureSet.getAll();
+                    _this.pageChanged();
                     _this.fixtureCount = _this.fixtureSet.getCount();
                     _this.fixtureFilteredCount = _this.fixtureSet.getFilteredCount();
-                    _this.leagueSeasonFactory.createLeagueSeason(_this.fixtures);
                 });
             };
             PredictionsController.prototype.init = function () {
@@ -50,7 +50,7 @@ var app;
                         if (resultEnd > itemCount) {
                             resultEnd = itemCount;
                         }
-                        return "showing " + resultStart + " - " + resultEnd + " of " + itemCount;
+                        return "showing " + resultStart + " - " + resultEnd + " of " + (itemCount || 0);
                     }
                 });
                 Object.defineProperty(this.paging, 'pageCount', {
@@ -65,11 +65,16 @@ var app;
                 });
             };
             PredictionsController.prototype.pageChanged = function () {
+                this.fixtures = this.fixtureSet.getAll({
+                    sort: this.sort.sort_by('date'),
+                    page: this.paging.currentPage,
+                    size: this.paging.pageSize
+                });
             };
             return PredictionsController;
         }());
         PredictionsController.$inject = ['$q', '$window', 'localstorage', 'logger', 'leagueSeasonFactory',
-            'fixturePredictionService', 'EntitySet', 'Fixture'];
+            'fixturePredictionService', 'EntitySet', 'Fixture', 'sort'];
         predictions.PredictionsController = PredictionsController;
         function isNumber(val) {
             // negative or positive

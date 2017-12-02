@@ -245,10 +245,6 @@ var app;
                 var league = this.leagueSlug;
                 var season = this.seasonSlug;
                 var round = this.matchday;
-                this.predictionService.fetchPendingPredictions(league, season, round)
-                    .then(function (response) {
-                    _this.updatePredictions(response.data);
-                });
                 if (this.updateTimeout == null) {
                     this.scheduleNextUpdate();
                 }

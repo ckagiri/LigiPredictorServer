@@ -3,8 +3,8 @@ var app;
     var core;
     (function (core) {
         'use strict';
-        factory.$inject = ['Team', 'Season', 'Match', 'Round'];
-        function factory(Team, Season, Match, Round) {
+        factory.$inject = ['$window', 'Team', 'Season', 'Match', 'Round'];
+        function factory($window, Team, Season, Match, Round) {
             var LeagueSeasonFactory = (function () {
                 function LeagueSeasonFactory() {
                 }
@@ -15,6 +15,7 @@ var app;
                 LeagueSeasonFactory.prototype.createSeason = function (data, usePredictions) {
                     var teamsDict = this.createTeamsDictionary(data);
                     var roundsDict = this.createRoundsDictionary(data);
+                    var roundsPlayed = this.getRoundsPlayed(data);
                     var rounds = [];
                     for (var round in roundsDict) {
                         var matches_1 = [];
@@ -37,7 +38,7 @@ var app;
                     var season = new Season();
                     season.setTeams(this.getTeamsAsArray(teamsDict));
                     season.setRounds(rounds);
-                    season.setRoundsPlayed(12);
+                    season.setRoundsPlayed(roundsPlayed);
                     return season;
                 };
                 LeagueSeasonFactory.prototype.createTeamsDictionary = function (data) {
@@ -65,6 +66,14 @@ var app;
                         teams.push(teamsDict[teamKey]);
                     }
                     return teams;
+                };
+                LeagueSeasonFactory.prototype.getRoundsPlayed = function (data) {
+                    var roundsPlayed = $window._.chain(data)
+                        .filter(function (n) { return n.result.goalsHomeTeam != null; })
+                        .map(function (n) { return n.round; })
+                        .max()
+                        .value();
+                    return roundsPlayed;
                 };
                 return LeagueSeasonFactory;
             }());
