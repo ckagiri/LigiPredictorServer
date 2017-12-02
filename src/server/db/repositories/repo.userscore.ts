@@ -23,6 +23,10 @@ export class UserScoreRepo {
             score.predictions = [predictionId];
             score.pointsExcJoker = points;
             score.goalDiffExcJoker = goalDiff;
+            if(hasJoker && score.goalDiff >= 0) {
+              score.points += score.points;
+              score.goalDiff += score.goalDiff;
+            }
             UserScore.create(score, (err: any, result: any) => {
 	            if (err) return reject(err);
               return resolve(result);

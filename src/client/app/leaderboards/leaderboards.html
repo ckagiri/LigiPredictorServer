@@ -16,7 +16,7 @@
 						<tr ng-repeat="score in vm.seasonRoundLeaderboard">
 							<td>
 								<i ng-if="score.change > 0" class="fa fa-caret-up" style="font-size:12px;color:green"></i>
-								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:green"></i>
+								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:red"></i>
 								<i ng-if="score.change === 0"></i> {{score.rank}}
 							</td>
 							<td>{{score.user.displayName}}</td>
@@ -72,7 +72,7 @@
 						<tr ng-repeat="score in vm.seasonLeaderboard">
 							<td>
 								<i ng-if="score.change > 0" class="fa fa-caret-up" style="font-size:12px;color:green"></i>
-								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:green"></i>
+								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:red"></i>
 								<i ng-if="score.change === 0"></i> {{score.rank}}
 							</td>
 							<td>{{score.user.displayName}}</td>

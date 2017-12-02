@@ -56,7 +56,7 @@ var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {
     var tomorrow = Moment().add(1, 'day');
     var update = next;
     if (fixtureLive) {
-        update = Moment().add(5, 'minutes');
+        update = Moment().add(3, 'minutes');
     }
     else if (next > tomorrow) {
         update = Moment().add(12, 'hours');

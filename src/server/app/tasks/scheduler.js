@@ -17,7 +17,7 @@ var heartbeatCheck = function () {
     console.log("heartbeat");
     common_1.seasonRepo.getDefault()
         .flatMap(function (season) {
-        return common_1.fixtureRepo.findAllFinishedWithPendingPredictions(season._id, season.currentRound)
+        return common_1.fixtureRepo.findAllFinishedWithPendingPredictions(season._id)
             .map(function (fixtures) {
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(fixtures, true);
         });

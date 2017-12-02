@@ -21,6 +21,10 @@ var UserScoreRepo = (function () {
                     score.predictions = [predictionId];
                     score.pointsExcJoker = points;
                     score.goalDiffExcJoker = goalDiff;
+                    if (hasJoker && score.goalDiff >= 0) {
+                        score.points += score.points;
+                        score.goalDiff += score.goalDiff;
+                    }
                     user_score_model_1.UserScore.create(score, function (err, result) {
                         if (err)
                             return reject(err);

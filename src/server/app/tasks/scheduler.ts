@@ -18,7 +18,7 @@ const heartbeatCheck = () => {
   console.log("heartbeat");
   seasonRepo.getDefault()
     .flatMap((season: any) => {
-      return fixtureRepo.findAllFinishedWithPendingPredictions(season._id, season.currentRound)
+      return fixtureRepo.findAllFinishedWithPendingPredictions(season._id)
         .map((fixtures: any[]) => {
           finishedFixtureDbUpdateHandler.handle(fixtures, true)
         })
