@@ -45,7 +45,7 @@ class FinishedFixtureDbUpdateHandler {
 			})
 			.flatMap((map: any) => {
 				let {user, fixture, prediction} = map;	
-        if(prediction === 'ALREADY_PROCESSED') {
+        if(prediction.status === 'ALREADY_PROCESSED') {
           return Rx.Observable.of({user, fixture, prediction});
         }
 				return predictionRepo.update(prediction)

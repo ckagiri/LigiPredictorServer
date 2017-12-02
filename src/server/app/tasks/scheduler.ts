@@ -54,18 +54,31 @@ const scheduleDataUpdate = (date: any) => {
   let now = Moment();
 	let ms = date - now;
 	dataTimeout = setTimeout(() => updateData(), ms);
-	console.log("Data Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + "  mins:secs");
+	console.log("Data Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
 }
 
 const scheduleFixturesUpdate = (date: any) => {
   let now = Moment();
 	let ms = date - now;
 	fixturesTimeout = setTimeout(() => updateFixtures(), ms);
-	console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + "  mins:secs");
+	console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
 }
 
-const millisToMinutesAndSeconds = (millis: number) => {
-  let minutes = Math.floor(millis / 60000);
-  let seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
-  return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+const msToTime = (ms: number) => {
+  let seconds: any = (ms / 1000).toFixed(0);
+  let minutes: any = Math.floor(seconds / 60);
+  let hours: any = "";
+  if (minutes > 59) {
+    hours = Math.floor(minutes / 60);
+    hours = (hours >= 10) ? hours : "0" + hours;
+    minutes = minutes - (hours * 60);
+    minutes = (minutes >= 10) ? minutes : "0" + minutes;
+  }
+
+  seconds = Math.floor(seconds % 60);
+  seconds = (seconds >= 10) ? seconds : "0" + seconds;
+  if (hours != "") {
+    return hours + ":" + minutes + ":" + seconds;
+  }
+  return minutes + ":" + seconds;
 }

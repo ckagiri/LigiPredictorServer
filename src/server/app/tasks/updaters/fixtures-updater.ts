@@ -91,8 +91,8 @@ class FixturesUpdater {
           let dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
           let newFixture = idToFixtureMap[dbFixtureId];
           if (fixtureChanged(newFixture, dbFixture)) {
-              newFixture._id = dbFixture._id;
-              changedFixtures.push(newFixture);
+            newFixture._id = dbFixture._id;
+            changedFixtures.push(newFixture);
           }
         }
         let finishedFixtures = _.filter(changedFixtures, f => 

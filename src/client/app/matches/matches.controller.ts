@@ -330,7 +330,7 @@ namespace app.matches {
       let now = this.$window.moment();
       let ms = date - now;
 	    this.updateTimeout = setTimeout(() => this.live(), ms);
-      console.log("Live Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + " mins:secs");
+      console.log("Live Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
     }
 
     calculateNextUpdate() {
@@ -363,10 +363,23 @@ namespace app.matches {
     }
   }
 
-  function millisToMinutesAndSeconds(millis: number) {
-    let minutes = Math.floor(millis / 60000);
-    let seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
-    return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+  function msToTime(ms: number) {
+    let seconds: any = (ms / 1000).toFixed(0);
+    let minutes: any = Math.floor(seconds / 60);
+    let hours: any = "";
+    if (minutes > 59) {
+      hours = Math.floor(minutes / 60);
+      hours = (hours >= 10) ? hours : "0" + hours;
+      minutes = minutes - (hours * 60);
+      minutes = (minutes >= 10) ? minutes : "0" + minutes;
+    }
+
+    seconds = Math.floor(seconds % 60);
+    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+    if (hours != "") {
+      return hours + ":" + minutes + ":" + seconds;
+    }
+    return minutes + ":" + seconds;
   }
 
 	angular

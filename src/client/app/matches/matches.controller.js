@@ -331,7 +331,7 @@ var app;
                 var now = this.$window.moment();
                 var ms = date - now;
                 this.updateTimeout = setTimeout(function () { return _this.live(); }, ms);
-                console.log("Live Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + " mins:secs");
+                console.log("Live Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
             };
             MatchesController.prototype.calculateNextUpdate = function () {
                 var fixtureLive = false;
@@ -370,10 +370,22 @@ var app;
         MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', '$window', 'matches', 'season', 'logger',
             'predictionService', 'vosePredictorFactory', 'cache', 'util'];
         matches.MatchesController = MatchesController;
-        function millisToMinutesAndSeconds(millis) {
-            var minutes = Math.floor(millis / 60000);
-            var seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
-            return (seconds == 60 ? (minutes + 1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+        function msToTime(ms) {
+            var seconds = (ms / 1000).toFixed(0);
+            var minutes = Math.floor(seconds / 60);
+            var hours = "";
+            if (minutes > 59) {
+                hours = Math.floor(minutes / 60);
+                hours = (hours >= 10) ? hours : "0" + hours;
+                minutes = minutes - (hours * 60);
+                minutes = (minutes >= 10) ? minutes : "0" + minutes;
+            }
+            seconds = Math.floor(seconds % 60);
+            seconds = (seconds >= 10) ? seconds : "0" + seconds;
+            if (hours != "") {
+                return hours + ":" + minutes + ":" + seconds;
+            }
+            return minutes + ":" + seconds;
         }
         angular
             .module('app.matches')

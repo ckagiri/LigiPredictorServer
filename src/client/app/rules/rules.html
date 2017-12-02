@@ -117,7 +117,7 @@ ie if two people are level on points their position in the leaderboard will be d
       <tbody>
         <tr ng-if="0" ng-repeat-start="(key, rule) in vm.points.rules">
         <tr ng-if="rule.show">
-          <td><i>{{rule.id}}) </i>{{rule.name}}</td>
+          <td><i>{{rule.id}})</i>&nbsp;{{rule.name}}</td>
           <td>{{rule.value}}</td>
         </tr>
         <tr ng-if="0" ng-repeat-end></tr>
@@ -145,7 +145,7 @@ ie if two people are level on points their position in the leaderboard will be d
       <tbody>
         <tr ng-if="0" ng-repeat-start="(key, rule) in vm.goalDiff.rules">
         <tr ng-if="rule.show">
-          <td><i>{{rule.id}}) </i>{{rule.name}}</td>
+          <td><i>{{rule.id}})</i>&nbsp;{{rule.name}}</td>
           <td><span ng-if="rule.value != null && rule.value > 0">+</span>{{rule.value}}</td>
         </tr>
         <tr ng-if="0" ng-repeat-end></tr>
@@ -156,5 +156,3 @@ ie if two people are level on points their position in the leaderboard will be d
     </table>
   </div>
 </div>
-<div class=""
-

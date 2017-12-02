@@ -48,17 +48,29 @@ var scheduleDataUpdate = function (date) {
     var now = Moment();
     var ms = date - now;
     dataTimeout = setTimeout(function () { return updateData(); }, ms);
-    console.log("Data Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + "  mins:secs");
+    console.log("Data Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
 };
 var scheduleFixturesUpdate = function (date) {
     var now = Moment();
     var ms = date - now;
     fixturesTimeout = setTimeout(function () { return updateFixtures(); }, ms);
-    console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + "  mins:secs");
+    console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
 };
-var millisToMinutesAndSeconds = function (millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
-    return (seconds == 60 ? (minutes + 1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+var msToTime = function (ms) {
+    var seconds = (ms / 1000).toFixed(0);
+    var minutes = Math.floor(seconds / 60);
+    var hours = "";
+    if (minutes > 59) {
+        hours = Math.floor(minutes / 60);
+        hours = (hours >= 10) ? hours : "0" + hours;
+        minutes = minutes - (hours * 60);
+        minutes = (minutes >= 10) ? minutes : "0" + minutes;
+    }
+    seconds = Math.floor(seconds % 60);
+    seconds = (seconds >= 10) ? seconds : "0" + seconds;
+    if (hours != "") {
+        return hours + ":" + minutes + ":" + seconds;
+    }
+    return minutes + ":" + seconds;
 };
 //# sourceMappingURL=scheduler.js.map
