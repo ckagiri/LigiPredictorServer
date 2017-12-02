@@ -121,8 +121,8 @@ var PredictionRepo = (function () {
     PredictionRepo.prototype.findOne = function (user, fixture) {
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.findOne({ user: user, fixture: fixture }).lean());
     };
-    PredictionRepo.prototype.findAllBySeasonRound = function (seasonId, round, userId) {
-        var query = { $and: [{ season: seasonId }, { round: round }, { user: userId }] };
+    PredictionRepo.prototype.findAllBySeasonRound = function (userId, seasonId, round) {
+        var query = { $and: [{ user: userId }, { season: seasonId }, { round: round }] };
         return Rx.Observable.fromPromise(prediction_model_1.Prediction.find(query).lean());
     };
     PredictionRepo.prototype.update = function (prediction, options) {

@@ -114,10 +114,12 @@ var PredictionController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
-            var round = matchday || season.currentRound;
+            var round = parseInt(matchday);
+            if (userId == null) {
+                return Rx.Observable.of([]);
+            }
             return predictionRepo.findAllBySeasonRound(userId, season._id, round);
         })
-            .toArray()
             .subscribe(function (predictions) {
             res.status(200).json(predictions);
         }, function (err) {

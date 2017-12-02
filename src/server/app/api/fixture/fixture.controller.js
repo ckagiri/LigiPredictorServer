@@ -138,7 +138,6 @@ var FixtureController = (function () {
     };
     FixtureController.prototype.live = function (req, res) {
         var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season, matchday = _a.round;
-        matchday = matchday && matchday.split('-').pop();
         var source;
         if (leagueSlug == null && seasonSlug == null) {
             source = seasonRepo.getDefault();
@@ -155,7 +154,8 @@ var FixtureController = (function () {
             return Rx.Observable.of(season);
         })
             .flatMap(function (season) {
-            return fixtureRepo.findAllBySeasonRound(season._id, matchday || season.currentRound);
+            var round = parseInt(matchday);
+            return fixtureRepo.findAllBySeasonRound(season._id, round);
         })
             .flatMap(function (fixtures) {
             return Rx.Observable.from(fixtures);

@@ -136,7 +136,6 @@ export class FixtureController {
 
 	live(req: Request, res: Response) {
 		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
-		matchday = matchday && matchday.split('-').pop();
 		let source: Rx.Observable<any>;
 		if(leagueSlug == null && seasonSlug == null) {
 			source = seasonRepo.getDefault();
@@ -152,7 +151,8 @@ export class FixtureController {
 				return Rx.Observable.of(season)
 			})
 			.flatMap((season: any) => {
-				return fixtureRepo.findAllBySeasonRound(season._id, matchday || season.currentRound);
+        let round = parseInt(matchday)
+				return fixtureRepo.findAllBySeasonRound(season._id, round);
 			})
 			.flatMap((fixtures: any[]) => {
 				return Rx.Observable.from(fixtures);

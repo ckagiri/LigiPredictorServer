@@ -72,6 +72,7 @@ var app;
                 this.matchday = matchday;
                 this.restoreState();
                 this.refresh();
+                this.live();
                 this.onDestroy();
             }
             MatchesController.prototype.refresh = function () {
@@ -244,17 +245,21 @@ var app;
                 var league = this.leagueSlug;
                 var season = this.seasonSlug;
                 var round = this.matchday;
+                this.predictionService.fetchPendingPredictions(league, season, round)
+                    .then(function (response) {
+                    _this.updatePredictions(response.data);
+                });
                 if (this.updateTimeout == null) {
-                    return this.scheduleNextUpdate();
+                    this.scheduleNextUpdate();
                 }
-                if (this.hasLiveFixtures()) {
+                else {
                     this.predictionService.fetchLiveFixtures(league, season, round)
-                        .then(function (fixtures) {
-                        _this.updateFixtures(fixtures);
+                        .then(function (response) {
+                        _this.updateFixtures(response.data);
                         if (_this.hasPendingPredictions()) {
                             _this.predictionService.fetchPendingPredictions(league, season, round)
-                                .then(function (predictions) {
-                                _this.updatePredictions(predictions);
+                                .then(function (response) {
+                                _this.updatePredictions(response.data);
                                 return _this.scheduleNextUpdate();
                             });
                         }
@@ -263,24 +268,12 @@ var app;
                         }
                     });
                 }
-                else if (this.hasPendingPredictions()) {
-                    this.predictionService.fetchPendingPredictions(league, season, round)
-                        .then(function (predictions) {
-                        _this.updatePredictions(predictions);
-                        return _this.scheduleNextUpdate();
-                    });
-                }
-                else {
-                    clearTimeout(this.updateTimeout);
-                }
             };
             MatchesController.prototype.hasLiveFixtures = function () {
-                return this.$window._.some(this.fixtures, 'status', 'IN_PLAY');
+                return this.$window._.some(this.fixtures, function (f) { return f.status === 'IN_PLAY'; });
             };
             MatchesController.prototype.hasPendingPredictions = function () {
-                return this.$window._.some(this.fixtures, function (fixture) {
-                    return fixture.status = 'FINISHED' && fixture.prediction.status == 'PENDING';
-                });
+                return this.$window._.some(this.fixtures, function (f) { return f.status === 'FINISHED' && f.prediction.status === 'PENDING'; });
             };
             MatchesController.prototype.updateFixtures = function (fixtures) {
                 for (var _i = 0, fixtures_1 = fixtures; _i < fixtures_1.length; _i++) {
@@ -299,7 +292,7 @@ var app;
                     var prediction = predictions_2[_i];
                     for (var _a = 0, _b = this.fixtures; _a < _b.length; _a++) {
                         var match = _b[_a];
-                        if (prediction._id == match.prediction_id) {
+                        if (prediction._id == match.prediction._id) {
                             angular.extend(match.prediction, prediction);
                             break;
                         }
@@ -310,15 +303,15 @@ var app;
                 var _this = this;
                 clearTimeout(this.updateTimeout);
                 var date = this.calculateNextUpdate();
-                var now = this.$window.Moment();
+                var now = this.$window.moment();
                 var ms = date - now;
                 this.updateTimeout = setTimeout(function () { return _this.live(); }, ms);
-                console.log("Live Update scheduled for " + date.format() + " - that's in " + ms + "ms");
+                console.log("Live Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + " mins:secs");
             };
             MatchesController.prototype.calculateNextUpdate = function () {
                 var fixtureLive = false;
                 var hasPendingPrediction = false;
-                var Moment = this.$window.Moment;
+                var Moment = this.$window.moment;
                 var now = Moment();
                 var next = Moment().add(1, 'year');
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
@@ -352,6 +345,11 @@ var app;
         MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', '$window', 'matches', 'season', 'logger',
             'predictionService', 'vosePredictorFactory', 'cache'];
         matches.MatchesController = MatchesController;
+        function millisToMinutesAndSeconds(millis) {
+            var minutes = Math.floor(millis / 60000);
+            var seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
+            return (seconds == 60 ? (minutes + 1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
+        }
         angular
             .module('app.matches')
             .controller('MatchesController', MatchesController);

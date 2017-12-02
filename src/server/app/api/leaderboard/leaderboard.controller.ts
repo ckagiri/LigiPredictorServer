@@ -128,6 +128,9 @@ export class LeaderboardController {
         return leaderboardRepo.findMonthBoard(season._id, year, month);
       })
       .flatMap((board: any) => {
+        if(board == null) {
+          return Rx.Observable.empty();
+        }
         return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id)
       })
 			.flatMap((userScores: any[]) => {

@@ -48,12 +48,17 @@ var scheduleDataUpdate = function (date) {
     var now = Moment();
     var ms = date - now;
     dataTimeout = setTimeout(function () { return updateData(); }, ms);
-    console.log("Data Update scheduled for " + date.format() + " - that's in " + ms + "ms");
+    console.log("Data Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + "  mins:secs");
 };
 var scheduleFixturesUpdate = function (date) {
     var now = Moment();
     var ms = date - now;
     fixturesTimeout = setTimeout(function () { return updateFixtures(); }, ms);
-    console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + ms + "ms");
+    console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + "  mins:secs");
+};
+var millisToMinutesAndSeconds = function (millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
+    return (seconds == 60 ? (minutes + 1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
 };
 //# sourceMappingURL=scheduler.js.map

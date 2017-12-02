@@ -29,10 +29,10 @@ var app;
                 };
             }
             PredictionService.prototype.fetchLiveFixtures = function (league, season, round) {
-                return this.$http.get('/api/fixtures/live');
+                return this.$http.get('/api/matches/live', { params: { league: league, season: season, round: round } });
             };
             PredictionService.prototype.fetchPendingPredictions = function (league, season, round) {
-                return this.$http.get('/api/predictions/mine');
+                return this.$http.get('/api/predictions/mine', { params: { league: league, season: season, round: round } });
             };
             return PredictionService;
         }());

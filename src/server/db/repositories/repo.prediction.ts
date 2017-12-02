@@ -21,8 +21,8 @@ export class PredictionRepo {
     return Rx.Observable.fromPromise(Prediction.findOne({user, fixture}).lean());
   }
 
-	findAllBySeasonRound(seasonId: string, round: number, userId?:string) {
-		let query = {$and: [{season: seasonId}, {round}, {user: userId}]}
+	findAllBySeasonRound(userId: string, seasonId: string, round: number) {
+		let query = {$and: [{user: userId}, {season: seasonId}, {round}]}
 		return Rx.Observable.fromPromise(Prediction.find(query).lean());
 	}
 

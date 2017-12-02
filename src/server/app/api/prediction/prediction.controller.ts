@@ -115,10 +115,12 @@ export class PredictionController {
 				return Rx.Observable.of(season)
 			})
 			.flatMap((season: any) => {
-				let round = matchday || season.currentRound
+				let round = parseInt(matchday);
+        if(userId == null) {
+          return Rx.Observable.of([]);
+        }
 				return predictionRepo.findAllBySeasonRound(userId, season._id, round);
 			})
-			.toArray()
 			.subscribe((predictions: any[]) => {
 					res.status(200).json(predictions);
 				}, (err: any) => {

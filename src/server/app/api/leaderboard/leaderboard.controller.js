@@ -126,6 +126,9 @@ var LeaderboardController = (function () {
             return leaderboardRepo.findMonthBoard(season._id, year, month);
         })
             .flatMap(function (board) {
+            if (board == null) {
+                return Rx.Observable.empty();
+            }
             return userScoreRepo.getOneByLeaderboardOrderByPoints(board._id);
         })
             .flatMap(function (userScores) {

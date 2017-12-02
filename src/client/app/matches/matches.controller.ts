@@ -23,6 +23,7 @@ namespace app.matches {
 				this.matchday = matchday;
 				this.restoreState();
 				this.refresh();
+        this.live();
         this.onDestroy();
     }
 
@@ -246,41 +247,31 @@ namespace app.matches {
       let season = this.seasonSlug;
       let round = this.matchday;
       if(this.updateTimeout == null) {
-        return this.scheduleNextUpdate()
-      }
-      if(this.hasLiveFixtures()) {
+        this.scheduleNextUpdate();
+      } else {
         this.predictionService.fetchLiveFixtures(league, season, round)
-          .then((fixtures: any[]) => {
-            this.updateFixtures(fixtures);
+          .then((response: any) => {
+            this.updateFixtures(response.data);
             if(this.hasPendingPredictions()) {
               this.predictionService.fetchPendingPredictions(league, season, round)
-                .then((predictions: any[]) => {
-                  this.updatePredictions(predictions);
+                .then((response: any) => {
+                  this.updatePredictions(response.data);
                   return this.scheduleNextUpdate();
                 })
             } else {
               return this.scheduleNextUpdate();
             }
           })
-      } else if(this.hasPendingPredictions()) {
-        this.predictionService.fetchPendingPredictions(league, season, round)
-          .then((predictions: any[]) => {
-            this.updatePredictions(predictions);
-            return this.scheduleNextUpdate();
-          })
-      } else {
-        clearTimeout(this.updateTimeout);
       }
     } 
 
     hasLiveFixtures() {
-      return this.$window._.some(this.fixtures, 'status', 'IN_PLAY');
+      return this.$window._.some(this.fixtures, (f: any) => f.status === 'IN_PLAY');
     }
 
     hasPendingPredictions() {
-      return this.$window._.some(this.fixtures, (fixture: any) => {
-        return fixture.status = 'FINISHED' && fixture.prediction.status == 'PENDING';
-      });
+      return this.$window._.some(this.fixtures, 
+        (f: any) => f.status === 'FINISHED' && f.prediction.status === 'PENDING');
     }
 
     updateFixtures(fixtures: any[]) {
@@ -297,7 +288,7 @@ namespace app.matches {
     updatePredictions(predictions: any[]) {
       for(let prediction of predictions) {
           for(let match of this.fixtures) {
-            if(prediction._id == match.prediction_id) {
+            if(prediction._id == match.prediction._id) {
               angular.extend(match.prediction, prediction)
               break;
             }
@@ -309,16 +300,16 @@ namespace app.matches {
     scheduleNextUpdate() {
       clearTimeout(this.updateTimeout);
       let date = this.calculateNextUpdate();
-      let now = this.$window.Moment();
+      let now = this.$window.moment();
       let ms = date - now;
 	    this.updateTimeout = setTimeout(() => this.live(), ms);
-      console.log("Live Update scheduled for " + date.format() + " - that's in " + ms + "ms");
+      console.log("Live Update scheduled for " + date.format() + " - that's in " + millisToMinutesAndSeconds(ms) + " mins:secs");
     }
 
     calculateNextUpdate() {
       let fixtureLive = false;
       let hasPendingPrediction = false;
-      let Moment = this.$window.Moment;
+      let Moment = this.$window.moment;
       let now = Moment();
       let next = Moment().add(1, 'year');
       for(let fixture of this.fixtures) {
@@ -343,6 +334,12 @@ namespace app.matches {
       }
       return update;
     }
+  }
+
+  function millisToMinutesAndSeconds(millis: number) {
+    let minutes = Math.floor(millis / 60000);
+    let seconds = parseFloat(((millis % 60000) / 1000).toFixed(0));
+    return (seconds == 60 ? (minutes+1) + ":00" : minutes + ":" + (seconds < 10 ? "0" : "") + seconds);
   }
 
 	angular

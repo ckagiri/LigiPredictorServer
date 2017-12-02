@@ -29,11 +29,11 @@ namespace app.core {
     }
 
     fetchLiveFixtures(league: any, season:any, round: any) {
-      return this.$http.get('/api/fixtures/live');
+      return this.$http.get('/api/matches/live', {params: {league, season, round}});
     }
 
     fetchPendingPredictions(league: any, season: any, round: any) {
-      return this.$http.get('/api/predictions/mine');
+      return this.$http.get('/api/predictions/mine', {params: {league, season, round}});
     }
 
     private success: (response: any) => {} = (response) => response.data;
