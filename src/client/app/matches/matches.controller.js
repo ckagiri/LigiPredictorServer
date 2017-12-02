@@ -312,13 +312,13 @@ var app;
                 var next = Moment().add(1, 'year');
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
                     var fixture = _a[_i];
-                    if (fixture.status == 'FINISHED') {
+                    if (fixture.status === 'FINISHED' && fixture.prediction.status === 'PENDING') {
                         hasPendingPrediction = true;
                     }
-                    else if (fixture.status == "IN_PLAY") {
+                    else if (fixture.status === "IN_PLAY") {
                         fixtureLive = true;
                     }
-                    else if (fixture.status == "SCHEDULED" || fixture.status == "TIMED") {
+                    else if (fixture.status === "SCHEDULED" || fixture.status === "TIMED") {
                         // Parse fixture start date/time
                         var fixtureStart = Moment(fixture.date);
                         if (fixtureStart > now && fixtureStart < next) {

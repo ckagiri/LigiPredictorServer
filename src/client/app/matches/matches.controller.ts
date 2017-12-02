@@ -313,11 +313,11 @@ namespace app.matches {
       let now = Moment();
       let next = Moment().add(1, 'year');
       for(let fixture of this.fixtures) {
-        if(fixture.status == 'FINISHED') {
+        if(fixture.status === 'FINISHED' && fixture.prediction.status === 'PENDING') {
           hasPendingPrediction = true;
-        } else if (fixture.status == "IN_PLAY") {
+        } else if (fixture.status === "IN_PLAY") {
           fixtureLive = true;
-        } else if (fixture.status == "SCHEDULED" || fixture.status == "TIMED") {
+        } else if (fixture.status === "SCHEDULED" || fixture.status === "TIMED") {
           // Parse fixture start date/time
           let fixtureStart = Moment(fixture.date);
           if (fixtureStart > now && fixtureStart < next) {
