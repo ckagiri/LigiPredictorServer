@@ -4,7 +4,7 @@ var app;
     (function (matches) {
         'use strict';
         var MatchesController = (function () {
-            function MatchesController($q, $state, $stateParams, $scope, $window, fixtures, season, logger, predictionService, vosePredictorFactory, cache) {
+            function MatchesController($q, $state, $stateParams, $scope, $window, fixtures, season, logger, predictionService, vosePredictorFactory, cache, util) {
                 var _this = this;
                 this.$q = $q;
                 this.$state = $state;
@@ -17,9 +17,9 @@ var app;
                 this.predictionService = predictionService;
                 this.vosePredictorFactory = vosePredictorFactory;
                 this.cache = cache;
+                this.util = util;
                 this.title = 'Matches';
                 this.predictions = {};
-                this.luckySpinEnabled = false;
                 this.submitButtonEnabled = false;
                 this.stateKey = 'public.matches';
                 this.jokerChosen = "";
@@ -59,11 +59,41 @@ var app;
                         };
                     }
                     var goals = match.choice['goals' + side + 'Team'];
-                    if (!(goals == null) && !(goals === 0 && change === -1)) {
-                        goals += change;
+                    if (_this.util.isNumber(goals)) {
+                        goals = parseInt(goals);
                     }
-                    _this.predictions[matchId]['goals' + side + 'Team'] = goals || 0;
-                    match.choice['goals' + side + 'Team'] = goals || 0;
+                    if (change != null) {
+                        if (!(goals == null) && !(goals === 0 && change === -1)) {
+                            goals += change;
+                        }
+                        else {
+                            goals = 0;
+                        }
+                    }
+                    _this.predictions[matchId]['goals' + side + 'Team'] = goals;
+                    match.choice['goals' + side + 'Team'] = goals;
+                };
+                this.homeScoreChanged = function (match) {
+                    var goalsHomeTeam = match.choice.goalsHomeTeam;
+                    if (_this.util.isNumber(goalsHomeTeam)) {
+                        goalsHomeTeam = parseInt(goalsHomeTeam);
+                    }
+                    else {
+                        goalsHomeTeam = null;
+                    }
+                    match.choice.goalsHomeTeam = goalsHomeTeam;
+                    _this.score(match, 'Home', null);
+                };
+                this.awayScoreChanged = function (match) {
+                    var goalsAwayTeam = match.choice.goalsAwayTeam;
+                    if (_this.util.isNumber(goalsAwayTeam)) {
+                        goalsAwayTeam = parseInt(goalsAwayTeam);
+                    }
+                    else {
+                        goalsAwayTeam = null;
+                    }
+                    match.choice.goalsAwayTeam = goalsAwayTeam;
+                    _this.score(match, 'Away', null);
                 };
                 this.currentRound = this.season.currentRound;
                 this.leagueSlug = this.$stateParams.league || this.season.league.slug;
@@ -105,7 +135,6 @@ var app;
                                 goalsHomeTeam: null,
                                 goalsAwayTeam: null
                             };
-                            this_1.luckySpinEnabled = true;
                         }
                         else {
                             match.choice = choice;
@@ -185,10 +214,10 @@ var app;
             };
             MatchesController.prototype.showLuckySpin = function () {
                 var _this = this;
-                var res = Object.keys(this.predictions).some(function (key) {
-                    return _this.predictions[key].vosePredictor != null;
+                var hasVose = Object.keys(this.fixtures).some(function (key) {
+                    return _this.fixtures[key].vosePredictor != null;
                 });
-                return this.luckySpinEnabled || res;
+                return hasVose;
             };
             MatchesController.prototype.showSubmitButton = function () {
                 for (var _i = 0, _a = this.fixtures; _i < _a.length; _i++) {
@@ -339,7 +368,7 @@ var app;
             return MatchesController;
         }());
         MatchesController.$inject = ['$q', '$state', '$stateParams', '$scope', '$window', 'matches', 'season', 'logger',
-            'predictionService', 'vosePredictorFactory', 'cache'];
+            'predictionService', 'vosePredictorFactory', 'cache', 'util'];
         matches.MatchesController = MatchesController;
         function millisToMinutesAndSeconds(millis) {
             var minutes = Math.floor(millis / 60000);

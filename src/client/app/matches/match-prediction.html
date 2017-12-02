@@ -3,7 +3,7 @@
         <div class="score-selector">
             <a class="btn-score" ng-click="vm.score(fixture,'Home',1)"><i class="fa fa-chevron-up"></i></a>
             <div class="score-selector-inner">
-                <input tabindex={{$index+1}} type="tel" class="input-score" pattern="\d" length="1" min="0" value="0" ng-model="fixture.choice.goalsHomeTeam">
+                <input tabindex={{$index+1}} ng-change="vm.homeScoreChanged(fixture)" type="tel" class="input-score" pattern="\d" length="1" min="0" value="0" ng-model="fixture.choice.goalsHomeTeam">
             </div>
             <a class="btn-score" ng-click="vm.score(fixture,'Home',-1)"><i class="fa fa-chevron-down"></i></a>
         </div>
@@ -12,7 +12,7 @@
        <div class="score-selector" >
             <a class="btn-score" ng-click="vm.score(fixture,'Away',1)"><i class="fa fa-chevron-up"></i></a>
             <div class="score-selector-inner">
-                <input tabindex={{$index+1}} type="tel" class="input-score" pattern="\d" length="1" min="0" value="0" ng-model="fixture.choice.goalsAwayTeam">
+                <input tabindex={{$index+1}} ng-change="vm.awayScoreChanged(fixture)" type="text" class="input-score" pattern="\d" length="1" min="0" value="0" ng-model="fixture.choice.goalsAwayTeam">
             </div>
             <a class="btn-score" ng-click="vm.score(fixture,'Away',-1)"><i class="fa fa-chevron-down"></i></a>
         </div>

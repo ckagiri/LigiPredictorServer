@@ -3,7 +3,7 @@ namespace app.matches {
 
 	export class MatchesController {
 		static $inject: string[] = ['$q', '$state', '$stateParams', '$scope', '$window', 'matches', 'season', 'logger', 
-			'predictionService', 'vosePredictorFactory', 'cache'];
+			'predictionService', 'vosePredictorFactory', 'cache', 'util'];
 
 		constructor(private $q: ng.IQService,
 			private $state: ng.ui.IStateService,
@@ -15,7 +15,8 @@ namespace app.matches {
       private logger: blocks.logger.Logger,
 			private predictionService: app.core.IPredictionService,
 			private vosePredictorFactory: app.matches.VosePredictorFactory,
-			private cache: app.core.ICacheService) {
+			private cache: app.core.ICacheService,
+      private util: any) {
 				this.currentRound = this.season.currentRound;
 			  this.leagueSlug = this.$stateParams.league || this.season.league.slug;
 				this.seasonSlug = this.$stateParams.season || this.season.slug;
@@ -34,7 +35,6 @@ namespace app.matches {
 		seasonSlug: string;
 		matchday: number;
 		currentRound: number;
-		luckySpinEnabled = false;
 		submitButtonEnabled = false;
 		stateKey: string = 'public.matches';
     jokerChosen: string = "";
@@ -71,7 +71,6 @@ namespace app.matches {
 							goalsHomeTeam: null,
 							goalsAwayTeam: null
 						}
-						this.luckySpinEnabled = true;
 					} else {
 						match.choice = choice;
 					}
@@ -114,7 +113,7 @@ namespace app.matches {
 				}, (errorResponse: any) => {
 						console.log(errorResponse)
 				});
-		};
+		}
 
 		score = (match: any, side: string, change: number) => {
 			let matchId = match._id
@@ -125,13 +124,42 @@ namespace app.matches {
 					goalsAwayTeam: match.choice.goalsAwayTeam
 				};	
 			}
-			let goals = match.choice['goals'+side+'Team'] 
-			if (!(goals == null) && !(goals === 0 && change === -1)){
-				goals += change;
-			}
-			this.predictions[matchId]['goals'+side+'Team'] = goals || 0;
-			match.choice['goals'+side+'Team'] = goals || 0;
-		};
+			let goals = match.choice['goals'+side+'Team'];
+      if(this.util.isNumber(goals)) {
+        goals = parseInt(goals);
+      }
+      if(change != null) {
+			  if (!(goals == null) && !(goals === 0 && change === -1)){
+				  goals += change;
+			  } else {
+          goals = 0;
+        }
+      }
+			this.predictions[matchId]['goals'+side+'Team'] = goals;
+			match.choice['goals'+side+'Team'] = goals;
+		}
+
+    homeScoreChanged = (match: any) => {
+      let goalsHomeTeam = match.choice.goalsHomeTeam;
+      if(this.util.isNumber(goalsHomeTeam)) {
+        goalsHomeTeam = parseInt(goalsHomeTeam);
+      } else {
+        goalsHomeTeam = null;
+      }
+      match.choice.goalsHomeTeam = goalsHomeTeam;
+      this.score(match, 'Home', null);
+    }
+
+    awayScoreChanged = (match: any) => {
+      let goalsAwayTeam = match.choice.goalsAwayTeam;
+      if(this.util.isNumber(goalsAwayTeam)) {
+        goalsAwayTeam = parseInt(goalsAwayTeam);
+      } else {
+        goalsAwayTeam = null;
+      }
+      match.choice.goalsAwayTeam = goalsAwayTeam;
+      this.score(match, 'Away', null);
+    }
 
 		pointsClass(fixture: any) {
 			if(fixture.status === 'IN_PLAY') {
@@ -186,10 +214,10 @@ namespace app.matches {
 		}
 
 		showLuckySpin() {
-			let res = Object.keys(this.predictions).some((key: any) => {
-				return this.predictions[key].vosePredictor != null;
+			let hasVose = Object.keys(this.fixtures).some((key: any) => {
+				return this.fixtures[key].vosePredictor != null;
 			});
-			return this.luckySpinEnabled || res;
+			return hasVose;
 		}
 
 		showSubmitButton(){
@@ -295,7 +323,6 @@ namespace app.matches {
           }
         }
     }
-
     
     scheduleNextUpdate() {
       clearTimeout(this.updateTimeout);
