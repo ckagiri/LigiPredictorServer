@@ -282,9 +282,10 @@ var app;
                         .then(function (response) {
                         _this.updateFixtures(response.data);
                         if (_this.hasPendingPredictions()) {
-                            _this.predictionService.fetchPendingPredictions(league, season, round)
+                            _this.predictionService.fetchProcessedPredictions(league, season, round)
                                 .then(function (response) {
                                 _this.updatePredictions(response.data);
+                                _this.refresh();
                                 return _this.scheduleNextUpdate();
                             });
                         }
@@ -298,7 +299,8 @@ var app;
                 return this.$window._.some(this.fixtures, function (f) { return f.status === 'IN_PLAY'; });
             };
             MatchesController.prototype.hasPendingPredictions = function () {
-                return this.$window._.some(this.fixtures, function (f) { return f.status === 'FINISHED' && f.prediction.status === 'PENDING'; });
+                return this.$window._.some(this.fixtures, function (f) { return f.status === 'FINISHED' &&
+                    (f.prediction.status == undefined || f.prediction.status === 'PENDING'); });
             };
             MatchesController.prototype.updateFixtures = function (fixtures) {
                 for (var _i = 0, fixtures_1 = fixtures; _i < fixtures_1.length; _i++) {

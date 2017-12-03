@@ -281,9 +281,10 @@ namespace app.matches {
           .then((response: any) => {
             this.updateFixtures(response.data);
             if(this.hasPendingPredictions()) {
-              this.predictionService.fetchPendingPredictions(league, season, round)
+              this.predictionService.fetchProcessedPredictions(league, season, round)
                 .then((response: any) => {
                   this.updatePredictions(response.data);
+                  this.refresh();
                   return this.scheduleNextUpdate();
                 })
             } else {
@@ -299,7 +300,8 @@ namespace app.matches {
 
     hasPendingPredictions() {
       return this.$window._.some(this.fixtures, 
-        (f: any) => f.status === 'FINISHED' && f.prediction.status === 'PENDING');
+        (f: any) => f.status === 'FINISHED' && 
+        (f.prediction.status == undefined || f.prediction.status === 'PENDING'));
     }
 
     updateFixtures(fixtures: any[]) {
