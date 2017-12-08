@@ -44,6 +44,8 @@ namespace app.matches {
 
 		private refresh() {
 			let hasOneAvailableFixture:boolean = false;
+      this.totalPoints = 0;
+      this.totalGoalDiff = 0;
 			for(let match of this.fixtures) {
 				let choice = match.prediction.choice || {}
 				if(match.status == 'SCHEDULED' || match.status == 'TIMED') {
@@ -82,9 +84,13 @@ namespace app.matches {
 				}
 				this.totalPoints += match.prediction.points || 0;
 				this.totalGoalDiff += match.prediction.goalDiff || 0;
+        match.prediction.points = match.prediction.copyPoints || match.prediction.points;
+        match.prediction.goalDiff = match.prediction.copyGoalDiff || match.prediction.goalDiff;
 				if(match.prediction.hasJoker && match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
 					this.totalPoints += match.prediction.points;
 					this.totalGoalDiff += match.prediction.goalDiff;
+          match.prediction.copyPoints = match.prediction.points;
+          match.prediction.copyGoalDiff = match.prediction.goalDiff;
 					match.prediction.points *= 2;
 					match.prediction.goalDiff *= 2;
 				}

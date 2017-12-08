@@ -35,11 +35,11 @@ var fixtureChanged = function (updated, fromDb) {
     }
     return false;
 };
-var calculateNextFixtureUpdateTime = function (dbFixtures, callback) {
+var calculateNextFixtureUpdateTime = function (fixtureList, callback) {
     var fixtureLive = false;
     var now = Moment();
     var next = Moment().add(1, 'year');
-    var fixtures = _.filter(dbFixtures, function (f) { return f.status !== 'FINISHED'; });
+    var fixtures = _.filter(fixtureList, function (f) { return f.status !== 'FINISHED'; });
     for (var _i = 0, fixtures_2 = fixtures; _i < fixtures_2.length; _i++) {
         var fixture = fixtures_2[_i];
         if (fixture.status == "IN_PLAY") {
@@ -104,7 +104,8 @@ var FixturesUpdater = (function () {
             });
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-            calculateNextFixtureUpdateTime(dbFixtures, callback);
+            var fixtureList = dbFixtures.concat(changedFixtures);
+            calculateNextFixtureUpdateTime(fixtureList, callback);
         }, function (err) { console.log("Oops... " + err); });
     };
     return FixturesUpdater;

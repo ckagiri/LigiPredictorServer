@@ -35,11 +35,11 @@ let fixtureChanged = (updated: any, fromDb: any) => {
   return false;
 }
 
-let calculateNextFixtureUpdateTime = (dbFixtures: [any], callback: Function) => {
+let calculateNextFixtureUpdateTime = (fixtureList: [any], callback: Function) => {
   let fixtureLive = false;
   let now = Moment();
   let next = Moment().add(1, 'year');
-  let fixtures = _.filter(dbFixtures, f => f.status !== 'FINISHED' );
+  let fixtures = _.filter(fixtureList, f => f.status !== 'FINISHED' );
   for(let fixture of fixtures) {
     if (fixture.status == "IN_PLAY") {
       fixtureLive = true;
@@ -101,7 +101,8 @@ class FixturesUpdater {
           f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED');
         finishedFixtureDbUpdateHandler.handle(finishedFixtures);
         unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-        calculateNextFixtureUpdateTime(dbFixtures, callback)
+        let fixtureList = dbFixtures.concat(changedFixtures);
+        calculateNextFixtureUpdateTime(fixtureList, callback)
       }, 
       (err: any) => { console.log(`Oops... ${err}`) })
   }
