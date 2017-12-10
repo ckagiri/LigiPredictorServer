@@ -81,11 +81,11 @@ namespace app.matches {
 					if(match.prediction.hasJoker) {
 						this.jokerChosen = "chosen";
 					}
-				}
-				this.totalPoints =  0;
-				this.totalGoalDiff = 0;
+        }
         match.prediction.points = match.prediction.copyPoints || match.prediction.points;
         match.prediction.goalDiff = match.prediction.copyGoalDiff || match.prediction.goalDiff;
+        this.totalPoints += match.prediction.points || 0;
+        this.totalGoalDiff += match.prediction.goalDiff || 0;
 				if(match.prediction.hasJoker && match.prediction.goalDiff >= 0 && match.prediction.points > 0) {
 					this.totalPoints += match.prediction.points;
 					this.totalGoalDiff += match.prediction.goalDiff;

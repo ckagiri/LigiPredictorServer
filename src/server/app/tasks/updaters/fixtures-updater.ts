@@ -104,7 +104,7 @@ class FixturesUpdater {
         let fixtureList = dbFixtures.concat(changedFixtures);
         calculateNextFixtureUpdateTime(fixtureList, callback)
       }, 
-      (err: any) => { console.log(`Oops... ${err}`) })
+      (err: any) => { console.log(`Oops2... ${err}`) })
   }
 }
 

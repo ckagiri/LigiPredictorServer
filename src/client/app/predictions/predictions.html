@@ -1,4 +1,17 @@
 <h4>Predictions</h4>
+<div class="row">
+  <span class="col-xs-1">
+    Matchday:
+  </span>
+  <div class="col-xs-1">
+    <select ng-model="vm.selectedRound" 
+        ng-options="r as r.name for r in vm.rounds track by r.id"
+        ng-change="vm.onRoundChanged()"
+        class="form-control">
+        <option value="">--</option>
+    </select>
+  </div>
+</div>
 <p><span>{{vm.paging.showing}} </span>
 <span class="pull-right">Page {{vm.paging.currentPage}} of {{vm.paging.pageCount || 1}}</span></p>
 <table class="table table-condensed table-striped">
@@ -29,14 +42,17 @@
     </tr>
   </tbody>
 </table>
-<ul uib-pagination total-items="vm.fixtureFilteredCount" 
-  ng-model="vm.paging.currentPage" 
-  max-size="vm.paging.maxPagesToShow" 
-  ng-change="vm.pageChanged()"
-  class="pagination-sm" 
-  boundary-link-numbers="true"
-  previous-text="Prev"
-  next-text="Next">
+  <ul uib-pager
+    align="false"
+    total-items="vm.fixtureFilteredCount" 
+    num-pages="vm.paging.pageCount"
+    ng-model="vm.paging.currentPage" 
+    ng-change="vm.pageChanged()"
+    previous-text="« Prev"
+    next-text="Next »">
 </ul>
+{{vm.summary | json}}
+    
+    
 
 

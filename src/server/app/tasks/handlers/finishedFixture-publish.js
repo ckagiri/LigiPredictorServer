@@ -20,11 +20,20 @@ var FinishedFixturePublishHandler = (function () {
                 return {
                     user: user, jokerPrediction: jokerPrediction
                 };
+            })
+                .catch(function (error) {
+                var message = "Error: " + (error.message || 'damn');
+                console.log(message);
+                console.log("Caught Error, continuing");
+                return Rx.Observable.of({
+                    user: user, jokerPrediction: null
+                });
             });
+            ;
         })
             .flatMap(function (map) {
             var user = map.user, jokerPrediction = map.jokerPrediction;
-            if (jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
+            if (jokerPrediction && jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
                 return Rx.Observable.of({
                     user: user, prediction: jokerPrediction
                 });

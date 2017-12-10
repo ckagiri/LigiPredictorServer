@@ -17,11 +17,19 @@ class FinishedFixturePublishHandler {
               return {
                 user, jokerPrediction
               }
-            });
+            })
+            .catch((error:any) => {
+              let message = `Error: ${error.message || 'damn'}`;
+              console.log(message);
+              console.log("Caught Error, continuing")
+              return Rx.Observable.of({
+                user, jokerPrediction: null
+              });
+            });;
         })
         .flatMap((map: any) => {
           let {user, jokerPrediction} = map; 
-          if (jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
+          if (jokerPrediction && jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
             return Rx.Observable.of({
               user, prediction:jokerPrediction
             })

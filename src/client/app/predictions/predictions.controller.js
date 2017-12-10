@@ -18,7 +18,16 @@ var app;
                 this.paging = {
                     currentPage: 1,
                     maxPagesToShow: 5,
-                    pageSize: 10
+                    pageSize: 10,
+                    pageCount: 0
+                };
+                this.summary = {
+                    points: 0,
+                    goalDiff: 0,
+                    pointsExcJoker: 0,
+                    goalDiffExcJoker: 0,
+                    matches: 0,
+                    correctOutcome: 0
                 };
                 this.activate();
             }
@@ -35,6 +44,7 @@ var app;
                     _this.pageChanged();
                     _this.fixtureCount = _this.fixtureSet.getCount();
                     _this.fixtureFilteredCount = _this.fixtureSet.getFilteredCount();
+                    _this.summarize();
                 });
             };
             PredictionsController.prototype.init = function () {
@@ -53,16 +63,55 @@ var app;
                         return "showing " + resultStart + " - " + resultEnd + " of " + (itemCount || 0);
                     }
                 });
-                Object.defineProperty(this.paging, 'pageCount', {
-                    get: function () {
-                        var val = _this.fixtureFilteredCount / _this.paging.pageSize;
-                        var pageCount = Math.floor(val);
-                        if (!isNumber(val)) {
-                            pageCount += 1;
-                        }
-                        return pageCount;
-                    }
+                var val = this.fixtureFilteredCount / this.paging.pageSize;
+                var pageCount = Math.floor(val);
+                if (!isNumber(val)) {
+                    pageCount += 1;
+                }
+                this.paging.pageCount = pageCount;
+                this.rounds = Array.apply(null, { length: 38 }).map(function (value, index) {
+                    return {
+                        id: index + 1,
+                        name: index + 1
+                    };
                 });
+            };
+            PredictionsController.prototype.onRoundChanged = function () {
+                console.log(this.selectedRound);
+            };
+            PredictionsController.prototype.summarize = function () {
+                var _this = this;
+                var summary = {
+                    points: 0,
+                    goalDiff: 0,
+                    pointsExcJoker: 0,
+                    goalDiffExcJoker: 0,
+                    matches: 0,
+                    correctOutcome: 0
+                };
+                this.summary = this.fixtureSet.getAll().reduce(function (accum, fixture) {
+                    var prediction = fixture.prediction;
+                    if (prediction == null || prediction.points == null) {
+                        return accum;
+                    }
+                    accum.points += prediction.points;
+                    accum.goalDiff += prediction.goalDiff;
+                    accum.pointsExcJoker += prediction.points;
+                    accum.goalDiffExcJoker += prediction.goalDiff;
+                    if (prediction.hasJoker && prediction.goalDiff >= 0 && prediction.points > 0) {
+                        accum.points += prediction.points;
+                        accum.goalDiff += prediction.goalDiff;
+                    }
+                    accum.matches += 1;
+                    var result = fixture.result;
+                    var choice = prediction.choice;
+                    var choiceOutcome = _this.calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
+                    var resultOutcome = _this.calcOutcome(result.goalsHomeTeam, result.goalsAwayTeam);
+                    if (choiceOutcome == resultOutcome) {
+                        accum.correctOutcome += 1;
+                    }
+                    return accum;
+                }, summary);
             };
             PredictionsController.prototype.pageChanged = function () {
                 this.fixtures = this.fixtureSet.getAll({
@@ -70,6 +119,17 @@ var app;
                     page: this.paging.currentPage,
                     size: this.paging.pageSize
                 });
+            };
+            PredictionsController.prototype.calcOutcome = function (home, away) {
+                if (home > away) {
+                    return 'w';
+                }
+                if (home < away) {
+                    return 'l';
+                }
+                if (home === away) {
+                    return 'd';
+                }
             };
             return PredictionsController;
         }());

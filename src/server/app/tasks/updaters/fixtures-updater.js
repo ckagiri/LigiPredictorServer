@@ -106,7 +106,7 @@ var FixturesUpdater = (function () {
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
             var fixtureList = dbFixtures.concat(changedFixtures);
             calculateNextFixtureUpdateTime(fixtureList, callback);
-        }, function (err) { console.log("Oops... " + err); });
+        }, function (err) { console.log("Oops2... " + err); });
     };
     return FixturesUpdater;
 }());

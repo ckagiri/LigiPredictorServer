@@ -120,7 +120,7 @@ export class PredictionRepo {
 							return reject(new Error(`Failed to saved predictions`))
 						}
 						let currentNewJoker = savedPredictions.filter(n => {
-							return n.fixture.toString() === newJoker.fixture
+							return n.fixture.toString() === newJoker.fixture.toString();
 						})[0];
 						return resolve(currentNewJoker);
 					})

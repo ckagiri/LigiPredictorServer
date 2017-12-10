@@ -103,7 +103,7 @@ var PredictionRepo = (function () {
                                 return reject(new Error("Failed to saved predictions"));
                             }
                             var currentNewJoker = savedPredictions.filter(function (n) {
-                                return n.fixture.toString() === newJoker.fixture;
+                                return n.fixture.toString() === newJoker.fixture.toString();
                             })[0];
                             return resolve(currentNewJoker);
                         });
