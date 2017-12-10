@@ -3,7 +3,7 @@ namespace app.predictions {
 
   export class PredictionsController {
     static $inject: string[] = ['$q', '$window', 'localstorage', 'logger', 'leagueSeasonFactory',
-      'fixturePredictionService', 'EntitySet', 'Fixture', 'sort'];
+      'fixturePredictionService', 'EntitySet', 'Fixture', 'sort', 'predictionFilter'];
 
     constructor(private $q: ng.IQService,
       private $window: ng.IWindowService,
@@ -13,7 +13,8 @@ namespace app.predictions {
       private fixturePredictionService: app.core.IFixturePredictionService,
       private EntitySet: any,
       private Fixture: any,
-      private sort: app.core.ISortService) {
+      private sort: app.core.ISortService,
+      private filter: any) {
       this.activate();
     }
 
@@ -49,10 +50,7 @@ namespace app.predictions {
           let fixtures = this.$window.lzwCompress.unpack(data.compressed);
           this.fixtureSet = new this.EntitySet(this.Fixture);
           this.fixtureSet.mapDtoListToContext(fixtures);
-          this.pageChanged();
-          this.fixtureCount = this.fixtureSet.getCount();
-          this.fixtureFilteredCount = this.fixtureSet.getFilteredCount();
-          this.summarize();
+          this.roundChanged();         
         })
     }
 
@@ -88,8 +86,13 @@ namespace app.predictions {
       });
     }
 
-    onRoundChanged() {
-      console.log(this.selectedRound);
+    roundChanged() {
+      if(this.selectedRound != null) {
+        this.filter.round = this.selectedRound.id; 
+      } else {
+        this.filter.round = -1;      
+      }
+      this.pageChanged();
     }
 
     summarize() {
@@ -101,7 +104,7 @@ namespace app.predictions {
         matches: 0,
         correctOutcome: 0
       };
-      this.summary = this.fixtureSet.getAll().reduce((accum: any, fixture:any) => {
+      this.summary = this.fixtureSet.getAll({filter: this.filter}).reduce((accum: any, fixture:any) => {
         let prediction = fixture.prediction;
         if(prediction == null || prediction.points == null) {return accum;}
         accum.points += prediction.points;
@@ -125,11 +128,15 @@ namespace app.predictions {
     }
 
     pageChanged() {
+      this.fixtureCount = this.fixtureSet.getCount();
+      this.fixtureFilteredCount = this.fixtureSet.getFilteredCount(this.filter);
       this.fixtures = this.fixtureSet.getAll({
+        filter: this.filter,
         sort: this.sort.sort_by('date'),
         page: this.paging.currentPage,
         size: this.paging.pageSize
       });
+      this.summarize();
     }
 
     calcOutcome(home: number, away: number): string {

@@ -4,7 +4,7 @@ var app;
     (function (predictions) {
         'use strict';
         var PredictionsController = (function () {
-            function PredictionsController($q, $window, storage, logger, leagueSeasonFactory, fixturePredictionService, EntitySet, Fixture, sort) {
+            function PredictionsController($q, $window, storage, logger, leagueSeasonFactory, fixturePredictionService, EntitySet, Fixture, sort, filter) {
                 this.$q = $q;
                 this.$window = $window;
                 this.storage = storage;
@@ -14,6 +14,7 @@ var app;
                 this.EntitySet = EntitySet;
                 this.Fixture = Fixture;
                 this.sort = sort;
+                this.filter = filter;
                 this.title = 'Predictions';
                 this.paging = {
                     currentPage: 1,
@@ -41,10 +42,7 @@ var app;
                     var fixtures = _this.$window.lzwCompress.unpack(data.compressed);
                     _this.fixtureSet = new _this.EntitySet(_this.Fixture);
                     _this.fixtureSet.mapDtoListToContext(fixtures);
-                    _this.pageChanged();
-                    _this.fixtureCount = _this.fixtureSet.getCount();
-                    _this.fixtureFilteredCount = _this.fixtureSet.getFilteredCount();
-                    _this.summarize();
+                    _this.roundChanged();
                 });
             };
             PredictionsController.prototype.init = function () {
@@ -76,8 +74,14 @@ var app;
                     };
                 });
             };
-            PredictionsController.prototype.onRoundChanged = function () {
-                console.log(this.selectedRound);
+            PredictionsController.prototype.roundChanged = function () {
+                if (this.selectedRound != null) {
+                    this.filter.round = this.selectedRound.id;
+                }
+                else {
+                    this.filter.round = -1;
+                }
+                this.pageChanged();
             };
             PredictionsController.prototype.summarize = function () {
                 var _this = this;
@@ -89,7 +93,7 @@ var app;
                     matches: 0,
                     correctOutcome: 0
                 };
-                this.summary = this.fixtureSet.getAll().reduce(function (accum, fixture) {
+                this.summary = this.fixtureSet.getAll({ filter: this.filter }).reduce(function (accum, fixture) {
                     var prediction = fixture.prediction;
                     if (prediction == null || prediction.points == null) {
                         return accum;
@@ -114,11 +118,15 @@ var app;
                 }, summary);
             };
             PredictionsController.prototype.pageChanged = function () {
+                this.fixtureCount = this.fixtureSet.getCount();
+                this.fixtureFilteredCount = this.fixtureSet.getFilteredCount(this.filter);
                 this.fixtures = this.fixtureSet.getAll({
+                    filter: this.filter,
                     sort: this.sort.sort_by('date'),
                     page: this.paging.currentPage,
                     size: this.paging.pageSize
                 });
+                this.summarize();
             };
             PredictionsController.prototype.calcOutcome = function (home, away) {
                 if (home > away) {
@@ -134,7 +142,7 @@ var app;
             return PredictionsController;
         }());
         PredictionsController.$inject = ['$q', '$window', 'localstorage', 'logger', 'leagueSeasonFactory',
-            'fixturePredictionService', 'EntitySet', 'Fixture', 'sort'];
+            'fixturePredictionService', 'EntitySet', 'Fixture', 'sort', 'predictionFilter'];
         predictions.PredictionsController = PredictionsController;
         function isNumber(val) {
             // negative or positive

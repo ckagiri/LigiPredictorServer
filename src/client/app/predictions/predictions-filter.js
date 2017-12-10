@@ -8,7 +8,9 @@ var app;
             }
             Filter.prototype.modelTest = function (item) {
                 // Return true if it meets the filter criteria. Otherwise, return false
-                if (this.roundId !== item.roundId)
+                if (this.round === -1)
+                    return true;
+                if (this.round !== item.round)
                     return false;
                 return true;
             };

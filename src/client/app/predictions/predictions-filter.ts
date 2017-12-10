@@ -3,11 +3,12 @@ namespace app.core {
 
 
   export class Filter {
-    roundId: number;
+    round: number;
 
     private modelTest(item: any) {
       // Return true if it meets the filter criteria. Otherwise, return false
-      if (this.roundId !== item.roundId) return false;
+      if(this.round === -1) return true;
+      if (this.round !== item.round) return false;
       return true;
     }
 
