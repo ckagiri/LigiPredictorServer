@@ -7,10 +7,15 @@ let schedule =	require('node-schedule');
 let Moment = require('moment');
 let dataTimeout: any;
 let fixturesTimeout: any;
+let nextMatchUpdateMs: number = 0;
 
 export const run = () => {
   updateData();
   schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
+}
+
+export const nextMatchUpdate = () => {
+  return nextMatchUpdateMs;
 }
 
 const heartbeatCheck = () => {
@@ -59,11 +64,12 @@ const scheduleDataUpdate = (date: any) => {
 const scheduleFixturesUpdate = (date: any) => {
   let now = Moment();
 	let ms = date - now;
-	fixturesTimeout = setTimeout(() => updateFixtures(), ms);
+  fixturesTimeout = setTimeout(() => updateFixtures(), ms);
+  nextMatchUpdateMs = ms;
 	console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
 }
 
-const msToTime = (ms: number) => {
+export const msToTime = (ms: number) => {
   let seconds: any = (ms / 1000).toFixed(0);
   let minutes: any = Math.floor(seconds / 60);
   let hours: any = "";

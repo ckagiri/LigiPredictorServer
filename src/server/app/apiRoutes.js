@@ -8,12 +8,14 @@ var fixture_route_1 = require("./api/fixture/fixture.route");
 var prediction_route_1 = require("./api/prediction/prediction.route");
 var leaderboard_route_1 = require("./api/leaderboard/leaderboard.route");
 var season_route_1 = require("./api/season/season.route");
+var admin_route_1 = require("./api/admin/admin.route");
 var notfound_1 = require("./utils/notfound");
 var helpers_1 = require("./auth/helpers");
 var router = express_1.Router();
 router.get('/ping', function (req, res) {
     res.json({ pong: Date.now() });
 });
+router.use('/admin', admin_route_1.adminRouter.routes);
 router.use('/me', profile_1.profileRouter.routes);
 router.use('/users', user_route_1.userRouter.routes);
 router.use('/leagues', league_route_1.leagueRouter.routes);

@@ -19,6 +19,10 @@ var FootballApiClient = (function () {
         var apiResource = "/competitions/" + compId + "/fixtures";
         return utils_1.makeRequest(this.apiKey, apiResource, queryParams);
     };
+    FootballApiClient.prototype.getFixture = function (compId, id) {
+        var apiResource = "/fixtures/" + id;
+        return utils_1.makeRequest(this.apiKey, apiResource, undefined);
+    };
     return FootballApiClient;
 }());
 exports.default = FootballApiClient;

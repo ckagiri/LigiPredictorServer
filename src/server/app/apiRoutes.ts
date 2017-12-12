@@ -6,6 +6,7 @@ import {fixtureRouter} from './api/fixture/fixture.route';
 import {predictionRouter} from './api/prediction/prediction.route';
 import {leaderboardRouter} from './api/leaderboard/leaderboard.route';
 import {seasonRouter} from './api/season/season.route';
+import { adminRouter } from './api/admin/admin.route';
 import { send404, notFoundMiddleware } from './utils/notfound'; 
 import {ensureAuthenticated, attachUser} from './auth/helpers';
 
@@ -15,6 +16,7 @@ router.get('/ping', (req, res) => {
   res.json({pong: Date.now()})
 });
 
+router.use('/admin', adminRouter.routes)
 router.use('/me', profileRouter.routes);
 router.use('/users', userRouter.routes);
 router.use('/leagues', leagueRouter.routes);

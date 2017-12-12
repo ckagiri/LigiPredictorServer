@@ -22,6 +22,11 @@ class FootballApiClient{
 		let apiResource = "/competitions/" + compId + "/fixtures";
     return makeRequest(this.apiKey, apiResource, queryParams);
   }
+  
+  getFixture(compId: any, id: any) {
+    let apiResource = "/fixtures/" + id;
+    return makeRequest(this.apiKey, apiResource, undefined);
+  }
 }
 
 export default FootballApiClient;
