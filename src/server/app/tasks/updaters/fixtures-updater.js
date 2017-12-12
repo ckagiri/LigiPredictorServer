@@ -67,7 +67,7 @@ var FixturesUpdater = (function () {
     function FixturesUpdater() {
     }
     FixturesUpdater.prototype.update = function (callback) {
-        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p7' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n2' })), function (changeYesterday, todayAndTomorrow) {
+        Rx.Observable.zip(Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'p2' })), Rx.Observable.fromPromise(common_1.client.getFixtures(445, { timeFrame: 'n2' })), function (changeYesterday, todayAndTomorrow) {
             changeYesterday = changeYesterday.data.fixtures;
             todayAndTomorrow = todayAndTomorrow.data.fixtures;
             return changeYesterday.concat(todayAndTomorrow);
@@ -85,26 +85,26 @@ var FixturesUpdater = (function () {
             });
         })
             .subscribe(function (map) {
-            var changedFixtures = [];
+            var changedApiFixtures = [];
             var dbFixtures = map.dbFixtures, idToFixtureMap = map.idToFixtureMap;
             for (var _i = 0, dbFixtures_1 = dbFixtures; _i < dbFixtures_1.length; _i++) {
                 var dbFixture = dbFixtures_1[_i];
-                var dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
-                var newFixture = idToFixtureMap[dbFixtureId];
-                if (fixtureChanged(newFixture, dbFixture)) {
-                    newFixture._id = dbFixture._id;
-                    changedFixtures.push(newFixture);
+                var dbFixtureApiId = _.get(dbFixture, apiDetailIdKey, '');
+                var apiFixture = idToFixtureMap[dbFixtureApiId];
+                if (fixtureChanged(apiFixture, dbFixture)) {
+                    apiFixture._id = dbFixture._id;
+                    changedApiFixtures.push(apiFixture);
                 }
             }
-            var finishedFixtures = _.filter(changedFixtures, function (f) {
+            var finishedFixtures = _.filter(changedApiFixtures, function (f) {
                 return f.status === 'CANCELED' || f.status === 'POSTPONED' || f.status === 'FINISHED';
             });
-            var unfishedFixtures = _.filter(changedFixtures, function (f) {
+            var unfishedFixtures = _.filter(changedApiFixtures, function (f) {
                 return f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED';
             });
             finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
             unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-            var fixtureList = dbFixtures.concat(changedFixtures);
+            var fixtureList = dbFixtures.concat(changedApiFixtures);
             calculateNextFixtureUpdateTime(fixtureList, callback);
         }, function (err) { console.log("Oops2... " + err); });
     };

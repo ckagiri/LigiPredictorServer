@@ -11,7 +11,6 @@ var fixturesTimeout;
 exports.run = function () {
     updateData();
     schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
-    //heartbeatCheck();
 };
 var heartbeatCheck = function () {
     console.log("heartbeat");

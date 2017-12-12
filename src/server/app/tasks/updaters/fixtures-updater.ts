@@ -35,7 +35,7 @@ let fixtureChanged = (updated: any, fromDb: any) => {
   return false;
 }
 
-let calculateNextFixtureUpdateTime = (fixtureList: [any], callback: Function) => {
+let calculateNextFixtureUpdateTime = (fixtureList: any[], callback: Function) => {
   let fixtureLive = false;
   let now = Moment();
   let next = Moment().add(1, 'year');
@@ -64,7 +64,7 @@ let calculateNextFixtureUpdateTime = (fixtureList: [any], callback: Function) =>
 class FixturesUpdater {
   update(callback: Function) {
     Rx.Observable.zip(
-      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p7'})),
+      Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'p2'})),
       Rx.Observable.fromPromise(client.getFixtures(445,{timeFrame: 'n2'})),
       function (changeYesterday:any, todayAndTomorrow:any) {
         changeYesterday = changeYesterday.data.fixtures;
@@ -85,23 +85,23 @@ class FixturesUpdater {
     })
     .subscribe(
       (map: any) => {
-        let changedFixtures = [];
+        let changedApiFixtures = [];
         let {dbFixtures, idToFixtureMap} = map;
         for (let dbFixture of dbFixtures) {
-          let dbFixtureId = _.get(dbFixture, apiDetailIdKey, '');
-          let newFixture = idToFixtureMap[dbFixtureId];
-          if (fixtureChanged(newFixture, dbFixture)) {
-            newFixture._id = dbFixture._id;
-            changedFixtures.push(newFixture);
+          let dbFixtureApiId = _.get(dbFixture, apiDetailIdKey, '');
+          let apiFixture = idToFixtureMap[dbFixtureApiId];
+          if (fixtureChanged(apiFixture, dbFixture)) {
+            apiFixture._id = dbFixture._id;
+            changedApiFixtures.push(apiFixture);
           }
         }
-        let finishedFixtures = _.filter(changedFixtures, f => 
+        let finishedFixtures = _.filter(changedApiFixtures, f => 
           f.status === 'CANCELED' || f.status === 'POSTPONED'|| f.status === 'FINISHED');
-        let unfishedFixtures = _.filter(changedFixtures, f => 
+        let unfishedFixtures = _.filter(changedApiFixtures, f => 
           f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED');
         finishedFixtureDbUpdateHandler.handle(finishedFixtures);
         unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-        let fixtureList = dbFixtures.concat(changedFixtures);
+        let fixtureList = dbFixtures.concat(changedApiFixtures);
         calculateNextFixtureUpdateTime(fixtureList, callback)
       }, 
       (err: any) => { console.log(`Oops2... ${err}`) })

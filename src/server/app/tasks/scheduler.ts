@@ -11,7 +11,6 @@ let fixturesTimeout: any;
 export const run = () => {
   updateData();
   schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
-  //heartbeatCheck();
 }
 
 const heartbeatCheck = () => {
