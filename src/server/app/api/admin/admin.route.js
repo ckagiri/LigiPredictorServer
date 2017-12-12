@@ -9,7 +9,7 @@ var AdminRouter = (function () {
     }
     Object.defineProperty(AdminRouter.prototype, "routes", {
         get: function () {
-            router.get('/next-match-update', this.controller.nextMatchUpdate);
+            router.get('/afd/next-update', this.controller.nextMatchUpdate);
             router.get('/afd/fixture/:id', this.controller.showAfdFixture);
             router.get('/afd/fixtures/:matchday', this.controller.showAfdMatchdayFixtures);
             return router;

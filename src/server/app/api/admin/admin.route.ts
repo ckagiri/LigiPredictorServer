@@ -7,7 +7,7 @@ class AdminRouter {
     private controller: AdminController = new AdminController();
 
     get routes () {
-        router.get('/next-match-update', this.controller.nextMatchUpdate);
+        router.get('/afd/next-update', this.controller.nextMatchUpdate);
         router.get('/afd/fixture/:id', this.controller.showAfdFixture);
         router.get('/afd/fixtures/:matchday', this.controller.showAfdMatchdayFixtures)
         return router;
