@@ -40,8 +40,9 @@ const heartbeatCheck = () => {
 const updateFixtures = () => {
   console.log("Fixtures update initiated");
   clearTimeout(fixturesTimeout);
-  fixturesUpdater.update((date: any) => {
+  fixturesUpdater.update((date: any, callback: Function) => {
     scheduleFixturesUpdate(date);
+    callback();
   });
 }
 

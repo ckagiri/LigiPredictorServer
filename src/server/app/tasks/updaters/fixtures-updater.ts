@@ -2,7 +2,7 @@ import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 import {client, fixtureRepo} from '../common'
 import {finishedFixtureDbUpdateHandler} from '../handlers/finishedFixture-dbupdate';
-import {unfinishedFixtureDbUpdateHandler} from '../handlers/unfinishedFixture-dbupdate';
+import {apiFixtureDbUpdateHandler} from '../handlers/apiFixture-dbupdate';
 
 let Moment = require('moment');
 let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
@@ -35,7 +35,7 @@ let fixtureChanged = (updated: any, fromDb: any) => {
   return false;
 }
 
-let calculateNextFixtureUpdateTime = (fixtureList: any[], callback: Function) => {
+let calculateNextFixtureUpdateTime = (fixtureList: any[]) => {
   let fixtureLive = false;
   let now = Moment();
   let next = Moment().add(1, 'year');
@@ -58,7 +58,7 @@ let calculateNextFixtureUpdateTime = (fixtureList: any[], callback: Function) =>
   } else if (next > tomorrow) {
     update = Moment().add(12, 'hours');
   }
-  callback(update);
+  return update;
 }
 
 class FixturesUpdater {
@@ -85,7 +85,7 @@ class FixturesUpdater {
     })
     .subscribe(
       (map: any) => {
-        let changedApiFixtures = [];
+        let changedApiFixtures: any[] = [];
         let {dbFixtures, idToFixtureMap} = map;
         for (let dbFixture of dbFixtures) {
           let dbFixtureApiId = _.get(dbFixture, apiDetailIdKey, '');
@@ -95,17 +95,29 @@ class FixturesUpdater {
             changedApiFixtures.push(apiFixture);
           }
         }
-        let finishedFixtures = _.filter(changedApiFixtures, f => 
-          f.status === 'CANCELED' || f.status === 'POSTPONED'|| f.status === 'FINISHED');
-        let unfishedFixtures = _.filter(changedApiFixtures, f => 
-          f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED');
-        finishedFixtureDbUpdateHandler.handle(finishedFixtures);
-        unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-        let fixtureList = dbFixtures.concat(changedApiFixtures);
-        calculateNextFixtureUpdateTime(fixtureList, callback)
+        apiFixtureDbUpdateHandler.handle(changedApiFixtures)
+          .subscribe((fixture: any) => {
+             console.log("the game : " + getFixtureName(fixture) + " has been updated");
+            },
+            (err: any) => {console.log(`Oops... ${err}`)},
+            () => {	
+              let fixtureList = dbFixtures.concat(changedApiFixtures);             
+              let nextUpdate = calculateNextFixtureUpdateTime(fixtureList);
+              callback(nextUpdate, () => {
+                let finishedFixtures = _.filter(changedApiFixtures, f => {
+                  let fStatus = f.status.trim().toUpperCase()
+                  return fStatus === 'CANCELED' || fStatus=== 'POSTPONED'|| fStatus === 'FINISHED'
+                });       
+                finishedFixtureDbUpdateHandler.handle(finishedFixtures);                 
+              })
+            });
       }, 
       (err: any) => { console.log(`Oops2... ${err}`) })
   }
 }
 
 export const fixturesUpdater = new FixturesUpdater();
+
+let getFixtureName = (fixture: any) => {
+	return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
+}

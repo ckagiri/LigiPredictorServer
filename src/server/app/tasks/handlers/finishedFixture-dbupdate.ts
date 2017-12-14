@@ -15,7 +15,7 @@ class FinishedFixtureDbUpdateHandler {
 		console.log("Finished fixture db update handler");
 		Rx.Observable.from(finishedFixtures)
 			.flatMap((fixture: any) => {
-				if (fixture.status === 'FINISHED' && fixture.allPredictionsProcessed) {
+				if (fixture.status === 'FINISHED' && fixture.allPredictionsProcessed === false) {
 					return Rx.Observable.of(fixture);
 				}
 				return fixtureRepo.updateFixtureById(fixture._id, fixture.result, fixture.status)

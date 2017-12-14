@@ -36,8 +36,9 @@ var heartbeatCheck = function () {
 var updateFixtures = function () {
     console.log("Fixtures update initiated");
     clearTimeout(fixturesTimeout);
-    fixtures_updater_1.fixturesUpdater.update(function (date) {
+    fixtures_updater_1.fixturesUpdater.update(function (date, callback) {
         scheduleFixturesUpdate(date);
+        callback();
     });
 };
 var updateData = function () {

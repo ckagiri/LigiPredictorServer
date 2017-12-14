@@ -4,7 +4,7 @@ var Rx = require("rxjs");
 var _ = require("lodash");
 var common_1 = require("../common");
 var finishedFixture_dbupdate_1 = require("../handlers/finishedFixture-dbupdate");
-var unfinishedFixture_dbupdate_1 = require("../handlers/unfinishedFixture-dbupdate");
+var apiFixture_dbupdate_1 = require("../handlers/apiFixture-dbupdate");
 var Moment = require('moment');
 var apiDetailIdKey = common_1.fixtureRepo.apiDetailIdKey();
 var createIdToFixtureMap = function (fixtures) {
@@ -35,7 +35,7 @@ var fixtureChanged = function (updated, fromDb) {
     }
     return false;
 };
-var calculateNextFixtureUpdateTime = function (fixtureList, callback) {
+var calculateNextFixtureUpdateTime = function (fixtureList) {
     var fixtureLive = false;
     var now = Moment();
     var next = Moment().add(1, 'year');
@@ -61,7 +61,7 @@ var calculateNextFixtureUpdateTime = function (fixtureList, callback) {
     else if (next > tomorrow) {
         update = Moment().add(12, 'hours');
     }
-    callback(update);
+    return update;
 };
 var FixturesUpdater = (function () {
     function FixturesUpdater() {
@@ -96,19 +96,26 @@ var FixturesUpdater = (function () {
                     changedApiFixtures.push(apiFixture);
                 }
             }
-            var finishedFixtures = _.filter(changedApiFixtures, function (f) {
-                return f.status === 'CANCELED' || f.status === 'POSTPONED' || f.status === 'FINISHED';
+            apiFixture_dbupdate_1.apiFixtureDbUpdateHandler.handle(changedApiFixtures)
+                .subscribe(function (fixture) {
+                console.log("the game : " + getFixtureName(fixture) + " has been updated");
+            }, function (err) { console.log("Oops... " + err); }, function () {
+                var fixtureList = dbFixtures.concat(changedApiFixtures);
+                var nextUpdate = calculateNextFixtureUpdateTime(fixtureList);
+                callback(nextUpdate, function () {
+                    var finishedFixtures = _.filter(changedApiFixtures, function (f) {
+                        var fStatus = f.status.trim().toUpperCase();
+                        return fStatus === 'CANCELED' || fStatus === 'POSTPONED' || fStatus === 'FINISHED';
+                    });
+                    finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
+                });
             });
-            var unfishedFixtures = _.filter(changedApiFixtures, function (f) {
-                return f.status !== 'CANCELED' && f.status !== 'POSTPONED' && f.status !== 'FINISHED';
-            });
-            finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
-            unfinishedFixture_dbupdate_1.unfinishedFixtureDbUpdateHandler.handle(unfishedFixtures);
-            var fixtureList = dbFixtures.concat(changedApiFixtures);
-            calculateNextFixtureUpdateTime(fixtureList, callback);
         }, function (err) { console.log("Oops2... " + err); });
     };
     return FixturesUpdater;
 }());
 exports.fixturesUpdater = new FixturesUpdater();
+var getFixtureName = function (fixture) {
+    return fixture.homeTeam.name + " - " + fixture.awayTeam.name;
+};
 //# sourceMappingURL=fixtures-updater.js.map
