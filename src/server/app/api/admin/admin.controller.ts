@@ -8,7 +8,7 @@ export class AdminController {
     let{nextMatchUpdateMs, previousMatchUpdateMs, nextMatchUpdateDate} = nextGameUpdate();
     let nextTime = msToTime(nextMatchUpdateMs);
     let prevTime = msToTime(previousMatchUpdateMs);
-    res.status(200).json({nextMatchUpdateMs, previousMatchUpdateMs, nextMatchUpdateDate});
+    res.status(200).json({nextTime, prevTime, nextMatchUpdateDate});
   }
 
   showAfdFixture(req: Request, res: Response) {
