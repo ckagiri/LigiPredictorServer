@@ -67,7 +67,7 @@ const scheduleDataUpdate = (date: any) => {
 
 const scheduleFixturesUpdate = (date: any) => {
   let now = Moment();
-	let ms = date - now;
+	let ms = Math.abs(date - now);
   fixturesTimeout = setTimeout(() => updateFixtures(), ms);
   nextMatchUpdateMs = ms;
   nextMatchUpdateDate = date.format();

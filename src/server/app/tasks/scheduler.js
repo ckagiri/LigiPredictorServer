@@ -59,7 +59,7 @@ var scheduleDataUpdate = function (date) {
 };
 var scheduleFixturesUpdate = function (date) {
     var now = Moment();
-    var ms = date - now;
+    var ms = Math.abs(date - now);
     fixturesTimeout = setTimeout(function () { return updateFixtures(); }, ms);
     nextMatchUpdateMs = ms;
     nextMatchUpdateDate = date.format();
