@@ -36,3 +36,19 @@ export function signup(req: Request, res: Response) {
     });
   });
 }
+
+export function sendMailAddressConfirmationEmail() {
+
+}
+
+export function confirmMailAddress() {
+
+}
+
+export function resetPassword() {
+
+} 
+
+ export function confirmPasswordReset() {
+   
+ }
