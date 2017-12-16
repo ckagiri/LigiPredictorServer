@@ -8,13 +8,15 @@ var schedule = require('node-schedule');
 var Moment = require('moment');
 var dataTimeout;
 var fixturesTimeout;
+var nextMatchUpdateDate;
+var previousMatchUpdateMs = 0;
 var nextMatchUpdateMs = 0;
 exports.run = function () {
     updateData();
     schedule.scheduleJob('*/15 * * * *', heartbeatCheck);
 };
 exports.nextMatchUpdate = function () {
-    return nextMatchUpdateMs;
+    return { nextMatchUpdateMs: nextMatchUpdateMs, previousMatchUpdateMs: previousMatchUpdateMs, nextMatchUpdateDate: nextMatchUpdateDate };
 };
 var heartbeatCheck = function () {
     console.log("heartbeat");
@@ -36,6 +38,7 @@ var heartbeatCheck = function () {
 var updateFixtures = function () {
     console.log("Fixtures update initiated");
     clearTimeout(fixturesTimeout);
+    previousMatchUpdateMs = nextMatchUpdateMs;
     fixtures_updater_1.fixturesUpdater.update(function (date, callback) {
         scheduleFixturesUpdate(date);
         callback();
@@ -59,6 +62,7 @@ var scheduleFixturesUpdate = function (date) {
     var ms = date - now;
     fixturesTimeout = setTimeout(function () { return updateFixtures(); }, ms);
     nextMatchUpdateMs = ms;
+    nextMatchUpdateDate = date.format();
     console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + exports.msToTime(ms));
 };
 exports.msToTime = function (ms) {

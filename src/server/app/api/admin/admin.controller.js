@@ -7,9 +7,10 @@ var AdminController = (function () {
     function AdminController() {
     }
     AdminController.prototype.nextMatchUpdate = function (req, res) {
-        var ms = scheduler_1.nextMatchUpdate();
-        var time = scheduler_1.msToTime(ms);
-        res.status(200).json(time);
+        var _a = scheduler_1.nextMatchUpdate(), nextMatchUpdateMs = _a.nextMatchUpdateMs, previousMatchUpdateMs = _a.previousMatchUpdateMs, nextMatchUpdateDate = _a.nextMatchUpdateDate;
+        var nextTime = scheduler_1.msToTime(nextMatchUpdateMs);
+        var prevTime = scheduler_1.msToTime(previousMatchUpdateMs);
+        res.status(200).json({ nextMatchUpdateMs: nextMatchUpdateMs, previousMatchUpdateMs: previousMatchUpdateMs, nextMatchUpdateDate: nextMatchUpdateDate });
     };
     AdminController.prototype.showAfdFixture = function (req, res) {
         var compId = 445;

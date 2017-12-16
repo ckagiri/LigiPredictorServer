@@ -37,4 +37,16 @@ function signup(req, res) {
     });
 }
 exports.signup = signup;
+function sendMailAddressConfirmationEmail() {
+}
+exports.sendMailAddressConfirmationEmail = sendMailAddressConfirmationEmail;
+function confirmMailAddress() {
+}
+exports.confirmMailAddress = confirmMailAddress;
+function resetPassword() {
+}
+exports.resetPassword = resetPassword;
+function confirmPasswordReset() {
+}
+exports.confirmPasswordReset = confirmPasswordReset;
 //# sourceMappingURL=auth.local.js.map

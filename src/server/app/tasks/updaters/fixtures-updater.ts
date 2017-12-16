@@ -45,7 +45,7 @@ let calculateNextFixtureUpdateTime = (fixtureList: any[]) => {
       fixtureLive = true;
     } else if (fixture.status == "SCHEDULED" || fixture.status == "TIMED") {
       // Parse fixture start date/time
-      let fixtureStart = Moment(fixture.date);
+      let fixtureStart = Moment(fixture.date).subtract(5, 'minutes');
       if (fixtureStart > now && fixtureStart < next) {
         next = fixtureStart;
       }

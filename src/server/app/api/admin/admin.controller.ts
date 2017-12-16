@@ -5,9 +5,10 @@ import * as Rx from 'rxjs';
 
 export class AdminController {
   nextMatchUpdate(req: Request, res: Response) {
-    let ms = nextGameUpdate();
-    let time = msToTime(ms);
-    res.status(200).json(time);
+    let{nextMatchUpdateMs, previousMatchUpdateMs, nextMatchUpdateDate} = nextGameUpdate();
+    let nextTime = msToTime(nextMatchUpdateMs);
+    let prevTime = msToTime(previousMatchUpdateMs);
+    res.status(200).json({nextMatchUpdateMs, previousMatchUpdateMs, nextMatchUpdateDate});
   }
 
   showAfdFixture(req: Request, res: Response) {

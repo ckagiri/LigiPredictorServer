@@ -7,6 +7,8 @@ let schedule =	require('node-schedule');
 let Moment = require('moment');
 let dataTimeout: any;
 let fixturesTimeout: any;
+let nextMatchUpdateDate: any;
+let previousMatchUpdateMs: number = 0;
 let nextMatchUpdateMs: number = 0;
 
 export const run = () => {
@@ -15,7 +17,7 @@ export const run = () => {
 }
 
 export const nextMatchUpdate = () => {
-  return nextMatchUpdateMs;
+  return {nextMatchUpdateMs, previousMatchUpdateMs, nextMatchUpdateDate};
 }
 
 const heartbeatCheck = () => {
@@ -40,6 +42,7 @@ const heartbeatCheck = () => {
 const updateFixtures = () => {
   console.log("Fixtures update initiated");
   clearTimeout(fixturesTimeout);
+  previousMatchUpdateMs = nextMatchUpdateMs;
   fixturesUpdater.update((date: any, callback: Function) => {
     scheduleFixturesUpdate(date);
     callback();
@@ -67,6 +70,7 @@ const scheduleFixturesUpdate = (date: any) => {
 	let ms = date - now;
   fixturesTimeout = setTimeout(() => updateFixtures(), ms);
   nextMatchUpdateMs = ms;
+  nextMatchUpdateDate = date.format();
 	console.log("Fixtures Update scheduled for " + date.format() + " - that's in " + msToTime(ms));
 }
 

@@ -47,7 +47,7 @@ var calculateNextFixtureUpdateTime = function (fixtureList) {
         }
         else if (fixture.status == "SCHEDULED" || fixture.status == "TIMED") {
             // Parse fixture start date/time
-            var fixtureStart = Moment(fixture.date);
+            var fixtureStart = Moment(fixture.date).subtract(5, 'minutes');
             if (fixtureStart > now && fixtureStart < next) {
                 next = fixtureStart;
             }
