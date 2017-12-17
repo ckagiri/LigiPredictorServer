@@ -5,6 +5,7 @@ var _ = require("lodash");
 var common_1 = require("../common");
 var finishedFixture_dbupdate_1 = require("../handlers/finishedFixture-dbupdate");
 var apiFixture_dbupdate_1 = require("../handlers/apiFixture-dbupdate");
+var async_1 = require("async");
 var Moment = require('moment');
 var apiDetailIdKey = common_1.fixtureRepo.apiDetailIdKey();
 var createIdToFixtureMap = function (fixtures) {
@@ -96,18 +97,20 @@ var FixturesUpdater = (function () {
                     changedApiFixtures.push(apiFixture);
                 }
             }
-            apiFixture_dbupdate_1.apiFixtureDbUpdateHandler.handle(changedApiFixtures)
-                .subscribe(function (fixture) {
-                console.log("the game : " + getFixtureName(fixture) + " has been updated");
-            }, function (err) { console.log("Oops... " + err); }, function () {
-                var fixtureList = dbFixtures.concat(changedApiFixtures);
-                var nextUpdate = calculateNextFixtureUpdateTime(fixtureList);
-                callback(nextUpdate, function () {
-                    var finishedFixtures = _.filter(changedApiFixtures, function (f) {
-                        var fStatus = f.status.trim().toUpperCase();
-                        return fStatus === 'CANCELED' || fStatus === 'POSTPONED' || fStatus === 'FINISHED';
+            async_1.setImmediate(function () {
+                apiFixture_dbupdate_1.apiFixtureDbUpdateHandler.handle(changedApiFixtures)
+                    .subscribe(function (fixture) {
+                    console.log("the game : " + getFixtureName(fixture) + " has been updated");
+                }, function (err) { console.log("Oops... " + err); }, function () {
+                    var fixtureList = dbFixtures.concat(changedApiFixtures);
+                    var nextUpdate = calculateNextFixtureUpdateTime(fixtureList);
+                    callback(nextUpdate, function () {
+                        var finishedFixtures = _.filter(changedApiFixtures, function (f) {
+                            var fStatus = f.status.trim().toUpperCase();
+                            return fStatus === 'CANCELED' || fStatus === 'POSTPONED' || fStatus === 'FINISHED';
+                        });
+                        finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
                     });
-                    finishedFixture_dbupdate_1.finishedFixtureDbUpdateHandler.handle(finishedFixtures);
                 });
             });
         }, function (err) { console.log("Oops2... " + err); });

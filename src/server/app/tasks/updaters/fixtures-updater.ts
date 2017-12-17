@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import {client, fixtureRepo} from '../common'
 import {finishedFixtureDbUpdateHandler} from '../handlers/finishedFixture-dbupdate';
 import {apiFixtureDbUpdateHandler} from '../handlers/apiFixture-dbupdate';
+import { setImmediate } from 'async';
 
 let Moment = require('moment');
 let apiDetailIdKey = fixtureRepo.apiDetailIdKey();
@@ -95,22 +96,24 @@ class FixturesUpdater {
             changedApiFixtures.push(apiFixture);
           }
         }
-        apiFixtureDbUpdateHandler.handle(changedApiFixtures)
-          .subscribe((fixture: any) => {
-             console.log("the game : " + getFixtureName(fixture) + " has been updated");
-            },
-            (err: any) => {console.log(`Oops... ${err}`)},
-            () => {	
-              let fixtureList = dbFixtures.concat(changedApiFixtures);             
-              let nextUpdate = calculateNextFixtureUpdateTime(fixtureList);
-              callback(nextUpdate, () => {
-                let finishedFixtures = _.filter(changedApiFixtures, f => {
-                  let fStatus = f.status.trim().toUpperCase()
-                  return fStatus === 'CANCELED' || fStatus=== 'POSTPONED'|| fStatus === 'FINISHED'
-                });       
-                finishedFixtureDbUpdateHandler.handle(finishedFixtures);                 
-              })
-            });
+        setImmediate(() => {
+          apiFixtureDbUpdateHandler.handle(changedApiFixtures)
+            .subscribe((fixture: any) => {
+              console.log("the game : " + getFixtureName(fixture) + " has been updated");
+              },
+              (err: any) => {console.log(`Oops... ${err}`)},
+              () => {	
+                let fixtureList = dbFixtures.concat(changedApiFixtures);             
+                let nextUpdate = calculateNextFixtureUpdateTime(fixtureList);
+                callback(nextUpdate, () => {
+                    let finishedFixtures = _.filter(changedApiFixtures, f => {
+                      let fStatus = f.status.trim().toUpperCase()
+                      return fStatus === 'CANCELED' || fStatus=== 'POSTPONED'|| fStatus === 'FINISHED'
+                    });       
+                    finishedFixtureDbUpdateHandler.handle(finishedFixtures);  
+                  })               
+              });
+        })
       }, 
       (err: any) => { console.log(`Oops2... ${err}`) })
   }
