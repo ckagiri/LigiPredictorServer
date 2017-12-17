@@ -50,6 +50,10 @@ let calculateNextFixtureUpdateTime = (fixtureList: any[]) => {
       if (fixtureStart > now && fixtureStart < next) {
         next = fixtureStart;
       }
+      const diff = Math.abs(now.diff(fixtureStart, 'minutes'));
+      if(diff <= 10) {
+        fixtureLive = true;
+      }
     }
   }
   let tomorrow = Moment().add(1, 'day');
@@ -115,7 +119,11 @@ class FixturesUpdater {
               });
         })
       }, 
-      (err: any) => { console.log(`Oops2... ${err}`) })
+      (err: any) => { 
+        console.log(`Oops2... ${err}`);
+        let nextUpdate = Moment().add(1, 'minutes');
+        callback(nextUpdate, () => {})          
+      })
   }
 }
 

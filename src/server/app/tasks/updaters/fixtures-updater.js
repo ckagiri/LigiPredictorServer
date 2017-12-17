@@ -52,6 +52,10 @@ var calculateNextFixtureUpdateTime = function (fixtureList) {
             if (fixtureStart > now && fixtureStart < next) {
                 next = fixtureStart;
             }
+            var diff = Math.abs(now.diff(fixtureStart, 'minutes'));
+            if (diff <= 10) {
+                fixtureLive = true;
+            }
         }
     }
     var tomorrow = Moment().add(1, 'day');
@@ -113,7 +117,11 @@ var FixturesUpdater = (function () {
                     });
                 });
             });
-        }, function (err) { console.log("Oops2... " + err); });
+        }, function (err) {
+            console.log("Oops2... " + err);
+            var nextUpdate = Moment().add(1, 'minutes');
+            callback(nextUpdate, function () { });
+        });
     };
     return FixturesUpdater;
 }());
