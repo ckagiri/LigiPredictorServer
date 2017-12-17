@@ -50,7 +50,7 @@ let calculateNextFixtureUpdateTime = (fixtureList: any[]) => {
       if (fixtureStart > now && fixtureStart < next) {
         next = fixtureStart;
       }
-      const diff = Math.abs(now.diff(fixtureStart, 'minutes'));
+      const diff = fixtureStart.diff(now, 'minutes');
       if(diff <= 10) {
         fixtureLive = true;
       }

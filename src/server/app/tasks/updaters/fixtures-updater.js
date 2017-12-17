@@ -52,7 +52,7 @@ var calculateNextFixtureUpdateTime = function (fixtureList) {
             if (fixtureStart > now && fixtureStart < next) {
                 next = fixtureStart;
             }
-            var diff = Math.abs(now.diff(fixtureStart, 'minutes'));
+            var diff = fixtureStart.diff(now, 'minutes');
             if (diff <= 10) {
                 fixtureLive = true;
             }
