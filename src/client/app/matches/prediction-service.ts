@@ -4,8 +4,8 @@ namespace app.core {
   export interface IPredictionService {
     pickJoker: (fixture: any) => ng.IPromise<any>;
     submitPredictions: (req:any) => ng.IPromise<any>;
-    fetchLiveFixtures: (league: any, season:any, round: any) => ng.IPromise<any>;
-    fetchProcessedPredictions: (league: any, season: any, round: any) => ng.IPromise<any>;
+    fetchLiveFixtures: (league: any, season:any, round: any) => ng.IHttpPromise<any>;
+    fetchProcessedPredictions: (league: any, season: any, round: any) => ng.IHttpPromise<any>;
   }
 
   export class PredictionService implements IPredictionService {

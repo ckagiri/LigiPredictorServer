@@ -8,6 +8,7 @@ class FixtureRouter {
 
     get routes () {
         router.get('/', this.controller.list);
+        router.get('/current-defaults', this.controller.currentDefaults)
         router.get('/predictions', this.controller.predictions)
         router.get('/live', this.controller.live)
         router.get('/:id', this.controller.show)

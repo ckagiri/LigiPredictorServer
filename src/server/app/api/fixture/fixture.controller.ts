@@ -132,7 +132,54 @@ export class FixtureController {
 					console.error(err);
 					res.status(500).json(err);
 				});
-		}
+    }
+    
+  
+  
+    currentDefaults(req: Request, res: Response) {
+      let defaultSeason:any = null;
+      let source = seasonRepo.getDefault();
+      source
+        .flatMap((season: any) => {
+          defaultSeason = season;
+          return fixtureRepo.findAllBySeason(season._id)
+        })
+        .flatMap((fixtures: any[]) => {
+          return Rx.Observable.from(fixtures);
+        })	
+        .reduce((acc: any, fixture: any) => {
+          let {bestDiff, bestDate, closestFixture} = acc;
+          if(bestDiff == null) {
+            bestDiff = -(new Date(0,0,0)).valueOf()
+            bestDate = fixture.date;
+          }
+          let now = Date.now();
+          let currDiff = Math.abs(fixture.date - now);
+          if(currDiff < bestDiff) {
+            bestDiff = currDiff;
+            bestDate = fixture.date;
+            closestFixture = fixture;
+          }
+          acc = {bestDiff, bestDate, closestFixture};
+          return acc;
+        }, {})
+        .subscribe((map: any) => {
+          let {closestFixture} = map;
+          let {_id:id, name, slug, year:sYear, league} = defaultSeason;
+          let season  =  {id, name, slug, sYear}
+          let round = closestFixture.round;    
+          let date = closestFixture.date;
+          let month = date.getUTCMonth() + 1;
+          let year = date.getFullYear();
+          let data = {
+            league, season, round, month, year
+          }
+          res.status(200).json(data);
+        }, (err: any) => {
+          console.error(err);
+          res.status(500).json(err);
+        })
+    }
 
 	live(req: Request, res: Response) {
 		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
