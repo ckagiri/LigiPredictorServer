@@ -67,7 +67,6 @@ namespace app.leaderboards {
     }
 
     getSeasonMonthLeaderboard() {
-      console.log(this.month);
       if(this.selectedMonth != null) {
         this.month = this.selectedMonth.id
       }

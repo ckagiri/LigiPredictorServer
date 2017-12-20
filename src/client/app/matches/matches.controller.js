@@ -357,9 +357,13 @@ var app;
                     }
                     else if (fixture.status === "SCHEDULED" || fixture.status === "TIMED") {
                         // Parse fixture start date/time
-                        var fixtureStart = Moment(fixture.date);
+                        var fixtureStart = Moment(fixture.date).subtract(5, 'minutes');
                         if (fixtureStart > now && fixtureStart < next) {
                             next = fixtureStart;
+                        }
+                        var diff = fixtureStart.diff(now, 'minutes');
+                        if (diff <= 10) {
+                            fixtureLive = true;
                         }
                     }
                 }

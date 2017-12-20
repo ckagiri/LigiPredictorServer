@@ -55,7 +55,6 @@ var app;
             };
             LeaderboardsController.prototype.getSeasonMonthLeaderboard = function () {
                 var _this = this;
-                console.log(this.month);
                 if (this.selectedMonth != null) {
                     this.month = this.selectedMonth.id;
                 }
