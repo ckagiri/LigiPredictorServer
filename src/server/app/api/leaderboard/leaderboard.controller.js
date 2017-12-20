@@ -8,6 +8,8 @@ var leagueRepo = new repositories_1.LeagueRepo(new ligi_predictor_1.LeagueConver
 var seasonRepo = new repositories_1.SeasonRepo(new ligi_predictor_1.SeasonConverter(leagueRepo));
 var leaderboardRepo = new repositories_1.LeaderboardRepo();
 var userScoreRepo = new repositories_1.UserScoreRepo();
+var teamRepo = new repositories_1.TeamRepo(new ligi_predictor_1.TeamConverter());
+var fixtureRepo = new repositories_1.FixtureRepo(new ligi_predictor_1.FixtureConverter(seasonRepo, repositories_1.TeamRepo));
 var LeaderboardController = (function () {
     function LeaderboardController() {
     }
@@ -140,6 +142,50 @@ var LeaderboardController = (function () {
             .toArray()
             .subscribe(function (userScores) {
             res.status(200).json(userScores);
+        }, function (err) {
+            console.error(err);
+            res.status(500).json(err);
+        });
+    };
+    LeaderboardController.prototype.currentDefaults = function (req, res) {
+        var defaultSeason = null;
+        var source = seasonRepo.getDefault();
+        source
+            .flatMap(function (season) {
+            defaultSeason = season;
+            return fixtureRepo.findAllBySeason(season._id);
+        })
+            .flatMap(function (fixtures) {
+            return Rx.Observable.from(fixtures);
+        })
+            .reduce(function (acc, fixture) {
+            var bestDiff = acc.bestDiff, bestDate = acc.bestDate, closestFixture = acc.closestFixture;
+            if (bestDiff == null) {
+                bestDiff = -(new Date(0, 0, 0)).valueOf();
+                bestDate = fixture.date;
+            }
+            var now = Date.now();
+            var currDiff = Math.abs(fixture.date - now);
+            if (currDiff < bestDiff && fixture.status == 'FINISHED') {
+                bestDiff = currDiff;
+                bestDate = fixture.date;
+                closestFixture = fixture;
+            }
+            acc = { bestDiff: bestDiff, bestDate: bestDate, closestFixture: closestFixture };
+            return acc;
+        }, {})
+            .subscribe(function (map) {
+            var closestFixture = map.closestFixture;
+            var id = defaultSeason._id, name = defaultSeason.name, slug = defaultSeason.slug, sYear = defaultSeason.year, league = defaultSeason.league;
+            var season = { id: id, name: name, slug: slug, sYear: sYear };
+            var round = closestFixture.round;
+            var date = closestFixture.date;
+            var month = date.getUTCMonth() + 1;
+            var year = date.getFullYear();
+            var data = {
+                league: league, season: season, round: round, month: month, year: year
+            };
+            res.status(200).json(data);
         }, function (err) {
             console.error(err);
             res.status(500).json(err);

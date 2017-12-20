@@ -17,7 +17,7 @@ namespace app.core {
     }
 
     getCurrentDefaults() {
-      return this.$http.get('/api/matches/current-defaults')
+      return this.$http.get('/api/leaderboard/current-defaults')
       .then(this.success)
       .catch(this.fail);
     }

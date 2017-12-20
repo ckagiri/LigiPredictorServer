@@ -85,11 +85,14 @@ namespace app.leaderboards {
         }
       });
       this.months = Array.apply(null, {length: 12}).map((value:any, index: number) => {
+        let names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return {
           id: index + 1,
-          name: index + 1
+          name: names[index]
         }
       });
+      this.selectedRound = this.rounds.filter(n => { return n.id == this.round })[0];
+      this.selectedMonth = this.months.filter(n => { return n.id == this.month })[0];
     }
 	}
 

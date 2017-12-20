@@ -10,6 +10,7 @@ var LeaderboardRouter = (function () {
     Object.defineProperty(LeaderboardRouter.prototype, "routes", {
         get: function () {
             router.get('/', this.controller.seasonList);
+            router.get('/current-defaults', this.controller.currentDefaults);
             router.get('/league/:league/season/:season', this.controller.seasonList);
             router.get('/league/:league/season/:season/round/:round', this.controller.seasonRoundList);
             router.get('/league/:league/season/:season/year/:year/month/:month', this.controller.seasonMonthList);

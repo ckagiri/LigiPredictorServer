@@ -136,50 +136,6 @@ var FixtureController = (function () {
             res.status(500).json(err);
         });
     };
-    FixtureController.prototype.currentDefaults = function (req, res) {
-        var defaultSeason = null;
-        var source = seasonRepo.getDefault();
-        source
-            .flatMap(function (season) {
-            defaultSeason = season;
-            return fixtureRepo.findAllBySeason(season._id);
-        })
-            .flatMap(function (fixtures) {
-            return Rx.Observable.from(fixtures);
-        })
-            .reduce(function (acc, fixture) {
-            var bestDiff = acc.bestDiff, bestDate = acc.bestDate, closestFixture = acc.closestFixture;
-            if (bestDiff == null) {
-                bestDiff = -(new Date(0, 0, 0)).valueOf();
-                bestDate = fixture.date;
-            }
-            var now = Date.now();
-            var currDiff = Math.abs(fixture.date - now);
-            if (currDiff < bestDiff) {
-                bestDiff = currDiff;
-                bestDate = fixture.date;
-                closestFixture = fixture;
-            }
-            acc = { bestDiff: bestDiff, bestDate: bestDate, closestFixture: closestFixture };
-            return acc;
-        }, {})
-            .subscribe(function (map) {
-            var closestFixture = map.closestFixture;
-            var id = defaultSeason._id, name = defaultSeason.name, slug = defaultSeason.slug, sYear = defaultSeason.year, league = defaultSeason.league;
-            var season = { id: id, name: name, slug: slug, sYear: sYear };
-            var round = closestFixture.round;
-            var date = closestFixture.date;
-            var month = date.getUTCMonth() + 1;
-            var year = date.getFullYear();
-            var data = {
-                league: league, season: season, round: round, month: month, year: year
-            };
-            res.status(200).json(data);
-        }, function (err) {
-            console.error(err);
-            res.status(500).json(err);
-        });
-    };
     FixtureController.prototype.live = function (req, res) {
         var _a = req.query, leagueSlug = _a.league, seasonSlug = _a.season, matchday = _a.round;
         var source;
