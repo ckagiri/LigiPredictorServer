@@ -125,6 +125,9 @@ var FinishedFixtureDbUpdateHandler = (function () {
                     .flatMap(function (score, index) {
                     index += 1;
                     var previousPosition = score.posNew || 0;
+                    if (previousPosition === index) {
+                        return Rx.Observable.of(leaderboardId.toString());
+                    }
                     var posOld = previousPosition;
                     var posNew = index;
                     return common_1.userScoreRepo.update(score._id, { posOld: posOld, posNew: posNew })

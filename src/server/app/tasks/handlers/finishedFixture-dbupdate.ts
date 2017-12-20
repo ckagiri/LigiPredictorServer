@@ -128,6 +128,9 @@ class FinishedFixtureDbUpdateHandler {
                 .flatMap((score: any, index: number) => { 
                   index += 1;
                   let previousPosition = score.posNew || 0;
+                  if(previousPosition === index) {
+                    return Rx.Observable.of(leaderboardId.toString())
+                  }
                   let posOld = previousPosition;
                   let posNew = index;
                   return userScoreRepo.update(score._id, {posOld, posNew})
