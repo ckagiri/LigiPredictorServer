@@ -18,6 +18,11 @@ var app;
                     return _this.$q.reject(msg);
                 };
             }
+            LeaderboardService.prototype.getCurrentDefaults = function () {
+                return this.$http.get('/api/matches/current-defaults')
+                    .then(this.success)
+                    .catch(this.fail);
+            };
             LeaderboardService.prototype.getSeasonLeaderboard = function (leagueSlug, seasonSlug) {
                 return this.$http.get("/api/leaderboard/league/" + leagueSlug + "/season/" + seasonSlug)
                     .then(this.success)

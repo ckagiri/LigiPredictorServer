@@ -1,34 +1,20 @@
 <div class="col-sm-12">
 	<div class="row">
 		<div class="col-xs-12 col-md-6">
-			<h4>Month Leaderboard</h4>
-			<div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Name</th>
-							<th>Points</th>
-							<th>Goal Difference</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="score in vm.seasonRoundLeaderboard">
-							<td>
-								<i ng-if="score.change > 0" class="fa fa-caret-up" style="font-size:12px;color:green"></i>
-								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:red"></i>
-								<i ng-if="score.change === 0"></i> {{score.rank}}
-							</td>
-							<td>{{score.user.displayName}}</td>
-							<td>{{score.points || 0}}</td>
-							<td>{{score.goalDiff || 0}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="col-xs-12 col-md-6">
-			<h4>Round Leaderboard</h4>
+      <h4>Month Leaderboard</h4>
+      <div class="row">
+        <span class="col-xs-1">
+          Month:
+        </span>
+        <div class="col-xs-1">
+          <select ng-model="vm.selectedMonth" 
+              ng-options="m as m.name for m in vm.months track by m.id"
+              ng-change="vm.getSeasonMonthLeaderboard()"
+              class="form-control">
+              <option value="">--</option>
+          </select>
+        </div>
+      </div>
 			<div>
 				<table class="table">
 					<thead>
@@ -46,7 +32,47 @@
 								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:red"></i>
 								<i ng-if="score.change === 0"></i> {{score.rank}}
 							</td>
-							<td>{{score.user.displayName}}</td>
+							<td>{{score.user.userName || score.user.displayName}}</td>
+							<td>{{score.points || 0}}</td>
+							<td>{{score.goalDiff || 0}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="col-xs-12 col-md-6">
+      <h4>Round Leaderboard</h4>
+      <div class="row">
+        <span class="col-xs-1">
+          Round:
+        </span>
+        <div class="col-xs-1">
+          <select ng-model="vm.selectedRound" 
+              ng-options="r as r.name for r in vm.rounds track by r.id"
+              ng-change="vm.getSeasonRoundLeaderboard()"
+              class="form-control">
+              <option value="">--</option>
+          </select>
+        </div>
+      </div>
+			<div>
+				<table class="table">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Name</th>
+							<th>Points</th>
+							<th>Goal Difference</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="score in vm.seasonRoundLeaderboard">
+							<td>
+								<i ng-if="score.change > 0" class="fa fa-caret-up" style="font-size:12px;color:green"></i>
+								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:red"></i>
+								<i ng-if="score.change === 0"></i> {{score.rank}}
+							</td>
+							<td>{{score.user.userName || score.user.displayName}}</td>
 							<td>{{score.points || 0}}</td>
 							<td>{{score.goalDiff || 0}}</td>
 						</tr>
@@ -75,7 +101,7 @@
 								<i ng-if="score.change < 0" class="fa fa-caret-down" style="font-size:12px;color:red"></i>
 								<i ng-if="score.change === 0"></i> {{score.rank}}
 							</td>
-							<td>{{score.user.displayName}}</td>
+							<td>{{score.user.userName || score.user.displayName}}</td>
 							<td>{{score.points || 0}}</td>
 							<td>{{score.goalDiff || 0}}</td>
 						</tr>

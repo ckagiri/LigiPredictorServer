@@ -2,6 +2,7 @@ namespace app.core {
   'use strict';
 
   export interface ILeaderboardService {
+    getCurrentDefaults: () => ng.IPromise<any>;
     getSeasonLeaderboard: (leagueSlug: any, seasonSlug: any) => ng.IPromise<any>;
     getSeasonRoundLeaderboard: (leagueSlug: any, seasonSlug: any, round: number) => ng.IPromise<any>;
     getSeasonMonthLeaderboard: (leagueSlug: any, seasonSlug: any, year: number, month: number) => ng.IPromise<any>;
@@ -13,6 +14,12 @@ namespace app.core {
       private $q: ng.IQService,
       private exception: blocks.exception.IException,
       private logger: blocks.logger.Logger) {
+    }
+
+    getCurrentDefaults() {
+      return this.$http.get('/api/matches/current-defaults')
+      .then(this.success)
+      .catch(this.fail);
     }
 
     getSeasonLeaderboard(leagueSlug: any, seasonSlug: any) { 
