@@ -10,10 +10,10 @@ namespace app.core {
 	}
 	export interface InstanceResource {
 		id(): string;
-		save(successcb?: any, errorcb?: any): ng.IPromise<any>;
+		create(successcb?: any, errorcb?: any): ng.IPromise<any>;
 		update(successcb?: any, errorcb?: any): ng.IPromise<any>;
 		remove(successcb?: any, errorcb?: any): ng.IPromise<any>;
-		saveOrUpdate(successcb?: any, errorcb?: any, errorSavecb?: any, errorUpdatecb?: any): ng.IPromise<any>;
+		save(successcb?: any, errorcb?: any, errorSavecb?: any, errorUpdatecb?: any): ng.IPromise<any>;
 	}
 
 	export interface IResource extends StaticResource, InstanceResource {	}
@@ -70,7 +70,7 @@ namespace app.core {
 					return "";
 				}
 
-				save(successcb: any, errorcb: any) {
+				create(successcb: any, errorcb: any) {
 					var httpPromise = $http.post(url, this, {params:defaultParams});
 					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
 				}
@@ -85,11 +85,11 @@ namespace app.core {
 					return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
 				}
 
-				saveOrUpdate(savecb: any, updatecb: any, errorSavecb: any, errorUpdatecb: any) {
+				save(savecb: any, updatecb: any, errorSavecb: any, errorUpdatecb: any) {
 					if (this.id()) {
 						return this.update(updatecb, errorUpdatecb);
 					} else {
-						return this.save(savecb, errorSavecb);
+						return this.create(savecb, errorSavecb);
 					}
 				}
 

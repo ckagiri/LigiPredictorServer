@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var _ = require("lodash");
 var Rx = require("rxjs");
 var repositories_1 = require("../../../db/repositories");
 var ligi_predictor_1 = require("../../../db/converters/ligi-predictor");
@@ -16,6 +17,38 @@ var FixtureController = (function () {
     FixtureController.prototype.show = function (req, res) {
         var id = req.params.id;
         singleFixture(id)
+            .subscribe(function (fixture) {
+            res.status(200).json(fixture);
+        }, function (err) {
+            console.error(err);
+            res.status(500).json(err);
+        });
+    };
+    FixtureController.prototype.create = function (req, res) {
+        var newFixture = req.body;
+        fixtureRepo.insert(req.params.id)
+            .subscribe(function (fixture) {
+            res.status(201).json(fixture);
+        }, function (err) {
+            res.status(400).json(err);
+        });
+    };
+    FixtureController.prototype.update = function (req, res) {
+        if (req.body._id) {
+            delete req.body._id;
+        }
+        fixtureRepo.getById(req.params.id)
+            .flatMap(function (fixture) {
+            if (!fixture) {
+                res.sendStatus(404);
+                return Rx.Observable.throw(Error("bad"));
+            }
+            return Rx.Observable.of(fixture);
+        })
+            .flatMap(function (fixture) {
+            var updated = _.merge(fixture, req.body);
+            return fixtureRepo.updateById({ _id: req.params.id }, updated);
+        })
             .subscribe(function (fixture) {
             res.status(200).json(fixture);
         }, function (err) {

@@ -1,0 +1,26 @@
+<mm-modal 
+  status="status" 
+  id="'edit-odds'" 
+  title-key="'Edit Odds'" 
+  submit-key="'Submit'" 
+  submitting-key="'Submitting'" 
+  on-cancel="vm.cancel()"
+  on-submit="vm.editOdds()">
+
+  <form action="" method="POST">
+    <div class="form-group">
+      <label for="home-win">Home Win</label>
+      <input id="home-win" type="text" class="form-control" ng-model="vm.fixture.odds.homeWin" />
+    </div>
+
+    <div class="form-group">
+      <label for="draw">Draw</label>
+      <input id="draw" type="text" class="form-control" ng-model="vm.fixture.odds.draw" />
+    </div>
+
+    <div class="form-group">
+      <label for="away-win">Away win</label>
+      <input id="away-win" type="text" class="form-control" ng-model="vm.fixture.odds.awayWin" />
+    </div>
+  </form>
+</mm-modal>

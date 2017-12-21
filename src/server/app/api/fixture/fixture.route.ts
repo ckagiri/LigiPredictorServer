@@ -11,6 +11,8 @@ class FixtureRouter {
         router.get('/predictions', this.controller.predictions)
         router.get('/live', this.controller.live)
         router.get('/:id', this.controller.show)
+        router.post('/', this.controller.create)
+        router.put('/:id', this.controller.update)
         return router;
     }
 }

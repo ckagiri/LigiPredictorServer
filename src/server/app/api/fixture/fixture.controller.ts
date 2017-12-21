@@ -24,6 +24,41 @@ export class FixtureController {
     		});
   }
 
+  create(req: Request, res: Response) {
+    let newFixture = req.body;
+
+    fixtureRepo.insert(req.params.id)
+      .subscribe((fixture: any) => {
+        res.status(201).json(fixture);
+      }, (err: any) => {
+        res.status(400).json(err);
+    });
+  }
+
+  update(req: Request, res: Response) {
+    if (req.body._id) {
+      delete req.body._id;
+    }
+    fixtureRepo.getById(req.params.id)
+      .flatMap((fixture: any) => {
+        if(!fixture) {
+					res.sendStatus(404);
+					return Rx.Observable.throw(Error("bad"));
+				}
+				return Rx.Observable.of(fixture)
+      })
+      .flatMap((fixture: any) => {
+        let updated = _.merge(fixture, req.body);
+				return fixtureRepo.updateById({_id: req.params.id}, updated);
+      })
+      .subscribe((fixture: any) => {
+        res.status(200).json(fixture);
+      }, (err: any) => {
+        console.error(err);
+        res.status(500).json(err);
+      })
+  }
+
   list(req: Request, res: Response) {
 		let {league: leagueSlug, season: seasonSlug, round: matchday}= req.query;
 		matchday = matchday && matchday.split('-').pop();

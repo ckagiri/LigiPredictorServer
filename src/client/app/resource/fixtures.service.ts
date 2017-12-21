@@ -10,7 +10,7 @@ namespace app.core {
 	FixturesResource.$inject = ['resource'];
 	function FixturesResource (resource: (resourceName: string) => IFixturesResource) {
 		var Leagues: ILeaguesResource = resource("leagues");
-		var Fixtures: IFixturesResource = resource("fixtures");
+		var Fixtures: IFixturesResource = resource("matches");
 		Fixtures.forRound = function (leagueId: string, seasonId: string, roundId: string) {
 			return Leagues.getList('/:leagueId/seasons/:seasonId/rounds/:roundId/fixtures', {leagueId, seasonId, roundId});
   	}

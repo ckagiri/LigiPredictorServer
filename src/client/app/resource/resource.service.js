@@ -43,7 +43,7 @@ var app;
                         }
                         return "";
                     };
-                    Resource.prototype.save = function (successcb, errorcb) {
+                    Resource.prototype.create = function (successcb, errorcb) {
                         var httpPromise = $http.post(url, this, { params: defaultParams });
                         return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
                     };
@@ -55,12 +55,12 @@ var app;
                         var httpPromise = $http['delete'](url + "/" + this.id(), { params: defaultParams });
                         return Resource.thenFactoryMethod(httpPromise, successcb, errorcb);
                     };
-                    Resource.prototype.saveOrUpdate = function (savecb, updatecb, errorSavecb, errorUpdatecb) {
+                    Resource.prototype.save = function (savecb, updatecb, errorSavecb, errorUpdatecb) {
                         if (this.id()) {
                             return this.update(updatecb, errorUpdatecb);
                         }
                         else {
-                            return this.save(savecb, errorSavecb);
+                            return this.create(savecb, errorSavecb);
                         }
                     };
                     Resource.thenFactoryMethod = function (httpPromise, successcb, errorcb, isArray) {

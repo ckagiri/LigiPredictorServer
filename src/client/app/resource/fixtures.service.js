@@ -6,7 +6,7 @@ var app;
         FixturesResource.$inject = ['resource'];
         function FixturesResource(resource) {
             var Leagues = resource("leagues");
-            var Fixtures = resource("fixtures");
+            var Fixtures = resource("matches");
             Fixtures.forRound = function (leagueId, seasonId, roundId) {
                 return Leagues.getList('/:leagueId/seasons/:seasonId/rounds/:roundId/fixtures', { leagueId: leagueId, seasonId: seasonId, roundId: roundId });
             };
