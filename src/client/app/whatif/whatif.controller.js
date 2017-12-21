@@ -70,16 +70,6 @@ var app;
                 this.season.nextRound();
                 this.season1.nextRound();
             };
-            WhatIfController.prototype.addHomeScore = function (match) {
-                match.setScore(match.getHomeScore() + 1, match.getAwayScore());
-                this.season.assign();
-                this.season1 = angular.copy(this.season);
-            };
-            WhatIfController.prototype.addAwayScore = function (match) {
-                match.setScore(match.getHomeScore(), match.getAwayScore() + 1);
-                this.season.assign();
-                this.season1 = angular.copy(this.season);
-            };
             WhatIfController.prototype.onPredStandingRoundChanged = function () {
                 this.predRound = this.selectedPredRound.id;
                 this.predSeason = this.leagueSeasonFactory.createLeagueSeason(this.fixtures, true, this.predRound);
@@ -88,7 +78,6 @@ var app;
                 var now = moment();
                 var closestTime = moment(closestMatchDate);
                 var diff = Math.abs(closestTime.diff(now, 'minutes'));
-                console.log('diff', diff);
                 if (diff < 60) {
                     this.serverRefresh();
                 }

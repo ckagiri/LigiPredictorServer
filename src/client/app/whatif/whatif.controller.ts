@@ -86,18 +86,6 @@ namespace app.whatif {
       this.season.nextRound();
       this.season1.nextRound();
     }
-
-    addHomeScore(match: any) {
-			match.setScore(match.getHomeScore() + 1, match.getAwayScore());
-      this.season.assign();
-      this.season1 = angular.copy(this.season);
-		}
-
-		addAwayScore(match: any) {
-			match.setScore(match.getHomeScore(), match.getAwayScore() + 1);
-      this.season.assign();
-      this.season1 = angular.copy(this.season);
-    }
     
     onPredStandingRoundChanged() {
       this.predRound = this.selectedPredRound.id
@@ -107,7 +95,6 @@ namespace app.whatif {
       let now = moment();
       const closestTime = moment(closestMatchDate);
       const diff = Math.abs(closestTime.diff(now, 'minutes'));
-      console.log('diff', diff);
       if(diff < 60) {
         this.serverRefresh();
       }
