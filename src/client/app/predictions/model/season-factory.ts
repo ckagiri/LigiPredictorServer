@@ -4,11 +4,11 @@ namespace app.core {
   factory.$inject = ['$window', 'Team', 'Season', 'Match', 'Round']
   function factory($window: ng.IWindowService, Team: any, Season: any, Match: any, Round: any) {
     class LeagueSeasonFactory {
-      createLeagueSeason(data: any, usePredictions = false) {
-        return this.createSeason(data, usePredictions)
+      createLeagueSeason(data: any, usePredictions = false, fromRound = 1) {
+        return this.createSeason(data, usePredictions, fromRound)
       }
 
-      createSeason(data: any, usePredictions: boolean) {
+      createSeason(data: any, usePredictions: boolean, fromRound: number) {
         let teamsDict: any = this.createTeamsDictionary(data);
         let roundsDict: any = this.createRoundsDictionary(data);
         let roundsPlayed: number = this.getRoundsPlayed(data);
@@ -21,7 +21,7 @@ namespace app.core {
             fixture.homeTeam = homeTeam;
             fixture.awayTeam = awayTeam;
             let match = new Match(fixture);
-            if(usePredictions) {
+            if(usePredictions && parseInt(round) >= fromRound) {
               match.initScore1();
             }
             matches.push(match);
@@ -72,7 +72,25 @@ namespace app.core {
           .map((n: any) => n.round)
           .max()
           .value();
-        return roundsPlayed;
+        return parseInt(roundsPlayed);
+      }
+
+      closestMatchDate (data: any) {
+        let bestDiff = -(new Date(0,0,0)).valueOf(),
+            bestDate = data.length - 1,
+            now = Date.now(),
+            currDiff = 0,
+            i;
+    
+        for(i = 0; i < data.length; ++i) {
+            let kickoff = new Date(data[i].date).valueOf();
+            currDiff = Math.abs(kickoff - now);
+            if(currDiff < bestDiff) {
+                bestDiff = currDiff;
+                bestDate = i;
+            }
+        }  
+        return data[bestDate].date;
       }
     }
 

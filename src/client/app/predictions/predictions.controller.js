@@ -33,17 +33,29 @@ var app;
                 this.activate();
             }
             PredictionsController.prototype.activate = function () {
-                var _this = this;
                 this.init();
+                var compressed = this.storage.getItem('compressed-fixtures');
+                if (compressed != null) {
+                    this.localRefresh(compressed);
+                }
+                else {
+                    this.serverRefresh();
+                }
+            };
+            PredictionsController.prototype.serverRefresh = function () {
+                var _this = this;
                 this.fixturePredictionService.getFixturesWithPredictions()
                     .then(function (data) {
-                    _this.compressed = data;
-                    _this.storage.setItem('compressed-fixtures', data.compressed);
-                    var fixtures = _this.$window.lzwCompress.unpack(data.compressed);
-                    _this.fixtureSet = new _this.EntitySet(_this.Fixture);
-                    _this.fixtureSet.mapDtoListToContext(fixtures);
-                    _this.roundChanged();
+                    var compressed = data.compressed;
+                    _this.storage.setItem('compressed-fixtures', compressed);
+                    _this.localRefresh(compressed);
                 });
+            };
+            PredictionsController.prototype.localRefresh = function (compressed) {
+                var fixtures = this.$window.lzwCompress.unpack(compressed);
+                this.fixtureSet = new this.EntitySet(this.Fixture);
+                this.fixtureSet.mapDtoListToContext(fixtures);
+                this.roundChanged();
             };
             PredictionsController.prototype.init = function () {
                 var _this = this;

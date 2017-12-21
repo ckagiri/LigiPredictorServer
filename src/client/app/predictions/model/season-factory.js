@@ -8,11 +8,12 @@ var app;
             var LeagueSeasonFactory = (function () {
                 function LeagueSeasonFactory() {
                 }
-                LeagueSeasonFactory.prototype.createLeagueSeason = function (data, usePredictions) {
+                LeagueSeasonFactory.prototype.createLeagueSeason = function (data, usePredictions, fromRound) {
                     if (usePredictions === void 0) { usePredictions = false; }
-                    return this.createSeason(data, usePredictions);
+                    if (fromRound === void 0) { fromRound = 1; }
+                    return this.createSeason(data, usePredictions, fromRound);
                 };
-                LeagueSeasonFactory.prototype.createSeason = function (data, usePredictions) {
+                LeagueSeasonFactory.prototype.createSeason = function (data, usePredictions, fromRound) {
                     var teamsDict = this.createTeamsDictionary(data);
                     var roundsDict = this.createRoundsDictionary(data);
                     var roundsPlayed = this.getRoundsPlayed(data);
@@ -26,7 +27,7 @@ var app;
                             fixture.homeTeam = homeTeam;
                             fixture.awayTeam = awayTeam;
                             var match = new Match(fixture);
-                            if (usePredictions) {
+                            if (usePredictions && parseInt(round) >= fromRound) {
                                 match.initScore1();
                             }
                             matches_1.push(match);
@@ -73,7 +74,19 @@ var app;
                         .map(function (n) { return n.round; })
                         .max()
                         .value();
-                    return roundsPlayed;
+                    return parseInt(roundsPlayed);
+                };
+                LeagueSeasonFactory.prototype.closestMatchDate = function (data) {
+                    var bestDiff = -(new Date(0, 0, 0)).valueOf(), bestDate = data.length - 1, now = Date.now(), currDiff = 0, i;
+                    for (i = 0; i < data.length; ++i) {
+                        var kickoff = new Date(data[i].date).valueOf();
+                        currDiff = Math.abs(kickoff - now);
+                        if (currDiff < bestDiff) {
+                            bestDiff = currDiff;
+                            bestDate = i;
+                        }
+                    }
+                    return data[bestDate].date;
                 };
                 return LeagueSeasonFactory;
             }());

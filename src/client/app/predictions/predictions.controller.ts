@@ -43,15 +43,28 @@ namespace app.predictions {
 
     activate() {
       this.init();
+      let compressed = this.storage.getItem('compressed-fixtures');
+      if(compressed != null) {
+        this.localRefresh(compressed);
+      } else {
+        this.serverRefresh()
+      }
+    }
+
+    serverRefresh() {
       this.fixturePredictionService.getFixturesWithPredictions()
         .then((data) => {
-          this.compressed = data;
-          this.storage.setItem('compressed-fixtures', data.compressed);
-          let fixtures = this.$window.lzwCompress.unpack(data.compressed);
-          this.fixtureSet = new this.EntitySet(this.Fixture);
-          this.fixtureSet.mapDtoListToContext(fixtures);
-          this.roundChanged();         
+          let compressed = data.compressed;
+          this.storage.setItem('compressed-fixtures', compressed);
+          this.localRefresh(compressed)     
         })
+    }
+
+    localRefresh(compressed: any) {
+      let fixtures = this.$window.lzwCompress.unpack(compressed);
+      this.fixtureSet = new this.EntitySet(this.Fixture);
+      this.fixtureSet.mapDtoListToContext(fixtures);
+      this.roundChanged();   
     }
 
     init() {
