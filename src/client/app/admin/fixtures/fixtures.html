@@ -19,7 +19,9 @@
 						<td class="text-left">{{fixture.date | date:'d MMM yyyy hh:mm a'}}</td>
 						<td class="text-left">{{fixture.homeTeam.name}}</td>
 						<td class="text-left">{{fixture.awayTeam.name}}</td>
-						<td class="text-left">{{fixture.result.goalsHomeTeam + ' - ' + fixture.result.goalsAwayTeam}}</td>
+						<td class="text-left">
+              {{(fixture.result.goalsHomeTeam != undefined) ? 
+                fixture.result.goalsHomeTeam + ' - ' + fixture.result.goalsAwayTeam : '-'}}</td>
             <td class="text-left">{{fixture.status}}</td>
             <td class="text-left" ng-click="vm.editOdds(fixture)"><span class="text-primary font-weight-bold">{{fixture.odds | formatOdds}}</span></td>
 					</tr>
