@@ -18,7 +18,11 @@ var app;
                 };
                 Season.prototype.sortStandings = function () {
                     this.teams.sort(function (a, b) {
-                        return b.getPoints() - a.getPoints();
+                        if (a.getPoints() !== b.getPoints()) {
+                            return b.getPoints() - a.getPoints();
+                        } // Compare points
+                        var diff = (b.getGoalsFor()[3] - b.getGoalsAgainst()) - (a.getGoalsFor() - a.getGoalsAgainst()); // Goal difference
+                        return diff !== 0 ? diff : b.getGoalsFor() - a.getGoalsFor(); // Compare goal difference or goals
                     });
                 };
                 Season.prototype.setRoundsPlayed = function (rounds) {

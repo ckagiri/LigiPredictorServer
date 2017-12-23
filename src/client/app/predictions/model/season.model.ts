@@ -21,9 +21,11 @@ namespace app.core {
       }
 
       sortStandings() {
-        this.teams.sort(function(a, b) {
-			    return b.getPoints() - a.getPoints();
-		    });
+        this.teams.sort((a, b) => {
+          if (a.getPoints() !== b.getPoints()) { return b.getPoints() - a.getPoints(); } // Compare points
+          let diff = (b.getGoalsFor() [3] - b.getGoalsAgainst()) - (a.getGoalsFor() - a.getGoalsAgainst()); // Goal difference
+          return diff !== 0 ? diff : b.getGoalsFor() - a.getGoalsFor();  // Compare goal difference or goals
+        });
       }
 
       setRoundsPlayed(rounds: number) {

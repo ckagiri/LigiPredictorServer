@@ -14,6 +14,13 @@ var app;
                     this.initScore();
                 }
                 Match.prototype.assign = function () {
+                    if (this.homeScore == undefined) {
+                        return;
+                    }
+                    else {
+                        this.homeTeam.played += 1;
+                        this.awayTeam.played += 1;
+                    }
                     if (this.draw()) {
                         this.homeTeam.addPoints(1);
                         this.awayTeam.addPoints(1);
@@ -26,6 +33,10 @@ var app;
                         this.homeTeam.addPoints(0);
                         this.awayTeam.addPoints(3);
                     }
+                    this.homeTeam.goalsFor += this.homeScore;
+                    this.homeTeam.goalsAgainst += this.awayScore;
+                    this.awayTeam.goalsFor += this.awayScore;
+                    this.awayTeam.goalsAgainst += this.homeScore;
                 };
                 Match.prototype.getHomeTeam = function () {
                     return this.homeTeam;

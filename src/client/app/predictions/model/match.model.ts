@@ -23,6 +23,12 @@ namespace app.core {
       prediction: any = {};
 
       assign() {
+        if(this.homeScore == undefined) {
+          return;
+        } else {
+          this.homeTeam.played += 1;
+          this.awayTeam.played += 1;
+        }
     		if (this.draw()) {
 			    this.homeTeam.addPoints(1);
 			    this.awayTeam.addPoints(1);
@@ -32,7 +38,11 @@ namespace app.core {
 		    } else {
 			    this.homeTeam.addPoints(0);
 		      this.awayTeam.addPoints(3);
-		    }
+        }
+        this.homeTeam.goalsFor += this.homeScore;
+        this.homeTeam.goalsAgainst += this.awayScore;
+        this.awayTeam.goalsFor += this.awayScore;
+        this.awayTeam.goalsAgainst += this.homeScore;
       }
       
       getHomeTeam() {

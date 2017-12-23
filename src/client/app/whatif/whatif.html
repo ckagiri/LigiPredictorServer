@@ -41,7 +41,12 @@
       <ul>
         <li ng-repeat="team in vm.season1.getTeams()">
           <span>{{team.getPoints()}}</span>
-          <span>{{team.getName()}}</span>
+          <span>{{team.getName()}}</span>&nbsp;&nbsp;&nbsp;
+          <span>({{team.getGoalsFor()}},</span>
+          <span>{{team.getGoalsAgainst()}},</span>
+          <span ng-if="team.getGoalDiff() > 0">+</span>
+          <span>{{team.getGoalDiff()}})</span>
+          <span>&nbsp;&nbsp;&nbsp;[{{team.getPlayed()}}]</span>
         </li>
       </ul>
       <button ng-show="!vm.isFirstRound()" ng-click="vm.prevRound()">prev</button>
@@ -66,8 +71,12 @@
       </div>
       <ul>
         <li ng-repeat="team in vm.predSeason.getTeams()">
-          <span>{{team.getPoints()}}</span>
-          <span>{{team.getName()}}</span>
+            <span>{{team.getPoints()}}</span>
+            <span>{{team.getName()}}</span>&nbsp;&nbsp;&nbsp;
+            <span>({{team.getGoalsFor()}},</span>
+            <span>{{team.getGoalsAgainst()}},</span>
+            <span ng-if="team.getGoalDiff() > 0">+</span>
+            <span>{{team.getGoalDiff()}})</span>
         </li>
       </ul>
     </div>
