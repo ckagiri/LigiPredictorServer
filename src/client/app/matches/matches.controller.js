@@ -370,7 +370,7 @@ var app;
                 var tomorrow = Moment().add(1, 'day');
                 var update = next;
                 if (fixtureLive || hasPendingPrediction) {
-                    update = Moment().add(5, 'minutes');
+                    update = Moment().add(4, 'minutes');
                 }
                 else if (next > tomorrow) {
                     update = Moment().add(12, 'hours');

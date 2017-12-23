@@ -31,6 +31,7 @@ var app;
                     this.points = 0;
                     this.goalsFor = 0;
                     this.goalsAgainst = 0;
+                    this.played = 0;
                 };
                 Team.prototype.addPoints = function (p) {
                     this.points += p;
