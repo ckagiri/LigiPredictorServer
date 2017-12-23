@@ -27,6 +27,7 @@ namespace app.whatif {
     homeScore: any;
     awayScore: any;
     canClear: boolean = false;
+    SERVER_REFRESHED: boolean = false;
     
     activate() {
       let compressed = this.storage.getItem('compressed-fixtures');
@@ -42,12 +43,21 @@ namespace app.whatif {
         .then((data) => {
           let compressed = data.compressed;
           this.storage.setItem('compressed-fixtures', compressed);
+          this.SERVER_REFRESHED = true;
           this.localRefresh(compressed)     
         })
     }
 
     localRefresh(compressed: any) {
       this.fixtures = this.$window.lzwCompress.unpack(compressed);
+      let closestMatchDate = this.leagueSeasonFactory.closestMatchDate(this.fixtures);
+      let moment = this.$window.moment;
+      let now = moment();
+      const closestTime = moment(closestMatchDate);
+      const diff = Math.abs(closestTime.diff(now, 'minutes'));
+      if(diff < 60 && !this.SERVER_REFRESHED) {
+        this.serverRefresh();
+      }
       this.season = this.leagueSeasonFactory.createLeagueSeason(this.fixtures);
       this.season1 = angular.copy(this.season);
       this.roundsPlayed = this.leagueSeasonFactory.getRoundsPlayed(this.fixtures);
@@ -90,14 +100,6 @@ namespace app.whatif {
     onPredStandingRoundChanged() {
       this.predRound = this.selectedPredRound.id
       this.predSeason = this.leagueSeasonFactory.createLeagueSeason(this.fixtures, true, this.predRound); 
-      let closestMatchDate = this.leagueSeasonFactory.closestMatchDate(this.fixtures);
-      let moment = this.$window.moment;
-      let now = moment();
-      const closestTime = moment(closestMatchDate);
-      const diff = Math.abs(closestTime.diff(now, 'minutes'));
-      if(diff < 60) {
-        this.serverRefresh();
-      }
     }
 
     clearAll() {

@@ -14,6 +14,7 @@ var app;
                 this.title = 'WhatIf';
                 this.goalsRange = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
                 this.canClear = false;
+                this.SERVER_REFRESHED = false;
                 this.activate();
             }
             WhatIfController.prototype.activate = function () {
@@ -31,12 +32,21 @@ var app;
                     .then(function (data) {
                     var compressed = data.compressed;
                     _this.storage.setItem('compressed-fixtures', compressed);
+                    _this.SERVER_REFRESHED = true;
                     _this.localRefresh(compressed);
                 });
             };
             WhatIfController.prototype.localRefresh = function (compressed) {
                 var _this = this;
                 this.fixtures = this.$window.lzwCompress.unpack(compressed);
+                var closestMatchDate = this.leagueSeasonFactory.closestMatchDate(this.fixtures);
+                var moment = this.$window.moment;
+                var now = moment();
+                var closestTime = moment(closestMatchDate);
+                var diff = Math.abs(closestTime.diff(now, 'minutes'));
+                if (diff < 60 && !this.SERVER_REFRESHED) {
+                    this.serverRefresh();
+                }
                 this.season = this.leagueSeasonFactory.createLeagueSeason(this.fixtures);
                 this.season1 = angular.copy(this.season);
                 this.roundsPlayed = this.leagueSeasonFactory.getRoundsPlayed(this.fixtures);
@@ -73,14 +83,6 @@ var app;
             WhatIfController.prototype.onPredStandingRoundChanged = function () {
                 this.predRound = this.selectedPredRound.id;
                 this.predSeason = this.leagueSeasonFactory.createLeagueSeason(this.fixtures, true, this.predRound);
-                var closestMatchDate = this.leagueSeasonFactory.closestMatchDate(this.fixtures);
-                var moment = this.$window.moment;
-                var now = moment();
-                var closestTime = moment(closestMatchDate);
-                var diff = Math.abs(closestTime.diff(now, 'minutes'));
-                if (diff < 60) {
-                    this.serverRefresh();
-                }
             };
             WhatIfController.prototype.clearAll = function () {
                 var compressed = this.storage.getItem('compressed-fixtures');

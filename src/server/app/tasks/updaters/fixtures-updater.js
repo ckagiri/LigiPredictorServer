@@ -24,16 +24,6 @@ var fixtureChanged = function (updated, fromDb) {
         updated.result.goalsAwayTeam !== fromDb.result.goalsAwayTeam) {
         return true;
     }
-    if (updated.odds) {
-        if (!fromDb.odds) {
-            return true;
-        }
-        if (updated.odds.homeWin !== fromDb.odds.homeWin ||
-            updated.odds.awayWin !== fromDb.odds.awayWin ||
-            updated.odds.draw !== fromDb.odds.draw) {
-            return true;
-        }
-    }
     return false;
 };
 var calculateNextFixtureUpdateTime = function (fixtureList) {

@@ -30,6 +30,7 @@ var app;
                     matches: 0,
                     correctOutcome: 0
                 };
+                this.SERVER_REFRESHED = false;
                 this.activate();
             }
             PredictionsController.prototype.activate = function () {
@@ -48,11 +49,20 @@ var app;
                     .then(function (data) {
                     var compressed = data.compressed;
                     _this.storage.setItem('compressed-fixtures', compressed);
+                    _this.SERVER_REFRESHED = true;
                     _this.localRefresh(compressed);
                 });
             };
             PredictionsController.prototype.localRefresh = function (compressed) {
                 var fixtures = this.$window.lzwCompress.unpack(compressed);
+                var closestMatchDate = this.leagueSeasonFactory.closestMatchDate(fixtures);
+                var moment = this.$window.moment;
+                var now = moment();
+                var closestTime = moment(closestMatchDate);
+                var diff = Math.abs(closestTime.diff(now, 'minutes'));
+                if (diff < 60 && !this.SERVER_REFRESHED) {
+                    this.serverRefresh();
+                }
                 this.fixtureSet = new this.EntitySet(this.Fixture);
                 this.fixtureSet.mapDtoListToContext(fixtures);
                 this.roundChanged();

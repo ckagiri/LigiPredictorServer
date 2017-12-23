@@ -40,6 +40,7 @@ namespace app.predictions {
       matches: 0,
       correctOutcome: 0
     };
+    SERVER_REFRESHED: boolean = false;
 
     activate() {
       this.init();
@@ -56,12 +57,21 @@ namespace app.predictions {
         .then((data) => {
           let compressed = data.compressed;
           this.storage.setItem('compressed-fixtures', compressed);
+          this.SERVER_REFRESHED = true;
           this.localRefresh(compressed)     
         })
     }
 
     localRefresh(compressed: any) {
       let fixtures = this.$window.lzwCompress.unpack(compressed);
+      let closestMatchDate = this.leagueSeasonFactory.closestMatchDate(fixtures);
+      let moment = this.$window.moment;
+      let now = moment();
+      const closestTime = moment(closestMatchDate);
+      const diff = Math.abs(closestTime.diff(now, 'minutes'));
+      if(diff < 60 && !this.SERVER_REFRESHED) {
+        this.serverRefresh();
+      }
       this.fixtureSet = new this.EntitySet(this.Fixture);
       this.fixtureSet.mapDtoListToContext(fixtures);
       this.roundChanged();   
