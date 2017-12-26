@@ -208,7 +208,7 @@ function mapScore(userScore) {
     score.rank = userScore.posNew;
     score.posNew = userScore.posNew;
     score.posOld = userScore.posOld;
-    score.change = score.posNew - score.posOld;
+    score.change = score.posOld - score.posNew;
     return score;
 }
 //# sourceMappingURL=leaderboard.controller.js.map
