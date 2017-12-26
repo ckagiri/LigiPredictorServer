@@ -54,8 +54,8 @@ var app;
                     this.setScore(this.result.goalsHomeTeam, this.result.goalsAwayTeam);
                 };
                 Match.prototype.initScore1 = function () {
-                    var homeTeamScore = this.result.goalsHomeTeam || 0;
-                    var awayTeamScore = this.result.goalsAwayTeam || 0;
+                    var homeTeamScore = this.result.goalsHomeTeam;
+                    var awayTeamScore = this.result.goalsAwayTeam;
                     var choice = this.prediction && this.prediction.choice;
                     if (choice && !!~choice.goalsHomeTeam) {
                         homeTeamScore = choice.goalsHomeTeam;

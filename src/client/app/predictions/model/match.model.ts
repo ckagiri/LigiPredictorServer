@@ -66,8 +66,8 @@ namespace app.core {
       }
 
       initScore1() {
-        let homeTeamScore = this.result.goalsHomeTeam || 0;
-        let awayTeamScore = this.result.goalsAwayTeam || 0;
+        let homeTeamScore = this.result.goalsHomeTeam;
+        let awayTeamScore = this.result.goalsAwayTeam;
         let choice = this.prediction && this.prediction.choice;
         if(choice && !!~choice.goalsHomeTeam) {
           homeTeamScore = choice.goalsHomeTeam;
