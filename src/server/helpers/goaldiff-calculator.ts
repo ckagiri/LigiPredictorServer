@@ -5,17 +5,15 @@ class GoalDiffCalculator {
     let resultGd = Math.abs(result.goalsHomeTeam - result.goalsAwayTeam);
     let homeGoalsGd = null;
     let awayGoalsGd = null;
-    let bonusEqualGd = 0;
+    let correctOutcomeExtra = 0;
     let minGd = Math.min(choiceGd, resultGd) || 1;
 
     let choiceOutcome = calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
     let resultOutcome = calcOutcome(result.goalsHomeTeam, result.goalsAwayTeam);
     if(choiceOutcome === resultOutcome) {
+      correctOutcomeExtra = 1;
       homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
-      awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);
-      if(homeGoalsGd > 0 && awayGoalsGd > 0 &&  choiceGd === resultGd) {
-        bonusEqualGd = 1;
-      }    
+      awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);      
       if(homeGoalsGd === 1) {
         homeGoalsGd = 0;
       } else {
@@ -47,7 +45,7 @@ class GoalDiffCalculator {
       }
     }
 
-    let goalDiff = minGd + homeGoalsGd + awayGoalsGd + bonusEqualGd;
+    let goalDiff = minGd + homeGoalsGd + awayGoalsGd + correctOutcomeExtra;
     return goalDiff;
   }
 }
