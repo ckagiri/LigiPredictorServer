@@ -66,7 +66,7 @@ export class LeaderboardRepo {
 	}
 
 	findMonthBoard(seasonId: string, year: number, month: number) {
-		let query = {$and: [{season: seasonId}, {year}, {month}, {boardType: 'GLOBAL_MONTH'}]}
+		let query = {$and: [{season: seasonId}, {month}, {boardType: 'GLOBAL_MONTH'}]}
 		return this.findOne(query)
 	}
 }

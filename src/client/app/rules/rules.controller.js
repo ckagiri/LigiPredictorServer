@@ -125,10 +125,6 @@ var app;
                     rules.RULE_3.value = 1;
                     homeGoalsGd = Math.abs(this.homeScorePrediction - this.homeScoreResult);
                     awayGoalsGd = Math.abs(this.awayScorePrediction - this.awayScoreResult);
-                    if (homeGoalsGd > 0 && awayGoalsGd > 0 && predictionGd === resultGd) {
-                        rules.RULE_4.show = true;
-                        rules.RULE_4.value = 1;
-                    }
                     if (homeGoalsGd === 1) {
                         rules.RULE_2.show = false;
                         rules.RULE_2.value -= 1;

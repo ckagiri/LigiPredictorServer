@@ -57,7 +57,7 @@ var LeaderboardRepo = (function () {
         return this.findOne(query);
     };
     LeaderboardRepo.prototype.findMonthBoard = function (seasonId, year, month) {
-        var query = { $and: [{ season: seasonId }, { year: year }, { month: month }, { boardType: 'GLOBAL_MONTH' }] };
+        var query = { $and: [{ season: seasonId }, { month: month }, { boardType: 'GLOBAL_MONTH' }] };
         return this.findOne(query);
     };
     return LeaderboardRepo;
