@@ -16,7 +16,7 @@ export interface IPrediction {
   round: number;
 	hasJoker: boolean;
 	jokerAutoPicked: boolean;
-	status?: boolean;
+	status?: string;
 };
 
 export interface IPredictionModel extends IPrediction, mongoose.Document { }

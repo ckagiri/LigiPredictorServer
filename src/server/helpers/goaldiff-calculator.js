@@ -8,6 +8,7 @@ var GoalDiffCalculator = (function () {
         var resultGd = Math.abs(result.goalsHomeTeam - result.goalsAwayTeam);
         var homeGoalsGd = null;
         var awayGoalsGd = null;
+        var equalGdExtra = 0;
         var correctOutcomeExtra = 0;
         var minGd = Math.min(choiceGd, resultGd) || 1;
         var choiceOutcome = calcOutcome(choice.goalsHomeTeam, choice.goalsAwayTeam);
@@ -16,6 +17,9 @@ var GoalDiffCalculator = (function () {
             correctOutcomeExtra = 1;
             homeGoalsGd = Math.abs(choice.goalsHomeTeam - result.goalsHomeTeam);
             awayGoalsGd = Math.abs(choice.goalsAwayTeam - result.goalsAwayTeam);
+            if (homeGoalsGd > 0 && awayGoalsGd > 0 && choiceGd === resultGd) {
+                equalGdExtra = 1;
+            }
             if (homeGoalsGd === 1) {
                 homeGoalsGd = 0;
             }
@@ -47,7 +51,7 @@ var GoalDiffCalculator = (function () {
                 awayGoalsGd = -awayGoalsGd;
             }
         }
-        var goalDiff = minGd + homeGoalsGd + awayGoalsGd + correctOutcomeExtra;
+        var goalDiff = minGd + homeGoalsGd + awayGoalsGd + correctOutcomeExtra + equalGdExtra;
         return goalDiff;
     };
     return GoalDiffCalculator;
