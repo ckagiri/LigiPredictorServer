@@ -5,12 +5,13 @@ import {UserScore, IUserScore} from '../models/user-score.model';
 export class UserScoreRepo {
   findOneAndUpdateOrCreate(leaderboardId: string, userId: string, fixtureId: string, 
     predictionId: string, predictionScore: any, hasJoker: boolean) {
-    let {points, goalDiff} = predictionScore,
+    let {points, goalDiff, scorePoints} = predictionScore,
     score: IUserScore = {
       leaderboard: leaderboardId,
       user: userId, 
       points: points,
       goalDiff: goalDiff,
+      goalDiffPoints: scorePoints.goalDifference,
       fixtures: [''],
       predictions: ['']
     }
@@ -23,9 +24,11 @@ export class UserScoreRepo {
             score.predictions = [predictionId];
             score.pointsExcJoker = points;
             score.goalDiffExcJoker = goalDiff;
+            score.goalDiffPoints = scorePoints.goalDifference;
             if(hasJoker && score.goalDiff >= 0) {
               score.points += score.points;
               score.goalDiff += score.goalDiff;
+              score.goalDiffPoints += score.goalDiffPoints;
             }
             UserScore.create(score, (err: any, result: any) => {
 	            if (err) return reject(err);
@@ -44,10 +47,12 @@ export class UserScoreRepo {
             standing.points += score.points;
             standing.pointsExcJoker += score.points
             standing.goalDiff += score.goalDiff;
-            standing.goalDiffExcJoker+= score.goalDiff
+            standing.goalDiffExcJoker += score.goalDiff;
+            standing.goalDiffPoints += score.goalDiffPoints;
             if(hasJoker && score.goalDiff >= 0) {
               standing.points += score.points;
               standing.goalDiff += score.goalDiff;
+              standing.goalDiffPoints += score.goalDiffPoints;
             }
             UserScore.findByIdAndUpdate(
               {_id: standing._id}, 
@@ -55,6 +60,7 @@ export class UserScoreRepo {
                 $set: {
                   points: standing.points, 
                   goalDiff: standing.goalDiff, 
+                  goalDiffPoints: standing.goalDiffPoints,
                   pointsExcJoker: standing.pointsExcJoker,
                   goalDiffExcJoker: standing.goalDiffExcJoker
                 },
@@ -71,12 +77,20 @@ export class UserScoreRepo {
   
   getByLeaderboardOrderByPoints(leaderboardId: string) {
     return Rx.Observable.fromPromise(
-      UserScore.find({leaderboard: leaderboardId}, null, {sort: {points: -1, goalDiff: -1}}));
+      UserScore.find({
+        leaderboard: leaderboardId}, 
+        null, 
+        {sort: {points: -1, goalDiff: -1, goalDiffPoints: -1}}
+      ));
   }
 
   getOneByLeaderboardOrderByPoints(leaderboardId: string) {
     return Rx.Observable.fromPromise(
-      UserScore.find({leaderboard: leaderboardId}, null, {sort: {points: -1, goalDiff: -1}}).populate('user').lean());
+      UserScore.find({
+        leaderboard: leaderboardId}, 
+        null, 
+        {sort: {points: -1, goalDiff: -1, goalDiffPoints: -1}}
+      ).populate('user').lean());
   }
 
   update(scoreId: string, positions: any) {
