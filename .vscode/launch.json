@@ -8,13 +8,14 @@
           "type": "node",
           "request": "launch",
           "name": "Launch Program",
-          //"program": "${workspaceRoot}/server.js",
-          "program": "${workspaceRoot}/src/server/app/server.ts", 
+          "program": "${workspaceRoot}/server.ts",
+          //"program": "${workspaceRoot}/src/server/app/server.ts", 
           //"program": "${workspaceRoot}/src/server/import/api-football-data/main.ts",
           //"program": "${workspaceRoot}/src/server/helpers/test.ts",
           // Automatically stop program after launch.
           "cwd": "${workspaceRoot}",
           "outFiles": ["${workspaceRoot}/src/server/app/server.js"],
+          //"outFiles": ["${workspaceRoot}/src/server/helpers/test.js"],
           "sourceMaps": true
       },
       {

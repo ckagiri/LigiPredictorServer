@@ -38,6 +38,12 @@ var userScoreSchema = new Schema({
     goalDiffOld: {
         type: Number
     },
+    goalDiffPoints: {
+        type: Number
+    },
+    goalDiffPointsOld: {
+        type: Number
+    },
     posOld: {
         type: Number
     },
