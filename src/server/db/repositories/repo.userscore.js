@@ -22,6 +22,7 @@ var UserScoreRepo = (function () {
                     score.predictions = [predictionId];
                     score.pointsExcJoker = points;
                     score.goalDiffExcJoker = goalDiff;
+                    score.goalDiffPoints = scorePoints.goalDifference;
                     if (hasJoker && score.goalDiff >= 0) {
                         score.points += score.points;
                         score.goalDiff += score.goalDiff;
