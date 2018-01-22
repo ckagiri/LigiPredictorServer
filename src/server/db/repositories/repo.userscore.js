@@ -22,7 +22,6 @@ var UserScoreRepo = (function () {
                     score.predictions = [predictionId];
                     score.pointsExcJoker = points;
                     score.goalDiffExcJoker = goalDiff;
-                    score.goalDiffPoints = scorePoints.goalDifference;
                     if (hasJoker && score.goalDiff >= 0) {
                         score.points += score.points;
                         score.goalDiff += score.goalDiff;
@@ -35,13 +34,15 @@ var UserScoreRepo = (function () {
                     });
                 }
                 else {
-                    var fixtureExists_1 = false;
-                    standing.fixtures.forEach(function (fixture) {
+                    var fixtureExists = false;
+                    var fixtures = standing.fixtures;
+                    for (var i = 0, len = fixtures.length; i < len; i++) {
+                        var fixture = fixtures[i];
                         if (fixture.toString() == fixtureId) {
-                            fixtureExists_1 = true;
+                            fixtureExists = true;
                         }
-                    });
-                    if (fixtureExists_1) {
+                    }
+                    if (fixtureExists) {
                         return resolve(standing);
                     }
                     standing.points += score.points;

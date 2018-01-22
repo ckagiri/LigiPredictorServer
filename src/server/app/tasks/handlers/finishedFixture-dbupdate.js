@@ -27,7 +27,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
                 console.log("the game : " + getFixtureName(fixture) + " has been updated");
             }
         })
-            .flatMap(function (fixture) {
+            .concatMap(function (fixture) {
             var season = fixture.season, round = fixture.round;
             var roundFixturesKey = season + "-" + round;
             var roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
@@ -45,7 +45,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
             var fixture = map.fixture, roundFixtureIds = map.roundFixtureIds;
             return finishedFixture_publish_1.finishedFixturePublishHandler.handle(fixture, roundFixtureIds);
         })
-            .flatMap(function (map) {
+            .concatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             if (prediction.status === 'ALREADY_PROCESSED') {
                 return Rx.Observable.of({ user: user, fixture: fixture, prediction: prediction });
@@ -55,7 +55,7 @@ var FinishedFixtureDbUpdateHandler = (function () {
                 return { user: user, fixture: fixture, prediction: prediction };
             });
         })
-            .flatMap(function (map) {
+            .concatMap(function (map) {
             var user = map.user, fixture = map.fixture, prediction = map.prediction;
             var season = fixture.season, round = fixture.round;
             var month = fixture.date.getUTCMonth() + 1;

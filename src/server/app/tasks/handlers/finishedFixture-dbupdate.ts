@@ -25,7 +25,7 @@ class FinishedFixtureDbUpdateHandler {
 					console.log("the game : " + getFixtureName(fixture) + " has been updated");
 				}
 			})
-			.flatMap((fixture: any) => {
+			.concatMap((fixture: any) => {
 				let {season, round} = fixture;
 				let roundFixturesKey = `${season}-${round}`;
 				let roundFixturesObs = roundFixturesObsCache[roundFixturesKey];
@@ -43,7 +43,7 @@ class FinishedFixtureDbUpdateHandler {
 				let {fixture, roundFixtureIds} = map;
 				return finishedFixturePublishHandler.handle(fixture, roundFixtureIds)
 			})
-			.flatMap((map: any) => {
+			.concatMap((map: any) => {
 				let {user, fixture, prediction} = map;	
         if(prediction.status === 'ALREADY_PROCESSED') {
           return Rx.Observable.of({user, fixture, prediction});
@@ -53,7 +53,7 @@ class FinishedFixtureDbUpdateHandler {
 						return {user, fixture, prediction}
 					})
 			})
-			.flatMap((map: any) => {
+			.concatMap((map: any) => {
 				let {user, fixture, prediction} = map;
 				let {season, round} = fixture;
 				let month = fixture.date.getUTCMonth() + 1;

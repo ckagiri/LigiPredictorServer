@@ -10,7 +10,7 @@ class FinishedFixturePublishHandler {
         .flatMap((users: any[]) => {
           return Rx.Observable.from(users);
         })
-        .flatMap((user:any) => {
+        .concatMap((user:any) => {
           let {season, round} = changedFixture;
           return predictionRepo.pickJoker({user, season, round, pick: roundFixtures})
             .map((jokerPrediction: any) => {
@@ -27,7 +27,7 @@ class FinishedFixturePublishHandler {
               });
             });;
         })
-        .flatMap((map: any) => {
+        .concatMap((map: any) => {
           let {user, jokerPrediction} = map; 
           if (jokerPrediction && jokerPrediction.fixture.toString() == changedFixture._id.toString()) {
             return Rx.Observable.of({
@@ -41,7 +41,7 @@ class FinishedFixturePublishHandler {
               }
             })
         })
-        .flatMap((map: any) => {
+        .concatMap((map: any) => {
           let {user, prediction} = map;
           let fixture = changedFixture;
           let predictionStatus = 'PROCESSED';

@@ -24,7 +24,6 @@ export class UserScoreRepo {
             score.predictions = [predictionId];
             score.pointsExcJoker = points;
             score.goalDiffExcJoker = goalDiff;
-            score.goalDiffPoints = scorePoints.goalDifference;
             if(hasJoker && score.goalDiff >= 0) {
               score.points += score.points;
               score.goalDiff += score.goalDiff;
@@ -36,11 +35,13 @@ export class UserScoreRepo {
         	  });
           } else {
             let fixtureExists = false;
-            standing.fixtures.forEach(function(fixture: any){
+            let fixtures = standing.fixtures;
+            for (let i = 0, len = fixtures.length; i < len; i++) {
+              let fixture = fixtures[i];
               if(fixture.toString() == fixtureId) {
                 fixtureExists = true;
               }
-            })
+            }
             if(fixtureExists) {
               return resolve(standing)
             }
