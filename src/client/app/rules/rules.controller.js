@@ -27,9 +27,11 @@ var app;
                 };
                 this.goalDiff = {
                     rules: {
-                        RULE_1: { id: '1', show: false, value: 2, name: 'Starting Goal Difference (Default)' },
+                        RULE_1: { id: '1', show: false, value: 1, name: 'Starting Goal Difference (Default)' },
                         RULE_2: { id: '2', show: false, value: 0, name: 'Correct Team Score (Gain)' },
                         RULE_3: { id: '3', show: false, value: 0, name: 'Incorrect Team Score (Loss)' },
+                        RULE_4: { id: '4', show: false, value: 0, name: 'Correct Match Outcome (Bonus)' },
+                        RULE_5: { id: '5', show: false, value: 0, name: 'Team Score Within 1 (Insurance)' }
                     },
                     value: 0
                 }; //	RULE_3: {id: 'c', show: false, value: 0, name: 'Correct Outcome, Incorrect Score, And'},
@@ -112,30 +114,63 @@ var app;
             RulesController.prototype.processGoalDiff = function (predictionOutcome, resultOutcome, predictionGd, resultGd) {
                 predictionGd = Math.abs(predictionGd);
                 resultGd = Math.abs(resultGd);
-                var homeGoalsGd = Math.abs(this.homeScorePrediction - this.homeScoreResult);
-                var awayGoalsGd = Math.abs(this.awayScorePrediction - this.awayScoreResult);
+                var homeGoalsGd = null;
+                var awayGoalsGd = null;
                 var rules = this.goalDiff.rules;
                 rules.RULE_1.show = true;
-                if (homeGoalsGd === 0) {
-                    rules.RULE_2.show = true;
-                    rules.RULE_2.value += this.homeScoreResult || 1;
+                if (predictionOutcome === resultOutcome) {
+                    rules.RULE_4.show = true;
+                    rules.RULE_4.value = 1;
+                    homeGoalsGd = Math.abs(this.homeScorePrediction - this.homeScoreResult);
+                    awayGoalsGd = Math.abs(this.awayScorePrediction - this.awayScoreResult);
+                    if (homeGoalsGd === 1) {
+                        rules.RULE_3.show = false;
+                        rules.RULE_3.value -= 1;
+                        rules.RULE_5.show = true;
+                        rules.RULE_5.value += 1;
+                    }
+                    else {
+                        homeGoalsGd = null;
+                    }
+                    if (awayGoalsGd === 1) {
+                        rules.RULE_3.show = false;
+                        rules.RULE_3.value -= 1;
+                        rules.RULE_5.show = true;
+                        rules.RULE_5.value += 1;
+                    }
+                    else {
+                        awayGoalsGd = null;
+                    }
                 }
-                else {
-                    rules.RULE_3.show = true;
-                    rules.RULE_3.value -= homeGoalsGd;
+                if (homeGoalsGd === null) {
+                    homeGoalsGd = Math.abs(this.homeScorePrediction - this.homeScoreResult);
+                    if (homeGoalsGd === 0) {
+                        rules.RULE_2.show = true;
+                        rules.RULE_2.value += this.homeScoreResult || 1;
+                    }
+                    else {
+                        rules.RULE_3.show = true;
+                        rules.RULE_3.value -= homeGoalsGd;
+                    }
                 }
-                if (awayGoalsGd === 0) {
-                    rules.RULE_2.show = true;
-                    rules.RULE_2.value += this.awayScoreResult || 1;
-                }
-                else {
-                    rules.RULE_3.show = true;
-                    rules.RULE_3.value -= awayGoalsGd;
+                if (awayGoalsGd === null) {
+                    awayGoalsGd = Math.abs(this.awayScorePrediction - this.awayScoreResult);
+                    if (awayGoalsGd === 0) {
+                        rules.RULE_2.show = true;
+                        rules.RULE_2.value += this.awayScoreResult || 1;
+                    }
+                    else {
+                        rules.RULE_3.show = true;
+                        rules.RULE_3.value -= awayGoalsGd;
+                    }
                 }
                 for (var key in rules) {
                     var rule = rules[key];
+                    console.log(rule);
                     this.goalDiff.value += rule.value;
                 }
+                rules.RULE_3.value += rules.RULE_5.value;
+                rules.RULE_5.value = null;
             };
             RulesController.prototype.calcOutcome = function (home, away) {
                 if (home > away) {
