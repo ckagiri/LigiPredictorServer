@@ -1,4 +1,4 @@
-let BASE_URL = "https://api.football-data.org/v1";
+let BASE_URL = "http://api.football-data.org/v1";
 
 import * as request from 'request-promise';
 

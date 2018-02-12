@@ -8,8 +8,7 @@
           "type": "node",
           "request": "launch",
           "name": "Launch Program",
-          "program": "${workspaceRoot}/server.ts",
-          //"program": "${workspaceRoot}/src/server/app/server.ts", 
+          "program": "${workspaceRoot}/src/server/app/server.ts", 
           //"program": "${workspaceRoot}/src/server/import/api-football-data/main.ts",
           //"program": "${workspaceRoot}/src/server/helpers/test.ts",
           // Automatically stop program after launch.

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var BASE_URL = "https://api.football-data.org/v1";
+var BASE_URL = "http://api.football-data.org/v1";
 var request = require("request-promise");
 function getOptions(apiKey, resource, queryParams) {
     queryParams = queryParams || {};
